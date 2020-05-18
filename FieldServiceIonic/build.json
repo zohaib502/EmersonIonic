@@ -1,0 +1,20 @@
+{
+  "windows": {
+    "release": {
+      "packageCertificateKeyFile": "res\\native\\windows\\emerson_electric_co_sha256_pfx.pfx",
+      "packageThumbprint": "9c964441aef7db97561288731e86ca7a6ac6c6b2"
+    }
+  },
+  "ios": {
+    "debug": {
+        "buildFlag": [
+            "-UseModernBuildSystem=0"
+        ]
+    },
+    "release": {
+        "buildFlag": [
+            "-UseModernBuildSystem=0"
+        ]
+    }
+}
+}
