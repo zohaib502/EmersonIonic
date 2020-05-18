@@ -1,0 +1,59 @@
+page-popover-edit-delete {
+
+}
+.PopoverEditDeletePage{
+    
+    .popover-content {
+        min-width: 100px !important;
+        background-color: transparent;
+        border-radius: 5px;
+        box-shadow: 10px 10px 12px 0px rgba(0, 0, 0, 0.3);
+        // left:1258px !important;
+        margin-top: 20px;
+      }
+    
+      .popover-viewport .scroll-content {
+        background-color: rgba(251, 251, 251,1) !important;
+        color: rgba(74,74,74,1);
+        font-family: "Helvetica Neue";
+        font-size: 18px;
+        font-weight: 300;
+        text-align: left;
+        overflow-y: auto;
+      }
+    
+      .popover-viewport .toolbar-title {
+        color: rgba(74,74,74,1);
+        font-family: "Helvetica Neue";
+        font-size: 22px;
+        font-weight: 300;
+        line-height: 27px;
+        text-align: left;
+      }
+    
+      .tooltip {
+        font-size: 3em;
+        height: 27px;
+        float: right;
+        margin-right: 6px;
+        color: #fff;
+      }
+      .ft-style-del{
+          font-size: 14px;
+          color: #ca0000 !important;
+      }
+      .ft-style-edit{
+        font-size: 14px;
+        color: olivedrab;
+      }
+      .icn{
+          margin-left: 10px;
+          height: 18px !important;
+      }
+
+}
+.ios .PopoverEditDeletePage {
+  .popover-content{
+  margin-top: 0px !important;
+}
+}

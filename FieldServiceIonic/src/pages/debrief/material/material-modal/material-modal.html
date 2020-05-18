@@ -1,0 +1,122 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title class="padding-style" start *ngIf="ifEdit == 'Edit'">{{'Edit Entry' | translate}}</ion-title>
+    <ion-title class="padding-style" start *ngIf="ifCopy == 'Copy'">{{'Copy Entry' | translate}}</ion-title>
+    <ion-buttons end>
+      <button ion-button (click)="save()" *ngIf="ifEdit == 'Edit'" class="save-btn btn" [disabled]="(!updateAllRows && !updateMaterialSerials) || !ItemName || !Charge_Type_Id || !UOM_value || Product_Quantity == '0'">
+        {{'Save Your Edits' | translate}}
+      </button>
+      <button ion-button (click)="save()" *ngIf="ifCopy == 'Copy'" class="save-btn btn" [disabled]="!ItemName || !Charge_Type_Id || !UOM_value || Product_Quantity == '0'">
+        {{'Save Copy' | translate}}
+      </button>
+      <button ion-button class="closebtn" (click)="closeModal()"><i class="fa fa-times fa-2x"></i></button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <form (ngSubmit)="addMaterial()" #myForm="ngForm">
+    <ion-row class="global-padding">
+      <div class="material-spaceMargin">
+        <ion-col no-padding>
+          <ion-label class="label">{{'Name' | translate}}<span class="validator"></span></ion-label>
+          <ion-input required [attr.maxlength]="30" placeholder="{{'Material Name' | translate}}" [(ngModel)]="ItemName" class="description-box" [ngClass]="!ItemName ? 'input-validation' : ''" name="ItemName" (ionChange)="isMaterialChange()"></ion-input>
+        </ion-col>
+      </div>
+      <div class="material-spaceMargin">
+        <ion-col no-padding>
+          <ion-label class="label">{{'Description' | translate}}</ion-label>
+          <ion-input [attr.maxlength]="50" placeholder="{{'Material Description' | translate}}" [(ngModel)]="Description" class="description-box" name="Description" (ionChange)="isMaterialChange()">
+          </ion-input>
+        </ion-col>
+      </div>
+      <div class="material-spaceMargin">
+        <ion-col no-padding>
+          <ion-label class="label">{{'Charge Method' | translate}}<span class="validator"></span></ion-label>
+          <ion-select *ngIf="showSelects" tappable interface="popover" [(ngModel)]="Charge_Type_Id" placeholder="{{'Select Charge Method' | translate}}" (ionChange)="setChargeTypeName($event, true)" (ngModelChange)="setSerialItem($event)" name="Charge_Type_Id" [ngClass]="!Charge_Type-Id ? 'select-validation chargeMethod-box select-style' : 'chargeMethod-box select-style'">
+            <ion-option disabled value="{{''}}">{{'Select Charge Method' | translate}}</ion-option>
+            <ion-option *ngFor="let item of chargeMethod" [value]="item.ID">{{item.Value | translate}}</ion-option>
+          </ion-select>
+        </ion-col>
+      </div>
+      <div>
+        <ion-col no-padding>
+          <ion-label class="label">{{'UOM' | translate}}<span class="validator"></span></ion-label>
+          <ion-select *ngIf="showSelects" tappable interface="popover" (ionChange)="isMaterialChange()" placeholder="Select" [(ngModel)]="UOM_value" name="UOM_value" [ngClass]="!UOM_value ? 'select-validation UOM-box select-style' : 'UOM-box select-style'">
+            <ion-option disabled value="{{''}}">{{'Select UOM' | translate}}</ion-option>
+            <ion-option *ngFor="let uom of UOM">{{uom.Value | translate}}</ion-option>
+          </ion-select>
+        </ion-col>
+      </div>
+      <div text-center style="margin-left: 22px;">
+        <ion-col no-padding>
+          <ion-label class="label">{{'Product Quantity' | translate}}</ion-label>
+          <span class="inline-block">
+            <button type="button" class="white-bg" (click)="deleteSerialItem()" [disabled]="(valueService.getTask().StatusID == enums.Jobstatus.Debrief_Declined && materialObj && materialObj.length > 0 && (materialObj[0].Sync_Status == 'true' || materialObj[0].Original))"> - </button>
+          </span>
+          <span class="inline-block">
+            <ion-input disabled [(ngModel)]="Product_Quantity" (ionChange)="isMaterialChange()" name="Product_Quantity" class="productQuantity-block">
+            </ion-input>
+          </span>
+          <span class="inline-block">
+            <button type="button" class="white-bg" (click)="addSerialItem()" [disabled]="(valueService.getTask().StatusID == enums.Jobstatus.Debrief_Declined && materialObj && materialObj.length > 0 && (materialObj[0].Sync_Status == 'true' || materialObj[0].Original))"> + </button>
+          </span>
+        </ion-col>
+      </div>
+    </ion-row>
+    <ion-row class="global-padding full-width serialType-container">
+      <div *ngIf="materialObj.length > 0" class="scrollContent full-width">
+        <div *ngFor="let serial of materialObj | sort: {property : 'Material_Id', order : -1} ; let i = index"
+             class="inline-block">
+          <div class="material-spaceMargin">
+            <div no-padding class="serialIn-block inline-block">
+              <ion-label class="label">{{'Serial In' | translate}}</ion-label>
+              <ion-input type="text" [attr.maxlength]="30" placeholder="0000-00000-00000" [name]="'input-serialin-'+i" [(ngModel)]="serial.Serial_In" class="serialIn-block-value" (ionChange)="changeValue($event)" (focusout)="isChange(serial.Material_Serial_Id)"></ion-input>
+            </div>
+            <div no-padding class="inline-block">
+              <span> - </span>
+            </div>
+            <div no-padding class="serialOut-block inline-block">
+              <ion-label class="label">{{'Serial Out' | translate}}</ion-label>
+              <ion-input type="text" [attr.maxlength]="30" placeholder="0000-00000-00000" [name]="'input-serialout-'+i" [(ngModel)]="serial.Serial_Out" class="serialOut-block-value" (ionChange)="changeValue($event)" (focusout)="isChange(serial.Material_Serial_Id)"></ion-input>
+            </div>
+          </div>
+          <!-- <div *ngIf="materialObj.Charge_Type !='Warranty'" class="serial-block">
+            <div no-padding class="inline-block material-spaceMargin serialId-block">
+              <ion-label class="label label-text-transform">{{'Serial Number' | translate}}</ion-label>
+              <ion-input type="text" [attr.maxlength]="30" placeholder="0000-00000-00000" [name]="'input-'+i" [(ngModel)]="serial.Serial_Number" class="serialIn-block-value"></ion-input>
+            </div>
+          </div> -->
+        </div>
+      </div>
+    </ion-row>
+  </form>
+  <h3 class="label" text-left *ngIf="originalMaterial && originalMaterial.length > 0">{{'Original Material' | translate}}</h3>
+  <div class="shaded-block" *ngIf="originalMaterial && originalMaterial.length > 0">
+    <ion-row class="global-padding full-width">
+      <div class="label ChargeMethodLabel">{{'Charge Method' | translate}}</div>
+      <div class="label ProductLabel">{{'Quantity' | translate}}</div>
+      <div class="label SerialLabel">{{'Serial In' | translate}}</div>
+      <div class="label SerialLabel">{{'Serial Out' | translate}}</div>
+      <div class="label ItemNameLabel">{{'Item Name' | translate}}</div>
+      <div class="label DescriptionLabel">{{'Item Description' | translate}}</div>
+      <div text-center class="label UOMLabel">{{'UOM' | translate}}</div>
+    </ion-row>
+    <ion-list>
+      <ion-row class="global-padding">
+        <div class="value inline-block non-ellipsis ChargeMethodLabel">{{originalMaterial[0].Charge_Type | translate}}</div>
+        <div class="value inline-block non-ellipsis ProductLabel">{{originalMaterial.length}}</div>
+        <div class="value inline-block SerialBlock">
+          <div class="block" *ngFor="let serialInOut of originalMaterial | sort :{property : 'Material_Id', order : -1}">
+            <span *ngIf="serialInOut.Serial_In || serialInOut.Serial_Out" class="mat-serialIn inline-block">{{serialInOut.Serial_In}}</span>
+            <span *ngIf="serialInOut.Serial_Out || serialInOut.Serial_In" class="mat-serialOut inline-block">{{serialInOut.Serial_Out}}</span>
+          </div>
+        </div>
+        <div class="value inline-block non-ellipsis ItemNameLabel" *ngIf="originalMaterial[0].ItemName">{{originalMaterial[0].ItemName | translate}}</div>
+        <div class="value inline-block non-ellipsis DescriptionLabel" *ngIf="originalMaterial[0].Description">{{originalMaterial[0].Description | translate}}</div>
+        <div text-center class="value inline-block non-ellipsis UOMLabel" *ngIf="originalMaterial[0].UOM">{{originalMaterial[0].UOM | translate}}</div>
+      </ion-row>
+    </ion-list>
+  </div>
+
+</ion-content>

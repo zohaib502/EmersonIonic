@@ -1,0 +1,107 @@
+<ion-content padding class="page-background">
+  <ion-card>
+    <ion-card-header>
+      <ion-row class="debriefPage-padding">
+        <ion-col col-2 no-padding>
+            <button (click)=addProject() class="addbtn-box btn" no-padding ><img class="add-btn pointer" src="assets/imgs/icons/Add-button.png"></button>
+          <!-- <h1>{{'Time' | translate}}</h1> -->
+        </ion-col>
+        <ion-col col-3>
+          <div class="value danger" *ngIf="timeValid">{{'Entry Already Exist' | translate}}</div>
+        </ion-col>
+        <ion-col col-7 text-right no-padding>
+          <span class="continue-navigation" *ngIf="_taskObj.Selected_Process == enums.Selected_Process.FCR_AND_SDR && _taskObj.Business_Unit != enums.BusinessUnitNames.PWS">
+              <span class="continue-text"> {{'Continue' | translate}}</span>
+              <button ion-button class="sdr-btn" (click)="gotoSDR()">{{'Service Detail Report' | translate}}</button>
+            </span>
+          <span (click)="gottoExpense()" class="pageNavigationBtn pointer"> {{'Expenses' | translate}} ></span>
+        </ion-col>
+      </ion-row>
+
+    </ion-card-header>
+    <!-- NonClarity/Non-OSC User -->
+    <ion-card-content *ngIf="!valueservice.isOSCUser()">
+      <div>
+        <ion-row class="global-padding full-width">
+          <ion-col col-1 class="tooltip-col label tooltip">
+            <div><img class="info-icn" src="assets/imgs/icons/info_Circle.png">
+              <span class="tooltiptext">Include In Report</span>
+            </div>
+          </ion-col>
+          <ion-col col-1>
+              <span class="label ft-weight col labelStyle">Select All</span>
+            <ion-checkbox checked="false" class="checkbox-square applyMargin"  [(ngModel)]="combinedCheckBox" (click)="updateTimeEntry($event, '', 'true')"></ion-checkbox>
+          </ion-col>
+          <ion-col col-2 class="label ft-weight"><span>{{'Start Date Time' | translate}}</span> / <span class="block">{{'End Date Time' | translate}}</span></ion-col>
+          <ion-col col-1 class="label ft-weight center-align">{{'Job ID'| translate}}</ion-col>
+          <ion-col col-2 class="label ft-weight center-align">{{'Activity Name' | translate}}</ion-col>
+          <ion-col col-2 class="label ft-weight center-align">{{'ST/OT/DT/HT' | translate }}</ion-col>
+          <ion-col col-2 class="label ft-weight center-align" *ngIf="valueservice.getUserPreferences()[0].ShowChargeMethod == 'true' || valueservice.getUserPreferences()[0].ShowChargeMethod == true">{{'Charge Method' | translate }}</ion-col>
+          <ion-col col-1 class="label ft-weight center-align">{{'Hours' | translate }}</ion-col>
+        </ion-row>
+        <ion-list>
+          <ion-row *ngFor="let time of timeArraySummary; let i = index" class="strippedClass global-padding full-width">
+              <ion-col col-1 class="tooltip-col label">
+                </ion-col>
+          <ion-col col-1 class="label"><ion-checkbox class="checkbox-square applyMargin" [(ngModel)]="time.isPicked" (ionChange)="updateTimeEntry($event, time)"></ion-checkbox></ion-col>
+          <ion-col col-2 class="value">
+            <span class="sdt">{{time.EntryDate | customDate | translate}} {{time.Start_Time | translate}}</span> /
+            <span class="block edt">{{time.EntryDate | customDate | translate}} {{time.End_Time | translate}}</span>
+          </ion-col>
+          <ion-col col-1 class="label center-align">{{valueservice.getTask().Job_Number?valueservice.getTask().Job_Number:valueservice.getTask().Task_Number}}</ion-col>
+          <ion-col col-2 class="label center-align ">{{time.Work_Type | translate}}</ion-col>
+          <ion-col col-2 class="label center-align">{{time.Item | translate}}</ion-col>
+          <ion-col col-2 class="label center-align" *ngIf="valueservice.getUserPreferences()[0].ShowChargeMethod == 'true' || valueservice.getUserPreferences()[0].ShowChargeMethod == true">{{time.Charge_Method | translate}}</ion-col>
+          <ion-col col-1 class="label center-align">{{time.Duration}}<span class="pull-right pointer" (click)="openEditDeletePopOver($event, time)"><ion-icon name="more" class="icon icon-md ion-md-more"></ion-icon></span></ion-col>
+          </ion-row>
+        </ion-list>
+      </div>
+
+    </ion-card-content>
+    <!-- NonClarity/OSC User -->
+    <ion-card-content *ngIf="valueservice.isOSCUser()">
+      <div>
+        <ion-row class="global-padding full-width">
+          <ion-col col-1 class="tooltip-col label tooltip">
+            <div><img class="info-icn" src="assets/imgs/icons/info_Circle.png">
+              <span class="tooltiptext">Include In Report</span>
+            </div>
+          </ion-col>
+          <ion-col col-1>
+              <span class="label ft-weight col labelStyle">{{'Select All' | translate}}</span>
+            <ion-checkbox checked="false" class="checkbox-square applyMargin"  [(ngModel)]="combinedCheckBox" (click)="updateTimeEntry($event, '', 'true')"></ion-checkbox>
+          </ion-col>
+          <ion-col col-2 class="label ft-weight"><span>{{'Start Date Time' | translate}}</span> / <span class="block">{{'End Date Time' | translate}}</span></ion-col>
+          <ion-col col-1 class="label ft-weight center-align">{{'Job ID'| translate}}</ion-col>
+          <ion-col col-2 class="label ft-weight center-align">{{'Work Type' | translate}}</ion-col>
+          <ion-col col-1 class="label ft-weight center-align">{{'Item' | translate }}</ion-col>
+          <ion-col  col-2 class="label ft-weight center-align"><span >{{'Charge Method' | translate }}</span></ion-col>
+          <ion-col col-1 class="label ft-weight center-align">{{'Hours' | translate }}</ion-col>
+        </ion-row>
+        <ion-list>
+          <ion-row *ngFor="let time of timeArraySummary; let i = index" class="strippedClass global-padding full-width">
+              <ion-col col-1 class="tooltip-col label">
+                </ion-col>
+          <ion-col col-1 class="label">
+            <ion-checkbox class="checkbox-square applyMargin" [disabled]="time.isSubmitted == 'true' || time.isSubmitted == true" [(ngModel)]="time.isPicked" (ionChange)="updateTimeEntry($event, time)"></ion-checkbox></ion-col>
+          <ion-col col-2 class="value">
+            <span class="sdt">{{time.displayDate | translate}} {{time.Start_Time | translate}}</span> /
+            <span  class="block edt">{{time.displayEndDate | translate}} {{time.End_Time | translate}}</span>
+          </ion-col>
+          <ion-col col-1 class="label center-align">{{valueservice.getTask().Job_Number?valueservice.getTask().Job_Number:valueservice.getTask().Task_Number}}</ion-col>
+          <ion-col col-2 class="label center-align  ">{{time.Work_Type | translate}}</ion-col>
+          <ion-col col-1 class="label center-align ">{{time.Item | translate}}</ion-col>
+          <ion-col col-2 class="label center-align "><span >{{time.Charge_Method | translate}}</span></ion-col>
+          <ion-col col-1 class="label center-align ">{{time.Duration}}</ion-col>
+          <ion-col col-1 class="icn-wd txt-algn">
+            <!-- <img [ngClass]="(time.StatusID == enums.Jobstatus.Debrief_In_Progress && ((time.IsAdditional == 'false'|| time.IsAdditional == false)|| (time.DB_Syncstatus == 'true'|| time.DB_Syncstatus == true))) || (time.StatusID == enums.Jobstatus.Debrief_Started && (time.isSubmitted=='true' ||time.isSubmitted==true)) ? 'inline-block edit-img disableImg' :'inline-block edit-img pointer'" (click)="editTime(time)" src="assets/imgs/icons/edit-icon.png" class="icn pointer"> -->
+            <img [ngClass]="(((time.IsAdditional == 'false' || time.IsAdditional == false) && time.StatusID == enums.Jobstatus.Debrief_In_Progress) || time.StatusID == enums.Jobstatus.Completed_Awaiting_Review) ? 'inline-block  edit-img  disableImg' :'inline-block  edit-img pointer '" (click)="editTime(time)" src="assets/imgs/icons/edit-icon.png" class="icn pointer">
+            <img [ngClass]="((time.IsAdditional == 'false' || time.IsAdditional == false) && (time.StatusID == enums.Jobstatus.Debrief_In_Progress)) || (time.StatusID == enums.Jobstatus.Debrief_Declined && ((time.Sync_Status == 'true'|| time.Sync_Status == true) || time.Original)) || (time.Sync_Status == 'true'|| time.Sync_Status == true)? 'inline-block delete-img pull-right disableImg' :'inline-block delete-img pointer pull-right'" (click)="deleteTime(time)" src="assets/imgs/icons/delete-icon.png" class="icn pointer">
+          </ion-col>
+          </ion-row>
+        </ion-list>
+      </div>
+
+    </ion-card-content>
+  </ion-card>
+</ion-content>

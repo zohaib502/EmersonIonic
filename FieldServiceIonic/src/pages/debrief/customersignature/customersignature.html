@@ -1,0 +1,173 @@
+<ion-content padding class="page-background" *ngIf="!onVerify">
+  <ion-card>
+    <ion-card-header>
+      <ion-row class="global-padding">
+        
+        <ion-col col-6 no-padding>
+          <h1 *ngIf="taskObj.Customer_Name!=undefined||taskObj.Customer_Name!=''">{{taskObj.Customer_Name | translate}}</h1>
+          <h1 *ngIf="taskObj.Customer_Name==undefined||taskObj.Customer_Name==''" translate="Customer Signature"> </h1>
+        </ion-col>
+        <ion-col col-6 text-right no-padding>
+            <span class="continue-navigation" *ngIf="_taskObj.Selected_Process == enums.Selected_Process.FCR_AND_SDR && _taskObj.Business_Unit != enums.BusinessUnitNames.PWS">
+              <span class="continue-text"> {{'Continue' | translate}}</span>
+              <button ion-button class="sdr-btn" (click)="gotoSDR()">{{'Service Detail Report' | translate}}</button>
+            </span>
+          <span class="pageNavigationBtn">
+            <span (click)="gottoSummary()" style="margin-right: 70px">&lt; {{'Summary'|translate}}</span>
+          </span>
+        </ion-col>
+      </ion-row>
+    </ion-card-header>
+    <ion-row class="global-padding marginbottom">
+      <ion-col width-25>
+        <ion-col no-padding>
+          <ion-label class="label">{{'Customer Representative' | translate}}</ion-label>
+          <ion-input class="customerSign-value" [attr.maxlength]="30" [(ngModel)]="customerObject.Customer_Name" placeholder="{{'Enter Name' | translate}}"></ion-input>
+        </ion-col>
+      </ion-col>
+      <ion-col width-25>
+        <ion-col no-padding>
+          <ion-label class="label">{{'Job Responsibility' | translate}}</ion-label>
+          <ion-input class="customerSign-value" [attr.maxlength]="50" [(ngModel)]="customerObject.Job_responsibilty" placeholder="{{'Enter Job Responsibility' | translate}}"></ion-input>
+        </ion-col>
+      </ion-col>
+      <ion-col width-25>
+        <ion-col no-padding>
+          <ion-label class="label">{{'Email' | translate}}</ion-label>
+          <ion-input class="customerSign-value" [(ngModel)]="customerObject.Email" placeholder="{{'Enter Email' | translate}}" (ngModelChange)="validateEmail(customerObject.Email)" [attr.maxlength]="100"></ion-input>
+          <div class="customerSign-validation-text" *ngIf="!isCorrect && customerObject.Email">{{'Please Enter Valid Email' | translate}}</div>
+        </ion-col>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="isPrintEUISOCHecked" class="global-padding">
+      <h3 translate="EU-ISO"></h3>
+      <div class="full-width">
+        <ion-row>
+          <ion-col col-7 no-padding>
+            <ion-label class="label">{{'Le représentant de lEU certifie que lintervenant a réalisé les opérations conformément :' | translate}}</ion-label>
+            <div class="inline-block verticalMiddle full-width">
+              <ion-item class="userPrefItem">
+                <ion-label [ngClass]="sse_rules ? 'checkbox-label':''" translate="aux règles SSE"></ion-label>
+                <ion-checkbox checkbox-positive ng-checked="sse_rules" [(ngModel)]="sse_rules" name="sse_rules"></ion-checkbox>
+              </ion-item>
+              <ion-item class="userPrefItem">
+                <ion-label [ngClass]="safety_rules ? 'checkbox-label':''" translate="aux règles de sécurité de l'information en vigueur sur le site de l'EU"></ion-label>
+                <ion-checkbox checkbox-positive ng-checked="safety_rules" [(ngModel)]="safety_rules" name="safety_rules"></ion-checkbox>
+              </ion-item>
+            </div>
+            <div class="block full-width">
+              <ion-textarea class="commentBox1" [(ngModel)]="remarks" maxlength="255" (keypress)="_keyPressInText($event)" placeholder="{{'Remarques...' | translate}}"></ion-textarea>
+            </div>
+          </ion-col>
+          <ion-col col-5 no-padding>
+            <ion-label class="label">{{'Type Analyse de Risque' | translate}}</ion-label>
+            <div class="block verticalMiddle">
+              <ion-item class="userPrefItem">
+                <ion-label [ngClass]="annuel_pdp ? 'checkbox-label':''" translate="PdP Annuel et/ou"></ion-label>
+                <ion-checkbox checkbox-positive ng-checked="annuel_pdp" [(ngModel)]="annuel_pdp" name="annuel_pdp"></ion-checkbox>
+              </ion-item>
+              <ion-item class="userPrefItem">
+                <ion-label [ngClass]="spec_pdp ? 'checkbox-label':''" translate="PdP spécifique"></ion-label>
+                <ion-checkbox checkbox-positive ng-checked="spec_pdp" [(ngModel)]="spec_pdp" name="spec_pdp"></ion-checkbox>
+              </ion-item>
+            </div>
+            <div class="block verticalMiddle">
+              <ion-item class="userPrefItem">
+                <ion-label [ngClass]="working_license ? 'checkbox-label':''" translate="Permis de Travail"></ion-label>
+                <ion-checkbox checkbox-positive ng-checked="working_license" [(ngModel)]="working_license" name="working_license"></ion-checkbox>
+              </ion-item>
+              <ion-item class="userPrefItem">
+                <ion-label [ngClass]="emerson_safety ? 'checkbox-label':''" translate="Fiche Sécurité Emerson"></ion-label>
+                <ion-checkbox checkbox-positive ng-checked="emerson_safety" [(ngModel)]="emerson_safety" name="emerson_safety"></ion-checkbox>
+              </ion-item>
+            </div>
+            <div class="block verticalMiddle">
+              <ion-item class="userPrefItem">
+                <ion-label [ngClass]="home_security ? 'checkbox-label':''" translate="Accueil Sécurité Site"></ion-label>
+                <ion-checkbox checkbox-positive ng-checked="home_security" [(ngModel)]="home_security" name="home_security"></ion-checkbox>
+              </ion-item>
+            </div>
+          </ion-col>
+        </ion-row>
+      </div>
+    </ion-row>
+    <ion-row>
+      <ion-col offset-3 col-8>
+        <ion-row>
+          <ion-col col-1>
+            <span *ngIf="(engineerObject==undefined || engineerObject.Sign_File_Path=='' || engineerObject.Sign_File_Path== undefined || engineerObject.Sign_File_Path== null ||noteType)">
+              <img src="assets/imgs/icons/ic_warning.png" class="summary-report-error">
+            </span>
+          </ion-col>
+          <ion-col col-11>
+            <div class="customerSignature-error-validation block full-width" (click)="gottoEmersonSignature()" *ngIf="engineerObject== undefined || engineerObject.Sign_File_Path=='' || engineerObject.Sign_File_Path== undefined || engineerObject.Sign_File_Path== null">
+              <span>{{"Please Complete Service Representative Signature On The 'Emerson Signature' Tab."| translate}}</span>
+              <img src="assets/imgs/icons/ic_r-arrow-green.png" class="arrow-green inline-block">
+            </div>
+            <div class="customerSignature-error-validation block full-width" (click)="gottoNotes()" *ngIf="noteType">
+              <span>{{'Please Add Action Taken Note In Notes Tab' | translate}}</span>
+              <img src="assets/imgs/icons/ic_r-arrow-green.png" class="arrow-green inline-block">
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+    <div class="col col-offset-25">
+      <ion-row class="marginbottom" *ngIf="ShowCustomerComments">
+        <ion-col offset-3 col-6>
+          <textarea class="comments-textarea value" maxlength="255" (keypress)="_keyPressInText($event)" placeholder="{{'Comments' | translate}}"
+                    [(ngModel)]="customerObject.customerComments"></textarea>
+        </ion-col>
+      </ion-row>
+    </div>
+    <!-- START 08/14/2018 Zohaib: Updated ngIf condition do not show signature pad if customer comment is true  -->
+    <ion-row class="bg-signature-field" *ngIf="!ShowCustomerComments">
+      <!-- END 08/14/2018 Zohaib -->
+      <signature-pad [options]="signaturePadOptions" id="signatureCanvas" (onEndEvent)="updateCustTime($event)"></signature-pad>
+    </ion-row>
+    <ion-row *ngIf="!ShowCustomerComments" class="i-acknowledge-that">
+      <ion-col col-3>
+        <ion-item>
+          <ion-label>{{valueProvider.getFormattedTime(customerObject.Cust_Sign_Time)}}</ion-label>
+        </ion-item>
+      </ion-col>
+      <!-- START
+        07/27/2018 Zohaib Khan
+        Added *ngIf="!ShowCustomerComments" to hide and show the below
+        lable on unable to obtain custumer signature
+      -->
+      <ion-col col-6 class="engSign-label center-block">
+         <span>{{'I acknowledge that services have been performed as Indicated' | translate}}</span>
+      </ion-col>
+      <!-- END -->
+    </ion-row>
+    <ion-row>
+      <div class="custom-center">
+        <ion-item *ngIf="showHideCheckBox">
+          <ion-label class="unable-to-obtain-sig">{{'Unable To Obtain Signature' | translate}}</ion-label>
+          <ion-checkbox [(ngModel)]="customerObject.isCustomerSignChecked" (ionChange)="showCustomerComments($event)"></ion-checkbox>
+        </ion-item>
+      </div>
+    </ion-row>
+    <ion-grid>
+      <ion-row>
+        <div class="custom-center">
+          <button ion-button class="clear-btn btn" *ngIf="!ShowCustomerComments" (click)="drawClear()">{{'Clear'| translate}}</button>
+          <button ion-button class="next-btn btn" *ngIf="(valueProvider.getTaskData().Status == enums.Jobstatus.Debrief_Started || valueProvider.getTaskObject().StatusID==enums.Jobstatus.Debrief_Started) && (!valueProvider.getTask().IsStandalone || valueProvider.getTask().IsStandalone == 'false')"
+                  [disabled]="(disableSubmit  && !customerObject.isCustomerSignChecked) || (noteType) || (engineerObject== undefined || engineerObject.Sign_File_Path=='' || engineerObject.Sign_File_Path== undefined || engineerObject.Sign_File_Path== null)"
+                  (click)="submitsignature('OnSite')">
+            {{'Save On-Site Report'| translate}}
+          </button>
+          <button ion-button class="next-btn btn" [disabled]="(disableSubmit  && !customerObject.isCustomerSignChecked) || (noteType) || (engineerObject== undefined || engineerObject.Sign_File_Path=='' || engineerObject.Sign_File_Path== undefined || engineerObject.Sign_File_Path== null)"
+                  (click)="submitsignature('Completed')">
+            {{'Submit Final Debrief'| translate}}
+          </button>
+          <!-- <button ion-button class="next-btn btn" [disabled]="(disableSubmit  && !customerObject.isCustomerSignChecked) || (noteType) || (engineerObject== undefined || engineerObject.Sign_File_Path=='' || engineerObject.Sign_File_Path== undefined || engineerObject.Sign_File_Path== null)"
+            (click)="declineDebrief()">
+            {{'Decline Debrief'| translate}}
+          </button> -->
+        </div>
+      </ion-row>
+    </ion-grid>
+  </ion-card>
+</ion-content>

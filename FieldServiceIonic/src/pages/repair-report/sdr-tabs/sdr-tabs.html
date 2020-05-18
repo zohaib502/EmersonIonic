@@ -1,0 +1,17 @@
+<ion-header *ngIf="header_data">
+  <page-custom-header [header]="header_data"></page-custom-header>
+</ion-header>
+
+<ion-content [ngClass]="(reportData && reportData.REPORTSTATUS == Enums.ReportStatus.Completed) ? 'hideTabbar' : ''">
+  <ion-tabs tabsPlacement="top" [selectedIndex]="selectedIndex" #SDRTabs id="SDRTabs">
+    <ion-tab [root]="sdrtab1Root" (ionSelect)="newRepair($event)" [rootParams]="reportData"
+      tabTitle="{{'New' | translate }}"></ion-tab>
+    <ion-tab [root]="sdrtab2Root" [rootParams]="reportData" [enabled]="enableSelectDevice"
+      (ionSelect)="tabChange($event)" tabTitle="{{'Select Device' | translate }}"></ion-tab>
+    
+    <ng-container>
+      <ion-tab *ngFor="let tab of sdrTabs" [root]="tab.root"
+        [rootParams]="reportData"  (ionSelect)="tabChange($event)" [tabTitle]="tab.tabTitle"></ion-tab>
+    </ng-container>
+  </ion-tabs>
+</ion-content>

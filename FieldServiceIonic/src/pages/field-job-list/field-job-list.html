@@ -1,0 +1,548 @@
+<ion-header>
+  <page-custom-header [header]="header_data"></page-custom-header>
+</ion-header>
+
+<ion-content padding>
+
+  <ion-row class="createJobrow" *ngIf="permissions.DebriefOSCJob || permissions.CreateStandaloneJob">
+    <!-- 03-14-2019 Radheshyam kumar Changed the place of search -->
+    <ion-col col-3>
+      <ion-searchbar class="field-job-search" [(ngModel)]="taskInput" (ionCancel)="onCancel($event)"
+        placeholder="{{'Search Field Job'| translate}}">
+      </ion-searchbar>
+      <!-- <ion-searchbar class="field-job-search" [(ngModel)]="taskInput" (ionCancel)="onCancel($event)" placeholder="{{'Search Field Job'| translate}}">
+        </ion-searchbar> -->
+    </ion-col>
+    <ion-col col-6></ion-col>
+    <!--03-06-2019 Radheshyam kumar  Added select drop instead of buttons-->
+    <!-- <div class="full-width">
+      <div text-center class="newLocationLabel pull-right"> -->
+    <ion-col col-3>
+        <ion-select *ngIf="permissions.CreateStandaloneJob && showSelects && valueProvider.getUser().ClarityID == '' " tappable interface="popover"
+        [(ngModel)]="selectedProcess" name="selectedProcess" placeholder="{{'CREATE' | translate:param}}"
+        (ionChange)="callWorkFlowTabs(selectedProcess)" class="field-box select-style">
+        <ion-option disabled value="null">{{'CREATE' | translate}}</ion-option>
+        <ion-option [value]="Enums.Selected_Process.SDR">{{Enums.Selected_Process.SDRText | translate}}</ion-option>
+        <ion-option [value]="Enums.Selected_Process.FCR">{{Enums.Selected_Process.FCRText | translate}}</ion-option>
+        <ion-option [value]="Enums.Selected_Process.FCR_AND_SDR">{{Enums.Selected_Process.FCR_AND_SDR_Text | translate}}
+        </ion-option>
+        <!-- <ion-option [value]="Enums.Selected_Process.Timesheet">{{Enums.Selected_Process.TimesheetText | translate}}</ion-option> -->
+      </ion-select>
+    </ion-col>
+    <!-- <button (click)="callWorkFlowTabs(Enums.Selected_Process.SDR)" ion-button block class="sdr-btn inline-block">{{'Service Detail Report' | translate}}</button>
+          <button (click)="callWorkFlowTabs(Enums.Selected_Process.FCR)" ion-button block class="frs-Btn inline-block">{{'Field Completion Report' | translate}}</button>
+          <button (click)="callWorkFlowTabs(Enums.Selected_Process.FCR_AND_SDR)" ion-button block class="both-btn inline-block  ">{{'Both' | translate}}</button>  -->
+    <!-- <button (click)="callWorkFlowTabs()" ion-button block class="create-report-button">{{'Create Report' | translate}}</button> -->
+    <!-- </div>
+    </div> -->
+  </ion-row>
+
+  <ion-card>
+    <ion-card-header class="card-padding">
+      <ion-list>
+        <ion-row>
+          <ion-col *ngIf="permissions.DebriefOSCJob || permissions.CreateStandaloneJob" class="legends">
+            <span class="pointer" (click)="filter('Pending')">
+              <i class="fa fa-cloud-upload pendingIcon-legend" aria-hidden="true"></i>
+              <span icn class="label" [ngClass]="{'active-fonts': selectedLegend == 'Pending'}"
+                translate="Pending Sync"></span>
+            </span>
+
+            <span class="pointer" (click)="filter('Completed-Awaiting Review')">
+              <i class="fa fa-circle completed-indicator" aria-hidden="true"></i>
+              <span icn class="label" [ngClass]="{'active-fonts': selectedLegend == 'Completed-Awaiting Review'}"
+                translate="Completed"></span>
+            </span>
+
+            <!-- 03-14-2019 Radheshyam kumar Added Filter for Fcr completed and sdr incomplte -->
+            <span class="pointer">
+              <i class="fa fa-adjust fa-rotate-90 sdr-fcr-indicator" aria-hidden="true"></i>
+              <span class="label" [ngClass]="{'active-fonts': selectedLegend == 'Both'}" (click)="filter('Both')" icn
+                translate="SDR In Progress"></span>
+            </span>
+
+            <span class="pointer" (click)="filter('Assigned')">
+              <i class="fa fa-circle assigned-indicator" aria-hidden="true"></i>
+              <span icn class="label" [ngClass]="{'active-fonts': selectedLegend == 'Assigned'}"
+                translate="Assigned"></span>
+            </span>
+
+            <span class="pointer">
+              <i class="fa fa-circle accepted-indicator" aria-hidden="true"></i>
+              <span class="label" [ngClass]="{'active-fonts': selectedLegend == 'Accepted'}"
+                (click)="filter('Accepted')" icn translate="Accepted"></span>
+              <span icn class="label ">/</span>
+              <span class="label" [ngClass]="{'active-fonts': selectedLegend == 'Debrief In Progress'}"
+                (click)="filter('Debrief In Progress')" translate="In Progress"></span>
+              <span icn class="label ">/</span>
+              <span class="label" [ngClass]="{'active-fonts': selectedLegend == 'Debrief Started'}"
+                (click)="filter('Debrief Started')" icn translate="Started"></span>
+            </span>
+
+            <span class="pointer" (click)="filter('Debrief Declined')">
+              <i class="fa fa-circle declined-indicator" aria-hidden="true"></i>
+              <span icn class="label" [ngClass]="{'active-fonts': selectedLegend == 'Debrief Declined'}"
+                translate="Declined"></span>
+            </span>
+
+          </ion-col>
+        </ion-row>
+      </ion-list>
+    </ion-card-header>
+  </ion-card>
+
+  <ion-card *ngIf="permissions.DebriefOSCJob">
+    <ion-card-header>
+      <ion-row class="global-padding">
+        <ion-col col-5 no-padding>
+          <h1
+            *ngIf="(myTaskDetails | search: { Start_Date: currentDate } | search: {Type : 'CUSTOMER'}  | search: taskInput).length == 0"
+            translate="No Jobs Today"></h1>
+          <h1
+            *ngIf="(myTaskDetails | search: { Start_Date: currentDate } | search: {Type : 'CUSTOMER'}  | search: taskInput).length != 0"
+            translate="Jobs Today"></h1>
+        </ion-col>
+        <ion-col col-7 text-right no-padding>
+        </ion-col>
+      </ion-row>
+    </ion-card-header>
+    <ion-card-content
+      [ngClass]="(myTaskDetails | search: { Start_Date: currentDate } | search: taskInput).length > 0 ? 'no-data-container': 'data-container'">
+      <ion-row class="global-padding bottom-border table-header full-width">
+        <div class="statusIndicator"></div>
+        <div class="label pointer dateLabel"
+          (click)="jobsTodayOrderBy='Start_Date'; jobsTodayReverseSort = !jobsTodayReverseSort">
+          <span class="startDate-head" translate="Start Date"></span>
+          <span>
+            <i class="fa"
+              [ngClass]="{ 'fa-sort-asc': (jobsTodayOrderBy == 'Start_Date' && !jobsTodayReverseSort),'fa-sort-desc': (jobsTodayOrderBy == 'Start_Date' && jobsTodayReverseSort) }"></i>
+          </span>
+        </div>
+        <div class="label pointer jobLabel"
+          (click)="jobsTodayOrderBy='Task_Number'; jobsTodayReverseSort = !jobsTodayReverseSort">
+          <span translate="Job #"></span>
+          <span>
+            <i class="fa"
+              [ngClass]="{ 'fa-sort-asc': (jobsTodayOrderBy == 'Task_Number' && !jobsTodayReverseSort),'fa-sort-desc': (jobsTodayOrderBy == 'Task_Number' && jobsTodayReverseSort) }"></i>
+          </span>
+        </div>
+        <div class="label pointer customerLabel"
+          (click)="jobsTodayOrderBy='Customer_Name'; jobsTodayReverseSort = !jobsTodayReverseSort">
+          <span translate="Customer"></span>
+          <span>
+            <i class="fa"
+              [ngClass]="{ 'fa-sort-asc': (jobsTodayOrderBy == 'Customer_Name' && !jobsTodayReverseSort),'fa-sort-desc': (jobsTodayOrderBy == 'Customer_Name' && jobsTodayReverseSort) }"></i>
+          </span>
+        </div>
+        <div class="label locationLabel">
+          <span translate="Location"></span>
+        </div>
+      </ion-row>
+      <ion-list>
+        <ion-row (click)="goToFieldJobOverview(task)" class="global-padding jobListItem strippedClass"
+          *ngFor="let task of myTaskDetails | search: { Start_Date: currentDate } | search:{ Type: 'CUSTOMER' } | search: taskInput | sort: {property: jobsTodayOrderBy, order: jobsTodayReverseSort ? 1 : -1} | slice:0: jobsTodayLimit">
+          <div class="statusIndicator">
+            <span class="pull-left">
+              <i *ngIf="!(task.Selected_Process == Enums.Selected_Process.FCR_AND_SDR && task.ReportStatus != Enums.ReportStatus.Completed)"
+                class="fa fa-circle {{utilityProvider.removeSpace(task.Task_Status)}}-indicator"></i>
+              <i *ngIf="task.Selected_Process == Enums.Selected_Process.FCR_AND_SDR && task.ReportStatus != Enums.ReportStatus.Completed && task.StatusID != Enums.Jobstatus.Debrief_Declined"
+                class="fa fa-adjust fa-rotate-90 sdr-fcr-indicator" aria-hidden="true"></i>
+              <i *ngIf="task.Selected_Process == Enums.Selected_Process.FCR_AND_SDR && task.ReportStatus != Enums.ReportStatus.Completed && task.StatusID == Enums.Jobstatus.Debrief_Declined"
+                class="fa fa-circle {{utilityProvider.removeSpace(task.Task_Status)}}-indicator"></i>
+            </span>
+          </div>
+          <div class="dateValue">
+            <span class="value">
+              {{task.Start_Date | timezone: {preferredTZ: preferredTimeZone, userPreferredTZ :userPreferredTimeZone} }}
+            </span>
+          </div>
+          <div class="value jobValue">{{task.Task_Number}}</div>
+          <div class="customerValue">
+            <span class="value pull-left customerName-block">{{task.Customer_Name}}</span>
+          </div>
+          <div class="locationValue">
+            <span class="value pull-left address-block">
+              {{(task.Address1 + ',' + ((task.Address2 && task.Address2 !='') ? task.Address2 + ',' : '') + task.City + ',' + task.State)}}{{(task.Address1 + ',' + ((task.Address2 && task.Address2 !='') ? task.Address2 + ',' : '') + task.City + ',' + task.State).length < 45 ? '' : '...'}}
+            </span> <span class="pull-right"><i class="fa fa-angle-right right-arrow"></i></span>
+            <!--
+             07/27/2018 Mayur Varshney
+             Adding pendingSync Icon on multiple basis, as follows
+             - accept job offline , icon will display
+             - completed the job offline
+             - add install base offline
+             - edit install base offline
+             - job not submitted completely
+            -->
+            <span class="pull-right" *ngIf="task.Sync_Status == 'false' || task.IB_Install_Base == 'P'">
+              <i class="fa fa-cloud-upload pendingIcon" aria-hidden="true"></i>
+            </span>
+          </div>
+        </ion-row>
+      </ion-list>
+    </ion-card-content>
+    <!-- 08/09/2018 Mayur Varshney -- applying filter for showing readmore button on the basis of type == 'CUSTOMER' -->
+    <ion-row
+      *ngIf="(myTaskDetails | search: { Start_Date: currentDate } | search: {Type : 'CUSTOMER'}  | search: taskInput).length > 5 && jobsTodayLimit == 5"
+      class="ion-card-footer seeMore-button-block" text-center no-padding>
+      <div (click)="setFullLimit('jobsTodayLimit', { Start_Date: currentDate })" class="full-width global-padding">
+        <i class="fa fa-caret-down pointer"></i> <span class="seeMore-button" translate="more"></span>
+      </div>
+    </ion-row>
+  </ion-card>
+
+  <ion-card *ngIf="permissions.CreateStandaloneJob">
+    <ion-card-header>
+      <div class="global-padding">
+        <h1 *ngIf="(pendingReports |search :taskInput).length == 0" translate="No Reports In Progress"></h1>
+        <h1 *ngIf="(pendingReports |search :taskInput).length != 0" translate="Reports In Progress"></h1>
+      </div>
+    </ion-card-header>
+    <ion-card-content
+      [ngClass]="(pendingReports |search :taskInput).length > 0 ? 'no-data-container': 'data-container'">
+      <ion-row class="global-padding  bottom-border table-header">
+        <div class="statusIndicator"></div>
+        <div class="label pointer dateLabel"
+          (click)="pendingReportsOrderBy='CreatedDate'; pendingReportsReverseSort = !pendingReportsReverseSort">
+          <span class="startDate-head" translate="Start Date"></span>
+          <span>
+            <i class="fa"
+              [ngClass]="{ 'fa-sort-asc': (pendingReportsOrderBy == 'CreatedDate' && !pendingReportsReverseSort),'fa-sort-desc': (pendingReportsOrderBy == 'CreatedDate' && pendingReportsReverseSort) }"></i>
+          </span>
+        </div>
+        <div class="label pointer jobLabel"
+          (click)="pendingReportsOrderBy='JobID'; pendingReportsReverseSort = !pendingReportsReverseSort">
+          <span translate="Job #"></span>
+          <span>
+            <i class="fa"
+              [ngClass]="{ 'fa-sort-asc': (pendingReportsOrderBy == 'JobID' && !pendingReportsReverseSort),'fa-sort-desc': (pendingReportsOrderBy == 'JobID' && pendingReportsReverseSort) }"></i>
+          </span>
+        </div>
+        <div class="label pointer customerLabel"
+          (click)="pendingReportsOrderBy='Customer'; pendingReportsReverseSort = !pendingReportsReverseSort">
+          <span translate="Customer"></span>
+          <span>
+            <i class="fa"
+              [ngClass]="{ 'fa-sort-asc': (pendingReportsOrderBy == 'Customer' && !pendingReportsReverseSort),'fa-sort-desc': (pendingReportsOrderBy == 'Customer' && pendingReportsReverseSort) }"></i>
+          </span>
+        </div>
+        <div class="label pointer locationLabel"
+          (click)="pendingReportsOrderBy='BusinessUnit'; pendingReportsReverseSort = !pendingReportsReverseSort">
+          <span translate="Business Group"></span>
+          <span>
+            <i class="fa"
+              [ngClass]="{ 'fa-sort-asc': (pendingReportsOrderBy == 'BusinessUnit' && !pendingReportsReverseSort),'fa-sort-desc': (pendingReportsOrderBy == 'BusinessUnit' && pendingReportsReverseSort) }"></i>
+          </span>
+        </div>
+      </ion-row>
+      <ion-list>
+        <ion-row (click)="editReport(report)" class="global-padding jobListItem strippedClass"
+          *ngFor="let report of pendingReports| search: taskInput| sort: {property: pendingReportsOrderBy, order: pendingReportsReverseSort ? 1 : -1} | slice:0: pendingReportsLimit">
+          <div class="statusIndicator">
+            <span class="pull-left">
+              <i *ngIf="report.TaskStatus == null || report.TaskStatus != Enums.Jobstatus.Completed_Awaiting_Review"
+                class="fa fa-circle InDraft-indicator"></i>
+              <i *ngIf="report.TaskStatus != null && report.Selected_Process == Enums.Selected_Process.FCR_AND_SDR && report?.TaskStatus == Enums.Jobstatus.Completed_Awaiting_Review"
+                class="fa fa-adjust fa-rotate-90 sdr-fcr-indicator" aria-hidden="true"></i>
+            </span>
+          </div>
+          <div class="dateValue">
+            <!-- 02/06/2019 -- Mayur Varshney -- Change date time according to timezone -->
+            <span class="value">{{report.REPAIRDATE | date:'dd-MMM-yyyy'}}</span>
+          </div>
+          <div class="value jobValue">{{report.JOBID}}</div>
+          <div class="customerValue">
+            <span class="value pull-left customerName-block">{{report.CUSTOMERNAME}}</span>
+          </div>
+          <div class="locationValue">
+            <span class="value pull-left address-block">
+              {{report.BUSINESSGROUP == 1? Enums.BusinessGroupNames.Final_Control:''}}
+            </span>
+            <span class="pull-right">
+              <i class="fa fa-angle-right right-arrow"></i>
+            </span>
+          </div>
+        </ion-row>
+      </ion-list>
+    </ion-card-content>
+    <ion-row *ngIf="(pendingReports |search :taskInput).length > 5 && pendingReportsLimit == 5"
+      class="ion-card-footer seeMore-button-block" text-center no-padding>
+      <div (click)="setReportLimit('pendingReportsLimit','')" class="full-width global-padding">
+        <i class="fa fa-caret-down pointer"></i>
+        <span class="seeMore-button" translate="more"></span>
+      </div>
+    </ion-row>
+  </ion-card>
+
+  <ion-card *ngIf="permissions.DebriefOSCJob">
+    <ion-card-header>
+      <div class="global-padding">
+        <h1
+          *ngIf="(myTaskDetails | search: { Task_Status: 'Assigned' } | search: {Type : 'CUSTOMER'}  | search: taskInput).length == 0"
+          translate="No Pending Assignments"></h1>
+        <h1
+          *ngIf="(myTaskDetails | search: { Task_Status: 'Assigned' } | search: {Type : 'CUSTOMER'}  | search: taskInput).length != 0"
+          translate="Pending Assignments"></h1>
+      </div>
+    </ion-card-header>
+    <ion-card-content
+      [ngClass]="(myTaskDetails | search: { Task_Status: 'Assigned' } | search: taskInput).length > 0 ? 'no-data-container': 'data-container'">
+      <ion-row class="global-padding  bottom-border table-header">
+        <div class="statusIndicator"></div>
+        <div class="label pointer dateLabel"
+          (click)="pendingAssignmentsOrderBy='Start_Date'; pendingAssignmentsReverseSort = !pendingAssignmentsReverseSort">
+          <span class="startDate-head" translate="Start Date"></span>
+          <span>
+            <i class="fa"
+              [ngClass]="{ 'fa-sort-asc': (pendingAssignmentsOrderBy == 'Start_Date' && !pendingAssignmentsReverseSort),'fa-sort-desc': (pendingAssignmentsOrderBy == 'Start_Date' && pendingAssignmentsReverseSort) }"></i>
+          </span>
+        </div>
+        <div class="label pointer jobLabel"
+          (click)="pendingAssignmentsOrderBy='Task_Number'; pendingAssignmentsReverseSort = !pendingAssignmentsReverseSort">
+          <span translate="Job #"></span>
+          <span>
+            <i class="fa"
+              [ngClass]="{ 'fa-sort-asc': (pendingAssignmentsOrderBy == 'Task_Number' && !pendingAssignmentsReverseSort),'fa-sort-desc': (pendingAssignmentsOrderBy == 'Task_Number' && pendingAssignmentsReverseSort) }"></i>
+          </span>
+        </div>
+        <div class="label pointer customerLabel"
+          (click)="pendingAssignmentsOrderBy='Customer_Name'; pendingAssignmentsReverseSort = !pendingAssignmentsReverseSort">
+          <span translate="Customer"></span>
+          <span>
+            <i class="fa"
+              [ngClass]="{ 'fa-sort-asc': (pendingAssignmentsOrderBy == 'Customer_Name' && !pendingAssignmentsReverseSort),'fa-sort-desc': (pendingAssignmentsOrderBy == 'Customer_Name' && pendingAssignmentsReverseSort) }"></i>
+          </span>
+        </div>
+        <div class="label locationLabel">
+          <span translate="Location"></span>
+        </div>
+      </ion-row>
+      <ion-list>
+        <ion-row (click)="goToFieldJobOverview(task)" class="global-padding jobListItem strippedClass"
+          *ngFor="let task of myTaskDetails | search: { Task_Status: 'Assigned'} | search:{ Type: 'CUSTOMER' } | search: taskInput | sort: {property: pendingAssignmentsOrderBy, order: pendingAssignmentsReverseSort ? 1 : -1 } | slice:0: pendingAssignmentsLimit">
+          <div class="statusIndicator">
+            <span class="pull-left"><i
+                class="fa fa-circle {{utilityProvider.removeSpace(task.Task_Status)}}-indicator"></i></span>
+          </div>
+          <div class="dateValue">
+            <span class="value">
+              {{task.Start_Date | timezone: {preferredTZ: preferredTimeZone, userPreferredTZ : userPreferredTimeZone} }}
+            </span>
+          </div>
+          <div class="value jobValue">{{task.Task_Number}}</div>
+          <div class="customerValue">
+            <span class="value pull-left customerName-block">{{task.Customer_Name}}</span>
+          </div>
+          <div class="locationValue">
+            <span class="value pull-left address-block">
+              {{(task.Address1 + ',' + ((task.Address2 && task.Address2 !='') ? task.Address2 + ',' : '') + task.City + ',' + task.State)}}{{(task.Address1 + ',' + ((task.Address2 && task.Address2 !='') ? task.Address2 + ',' : '') + task.City + ',' + task.State).length < 45 ? '' : '...'}}
+            </span> <span class="pull-right"><i class="fa fa-angle-right right-arrow"></i></span>
+          </div>
+        </ion-row>
+      </ion-list>
+    </ion-card-content>
+    <!-- 08/09/2018 Mayur Varshney -- applying filter for showing readmore button on the basis of type == 'CUSTOMER' -->
+    <ion-row
+      *ngIf="(myTaskDetails | search: { Task_Status: 'Assigned' } | search: {Type : 'CUSTOMER'} | search: taskInput).length > 5 && pendingAssignmentsLimit == 5"
+      class="ion-card-footer seeMore-button-block" text-center no-padding>
+      <div (click)="setFullLimit('pendingAssignmentsLimit', { Task_Status: 'Assigned' })"
+        class="full-width global-padding">
+        <i class="fa fa-caret-down pointer"></i> <span class="seeMore-button" translate="more"></span>
+      </div>
+    </ion-row>
+  </ion-card>
+
+  <ion-card *ngIf="permissions.DebriefOSCJob">
+    <ion-card-header>
+      <ion-row class="global-padding">
+        <ion-col col-5 no-padding>
+          <h1 *ngIf="(myTaskDetails | search: {Type : 'CUSTOMER'}  | search: taskInput).length == 0"
+            translate="No Field Jobs"></h1>
+          <h1 *ngIf="(myTaskDetails | search: {Type : 'CUSTOMER'}  | search: taskInput).length != 0"
+            translate="My Field Jobs"></h1>
+        </ion-col>
+        <ion-col col-7 text-right no-padding>
+          <!-- <span><i class="fa fa-cloud-upload pendingIcon-legend" aria-hidden="true"></i><span class="indicator"
+              translate="Pending Sync"></span></span>
+          <span><i class="fa fa-circle completed-indicator" aria-hidden="true"></i><span class="indicator" translate="Completed"></span></span>
+          <span><i class="fa fa-circle assigned-indicator" aria-hidden="true"></i><span class="indicator" translate="Assigned"></span></span>
+          <span><i class="fa fa-circle accepted-indicator" aria-hidden="true"></i><span class="indicator" translate="Accepted"></span>/<span
+              class="indicator" translate="Debrief In Progress"></span></span>
+           <span><i class="fa fa-circle debrief-in-progress-indicator" aria-hidden="true"></i><span class="indicator" translate="Debrief In Progress"></span></span>
+          <span><i class="fa fa-circle declined-indicator" aria-hidden="true"></i><span class="indicator" translate="Declined"></span></span> -->
+        </ion-col>
+      </ion-row>
+    </ion-card-header>
+    <ion-card-content
+      [ngClass]="(myTaskDetails | search: taskInput).length > 0 ? 'no-data-container': 'data-container'">
+      <ion-row class="global-padding bottom-border table-header">
+        <div class="statusIndicator"></div>
+        <div class="label pointer dateLabel"
+          (click)="myFieldJobsOrderBy='Start_Date'; myFieldJobsReverseSort = !myFieldJobsReverseSort">
+          <span class="startDate-head" translate="Start Date"></span>
+          <span>
+            <i class="fa"
+              [ngClass]="{ 'fa-sort-asc': (myFieldJobsOrderBy == 'Start_Date' && !myFieldJobsReverseSort),'fa-sort-desc': (myFieldJobsOrderBy == 'Start_Date' && myFieldJobsReverseSort) }"></i>
+          </span>
+        </div>
+        <div class="label pointer jobLabel"
+          (click)="myFieldJobsOrderBy='Task_Number'; myFieldJobsReverseSort = !myFieldJobsReverseSort">
+          <span translate="Job #"></span>
+          <span>
+            <i class="fa"
+              [ngClass]="{ 'fa-sort-asc': (myFieldJobsOrderBy == 'Task_Number' && !myFieldJobsReverseSort),'fa-sort-desc': (myFieldJobsOrderBy == 'Task_Number' && myFieldJobsReverseSort) }"></i>
+          </span>
+        </div>
+        <div class="label pointer customerLabel"
+          (click)="myFieldJobsOrderBy='Customer_Name'; myFieldJobsReverseSort = !myFieldJobsReverseSort">
+          <span translate="Customer"></span>
+          <span>
+            <i class="fa"
+              [ngClass]="{ 'fa-sort-asc': (myFieldJobsOrderBy == 'Customer_Name' && !myFieldJobsReverseSort),'fa-sort-desc': (myFieldJobsOrderBy == 'Customer_Name' && myFieldJobsReverseSort) }"></i>
+          </span>
+        </div>
+        <div class="label locationLabel">
+          <span translate="Location"></span>
+        </div>
+      </ion-row>
+      <ion-list>
+        <ion-row (click)="goToFieldJobOverview(task)" class="global-padding jobListItem strippedClass"
+          *ngFor="let task of myTaskDetails | search: { Type:'CUSTOMER' }  |search: taskInput | sort: {property: myFieldJobsOrderBy, order: myFieldJobsReverseSort ? 1 : -1 } | slice:0: myFieldJobsLimit">
+          <div class="statusIndicator">
+            <span class="pull-left">
+              <i *ngIf="!(task.Selected_Process == Enums.Selected_Process.FCR_AND_SDR && task.ReportStatus != Enums.ReportStatus.Completed)"
+                class="fa fa-circle {{utilityProvider.removeSpace(task.Task_Status)}}-indicator"></i>
+              <i *ngIf="task.Selected_Process == Enums.Selected_Process.FCR_AND_SDR && task.ReportStatus != Enums.ReportStatus.Completed && task.StatusID != Enums.Jobstatus.Debrief_Declined"
+                class="fa fa-adjust fa-rotate-90 sdr-fcr-indicator" aria-hidden="true"></i>
+              <i *ngIf="task.Selected_Process == Enums.Selected_Process.FCR_AND_SDR && task.ReportStatus != Enums.ReportStatus.Completed && task.StatusID == Enums.Jobstatus.Debrief_Declined"
+                class="fa fa-circle {{utilityProvider.removeSpace(task.Task_Status)}}-indicator"></i>
+              <!-- <i *ngIf="((!task.ReportID && task.Selected_Process == Enums.Selected_Process.FCR_AND_SDR) || (task.ReportID && task.ReportStatus == Enums.ReportStatus.Completed))" class="fa fa-circle {{utilityProvider.removeSpace(task.Task_Status)}}-indicator"></i>
+              <i *ngIf="task.Selected_Process == Enums.Selected_Process.FCR_AND_SDR && task?.StatusID == Enums.Jobstatus.Completed_Awaiting_Review && (task?.ReportStatus == null || task?.ReportStatus != Enums.Jobstatus.Completed_Awaiting_Review)" class="fa fa-adjust fa-rotate-90 sdr-fcr-indicator" aria-hidden="true"></i> -->
+            </span>
+          </div>
+          <div class="dateValue">
+            <span class="value">
+              {{task.Start_Date | timezone: {preferredTZ: preferredTimeZone, userPreferredTZ :userPreferredTimeZone} }}
+            </span>
+          </div>
+          <div class="value jobValue">{{task.Task_Number}}</div>
+          <div class="customerValue">
+            <span class="value pull-left customerName-block">{{task.Customer_Name}}</span>
+          </div>
+          <div class="locationValue">
+            <span class="value pull-left address-block">
+              {{(task.Address1 + ',' + ((task.Address2 && task.Address2 !='') ? task.Address2 + ',' : '') + task.City + ',' + task.State)}}{{(task.Address1 + ',' + ((task.Address2 && task.Address2 !='') ? task.Address2 + ',' : '') + task.City + ',' + task.State).length < 45 ? '' : '...'}}
+            </span> <span class="pull-right"><i class="fa fa-angle-right right-arrow"></i></span>
+            <!--
+             07/27/2018 Mayur Varshney
+             Adding pendingSync Icon on multiple basis, as follows
+             - accept job offline , icon will display
+             - completed the job offline
+             - add install base offline
+             - edit install base offline
+             - job not submitted completely
+            -->
+            <span class="pull-right" *ngIf="task.Sync_Status == 'false' || task.IB_Install_Base == 'P'">
+              <i class="fa fa-cloud-upload fa-lg pendingIcon" aria-hidden="true"></i>
+            </span>
+          </div>
+        </ion-row>
+      </ion-list>
+    </ion-card-content>
+    <!-- 08/09/2018 Mayur Varshney -- applying filter for showing readmore button on the basis of type == 'CUSTOMER' -->
+    <ion-row
+      *ngIf="( myTaskDetails | search: taskInput | search: {Type : 'CUSTOMER'} ).length > 5 && myFieldJobsLimit == 5"
+      class="ion-card-footer seeMore-button-block" text-center no-padding>
+      <div (click)="setFullLimit('myFieldJobsLimit', taskInput)" class="full-width global-padding">
+        <i class="fa fa-caret-down pointer"></i>
+        <span class="seeMore-button" translate="more"></span>
+      </div>
+    </ion-row>
+  </ion-card>
+
+  <ion-card *ngIf="permissions.CreateStandaloneJob">
+    <ion-card-header>
+      <ion-row class="global-padding">
+        <ion-col col-5 no-padding>
+          <h1 *ngIf="(completedReports |search :taskInput).length == 0" translate="No Reports Completed"></h1>
+          <h1 *ngIf="(completedReports | search :taskInput).length != 0" translate="Completed"></h1>
+        </ion-col>
+      </ion-row>
+    </ion-card-header>
+    <ion-card-content
+      [ngClass]="(completedReports |search :taskInput).length > 0 ? 'no-data-container': 'data-container'">
+      <ion-row class="global-padding bottom-border table-header">
+        <div class="statusIndicator"></div>
+        <div class="label pointer dateLabel"
+          (click)="completedReportsOrderBy='CreatedDate'; completedReportsReverseSort = !completedReportsReverseSort">
+          <span class="startDate-head" translate="Start Date"></span>
+          <span>
+            <i class="fa"
+              [ngClass]="{ 'fa-sort-asc': (completedReportsOrderBy == 'CreatedDate' && !completedReportsReverseSort),'fa-sort-desc': (completedReportsOrderBy == 'CreatedDate' && completedReportsReverseSort) }"></i>
+          </span>
+        </div>
+        <div class="label pointer jobLabel"
+          (click)="completedReportsOrderBy='JobID'; completedReportsReverseSort = !completedReportsReverseSort">
+          <span translate="Job #"></span>
+          <span>
+            <i class="fa"
+              [ngClass]="{ 'fa-sort-asc': (completedReportsOrderBy == 'JobID' && !completedReportsReverseSort),'fa-sort-desc': (completedReportsOrderBy == 'JobID' && completedReportsReverseSort) }"></i>
+          </span>
+        </div>
+        <div class="label pointer customerLabel"
+          (click)="completedReportsOrderBy='Customer'; completedReportsReverseSort = !completedReportsReverseSort">
+          <span translate="Customer"></span>
+          <span>
+            <i class="fa"
+              [ngClass]="{ 'fa-sort-asc': (completedReportsOrderBy == 'Customer' && !completedReportsReverseSort),'fa-sort-desc': (completedReportsOrderBy == 'Customer' && completedReportsReverseSort) }"></i>
+          </span>
+        </div>
+        <div class="label pointer locationLabel"
+          (click)="completedReportsOrderBy='BusinessUnit'; completedReportsReverseSort = !completedReportsReverseSort">
+          <span translate="Business Group"></span>
+          <span>
+            <i class="fa"
+              [ngClass]="{ 'fa-sort-asc': (completedReportsOrderBy == 'BusinessUnit' && !completedReportsReverseSort),'fa-sort-desc': (completedReportsOrderBy == 'BusinessUnit' && completedReportsReverseSort) }"></i>
+          </span>
+        </div>
+      </ion-row>
+      <ion-list>
+        <ion-row (click)="editReport(report)" class="global-padding jobListItem strippedClass"
+          *ngFor="let report of completedReports | search: taskInput| sort: {property: completedReportsOrderBy, order: completedReportsReverseSort ? 1 : -1} | slice:0: completedReportsLimit">
+          <div class="statusIndicator">
+            <span class="pull-left">
+              <i class="fa fa-circle completed-indicator"></i>
+            </span>
+          </div>
+          <div class="dateValue">
+            <!-- 02/06/2019 -- Mayur Varshney -- Change date time according to timezone -->
+            <span class="value">{{report.REPAIRDATE | date:'dd-MMM-yyyy'}}</span>
+          </div>
+          <div class="value jobValue">{{report.JOBID}}</div>
+          <div class="customerValue">
+            <span class="value pull-left customerName-block">{{report.CUSTOMERNAME}}</span>
+          </div>
+          <div class="locationValue">
+            <span class="value pull-left address-block">
+              {{report.BUSINESSGROUP == 1? Enums.BusinessGroupNames.Final_Control:''}}
+            </span>
+            <span class="pull-right">
+              <i class="fa fa-angle-right right-arrow"></i>
+            </span>
+            <span class="pull-right"
+              *ngIf="report.SyncStatus == 'false' && report.Status == Enums.ReportStatus.Completed">
+              <i class="fa fa-cloud-upload fa-lg pendingIcon" aria-hidden="true"></i>
+            </span>
+          </div>
+        </ion-row>
+      </ion-list>
+    </ion-card-content>
+    <ion-row *ngIf="(completedReports | search :taskInput).length > 5 && completedReportsLimit == 5"
+      class="ion-card-footer seeMore-button-block" text-center no-padding>
+      <div (click)="setReportLimit('completedReportsLimit', '')" class="full-width global-padding">
+        <i class="fa fa-caret-down pointer"></i>
+        <span class="seeMore-button" translate="more"></span>
+      </div>
+    </ion-row>
+  </ion-card>
+
+</ion-content>

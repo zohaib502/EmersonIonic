@@ -1,0 +1,410 @@
+page-login {
+  .login-content {
+    .scroll-content {
+      overflow-y: hidden !important;
+      background-color: #1B3C79 !important;
+
+      .logo-row {
+        padding-bottom: 15px;
+
+        img {
+          width: unset !important;
+        }
+      }
+    }
+  }
+
+  .language-icon-UI {
+    height: 24px;
+    width: 24px;
+    margin: 0 5px;
+    cursor: pointer;
+  }
+
+  .div-bottom {
+    bottom: 0;
+  }
+
+  ion-row {
+    align-items: center;
+    text-align: center;
+  }
+
+  ion-item {
+    border-radius: 5px !important;
+    padding-left: 30px !important;
+    font-size: 14px;
+    margin-bottom: 10px;
+    border: 1px solid #ffffff;
+    border-bottom: 0px !important;
+    box-shadow: none !important;
+  }
+
+  .help {
+    color: rgba(142, 177, 95, 1);
+  }
+
+  .login-btn {
+    height: 50px;
+    width: 310px;
+    border-radius: 3px;
+    background-color: #8EB15F !important;
+    color: rgba(255, 255, 255, 1);
+    font-family: "Helvetica Neue";
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 23px;
+    text-align: center;
+  }
+
+  .login-submit-btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  .logo-style {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .login-footer {
+    opacity: 0.46;
+    color: #DBDBDB;
+    font-family: "Helvetica Neue";
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 17px;
+    text-align: center;
+    bottom: 20px;
+    width: 100%;
+    z-index: 1;
+    position: fixed;
+    transform: translate(-50%);
+    left: 50%;
+  }
+
+  .font-family-style {
+    font-family: "Helvetica Neue";
+  }
+
+  .language-picker {
+    margin-bottom: 25px;
+  }
+
+  .version-box {
+    margin-bottom: 20px;
+  }
+
+  ion-footer {
+    padding: 0 0 20px 0;
+    margin: 0px;
+    background-color: #1B3C79 !important;
+    border: none;
+    color: rgba(219, 219, 219, 0.46);
+    font-family: "Helvetica Neue";
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 17px;
+  }
+
+  .footer .toolbar-background {
+    background-color: transparent;
+    border: none !important;
+  }
+
+  .welcomeMsg {
+    color: #1b3c79;
+    font-family: "Helvetica Neue";
+    font-size: 21px;
+    line-height: 40px;
+    font-weight: bold;
+    padding-bottom: 15px;
+  }
+
+  .login-link {
+    color: gray;
+  }
+
+  .link:hover {
+    text-decoration: underline;
+  }
+
+  .link {
+    color: #1b3c79;
+  }
+
+  .msgRow {
+    padding-top: 15px;
+  }
+
+// -----------------------------
+  .login-content .scroll-content {
+    background-color: #1B3C79 !important;
+  }
+
+  .scroll-content {
+    overflow-y: auto;
+  }
+
+  .logo-row {
+    padding-top: 26px;
+  }
+
+  .logo-row img {
+    width: unset !important;
+  }
+  .language-icon-UI {
+    height: 24px;
+    width: 24px;
+    margin: 0 5px;
+    cursor: pointer;
+  }
+
+  .login-box {
+    padding: 20px 0;
+    height: 490px !important;
+    width: 390px !important;
+    border-radius: 3px !important;
+    background-color: #FFFFFF;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+    position: fixed;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    left: 50%;
+    z-index: 2;
+  }
+
+  .div-bottom {
+    bottom: 0;
+  }
+
+  ion-row {
+    align-items: center;
+    text-align: center;
+  }
+
+  ion-item {
+    border-radius: 5px !important;
+    padding-left: 30px !important;
+    font-size: 14px;
+    margin-bottom: 10px;
+    border: 1px solid #ffffff;
+    border-bottom: 0px !important;
+    box-shadow: none !important;
+  }
+
+  .signup-col {
+    margin: 0px 16px 0px 16px;
+    padding-bottom: 20px;
+  }
+
+  .item-inner {
+    border-bottom-color: #ffffff !important;
+    box-shadow: none !important;
+  }
+
+  .submit-btn {
+    background: rgba(142,177,95,1);
+    border-radius: 5px !important;
+  }
+
+  .help {
+    color: rgba(142,177,95,1);
+  }
+
+  .register-btn {
+    color: #ffffff;
+    font-size: 0.8em;
+  }
+
+  .inputStyle {
+    background: rgba(240,240,240,1);
+  }
+
+  .languageRow {
+    margin-top: -15px;
+  }
+
+  .input-field-style .text-input {
+    height: 50px;
+    width: 290px;
+    border-radius: 3px;
+    background-color: #F0F0F0;
+    padding-left: 40px !important;
+    font-family: Helvetica Neue;
+    font-size: 15px;
+  }
+
+  .input-margin-style {
+    margin-bottom: 15px;
+  }
+
+  .login-btn {
+    height: 50px;
+    width: 310px;
+    border-radius: 3px;
+    background-color: #8EB15F !important;
+    color: rgba(255,255,255,1);
+    font-family: "Helvetica Neue";
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 23px;
+    text-align: center;
+  }
+
+  .login-submit-btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  .forgot-password-btn {
+    width: 100%;
+    text-align: center;
+    margin-top: 5px;
+  }
+
+  .logo-style {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .input-margin {
+    margin-left: 0px !important;
+  }
+
+  .input-logo-margin {
+    padding-left: 12px !important;
+  }
+
+  .errorDiv {
+    min-height: 30px;
+  }
+
+  .errorContainer {
+    background-color: #ffebe8;
+    border: 1px solid #e46c6b;
+    color: #2d383f;
+    font-size: 14px;
+    padding: 5px;
+    border-radius: 5px;
+    font-family: Helvetica Neue;
+    text-align: center;
+    width: 290px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .errorDiv img {
+    height: 15px;
+    width: 15px;
+    vertical-align: middle;
+    display: inline-block;
+  }
+
+  .errorDiv span {
+    padding-left: 5px;
+    vertical-align: middle;
+  }
+
+  .margin-style {
+    margin: 0px 16px 0px 16px !important;
+  }
+
+  .login-footer {
+    opacity: 0.46;
+    color: #DBDBDB;
+    font-family: "Helvetica Neue";
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 17px;
+    text-align: center;
+    bottom: 20px;
+    width: 100%;
+    z-index: 1;
+    position: fixed;
+    transform: translate(-50%);
+    left: 50%;
+  }
+
+  .forgot-password {
+    height: 16px;
+    width: 270px;
+    font-family: "Helvetica Neue";
+    font-size: 14px;
+    line-height: 16px;
+    text-align: center;
+  }
+
+  .font-family-style {
+    font-family: "Helvetica Neue";
+  }
+
+  .credential-box {
+    margin-bottom: 25px;
+  }
+
+  .language-picker {
+    margin-bottom: 25px;
+  }
+
+  .version-box {
+    margin-bottom: 20px;
+  }
+
+  .credential-box .label {
+    margin: 0px;
+  }
+
+  ion-footer {
+    padding: 0 0 20px 0;
+    margin: 0px;
+    background-color: #1B3C79 !important;
+    border: none;
+    color: rgba(219,219,219,0.46);
+    font-family: "Helvetica Neue";
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 17px;
+  }
+
+  .header .toolbar-background, .footer .toolbar-background {
+    background-color: transparent;
+    border: none !important;
+  }
+
+  .password:before {
+    content: "\f023";
+    font-family: FontAwesome;
+    font-size: 20px;
+    position: absolute;
+    margin: 14px;
+    vertical-align: middle;
+    opacity: 0.26;
+  }
+
+  .username:before {
+    content: "\f007";
+    font-family: FontAwesome;
+    font-size: 20px;
+    position: absolute;
+    margin: 14px;
+    vertical-align: middle;
+    opacity: 0.26;
+  }
+
+}
+
+.ios page-login {
+  .language-icon-UI {
+    cursor: default !important;
+  }
+
+  .login-box {
+    padding: 10px 0;
+    height: 400px !important;
+  }
+
+  .credential-box {
+    margin-bottom: 20px;
+  }
+}

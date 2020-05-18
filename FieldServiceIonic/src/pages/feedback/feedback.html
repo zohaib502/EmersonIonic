@@ -1,0 +1,59 @@
+<ion-header>
+  <page-custom-header [header]="header_data"></page-custom-header>
+</ion-header>
+
+<ion-content padding>
+  <ion-card>
+    <ion-card-content text-center>
+      <ion-list>
+        <!-- 09/06/2018 START kamal : for future use only if dynamic questions are required -->
+        <!-- <ion-row class="global-padding ratingStar" *ngFor="let ques of questions">
+          <div class="full-width" text-center>
+            <span class="question_label block">{{'Thanks for helping us to make working with this app easier for you!' | translate}}</span>
+            <span class="question_label">{{ques.Questions | translate}}</span>
+            <div class="block">
+              <rating [(ngModel)]="userFeedback.Rating"
+                      readOnly="false"
+                      max="5"
+                      emptyStarIconName="star-outline"
+                      halfStarIconName="star-half"
+                      starIconName="star"
+                      nullable="false"
+                      (ngModelChange)="saveRating(ques)">
+              </rating>
+            </div>
+          </div>
+        </ion-row> -->
+        <!-- END -->
+
+        <!-- 09/06/2018 START kamal : implemented static feedback question -->
+        <ion-row class="global-padding ratingStar">
+          <div class="full-width" text-center>
+            <span class="question_label block">{{'Thanks for helping us to make working with this app easier for you!' | translate}}</span>
+            <span class="question_label">{{'How satisfied are you with the overall app experience?' | translate}}</span>
+            <div class="block">
+              <rating [(ngModel)]="userFeedback.RATING"
+                      readOnly="false"
+                      max="5"
+                      emptyStarIconName="star-outline"
+                      halfStarIconName="star-half"
+                      starIconName="star"
+                      nullable="false"
+                      (ngModelChange)="saveRating()">
+              </rating>
+            </div>
+          </div>
+        </ion-row>
+        <!-- END -->
+      </ion-list>
+      <ion-row class="global-padding">
+        <div class="full-width full-height">
+          <textarea maxlength="255" class="commentBox value" (keypress)="_keyPressInText($event)" placeholder="{{'Anything else you want to let us know?' | translate}}" [(ngModel)]="userComments"></textarea>
+        </div>
+      </ion-row>
+      <ion-row class="global-padding">
+        <button type="button" class="footer-buttons" (click)="submitFeedback()">{{'Submit' | translate}}</button>
+      </ion-row>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

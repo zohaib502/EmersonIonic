@@ -1,0 +1,62 @@
+<ion-header>
+  <page-custom-header [header]="header_data"></page-custom-header>
+</ion-header>
+<ion-content padding>
+  <ion-card>
+    <ion-card-header>
+      <ion-row class="global-padding">
+        <div text-left class="locationLabel">
+          <h1 class="heading-adjust">{{'Locations'| translate}}</h1>
+        </div>
+        <div text-center class="selectCountryLabel">
+          <!--10-18-18 Radheshyam kumar addedd tappable attribute on evey ion-select to resolve the double click issue -->
+          <ion-select *ngIf="showSelects" tappable interface="popover" class="country-box select-style" required placeholder="{{'Select Country' | translate}}" [(ngModel)]="countryCode" (ionChange)="setCountryName($event)" name="countryCode">
+            <ion-option value="{{''}}">{{'Select Country' | translate}}</ion-option>
+            <ion-option *ngFor="let item of country" [value]="item.Country_Code">{{item.Country_Name | translate}}</ion-option>
+          </ion-select>
+        </div>
+        <div text-center class="newLocationLabel">
+          <!-- 09/18/2018 shivansh  added permissions check to add location-->
+          <button ion-button block [disabled]="!this.isOnline()" class="upload-language-button" *ngIf="permissions.AddLocations" (click)="addAddressModal()">{{'New Location' | translate}}</button>
+        </div>
+        <div text-right class="searchAddress">
+          <ion-searchbar placeholder="{{'Search Address' | translate}}" [(ngModel)]="myInput" (ionCancel)="onCancel($event)"></ion-searchbar>
+        </div>
+      </ion-row>
+    </ion-card-header>
+    <ion-card-content *ngIf="allAddressList.length>0">
+      <ion-list>
+        <ion-row class="value">
+          <!-- 09/14/2018 kamal -- added ListFilter pipe to filter address List on the basis of country code-->
+          <ion-col [hidden]="(allAddressList | search: myInput | listFilter: selectedCountryCode).length == 0" col-6 *ngFor="let address of allAddressList | search: myInput  | listFilter: selectedCountryCode; let i = index" class="value address-col strippedClassForAddress">
+            <span class="inline-block business-unit input-style">{{address.BUSINESS_UNIT}}</span>
+
+            <!-- 08/14/2018 Mayur Varshney -- Display pendingSync Icon-->
+            <!-- <span *ngIf="address.Sync_Status == 'false'" class="inline-block"><i class="fa fa-cloud-upload pendingIcon" aria-hidden="true"></i></span> -->
+            <!-- 09/18/2018 shivansh  added permissions check to edit location-->
+            <span *ngIf="permissions.EditLocation && this.isOnline()" class="input-style pull-right">
+              <img class="inline-block edit-location pointer" src="assets/imgs/icons/edit-icon.png" (click)="editAddressModal(address,i)">
+            </span>
+            <span class="block address-location">{{address.ADDRESS_LINE_1}}</span>
+            <span class="block address-location">{{address.ADDRESS_LINE_2}}</span>
+            <span class="block address-location"><span>{{address.CITY}} </span> <span *ngIf="address.STATE"> , {{address.STATE}} </span><span class="inline-block notes-date-type"> - {{address.ZIP_CODE}}</span></span>
+            <span class="block address-country">{{getCountryName(address.COUNTRY)}}</span>
+            <!-- 07262018 KW START added space after :, added Last Modified ON and By, Fax should not be displayed if empty or null -->
+            <span class="block address-country">{{'Telephone' | translate}}: <span class="inline-block address-location"> {{address.TELEPHONE}}</span></span>
+            <span class="block address-country" *ngIf="address.FAX">{{'Fax' | translate}}: <span class="inline-block address-location"> {{address.FAX}}</span></span>
+            <div class="auditInfoMargin">
+              <!-- 07302018 KW START added timezone pipe -->
+              <span class="address-country inline-block auditInfoStyle" *ngIf="address.MODIFIEDON">{{'Last Modified On' | translate}}: <span class="inline-block address-location auditInfoStyle">{{ Moment(address.MODIFIEDON,'YYYY-MM-DD HH:mm:ss.SSS Z').tz(preferredTimeZone).format('YYYY-MM-DD HH:mm')}}</span></span>
+              <!-- 07302018 KW END-->
+              <span class="inline-block address-country auditInfoStyle" *ngIf="address.MODIFYBYNAME || address.CREATEDNAME">{{'By' | translate}}: <span class="inline-block address-location auditInfoStyle"> {{address.MODIFYBYNAME?address.MODIFYBYNAME:CREATEDNAME}}</span></span>
+            </div>
+            <!-- 07262018 KW END -->
+          </ion-col>
+        </ion-row>
+      </ion-list>
+      <ion-row *ngIf="(allAddressList | search: myInput | listFilter: selectedCountryCode).length == 0">
+        <ion-col class="global-padding address-country" translate="No Address"></ion-col>
+      </ion-row>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

@@ -1,0 +1,217 @@
+page-iso-final-inspection {
+.attachment-icon {
+    height: 130px;
+    width: 130px;
+    border: 8px solid #fff;
+  }
+  .txt-right{
+    text-align: right;
+  }
+  .mrgn-top{
+    margin-top: 0px;
+  }
+
+  .attachment-image {
+    object-fit: cover;
+    height: 130px;
+    width: 130px;
+    border: 8px solid #fff;
+  }
+
+  .attachment-icon-pdf {
+    height: 130px;
+    width: 130px;
+    border: 8px solid #fff;
+    padding: 2px 10px;
+  }
+
+  .attachment-label {
+    margin-top: 12px;
+    font-size: 13px;
+    color: #cc6565;
+    text-transform: capitalize;
+    text-align: center;
+    width: 150px;
+  }
+
+  .delete-attachment-button-block {
+    width: 130px;
+    text-align: center;
+    font-weight: 500;
+    color: #cc6565 !important;
+  }
+
+  .attachment-name .text-input {
+    width: 130px;
+    height: 30px;
+    border-radius: 4px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    text-align: center;
+    border: 1px solid rgb(142, 177, 95);
+    padding: 0 5px 0 5px !important;
+    background-color: rgba(247, 247, 246, 1);
+    margin: 0px;
+    color: black !important;
+  }
+
+  .delete-img {
+    margin-right: 20px;
+  }
+
+  .custom-file-upload {
+    display: inline-block;
+    padding: 0px 10px;
+    cursor: pointer;
+    vertical-align: middle;
+  }
+
+  input[type="file"] {
+    display: none;
+  }
+
+  .customRows {
+    color: #9bba71;
+    padding: 0 !important;
+  }
+
+  .mrgn-btm {
+    margin-bottom: -15px;
+  }
+
+  .checkbox-checked {
+    background-color: transparent !important;
+
+    .checkbox-inner {
+      border-color: black !important;
+    }
+  }
+
+  .checkbox .checkbox-icon {
+    border-radius: 1px;
+    width: 20px;
+    height: 20px;
+    background-color: white !important;
+  }
+
+  .checkboxLabel {
+    color: #9b9b9b !important;
+  }
+
+  .addBtn {
+    height: 25px;
+    width: 25px;
+  }
+
+  .attachment-description .text-input {
+    width: 130px;
+    border-radius: 4px;
+    white-space: normal;
+    text-overflow: ellipsis;
+    text-align: center;
+    border: 1px solid #8eb15f;
+    padding: 0 5px 0 5px !important;
+    background-color: #f7f7f6;
+    margin: 0px;
+    color: black;
+  }
+
+  .checkbox-dark .checkbox-checked {
+    background-color: transparent !important;
+  }
+
+  .checkbox .checkbox-checked .checkbox-inner {
+    left: 6px;
+    top: 2px;
+    width: 5px;
+    height: 12px;
+    border-color: black;
+  }
+
+
+  .spacingMargin {
+    margin-right: 20px;
+    margin-top: 10px;
+  }
+
+  .PassFail-Element ion-list.list > span,
+  .PassFailNA-Element ion-list.list > span {
+    width: 50%;
+    white-space: normal;
+    display: inline-block;
+    color: #9b9b9b;
+  }
+
+  .YesNo-Element .item,
+  .PassFail-Element .item,
+  .PassFailNA-Element .item {
+    width: auto;
+    display: inline-block;
+    vertical-align: middle;
+    padding: 0px;
+    color: #9b9b9b;
+  }
+
+  .YesNo-Element .item .item.item-block .item-inner,
+  .PassFail-Element .item .item.item-block .item-inner,
+  .PassFailNA-Element .item .item.item-block .item-inner {
+    border: none !important;
+  }
+
+  .radioButton .item-inner {
+    border: none !important;
+  }
+
+  input[type='checkbox']:checked + label::after {
+    content: "\2713";
+    display: inline-block;
+    font-size: 15px;
+    padding-left: 4px;
+    height: 10px;
+  }
+
+  input[type='checkbox'] + label {
+    border: 1px solid black;
+    position: relative;
+    display: inline-block;
+    height: 22px !important;
+    width: 22px !important;
+    vertical-align: middle;
+    cursor: pointer;
+    color: #9b9b9b;
+  }
+
+  .accordionOpen-content .label {
+    color: #9b9b9b;
+    font-family: "Helvetica Neue";
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 16px;
+    vertical-align: middle;
+  }
+
+  input[type='checkbox'] {
+    display: none;
+  }
+
+  .passAllCheckbox {
+    width:31%;
+  }
+
+  .failAllCheckbox {
+    width:69%;
+  }
+
+  .radioListElement {
+    width:50%;
+  }
+
+  .marginTop {
+    margin-top: 10px;
+  }
+
+  .attachmentBox {
+    padding: 15px;
+  }
+}

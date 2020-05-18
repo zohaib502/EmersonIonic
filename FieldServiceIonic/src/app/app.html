@@ -1,0 +1,83 @@
+<div *ngIf="utilityProvider.updateInProgress" class="full-page-app-update-modal-container">
+
+  <div class="spinner-container">
+
+    <ion-spinner name="bubbles" color="light"></ion-spinner><br/><br/>
+    Please wait while application is updating... <br/>
+    This may take several minutes for the update to complete.<br/>
+    Application will reload after update.
+  </div>
+</div>
+<!--<ion-split-pane [ngClass]="(utilityProvider.isNewVersionFromConfig && !syncProvider.syncStatus['isSyncing']) ? 'showVersionBar' : ''">-->
+<ion-split-pane>
+
+  <ion-row *ngIf="!isOnline()" [ngClass]="isOnline() ? '': 'connectionBar'" #someInput>
+    <span class="no-connection-status" translate="You Are Now Working In Offline Mode"></span>
+    <span class="pull-right close-bar-button pointer" (click)="hideConnectionBar()"><i class="fa fa-times"></i></span>
+  </ion-row>
+  <!-- <ion-row *ngIf="updatesAvailable" [ngClass]="!updatesAvailable ? '': 'versionWarningBar'">
+    <span class="no-connection-status" translate="You are using an older version of App. Kindly upgrade to the latest version. Note: All unsubmitted data will be lost."></span>
+  </ion-row> -->
+  <ion-menu type="overlay" [content]="content" style="max-width:110px;min-width:110px">
+    <ion-header>
+      <ion-toolbar class="menu-header" text-center>
+        <span>
+          <img src="assets/imgs/icons/emerson-logo.png" class="header-logo-UI" />
+        </span>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content>
+      <ion-list>
+        <ion-row menuClose *ngFor="let p of pages" (click)="openPage(p)" [ngClass]="p.title == activePage ? 'no-click' :''">
+          <div [ngClass]="p.title == activePage ? 'active nav-drawer-icon-block' :'nav-drawer-icon-block'">
+            <img [src]="p.title == activePage ? p.imageActivePath :p.imageNotActivePath" class="{{p.class}}" />
+            <label class="block menu-label">{{p.title | translate}}</label>
+          </div>
+        </ion-row>
+      </ion-list>
+    </ion-content>
+    <ion-footer>
+      <ion-row>
+        <!--09-13-2018 -- Mayur Varshney -- show home button if Report page is active-->
+        <!-- 01-24-2019 -- Mansi Arora -- show home button if timezone page is active -->
+        <div *ngIf="activePage == 'Language' || activePage == 'Locations' || activePage == 'Admin Feedback' || activePage == 'Report' || module == 'adminModule'|| activePage == 'Manage Users' || activePage == 'Timezone'">
+          <ion-row menuClose *ngFor="let p of footerPages" (click)="openPage(p)" [ngClass]="p.title == activePage ? 'no-click' :''">
+            <div [ngClass]="p.title == activePage ? 'active nav-drawer-icon-block' :'nav-drawer-icon-block'">
+              <img [src]="p.title == activePage ? p.imageActivePath :p.imageNotActivePath" class="{{p.class}}" />
+              <label class="block menu-label">{{p.title | translate}}</label>
+            </div>
+          </ion-row>
+        </div>
+      </ion-row>
+
+<!--      <ion-row>-->
+<!--        <span class="label custom-center version">{{'Version' | translate}} {{appVersion}}</span>-->
+<!--      </ion-row>-->
+      <ion-row>
+        <span class="label custom-center version">{{'Version' | translate}} {{localSoftVersion}}</span>
+      </ion-row>
+    </ion-footer>
+  </ion-menu>
+  <!-- Disable swipe-to-go-back because it's poor UX to combine STGB with side menus -->
+  <ion-nav [root]="rootPage" #content swipeBackEnabled="false" style="max-width:100%;"></ion-nav>
+</ion-split-pane>
+<!--
+<ion-row class="footer-ui" *ngIf="utilityProvider.footerShow">
+  <span class="text-ui">
+    {{'You are running an old version' | translate}} {{utilityProvider.footerData.appVersion}}, {{'upgrade it to latest
+    version'|translate}} {{utilityProvider.footerData.latestAppVersion}}. <a class="text-style pointer" (click)="utilityProvider.createInAppBrowser()">{{'Click
+      here to download' | translate}}.</a>
+  </span>
+</ion-row>-->
+
+<!-- <ion-row class="app-update-notification-ui" *ngIf="utilityProvider.isNewVersionFromConfig && !syncProvider.syncStatus['isSyncing']"> -->
+<!--
+<ion-row class="app-update-notification-ui" *ngIf="utilityProvider.isNewVersionFromConfig">
+  <span class="text-ui">
+    <span>You are running an old version {{localSoftVersion}}. upgrade it to latest version {{utilityProvider.fileUpdater.softVersion}}.</span>
+    <button *ngIf="!utilityProvider.updateInProgress" ion-button (click)="enableAppUpdate()" class="left updateApp-btn">Update</button>
+    <span *ngIf="utilityProvider.updateInProgress"> <ion-spinner name="bubbles"></ion-spinner></span>
+    <span *ngIf="!utilityProvider.updateInProgress" class="pull-right close-bar-button pointer" (click)="hideConnectionBar()"><i class="fa fa-times"></i></span>
+  </span>
+</ion-row>
+-->

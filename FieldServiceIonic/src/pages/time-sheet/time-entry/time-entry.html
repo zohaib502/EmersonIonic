@@ -1,0 +1,117 @@
+<ion-header>
+  <page-custom-header [header]="header_data"></page-custom-header>
+</ion-header>
+
+
+<ion-content padding class="page-background">
+  <ion-card>
+    <ion-row style="padding-top:10px;padding-left: 30px;">
+      <div class="left">
+        <ion-col no-padding>
+          <ion-label class="label">{{'Project' | translate}}</ion-label>
+          <ion-select interface="popover" required placeholder="{{'Select Project' | translate}} " (ionChange)="getList(project)"
+            class="project-box select-style" [ngClass]="!project  ? 'select-validation project-box select-style' : 'project-box select-style'"
+            [(ngModel)]="project" name="project">
+            <ion-option disabled value="{{''}}">{{'Select Project' | translate}} </ion-option>
+            <ion-option *ngFor="let item of projects" [value]="item.ID">{{item.PROJECT_NAME}}</ion-option>
+          </ion-select>
+        </ion-col>
+      </div>
+      <div class="right">
+        <ion-col no-padding>
+          <ion-label class="label">{{'Task' | translate }}</ion-label>
+          <ion-select interface="popover" required placeholder="{{'Select Task' | translate }}" class="task-box select-style"
+            [ngClass]="!task_id  ? 'select-validation task-box select-style' : 'task-box select-style'" (ionChange)="selectData('task',$event)"
+            [(ngModel)]="task_id" name="task_id">
+            <ion-option disabled value="{{''}}">{{'Select Task' | translate }}</ion-option>
+            <ion-option *ngFor="let item of tasks" [value]="item.ID">{{item.JobName}}</ion-option>
+          </ion-select>
+        </ion-col>
+      </div>
+    </ion-row>
+    <ion-row style="padding-left: 30px;">
+      <div class="left">
+        <ion-col no-padding>
+          <ion-label class="label">{{'Overtime Code' | translate }}</ion-label>
+          <ion-select interface="popover" required placeholder="{{'Select OT Code' | translate }}" class="project-box select-style"
+            (ionChange)="selectData('otcode',$event)" [(ngModel)]="otCode_id" name="otCode_id">
+            <ion-option disabled value="{{''}}">{{'Select OT Code' | translate }}</ion-option>
+            <ion-option *ngFor="let item of otcodes" [value]="item.ID">{{item.OVERTIMESHIFTCODE}}</ion-option>
+          </ion-select>
+        </ion-col>
+      </div>
+      <div class="right">
+        <ion-col no-padding>
+          <ion-label class="label">{{'Shift Code' | translate }}</ion-label>
+          <ion-select interface="popover" required placeholder="{{'Select Shift Code' | translate }}" class="project-box select-style"
+            (ionChange)="selectData('shiftcode',$event)" [(ngModel)]="shiftCode_id" name="shiftCode_id">
+            <ion-option disabled value="{{''}}">{{'Select Shift Code' | translate }}</ion-option>
+            <ion-option *ngFor="let item of shiftcodes" [value]="item.ID">{{item.SHIFTCODE}}</ion-option>
+          </ion-select>
+        </ion-col>
+      </div>
+    </ion-row>
+    <ion-row style="padding-left: 30px;">
+      <div class="left">
+        <ion-col no-padding>
+          <ion-label class="label">{{'Work Type' | translate }}</ion-label>
+          <ion-select interface="popover" required placeholder="{{'Select Work Type' | translate }}" class="project-box select-style"
+            (ionChange)="selectData('worktype',$event)" [(ngModel)]="workType_id" name="workType_id">
+            <ion-option disabled value="{{''}}">{{'Select Work Type' | translate }}</ion-option>
+            <ion-option *ngFor="let item of worktypes" [value]="item.ID">{{item.Value | translate}}</ion-option>
+          </ion-select>
+        </ion-col>
+      </div>
+      <div class="right">
+        <ion-col no-padding>
+          <ion-label class="label">{{'Charge Type' | translate }}</ion-label>
+          <ion-select interface="popover" required placeholder="{{'Select Charge Type' | translate }}" class="project-box select-style"
+            (ionChange)="selectData('chargetype',$event)" [(ngModel)]="chargeType_id" name="chargeType_id">
+            <ion-option disabled value="{{''}}">{{'Select Charge Type' | translate }}</ion-option>
+            <ion-option *ngFor="let item of chargetypes" [value]="item.ID">{{item.Value | translate}}</ion-option>
+          </ion-select>
+        </ion-col>
+      </div>
+    </ion-row>
+    <ion-row style="padding-left: 30px;">
+      <div class="left1">
+        <ion-col no-padding>
+          <ion-label class="label">{{'City' | translate }}</ion-label>
+          <ion-input type="text" class="city-box" placeholder="{{'City' | translate }}" [(ngModel)]="city" name="city"></ion-input>
+        </ion-col>
+      </div>
+      <div class="left2">
+        <ion-col no-padding>
+          <ion-label class="label">{{'State' | translate }} </ion-label>
+          <ion-input type="text" class="state-box" placeholder="{{'State' | translate }}" [(ngModel)]="state" name="state"></ion-input>
+        </ion-col>
+      </div>
+      
+      <div class="right">
+        <ion-col no-padding>
+          <ion-label class="label">{{'Country' | translate }}</ion-label>
+          <ion-select interface="popover" tappable placeholder="{{'Select Country' | translate}}" class="project-box select-style"
+            (ionChange)="selectData('Country',$event)" [(ngModel)]="country" name="country">
+            <ion-option disabled value="{{''}}">{{'Select Country' | translate}}</ion-option>
+            <ion-option *ngFor="let item of countries" [value]="item.Country_Code">{{ item.Country_Name }}</ion-option>
+          </ion-select>
+        </ion-col>
+      </div>
+    </ion-row>
+    <!-- <ion-row class="day-row  full-width">
+      <div class="daySchedule">
+        <expandable [data]="dayList" (OutData)="recievedData($event)" style="width:100%;">
+        </expandable>
+      </div>
+    </ion-row> -->
+    <ion-row class="bottom-row">
+      <div class="bottom-div">
+        <button ion-button class="cancel-btn" (click)="cancel()">{{'Cancel' | translate }}
+        </button>
+        <button ion-button (click)="addObject()" type="submit" [disabled]="!project||!task_id||!valueProvider.TotalHours"
+          class="submit-btn">{{'Save' | translate }}
+        </button>
+      </div>
+    </ion-row>
+  </ion-card>
+</ion-content>

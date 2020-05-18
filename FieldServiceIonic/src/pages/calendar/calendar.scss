@@ -1,0 +1,603 @@
+page-calendar {
+
+  .scroll-content {
+    overflow-y: hidden !important;
+  }
+
+  .fc-body {
+    background-color: rgba(255, 255, 255, 1) !important;
+  }
+
+  .fc-toolbar .fc-left>div>h2 {
+    display: inline-block !important;
+    vertical-align: middle;
+    color: rgba(74, 74, 74, 1);
+    font-family: "Helvetica Neue";
+    font-size: 20px;
+    font-weight: 300;
+    line-height: 24px;
+    text-align: center;
+  }
+
+  #calendar>div.fc-toolbar.fc-header-toolbar>div.fc-right>div>button {
+    text-transform: capitalize;
+    color: rgba(0, 0, 0, 1) !important;
+    font-size: 14px !important;
+    line-height: 17px;
+  }
+
+  .cal_UI .fc-toolbar.fc-header-toolbar {
+    padding: 5px 40px !important;
+    height: 65px !important;
+    margin-bottom: unset;
+  }
+
+  .cal_UI .fc-day-header {
+    border: none !important;
+    height: unset;
+    font-family: Helvetica Neue;
+    font-size: 15px;
+    vertical-align: middle !important;
+  }
+
+  .fc-toolbar .fc-left {
+    margin-left: 11% !important;
+  }
+
+  .fc-prev-button {
+    background-image: none !important;
+    background-color: transparent;
+    vertical-align: middle;
+    box-shadow: none;
+    border: none;
+  }
+
+  .fc-next-button {
+    background-image: none !important;
+    background-color: transparent;
+    vertical-align: middle;
+    box-shadow: none;
+    border: none;
+  }
+
+  .fc-header-container,
+  .fc-widget-header,
+  .fc-day-header {
+    border: none !important;
+  }
+
+  .fc-toolbar .fc-state-active,
+  .fc-toolbar .ui-state-active {
+    font-weight: bold !important;
+    box-sizing: border-box !important;
+    border: 1px solid rgba(155, 155, 155, 0.38) !important;
+    border-radius: 3px !important;
+    background-color: rgba(255, 255, 255, 0.38) !important;
+    z-index: 1;
+  }
+
+  .acceptedEvent {
+    border: none !important;
+    background-color: rgba(142, 177, 95, 0.26) !important;
+  }
+
+  .assignedEvent {
+    border: none !important;
+    background-color: rgba(96, 178, 213, 0.26) !important;
+  }
+
+  .declinedEvent {
+    border: none !important;
+    background-color: rgba(202, 0, 0, 0.26) !important;
+  }
+
+  .completedEvent {
+    background-color: rgba(238, 235, 232, 1) !important;
+    border: none !important;
+  }
+
+  .internalActivity {
+    background-color: rgba(243, 85, 13, 0.36) !important;
+    border: none !important;
+  }
+
+  .onCallEvent {
+    background-color: rgba(232, 243, 24, 0.36) !important;
+    border: none !important;
+  }
+
+  .fc-event:hover {
+    font-weight: bold !important;
+  }
+
+  .fc-day-grid-event .fc-content {
+    cursor: pointer;
+    height: 20px;
+  }
+
+  .acceptedEvent .fc-content:before {
+    cursor: pointer;
+    color: #8eb15f !important;
+    float: left;
+    font-family: 'FontAwesome';
+    content: "\f111";
+    margin-right: 8px;
+    line-height: 20px;
+    vertical-align: middle;
+  }
+
+  .acceptedEvent .fc-time {
+    /*float: left;*/
+    color: #8eb15f !important;
+    font-size: 11px;
+    font-weight: 500;
+    line-height: 20px;
+    vertical-align: middle;
+    display: inline-block;
+    width: 13px;
+  }
+
+  .assignedEvent .fc-content:before {
+    color: #60b2d5 !important;
+    float: left;
+    font-family: 'FontAwesome';
+    content: "\f111";
+    margin-right: 8px;
+    line-height: 20px;
+    vertical-align: middle;
+  }
+
+  .assignedEvent .fc-time {
+    /*float: left;*/
+    color: #60b2d5 !important;
+    font-size: 11px;
+    font-weight: 500;
+    line-height: 20px;
+    vertical-align: middle;
+    display: inline-block;
+    width: 13px;
+  }
+
+  .declinedEvent .fc-content:before {
+    color: #ca0000 !important;
+    float: left;
+    font-family: 'FontAwesome';
+    content: "\f111";
+    margin-right: 8px;
+    line-height: 20px;
+    vertical-align: middle;
+  }
+
+  .declinedEvent .fc-time {
+    color: #ca0000 !important;
+    font-size: 11px;
+    font-weight: 500;
+    line-height: 20px;
+    vertical-align: middle;
+    display: inline-block;
+    width: 13px;
+  }
+
+  .completedEvent .fc-content:before {
+    color: #9b9b9b !important;
+    float: left;
+    font-family: 'FontAwesome';
+    content: "\f111";
+    margin-right: 8px;
+    line-height: 20px;
+    vertical-align: middle;
+  }
+
+  .internalActivity .fc-content:before {
+    color: rgba(234, 152, 114, 1) !important;
+    float: left;
+    font-family: 'FontAwesome';
+    content: "\f111";
+    margin-right: 8px;
+    line-height: 20px;
+    vertical-align: middle;
+  }
+
+  .onCallEvent .fc-content:before {
+    color: rgba(208, 216, 58, 1) !important;
+    float: left;
+    font-family: 'FontAwesome';
+    content: "\f111";
+    margin-right: 8px;
+    line-height: 20px;
+    vertical-align: middle;
+  }
+
+  .completedEvent .fc-time {
+    /*float: left;*/
+    color: #9b9b9b !important;
+    font-size: 11px;
+    font-weight: 500;
+    line-height: 20px;
+    vertical-align: middle;
+    display: inline-block;
+    width: 13px;
+  }
+
+  .internalActivity .fc-time {
+    /*float: left;*/
+    color: rgba(234, 152, 114, 1) !important;
+    font-size: 11px;
+    font-weight: 500;
+    line-height: 20px;
+    vertical-align: middle;
+    display: inline-block;
+    width: 13px;
+  }
+
+  .onCallEvent .fc-time {
+    color: rgba(208, 216, 58, 1) !important;
+    font-size: 11px;
+    font-weight: 500;
+    line-height: 20px;
+    vertical-align: middle;
+    display: inline-block;
+    width: 13px;
+  }
+
+  .cal_UI .fc-month-view .fc-title br {
+    display: none;
+  }
+
+  .cal_UI tr th {
+    border-right-color: transparent !important;
+  }
+
+  .cal_UI .fc-event-container .acceptedEvent {
+    background-color: rgba(142, 177, 95, 0.26) !important;
+    box-shadow: inset -1px 0 1px 0 rgba(142, 177, 95, 1);
+  }
+
+  .cal_UI .fc-event-container .assignedEvent {
+    background-color: rgba(96, 178, 213, 0.26) !important;
+    box-shadow: inset -1px 0 0 0 rgba(74, 145, 176, 0.35);
+  }
+
+  .cal_UI .fc-event-container .declinedEvent {
+    background-color: rgba(202, 0, 0, 0.26) !important;
+    box-shadow: inset -1px 0 0 0 rgba(202, 0, 0, 0.35);
+  }
+
+  .cal_UI .fc-event-container .completedEvent {
+    background-color: rgba(155, 155, 155, 0.26) !important;
+    box-shadow: inset -1px 0 1px 0 rgba(155, 155, 155, 1);
+  }
+
+  .cal_UI .fc-event-container .internalActivity {
+    background-color: rgba(243, 85, 13, 0.26) !important;
+    box-shadow: inset -1px 0 1px 0 rgba(155, 155, 155, 1);
+  }
+
+  .cal_UI .fc-event-container .onCallEvent {
+    background-color: rgba(232, 243, 24, 0.26) !important;
+    box-shadow: inset -1px 0 1px 0 rgba(155, 155, 155, 1);
+  }
+
+  .fc-event .fc-bg {
+    background: transparent !important;
+  }
+
+  .cal_UI .fc-view .acceptedEvent .fc-title {
+    color: rgba(69, 91, 40, 1) !important;
+    font-size: 10px;
+    font-weight: 400;
+    line-height: 12px;
+    vertical-align: middle;
+    text-align: left;
+    margin-left: 19px;
+  }
+
+  .cal_UI .fc-view .assignedEvent .fc-title {
+    color: rgba(52, 113, 140, 1) !important;
+    font-size: 10px;
+    font-weight: 400;
+    line-height: 12px;
+    vertical-align: middle;
+    text-align: left;
+    margin-left: 19px;
+  }
+
+  .cal_UI .fc-view .declinedEvent .fc-title {
+    color: rgba(202, 0, 0, 1) !important;
+    font-size: 10px;
+    font-weight: 400;
+    line-height: 12px;
+    vertical-align: middle;
+    text-align: left;
+    margin-left: 19px;
+  }
+
+  .cal_UI .fc-view .completedEvent .fc-title {
+    color: rgba(79, 79, 79, 1) !important;
+    font-size: 10px;
+    font-weight: 400;
+    line-height: 12px;
+    vertical-align: middle;
+    text-align: left;
+    margin-left: 19px;
+  }
+
+  .cal_UI .fc-view .internalActivity .fc-title {
+    color: rgba(243, 123, 67, 1) !important;
+    font-size: 10px;
+    font-weight: 400;
+    line-height: 12px;
+    vertical-align: middle;
+    text-align: left;
+    margin-left: 19px;
+  }
+
+  .cal_UI .fc-view .onCallEvent .fc-title {
+    color: rgba(208, 216, 58, 1) !important;
+    font-size: 10px;
+    font-weight: 400;
+    line-height: 12px;
+    vertical-align: middle;
+    text-align: left;
+    margin-left: 19px;
+  }
+
+  .fc-time-grid-event .fc-content,
+  .internalActivity.fc-time-grid-event .fc-content,
+  .onCallEvent.fc-time-grid-event .fc-content,
+  .onCallEvent.fc-day-grid-event .fc-content,
+  .internalActivity.fc-day-grid-event .fc-content {
+    cursor: pointer;
+  }
+
+
+  .fc-agenda-view .fc-day-grid .fc-row .fc-content-skeleton {
+    cursor: pointer;
+    padding-bottom: unset !important;
+  }
+
+  .fc-agenda-view .fc-day-grid {
+    background: white !important;
+  }
+
+  .cal_UI .fc-day-grid-event br {
+    display: none;
+  }
+
+  .fc-custom-startTime {
+    /*float: left !important;*/
+    line-height: 20px !important;
+    margin-right: 5px;
+  }
+
+  .fc-custom-jobNumber {
+    font-weight: bolder !important;
+    line-height: 12px;
+    margin-right: 5px;
+  }
+
+  .fc-custom-customerInfo {
+    line-height: 12px;
+    text-align: left;
+  }
+
+  .cal_UI .fc-view .acceptedEvent .fc-custom-title {
+    color: rgba(69, 91, 40, 1) !important;
+    font-size: 12px;
+    font-weight: 400;
+    position: absolute;
+    left: 0px;
+    margin-left: 15px;
+  }
+
+  .cal_UI .fc-view .assignedEvent .fc-custom-title {
+    color: rgba(52, 113, 140, 1) !important;
+    font-size: 12px;
+    font-weight: 400;
+    position: absolute;
+    left: 0px;
+    margin-left: 15px;
+  }
+
+  .cal_UI .fc-view .declinedEvent .fc-custom-title {
+    color: rgba(202, 0, 0, 1) !important;
+    font-size: 12px;
+    font-weight: 400;
+    position: absolute;
+    left: 0px;
+    margin-left: 15px;
+  }
+
+  .cal_UI .fc-view .completedEvent .fc-custom-title {
+    color: rgba(79, 79, 79, 1) !important;
+    font-size: 12px;
+    font-weight: 400;
+    position: absolute;
+    left: 0px;
+    margin-left: 15px;
+  }
+
+  .cal_UI .fc-view .internalActivity .fc-custom-title {
+    color: rgba(243, 123, 67, 1) !important;
+    font-size: 12px;
+    font-weight: 400;
+    position: absolute;
+    left: 0px;
+    margin-left: 15px;
+  }
+
+  .cal_UI .fc-view .onCallEvent .fc-custom-title {
+    color: rgba(79, 79, 79, 1) !important;
+    font-size: 12px;
+    font-weight: 400;
+    position: absolute;
+    left: 0px;
+    margin-left: 15px;
+  }
+
+  .fc-month-view .fc-day-top.fc-today {
+    background-color: rgba(96, 178, 213, 1) !important;
+  }
+
+  .fc-todayHeader {
+    display: none;
+  }
+
+  .fc-basic-view .fc-day-top.fc-today .fc-todayHeader {
+    display: inline-block !important;
+    float: left;
+    margin-left: 5px;
+    margin-top: 2px;
+    color: rgba(255, 255, 255, 1);
+    font-family: "Helvetica Neue";
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 16px;
+  }
+
+  .fc-month-view .fc-dateHyperlink {
+    color: rgba(74, 74, 74, 1);
+    font-family: "Helvetica Neue";
+    font-size: 15px;
+    font-weight: bold;
+    line-height: 18px;
+    text-align: center;
+    float: right;
+    margin-right: 4px;
+  }
+
+  .fc-basic-view .fc-day-top.fc-today .fc-dateHyperlink {
+    color: rgba(255, 255, 255, 1);
+    font-family: "Helvetica Neue";
+    font-size: 15px;
+    font-weight: bold;
+    line-height: 18px;
+  }
+
+  .fc-day-header .fc-dateHyperlink {
+    color: rgba(74, 74, 74, 1);
+    font-family: "Helvetica Neue";
+    font-size: 15px;
+    font-weight: bold;
+    line-height: 18px;
+    text-align: center;
+  }
+
+  .cal_UI .fc-view .fc-popover .fc-event .fc-custom-title {
+    float: none !important;
+  }
+
+  .cal_UI .fc-agendaDay-view .fc-time {
+    float: none !important;
+  }
+
+  .fc-center h2 {
+    color: #ffffff;
+  }
+
+  .fc-description {
+    border-radius: 25px;
+    border: 2px solid #73AD21;
+    padding: 20px;
+    background-color: beige;
+  }
+
+  .fc-view-container {
+    height: 90% !important;
+    overflow-y: scroll;
+    overflow-x: hidden;
+  }
+
+  .fc-prev-button.fc-button .fc-icon,
+  .fc-next-button.fc-button .fc-icon {
+    vertical-align: auto;
+  }
+
+  #calendar>div.fc-toolbar.fc-header-toolbar>div.fc-center>div {
+    position: absolute;
+    right: 150px;
+    text-align: right;
+    top: 5px;
+    left: auto;
+  }
+
+  .fc-header-toolbar .fc-agendaDay-button,
+  .fc-header-toolbar .fc-agendaWeek-button,
+  .fc-header-toolbar .fc-month-button {
+    background-color: transparent;
+    background-image: none;
+    border: none;
+    box-shadow: none;
+  }
+
+  .fc td.fc-today {
+    background-color: rgba(238, 238, 238, 1) !important;
+  }
+
+  .fc-head-container {
+    padding: 10px 0 !important;
+  }
+
+  .calendar-legend {
+    position: absolute;
+    width: 100%;
+    text-align: right;
+    margin-top: 40px;
+    padding-right: 46px;
+  }
+
+  .fc-left .fc-prev-button,
+  .fc-left .fc-next-button {
+    padding: 0px;
+  }
+
+  .fc-left .fc-prev-button .fc-icon,
+  .fc-left .fc-next-button .fc-icon {
+    margin: 0px;
+    color: #fff;
+  }
+
+  .fc-scroller {
+    height: 100% !important;
+  }
+
+  .fc .fc-axis {
+    padding: 0 10px;
+  }
+
+  .onCall_Shift-indicator {
+    font-size: 16px !important;
+    color: rgba(187, 195, 36, 1) !important;
+    vertical-align: middle;
+  }
+
+  .internal_Activity-indicator {
+    font-size: 16px !important;
+    color: rgba(195, 113, 74, 1) !important;
+    vertical-align: middle;
+  }
+}
+
+.ios page-calendar {
+
+  .scroll-content {
+    overflow-y: hidden !important;
+  }
+
+  .fc-view-container {
+    height: 90% !important;
+    margin-top: 20px;
+  }
+
+  .calendar-legend {
+    margin-top: 50px;
+    padding-right: 46px;
+  }
+
+  .fc-day-grid-event .fc-content,
+  .acceptedEvent .fc-content:before,
+  .fc-time-grid-event .fc-content,
+  .fc-agenda-view .fc-day-grid .fc-row .fc-content-skeleton {
+    cursor: default !important;
+  }
+}

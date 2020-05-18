@@ -1,0 +1,59 @@
+page-read-original-comments {
+  .commentModal {
+    background: #fff;
+    padding: 20px;
+    border: none;
+  }
+}
+.ReadMoreModalPage {
+
+  .modal-wrapper {
+    height: 350px;
+    width: 700px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%) !important;
+    position: fixed;
+  }
+
+  .modal-wrapper .scroll-content {
+    background-color: rgba(255,255,255,1) !important;
+    color: rgba(74,74,74,1);
+    font-family: "Helvetica Neue";
+    font-size: 18px;
+    font-weight: 300;
+    line-height: 28px;
+    text-align: left;
+    overflow-y: hidden;
+  }
+
+  .modal-wrapper .toolbar-title {
+    color: rgba(74,74,74,1);
+    font-family: "Helvetica Neue";
+    font-size: 22px;
+    font-weight: 300;
+    line-height: 27px;
+    text-align: left;
+  }
+
+  ion-navbar {
+    height: 50px !important;
+  }
+
+  .bar-button {
+    font-size: 1em !important;
+  }
+
+  .closebtn {
+    color: #9b9b9b;
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-stroke: 4px snow;
+  }
+
+  .toolbar {
+    height: 52px !important;
+    border-bottom: 1px solid rgba(233, 232, 232,1) !important;
+  }
+}

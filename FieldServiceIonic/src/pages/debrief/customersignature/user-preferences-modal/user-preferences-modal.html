@@ -1,0 +1,113 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>{{'FSR Options' | translate}}</ion-title>
+    <ion-buttons end>
+      <button class="closebtn" ion-button (click)="closeModal()">
+        <i class="fa fa-times fa-2x"></i>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+<ion-content>
+  <!-- 08/08/2018 Mayur Varshney -- arrange all checkbox items dynamically in order with auto width
+  -->
+  <ion-row class="debriefPage-padding full-width">
+    <div class="full-width">
+      <div class="inline-block verticalMiddle">
+        <ion-item class="fsrSelectOption spacingMargin" *ngIf="userNote">
+          <ion-label [ngClass]="userPrefObj.printNote ? 'checkbox-label inline-block':' inline-block'" translate="Print Note"></ion-label>
+          <ion-checkbox checkbox-positive ng-checked="userPrefObj.printNote" [(ngModel)]="userPrefObj.printNote" name="userPrefObj.printNote"></ion-checkbox>
+        </ion-item>
+        <ion-item class="fsrSelectOption spacingMargin" *ngIf="userTime">
+          <ion-label [ngClass]="userPrefObj.printTime ? 'checkbox-label inline-block':' inline-block'" translate="Print Time"></ion-label>
+          <ion-checkbox checkbox-positive ng-checked="userPrefObj.printTime" [(ngModel)]="userPrefObj.printTime" name="userPrefObj.printTime"></ion-checkbox>
+        </ion-item>
+        <ion-item class="fsrSelectOption spacingMargin" *ngIf="userMaterial">
+          <ion-label [ngClass]="userPrefObj.printMaterial ? 'checkbox-label inline-block':' inline-block'" translate="Print Material"></ion-label>
+          <ion-checkbox checkbox-positive ng-checked="userPrefObj.printMaterial" [(ngModel)]="userPrefObj.printMaterial" name="userPrefObj.printMaterial"></ion-checkbox>
+        </ion-item>
+        <ion-item class="fsrSelectOption spacingMargin" *ngIf="userExpense">
+          <ion-label [ngClass]="userPrefObj.printExpense ? 'checkbox-label inline-block':' inline-block'" translate="Print Expense On-Site Report"></ion-label>
+          <ion-checkbox checkbox-positive ng-checked="userPrefObj.printExpense" [(ngModel)]="userPrefObj.printExpense" name="userPrefObj.printExpense"></ion-checkbox>
+        </ion-item>
+        <ion-item class="fsrSelectOption spacingMargin" *ngIf="userExpenseComplete">
+          <ion-label [ngClass]="userPrefObj.printExpenseCompleted ? 'checkbox-label inline-block':' inline-block'" translate="Print Expense Completed Report"></ion-label>
+          <ion-checkbox checkbox-positive ng-checked="userPrefObj.printExpenseCompleted" [(ngModel)]="userPrefObj.printExpenseCompleted" name="userPrefObj.printExpenseCompleted"></ion-checkbox>
+        </ion-item>
+        <ion-item class="fsrSelectOption spacingMargin" *ngIf="userInstallBase">
+          <ion-label [ngClass]="userPrefObj.printInstallBase ? 'checkbox-label inline-block':' inline-block'" translate="Print Installed Base"></ion-label>
+          <ion-checkbox checkbox-positive ng-checked="userPrefObj.printInstallBase" [(ngModel)]="userPrefObj.printInstallBase" name="userPrefObj.printinstall"></ion-checkbox>
+        </ion-item>
+        <ion-item class="fsrSelectOption spacingMargin" *ngIf="userattachment">
+          <ion-label [ngClass]="userPrefObj.attachment ? 'checkbox-label inline-block':' inline-block'" translate="Print Attachment"></ion-label>
+          <ion-checkbox checkbox-positive ng-checked="userPrefObj.attachment" [(ngModel)]="userPrefObj.attachment" name="userPrefObj.attachment"></ion-checkbox>
+        </ion-item>
+        <ion-item class="fsrSelectOption spacingMargin" *ngIf="usereuISO">
+          <ion-label [ngClass]="userPrefObj.euISO ? 'checkbox-label inline-block':' inline-block'" translate="EU-ISO"></ion-label>
+          <ion-checkbox checkbox-positive ng-checked="userPrefObj.euISO" [(ngModel)]="userPrefObj.euISO" name="userPrefObj.euISO"></ion-checkbox>
+        </ion-item>
+        <ion-item class="fsrSelectOption spacingMargin" *ngIf="userDisclaimer">
+          <ion-label [ngClass]="userPrefObj.disclaimer ? 'checkbox-label inline-block':' inline-block'" translate="Print Travel Disclaimer"></ion-label>
+          <ion-checkbox checkbox-positive ng-checked="userPrefObj.disclaimer" [(ngModel)]="userPrefObj.disclaimer" name="userPrefObj.disclaimer"></ion-checkbox>
+        </ion-item>
+        <ion-item class="fsrSelectOption spacingMargin" *ngIf="userNonBillableEntries">
+          <ion-label [ngClass]="userPrefObj.ShowNonBillableEntries ? 'checkbox-label checkboxLabel':'checkboxLabel'" translate="Print Non-Billable Entries"></ion-label>
+          <ion-checkbox checkbox-positive ng-checked="userPrefObj.ShowNonBillableEntries" [(ngModel)]="userPrefObj.ShowNonBillableEntries" name="userPrefObj.ShowNonBillableEntries"></ion-checkbox>
+        </ion-item>
+        <ion-item class="fsrSelectOption spacingMargin" *ngIf="userPrintChargeMethod">
+          <ion-label [ngClass]="userPrefObj.FSR_PrintChargeMethod ? 'checkbox-label checkboxLabel':'checkboxLabel'" translate="Print Charge Method"></ion-label>
+          <ion-checkbox checkbox-positive ng-checked="userPrefObj.FSR_PrintChargeMethod" [(ngModel)]="userPrefObj.FSR_PrintChargeMethod" name="userPrefObj.FSR_PrintChargeMethod"></ion-checkbox>
+        </ion-item>
+      </div>
+    </div>
+  </ion-row>
+
+  <ion-row class="debriefPage-padding">
+    <ion-col col-3 no-padding>
+      <ion-label class="label userPrefLabel">{{'Default Address' | translate}}</ion-label>
+      <!--10-18-18 Radheshyam kumar addedd tappable attribute on evey ion-select to resolve the double click issue -->
+      <ion-select interface="popover" tappable placeholder="{{'Select Country' | translate}}" [(ngModel)]="userPrefObj.country" (ionChange)="selectCountyAddress()"
+                  name="userPrefObj.country" class="country-box select-style">
+        <ion-option value="{{''}}">{{'Select Country' | translate}}</ion-option>
+        <ion-option *ngFor="let item of addressCountries">{{item}}</ion-option>
+      </ion-select>
+    </ion-col>
+    <ion-col col-3 no-padding>
+      <ion-label class="label userPrefLabel"></ion-label>
+      <ion-select interface="popover" tappable placeholder="{{'Select Address' | translate}}" [(ngModel)]="userPrefObj.address" name="userPrefObj.address"
+                  class="address-box select-style">
+        <ion-option value="{{''}}">{{'Select Address' | translate}}</ion-option>
+        <ion-option *ngFor="let item of filteredAddress" [value]="item.AddressId">{{item.Address_Line_1}}</ion-option>
+      </ion-select>
+    </ion-col>
+    <ion-col col-3 no-padding *ngIf="isChina">
+      <ion-label class="label userPrefLabel">
+        <span>( </span>{{'Chinese Address' | translate }}
+        <span> )</span>
+      </ion-label>
+      <ion-select interface="popover" tappable placeholder="{{'Select Chinese Address' | translate}}" [(ngModel)]="userPrefObj.chineseAddress"
+                  name="userPrefObj.chineseAddress" class="chineseAddress-box select-style">
+        <ion-option value="{{''}}">{{'Select Chinese Address' | translate}}</ion-option>
+        <ion-option *ngFor="let item of chineseAddressList" [value]="item.AddressId">{{item.Address_Line_1}}</ion-option>
+      </ion-select>
+    </ion-col>
+  </ion-row>
+  <ion-row class="debriefPage-padding">
+  </ion-row>
+</ion-content>
+<ion-footer>
+  <ion-row>
+    <ion-col style="padding: 12px" col-4>
+      <ion-item class="DoNotDisplayCheckbox">
+        <ion-label [ngClass]="userPrefObj.donotDisplay ? 'checkbox-label inline-block':' inline-block'" translate="Do not display this again"></ion-label>
+        <ion-checkbox checkbox-positive ng-checked="userPrefObj.donotDisplay" [(ngModel)]="userPrefObj.donotDisplay" (ionChange)="saveDoNotShowModalFlag()"
+                      name="userPrefObj.donotDisplay"></ion-checkbox>
+      </ion-item>
+    </ion-col>
+    <ion-col col-4></ion-col>
+    <ion-col col-4>
+      <button ion-button (click)="savePreferences()" class="save-btn btn continueBtn">{{ 'Continue' | translate }}</button>
+    </ion-col>
+
+  </ion-row>
+</ion-footer>

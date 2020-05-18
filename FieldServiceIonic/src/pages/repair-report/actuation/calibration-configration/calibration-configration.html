@@ -1,0 +1,145 @@
+<ion-content padding class="sdr-pages">
+  <ion-card>
+    <ion-card-header class="global-padding">
+      <ion-row global>
+        <ion-col col-6>
+          <div class="header-left">{{'Calibration/Configuration'|translate}}</div>
+        </ion-col>
+        <ion-col *ngIf="selectedProcess==Enums.Selected_Process.FCR_AND_SDR" col-6>
+          <div class="pull-right">
+            <span class="ft-size verticalMiddle">{{'Continue'|translate}}</span>
+            <button (click)="gotofcr()" ion-button
+              class="frs-Btn verticalMiddle">{{'Field Completion Report'|translate}}</button>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-card-header>
+    <page-sdr-header></page-sdr-header>
+    <ion-card-content id="calibration_1">
+      <ion-row class="global-padding">
+        <ion-col>
+          <span class="txt-left">{{'As Found Calibration'|translate}}</span>
+        </ion-col>
+      </ion-row>
+      <ion-row class="global-padding">
+        <ion-col text-right>
+          <span class="label">{{'N/A'|translate}}</span>
+          <ion-checkbox id="cal_check_1" [(ngModel)]="temp" (ionChange)="selectCheckBox($event)" color="dark">
+          </ion-checkbox>
+        </ion-col>
+      </ion-row>
+      <ion-row class="global-padding">
+        <ion-col col-3>
+          <span class="label">{{'Element'|translate}}</span><br>
+          <ion-input id="cal_input_1" [disabled]="isChecked" tappable (click)="showModel('element')"
+            [value]="caliconfdata.CA_ELEMENT | translate" class="project-box searchNSelect select-style" [readonly]="true">
+          </ion-input>
+        </ion-col>
+        <ion-col col-3>
+          <span class="label">{{'Option'|translate}}</span><br>
+          <ion-input id="cal_input_2" [disabled]="isChecked" tappable (click)="showModel('option')"
+            [value]="caliconfdata.CA_OPTION | translate" class="project-box searchNSelect select-style" [readonly]="true">
+          </ion-input>
+        </ion-col>
+        <ion-col col-3>
+          <span class="label">{{'Direction'|translate}}</span><br>
+          <ion-input id="cal_input_3" [disabled]="isChecked" tappable (click)="showModel('direction')"
+            [value]="caliconfdata.DIRECTION | translate" class="project-box searchNSelect select-style" [readonly]="true">
+          </ion-input>
+        </ion-col>
+        <ion-col col-3>
+          <span class="label">{{'Condition'|translate}}</span><br>
+          <ion-input id="cal_input_4" [disabled]="isChecked" tappable (click)="showModel('condition')"
+            [value]="caliconfdata.CONDITION | translate" class="project-box searchNSelect select-style" [readonly]="true">
+          </ion-input>
+        </ion-col>
+      </ion-row>
+      <ion-row class="">
+        <ion-col col-3>
+
+          <ion-input id="cal_input_5" *ngIf="elementOther" [(ngModel)]="caliconfdata.ELEMENT_OTHER"
+            [ngClass]="caliconfdata.ELEMENT_OTHER && caliconfdata.ELEMENT_OTHER != '' ? 'input-validation-green'  :'input-validation'"
+            class="project-box select-style">
+          </ion-input>
+        </ion-col>
+        <ion-col col-3>
+
+          <ion-input id="cal_input_6" *ngIf="optionOther" [(ngModel)]="caliconfdata.OPTION_OTHER"
+            [ngClass]="caliconfdata.OPTION_OTHER && caliconfdata.OPTION_OTHER != '' ? 'input-validation-green' :'input-validation'"
+            class="project-box select-style">
+          </ion-input>
+        </ion-col>
+        <ion-col col-3>
+
+          <ion-input id="cal_input_7" *ngIf="directionOther" [(ngModel)]="caliconfdata.DIRECTION_OTHER"
+            [ngClass]="caliconfdata.DIRECTION_OTHER && caliconfdata.DIRECTION_OTHER !=''? 'input-validation-green' :'input-validation'"
+            class="project-box select-style">
+          </ion-input>
+        </ion-col>
+        <ion-col col-3>
+
+          <ion-input id="cal_input_7" *ngIf="conditionOther" [(ngModel)]="caliconfdata.CONDITION_OTHER"
+              [ngClass]="caliconfdata.CONDITION_OTHER && caliconfdata.CONDITION_OTHER !='' ?'input-validation-green':'input-validation'"
+            class="project-box  select-style">
+          </ion-input>
+        </ion-col>
+      </ion-row>
+      <ion-row class="global-padding">
+        <ion-col class="ctr-align">
+          <button id="cal_btn_1"
+            [disabled]="(elementOther&&!caliconfdata.ELEMENT_OTHER)||(optionOther&&!caliconfdata.OPTION_OTHER)||(conditionOther&&!caliconfdata.CONDITION_OTHER)||(directionOther&&!caliconfdata.DIRECTION_OTHER)"
+            (click)="insertCalibrationData()" ion-button
+            class="add-btn">{{'Add Calibration Element'|translate}}</button>
+        </ion-col>
+      </ion-row>
+      <ion-list *ngIf="showData.length>0" class="global-padding">
+        <ion-row class="global-padding bdr-btm">
+          <ion-col te col-2>
+            <ion-label>{{'Element'|translate}}</ion-label>
+          </ion-col>
+          <ion-col col-2>
+            <ion-label>{{'Option'|translate}}</ion-label>
+          </ion-col>
+          <ion-col col-2>
+            <ion-label>{{'Direction'|translate}}</ion-label>
+          </ion-col>
+          <ion-col col-2>
+            <ion-label>{{'Condition'|translate}}</ion-label>
+          </ion-col>
+        </ion-row>
+        <ion-row *ngFor="let k of showData" class="strippedClass global-padding full-width ">
+          <ion-col col-2>
+            <span *ngIf="k.ELEMENT_OTHER==null">{{k.CA_ELEMENT}}</span>
+            <span *ngIf="k.ELEMENT_OTHER!=''">{{k.ELEMENT_OTHER}}</span>
+          </ion-col>
+          <ion-col col-2>
+            <span *ngIf="k.OPTION_OTHER==null">{{k.CA_OPTION}}</span>
+            <span *ngIf="k.OPTION_OTHER!=''">{{k.OPTION_OTHER}}</span>
+          </ion-col>
+          <ion-col col-2>
+            <span *ngIf="k.DIRECTION_OTHER==null">{{k.DIRECTION}}</span>
+            <span *ngIf="k.DIRECTION_OTHER!=''">{{k.DIRECTION_OTHER}}</span>
+          </ion-col>
+          <ion-col col-2>
+            <span *ngIf="k.CONDITION_OTHER==null">{{k.CONDITION}}</span>
+            <span *ngIf="k.CONDITION_OTHER!=''">{{k.CONDITION_OTHER}}</span>
+          </ion-col>
+
+          <ion-col col-2> <span> <i button-right ion-button (click)="deleteData(k.CA_PK_ID)"
+                class=" pointer fa fa-trash trash-icon pull-right"></i></span></ion-col>
+        </ion-row>
+      </ion-list>
+      <ion-row>
+        <ion-col>
+          <button id="cal_btn_1" (click)="tabRedirect('back')" ion-button
+            class="footer-Button">{{'Back'|translate}}</button>
+        </ion-col>
+        <ion-col text-right>
+          <button id="cal_btn_2" (click)="tabRedirect('solution')" ion-button
+            class="footer-Button">{{ bottomNavBtn|translate}}</button>
+
+        </ion-col>
+      </ion-row>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

@@ -1,0 +1,93 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title class="padding-style" start *ngIf="ifEdit == 'Edit'">{{'Edit Location' | translate}}</ion-title>
+    <ion-title class="padding-style" start *ngIf="ifAdd == 'Add'">{{'New Location' | translate}}</ion-title>
+    <ion-buttons end>
+      <button ion-button (click)="save()" class="save-btn btn" [disabled]="!addressObject.BUSINESS_UNIT|| !addressObject.ADDRESS_LINE_1 || !addressObject.ZIP_CODE || !addressObject.CITY || !addressObject.COUNTRY || !addressObject.LANGUAGE || !addressObject.TELEPHONE">{{ 'Save' | translate }}</button>
+      <button ion-button class="closebtn" (click)="closeModal()"><i class="fa fa-times fa-2x"></i></button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+<ion-content padding>
+  <ion-row class="global-padding full-width">
+    <div class="spacingMargin">
+      <ion-label class="label">{{'Emerson Company Name' | translate}}<span class="validator"></span></ion-label>
+      <ion-input type="text" required [attr.maxlength]="150" placeholder="{{'Emerson Company Name' | translate}}" [(ngModel)]="addressObject.BUSINESS_UNIT" name="addressObject.BUSINESS_UNIT" class="emersonCompany-textbox">
+      </ion-input>
+    </div>
+    <!-- <div class="spacingMargin">
+      <ion-label class="label">{{'Business Unit Code' | translate}}<span class="validator"></span></ion-label>
+      <ion-input type="text" [attr.maxlength]="150" placeholder="{{'Business Unit Code' | translate}}" [(ngModel)]="addressObject.Business_Unit_Code" name="addressObject.Business_Unit_Code" class="address-textbox">
+      </ion-input>
+    </div> -->
+    <div>
+      <ion-label class="inline-block setDefault">{{'Set Active' | translate}}</ion-label>
+      <ion-checkbox class="setDefault" [(ngModel)]="addressObject.IS_ENABLED" (ionChange)="setEnable($event)"></ion-checkbox>
+    </div>
+  </ion-row>
+  <ion-row class="global-padding full-width">
+    <div class="spacingMargin">
+      <ion-label class="label">{{'Address Line 1' | translate}}<span class="validator"></span></ion-label>
+      <ion-input type="text" required [attr.maxlength]="150" placeholder="{{'Address Line 1' | translate}}" [(ngModel)]="addressObject.ADDRESS_LINE_1" name="addressObject.ADDRESS_LINE_1" class="address-textbox">
+      </ion-input>
+    </div>
+    <div class="spacingMargin">
+      <ion-label class="label">{{'Address Line 2' | translate}}</ion-label>
+      <ion-input type="text" [attr.maxlength]="150" placeholder="{{'Address Line 2' | translate}}" [(ngModel)]="addressObject.ADDRESS_LINE_2" name="addressObject.ADDRESS_LINE_2" class="address-textbox">
+      </ion-input>
+    </div>
+    <div class="spacingMargin">
+      <ion-label class="label">{{'Telephone' | translate}}<span class="validator"></span></ion-label>
+      <ion-input type="text" required (keypress)="_keyPress($event)" [attr.maxlength]="20" placeholder="{{'Telephone' | translate}}" [(ngModel)]="addressObject.TELEPHONE" name="addressObject.TELEPHONE" class="address-textbox">
+      </ion-input>
+    </div>
+    <div class="spacingMargin">
+      <ion-label class="label">{{'Fax' | translate}}</ion-label>
+      <ion-input type="text"  (keypress)="_keyPress($event)" [attr.maxlength]="20" placeholder="{{'Fax' | translate}}" [(ngModel)]="addressObject.FAX" name="addressObject.FAX" class="address-textbox">
+      </ion-input>
+    </div>
+  </ion-row>
+  <ion-row class="global-padding">
+    <div class="spacingMargin">
+      <ion-label class="label">{{'City' | translate}}<span class="validator"></span></ion-label>
+      <ion-input type="text" required [attr.maxlength]="50" placeholder="{{'City' | translate}}" [(ngModel)]="addressObject.CITY" name="addressObject.CITY" class="address-textbox">
+      </ion-input>
+    </div>
+    <div class="spacingMargin">
+      <ion-label class="label">{{'State' | translate}}</ion-label>
+      <ion-input type="text"  [attr.maxlength]="50" placeholder="{{'State' | translate}}" [(ngModel)]="addressObject.STATE" (focusout)="trimSpaces($event)" name="addressObject.STATE" class="address-textbox">
+      </ion-input>
+    </div>
+    <div class="spacingMargin">
+      <ion-label class="label">{{'Postal Code' | translate}}<span class="validator"></span></ion-label>
+      <ion-input type="text" required [attr.maxlength]="8" placeholder="{{'Postal Code' | translate}}" [(ngModel)]="addressObject.ZIP_CODE" name="addressObject.ZIP_CODE" class="address-textbox">
+      </ion-input>
+    </div>
+    <div>
+      <ion-col no-padding>
+        <ion-label class="label">{{'Country' | translate}}<span class="validator"></span></ion-label>
+        <!--10-18-18 Radheshyam kumar addedd tappable attribute on evey ion-select to resolve the double click issue -->
+        <ion-select interface="popover" tappable required placeholder="{{'Select Country' | translate}}" [(ngModel)]="addressObject.COUNTRY" name="Country" class="select-style address-selectbox">
+          <ion-option disabled value="{{''}}">{{'Select Country' | translate}}</ion-option>
+          <ion-option *ngFor="let item of country" [value]="item.Country_Code">{{item.Country_Name | translate}}</ion-option>
+        </ion-select>
+      </ion-col>
+    </div>
+  </ion-row>
+  <ion-row class="global-padding">
+    <div class="spacingMargin">
+      <ion-col no-padding>
+        <ion-label class="label">{{'Language Code' | translate}}<span class="validator"></span></ion-label>
+        <ion-select interface="popover" tappable required placeholder="{{'Select Language' | translate}}" [(ngModel)]="addressObject.LANGUAGE" (ionChange)="checkIfLangExits()"  name="Language" class="select-style address-selectbox">
+          <ion-option value="{{''}}">{{'Select Language' | translate}}</ion-option>
+          <ion-option *ngFor="let item of language" [value]="item.Code">{{item.Lang_Name | translate}}</ion-option>
+        </ion-select>
+      </ion-col>
+    </div>
+    <div>
+      <ion-label class="inline-block setDefault">{{'Set Default' | translate}}</ion-label>
+      <ion-checkbox class="setDefault" [(ngModel)]="addressObject.IS_DEFAULT" (ionChange)="setDefault($event)" [disabled]="((addressObject.COUNTRY)  && (addressObject.LANGUAGE )) ? 'false' : 'true'"></ion-checkbox>
+    </div>
+
+  </ion-row>
+</ion-content>

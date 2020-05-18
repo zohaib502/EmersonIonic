@@ -1,0 +1,273 @@
+<ion-content class="sdr-pages">
+  <ion-card class="CardSection">
+    <ion-card-header class="card-header card-header-md">
+      <ion-row class="global-padding row">
+        <div col-9>
+          <div class="header-left">{{'Findings' | translate}}</div>
+        </div>
+        <div *ngIf="selectedProcess==Enums.Selected_Process.FCR_AND_SDR" class="txt-rgt">
+          <span class="ft-size">{{'Continue' | translate}}</span> <button (click)="goToFcr()" ion-button
+            class="frs-Btn mrgn-top">{{'Field Completion Report'|translate}}</button>
+        </div>
+      </ion-row>
+    </ion-card-header>
+    <page-sdr-header></page-sdr-header>
+    <ion-card-content class="card-content  global-padding">
+      <div style="width:100%">
+        <ion-label class="no-padding sub-header label label-md">
+          <span> {{'General' | translate}} </span>
+        </ion-label>
+        <div class="accordion-content">
+          <ion-row class="row">
+            <div class="half-width ">
+              <ion-label class="label ionLabel">
+                <span> {{'Exterior Condtion' | translate}} </span>
+                <span></span>
+              </ion-label>
+              <div>
+                <ion-input [(ngModel)]="findingsObj.EXTERIOR_CONDITION" name="findingsObj.EXTERIOR_CONDITION"
+                  class="project-box searchNSelect select-style" [readonly]="true" tappable
+                  (click)="searchModal('InteriorExteriorCondition','EXTERIOR_CONDITION')">
+                </ion-input>
+                <ion-input *ngIf="findingsObj.EXTERIOR_CONDITION == 'Other'"
+                  [(ngModel)]="findingsObj.EXTERIOR_CONDITION_OT" name="findingsObj.EXTERIOR_CONDITION_OT"
+                  [ngClass]="!findingsObj.EXTERIOR_CONDITION_OT ? 'validation-error' : ''" class="project-box otherBox">
+                </ion-input>
+              </div>
+            </div>
+            <div class="half-width ">
+              <ion-label class="label ionLabel">
+                <span> {{'Interior Condtion' | translate}} </span>
+                <span></span>
+              </ion-label>
+              <div>
+                <ion-input [(ngModel)]="findingsObj.INTERIOR_CONDITION" name="findingsObj.INTERIOR_CONDITION"
+                  class="project-box searchNSelect select-style" [readonly]="true" tappable
+                  (click)="searchModal('InteriorExteriorCondition','INTERIOR_CONDITION')">
+                </ion-input>
+                <ion-input *ngIf="findingsObj.INTERIOR_CONDITION == 'Other'"
+                  [(ngModel)]="findingsObj.INTERIOR_CONDITION_OT" name="findingsObj.INTERIOR_CONDITION_OT"
+                  [ngClass]="!findingsObj.INTERIOR_CONDITION_OT ? 'validation-error' : ''" class="project-box otherBox">
+                </ion-input>
+              </div>
+            </div>
+          </ion-row>
+          <ion-row class="row">
+            <div class="half-width ">
+              <ion-label class="label ionLabel">
+                <span> {{'Inlet Connection Condition' | translate}} </span>
+                <span></span>
+              </ion-label>
+              <div>
+                <ion-input [(ngModel)]="findingsObj.INLET_CONNECTION_CONDITION"
+                  name="findingsObj.INLET_CONNECTION_CONDITION" class="project-box searchNSelect select-style"
+                  [readonly]="true" tappable
+                  (click)="searchModal('InletOutletConnCondition','INLET_CONNECTION_CONDITION')">
+                </ion-input>
+                <ion-input *ngIf="findingsObj.INLET_CONNECTION_CONDITION == 'Other'"
+                  [(ngModel)]="findingsObj.INLET_CONNECTION_CONDITION_OT"
+                  name="findingsObj.INLET_CONNECTION_CONDITION_OT"
+                  [ngClass]="!findingsObj.INLET_CONNECTION_CONDITION_OT ? 'validation-error' : ''"
+                  class="project-box otherBox">
+                </ion-input>
+              </div>
+            </div>
+            <div class="half-width ">
+              <ion-label class="label ionLabel">
+                <span> {{'Outlet Connection Condition' | translate}} </span>
+                <span></span>
+              </ion-label>
+              <div>
+                <ion-input [(ngModel)]="findingsObj.OUTLET_CONNECTION_CONDITION"
+                  name="findingsObj.OUTLET_CONNECTION_CONDITION" class="project-box searchNSelect select-style"
+                  [readonly]="true" tappable
+                  (click)="searchModal('InletOutletConnCondition','OUTLET_CONNECTION_CONDITION')">
+                </ion-input>
+                <ion-input *ngIf="findingsObj.OUTLET_CONNECTION_CONDITION == 'Other'"
+                  [(ngModel)]="findingsObj.OUTLET_CONNECTION_CONDITION_OT"
+                  name="findingsObj.OUTLET_CONNECTION_CONDITION_OT"
+                  [ngClass]="!findingsObj.OUTLET_CONNECTION_CONDITION_OT ? 'validation-error' : ''"
+                  class="project-box otherBox">
+                </ion-input>
+              </div>
+            </div>
+          </ion-row>
+          <ion-row class="row">
+            <div class="half-width ">
+              <ion-label class="label ionLabel">
+                <span> {{'Repair Condition Rating' | translate}} </span>
+                <span></span>
+              </ion-label>
+              <div>
+                <ion-input [(ngModel)]="findingsObj.REPAIR_CONDITION_RATING" name="findingsObj.REPAIR_CONDITION_RATING"
+                  class="project-box searchNSelect select-style" [readonly]="true" tappable
+                  (click)="searchModal('RepairConditionRating','REPAIR_CONDITION_RATING')">
+                </ion-input>
+                <ion-input *ngIf="findingsObj.REPAIR_CONDITION_RATING == 'Other'"
+                  [(ngModel)]="findingsObj.REPAIR_CONDITION_RATING_OT" name="findingsObj.REPAIR_CONDITION_RATING_OT"
+                  [ngClass]="!findingsObj.REPAIR_CONDITION_RATING_OT ? 'validation-error' : ''"
+                  class="project-box otherBox">
+                </ion-input>
+              </div>
+            </div>
+            <div class="half-width ">
+              <label class="label"></label>
+              <div class="inline-block checkBox-height">
+                <div class="spacingMargin">
+                  <div class="WF-checkbox">
+                    <span class="label">{{'Bellows Fitted' | translate}}</span>
+                    <ion-checkbox (click)="deviceTstChkValChanged()" [checked]="findingsObj.BELLOWS_FITTED == 'true' || findingsObj.BELLOWS_FITTED == true"
+                      [(ngModel)]="findingsObj.BELLOWS_FITTED" color="dark">
+                    </ion-checkbox>
+                  </div>
+                </div>
+              </div>
+              <div class="inline-block checkBox-height">
+                <div class="spacingMargin">
+                  <div class="WF-checkbox">
+                    <span class="label">{{'Valve Blocked' | translate}}</span>
+                    <ion-checkbox (click)="deviceTstChkValChanged()" [checked]="findingsObj.VALVE_BLOCKED == 'true' || findingsObj.VALVE_BLOCKED == true"
+                      [(ngModel)]="findingsObj.VALVE_BLOCKED" color="dark">
+                    </ion-checkbox>
+                  </div>
+                </div>
+              </div>
+              <div class="inline-block checkBox-height">
+                <div class="spacingMargin">
+                  <div class="WF-checkbox">
+                    <span class="label">{{'Corrective Action Taken' | translate}}</span>
+                    <ion-checkbox (click)="deviceTstChkValChanged()"
+                      [checked]="findingsObj.CORRECTIVE_ACTION_TAKEN == 'true' || findingsObj.CORRECTIVE_ACTION_TAKEN == true"
+                      [(ngModel)]="findingsObj.CORRECTIVE_ACTION_TAKEN" color="dark">
+                    </ion-checkbox>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ion-row>
+          <ion-row class="row">
+              <div class="half-width ">
+                  <ion-label [ngClass]="findingsObj.ADJUSTMENT_BOLT_HEIGHT_UOM && findingsObj.ADJUSTMENT_BOLT_HEIGHT_UOM !=''? 'validator'  :''" class="label">{{'Adjustment Bolt Height' | translate}}</ion-label>
+                  <ion-input [ngClass]="errorObj.ADJUSTMENT_BOLT_HEIGHT && errorObj.ADJUSTMENT_BOLT_HEIGHT !='' ? 'input-validation'  :''" [(ngModel)]="findingsObj.ADJUSTMENT_BOLT_HEIGHT" name="findingsObj.ADJUSTMENT_BOLT_HEIGHT" class="project-box">
+                  </ion-input>
+                </div>
+            <div class="half-width ">
+              <ion-label [ngClass]="findingsObj.ADJUSTMENT_BOLT_HEIGHT && findingsObj.ADJUSTMENT_BOLT_HEIGHT !=''? 'validator'  :''" class="label ionLabel">
+                <span> {{'UOM' | translate}} </span>
+                <span></span>
+              </ion-label>
+              <div>
+                <ion-input [(ngModel)]="findingsObj.ADJUSTMENT_BOLT_HEIGHT_UOM"
+                  name="findingsObj.ADJUSTMENT_BOLT_HEIGHT_UOM" class="project-box searchNSelect select-style"
+                  [readonly]="true" tappable [ngClass]="errorObj.ADJUSTMENT_BOLT_HEIGHT_UOM && errorObj.ADJUSTMENT_BOLT_HEIGHT_UOM !='' ? 'input-validation'  :''"
+                  (click)="searchModal('UnitOfMeasurementLength','ADJUSTMENT_BOLT_HEIGHT_UOM')">
+                </ion-input>
+                <ion-input *ngIf="findingsObj.ADJUSTMENT_BOLT_HEIGHT_UOM == 'Other'"
+                  [(ngModel)]="findingsObj.ADJUSTMENT_BOLT_HEIGHT_UOM_OT"
+                  name="findingsObj.ADJUSTMENT_BOLT_HEIGHT_UOM_OT"
+                  [ngClass]="!findingsObj.ADJUSTMENT_BOLT_HEIGHT_UOM_OT ? 'validation-error' : ''"
+                  class="project-box otherBox">
+                </ion-input>
+              </div>
+            </div>
+          </ion-row>
+          <ion-row class="row">
+            <div class="half-width ">
+              <ion-label class="label ionLabel">
+                <span> {{'Trim Material' | translate}} </span>
+                <span></span>
+              </ion-label>
+              <div>
+                <ion-input [(ngModel)]="findingsObj.TRIM_MATERIAL" name="findingsObj.TRIM_MATERIAL"
+                  class="project-box searchNSelect select-style" [readonly]="true" tappable
+                  (click)="searchModal('SpringMaterial','TRIM_MATERIAL')">
+                </ion-input>
+                <ion-input *ngIf="findingsObj.TRIM_MATERIAL == 'Other'" [(ngModel)]="findingsObj.TRIM_MATERIAL_OT"
+                  name="findingsObj.TRIM_MATERIAL_OT"
+                  [ngClass]="!findingsObj.TRIM_MATERIAL_OT ? 'validation-error' : ''" class="project-box otherBox">
+                </ion-input>
+              </div>
+            </div>
+            <div class="half-width ">
+              <ion-label class="label">{{'Inspector' | translate}}</ion-label>
+              <ion-input [(ngModel)]="findingsObj.INSPECTOR" name="findingsObj.INSPECTOR" class="project-box">
+              </ion-input>
+            </div>
+          </ion-row>
+        </div>
+        <ion-label class="no-padding sub-header label ">
+          <span> {{'Add Parts' | translate}} </span>
+        </ion-label>
+        <ion-row class="row">
+            <div class="width45">
+              <ion-label class="label ionLabel">
+                <span> {{'Part' | translate}} </span>
+                <span class="inline-block validator"></span>
+              </ion-label>
+              <div>
+                <ion-input [(ngModel)]="partsObj.PART" name="partsObj.PART"
+                  class="project-box searchNSelect select-style" [readonly]="true" [ngClass]="partsErrorObj.PART ? 'validation-error'  :''" tappable
+                  (click)="searchModalParts('Part','PART')">
+                </ion-input>
+                <ion-input *ngIf="partsObj.PART == 'Other'"
+                  [(ngModel)]="partsObj.PART_OT" name="partsObj.PART_OT"
+                  [ngClass]="!partsObj.PART_OT ? 'validation-error' : ''" class="project-box otherBox">
+                </ion-input>
+              </div>
+            </div>
+            <div class="width45">
+              <ion-label class="label ionLabel">
+                <span> {{'As Found Condtion' | translate}} </span>
+                <span class="inline-block validator"></span>
+              </ion-label>
+              <div>
+                <ion-input [(ngModel)]="partsObj.ASFOUNDCONDITION" name="partsObj.ASFOUNDCONDITION"
+                  class="project-box searchNSelect select-style" [readonly]="true" tappable [ngClass]="partsErrorObj.ASFOUNDCONDITION ? 'validation-error'  :''"
+                  (click)="searchModalParts('AsFoundCondition','ASFOUNDCONDITION')">
+                </ion-input>
+                <ion-input *ngIf="partsObj.ASFOUNDCONDITION == 'Other'"
+                  [(ngModel)]="partsObj.ASFOUNDCONDITION_OT" name="partsObj.ASFOUNDCONDITION_OT"
+                  [ngClass]="!partsObj.ASFOUNDCONDITION_OT ? 'validation-error' : ''" class="project-box otherBox">
+                </ion-input>
+              </div>
+            </div>
+            <div class="marginRight" style="width: 9%">
+              <ion-label  class="label marginTop"></ion-label>
+              <button id="part_btn_1"
+                (click)="insertPartsData()" ion-button
+                class="add-btn marginTop">{{'Add Parts'|translate}}</button>
+            </div>
+          </ion-row>
+          <ion-list *ngIf="showPartsData.length>0">
+            <ion-row class="global-padding bdr-btm">
+              <ion-col class="align-lft" col-2>
+                <ion-label>{{'Part'| translate}}</ion-label>
+              </ion-col>
+              <ion-col class="align-lft" col-2>
+                <ion-label>{{'As Found Condition'| translate}}</ion-label>
+              </ion-col>
+            </ion-row>
+            <ion-row *ngFor="let k of showPartsData" class="strippedClass global-padding full-width ">
+              <ion-col class="align-lft" col-2>
+                <span>{{k.PART == 'Other'? k.PART_OT : k.PART }}</span>
+              </ion-col>
+              <ion-col class="align-lft" col-2>
+                  <span>{{k.ASFOUNDCONDITION == 'Other'? k.ASFOUNDCONDITION_OT : k.ASFOUNDCONDITION }}</span>
+              </ion-col>
+              <ion-col col-2> <span> <i button-right ion-button (click)="deleteData(k.PPF_PK_ID)"
+                    class="pointer fa fa-trash trash-icon pull-right"></i></span></ion-col>
+            </ion-row>
+          </ion-list>
+      </div>
+      <ion-row class="footer-row">
+        <div class=" footerLeft">
+          <button ion-button class="save-btn footer-Button" (click)="redirect('back')">{{'Back' | translate }}</button>
+        </div>
+        <div class="footerRight">
+          <button ion-button class="save-btn footer-Button"
+            (click)="redirect('solution')">{{ 'Inspection Measurement' | translate }}</button>
+        </div>
+      </ion-row>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

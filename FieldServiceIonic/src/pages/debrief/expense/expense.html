@@ -1,0 +1,144 @@
+<ion-content padding>
+  <ion-card>
+    <ion-card-header>
+      <ion-row class="debriefPage-padding">
+        <ion-col col-5 no-padding>
+          <h1>{{'Expenses' | translate}}</h1>
+        </ion-col>
+        <ion-col col-7 text-right no-padding>
+            <span class="continue-navigation" *ngIf="_taskObj.Selected_Process == enums.Selected_Process.FCR_AND_SDR && _taskObj.Business_Unit != enums.BusinessUnitNames.PWS">
+                <span class="continue-text"> {{'Continue' | translate}}</span>
+              <button ion-button class="sdr-btn" (click)="gotoSDR()">{{'Service Detail Report' | translate}}</button>
+            </span>
+          <span class="pageNavigationBtn"><span class="pointer" (click)="gottoTime()" style="margin-right: 70px">&lt; {{'Time' | translate}}</span><span class="pointer" (click)="gottoMaterial()">{{'Material' | translate}} &gt;</span></span>
+        </ion-col>
+      </ion-row>
+    </ion-card-header>
+    <ion-card-content>
+      <form (ngSubmit)="addExpense()" #myForm="ngForm">
+        <ion-row class="debriefPage-padding" style="width:100%">
+          <div class="spacingMargin">
+            <ion-col no-padding>
+              <ion-label class="label">{{'Date' | translate}}</ion-label>
+              <input type="text"
+                     class="date-box inline-block"
+                     [disabled]="!isEnabled"
+                     bsDatepicker [(bsValue)]="expenseObject.Date" #dp="bsDatepicker"
+                     [bsConfig]="{dateInputFormat: 'DD-MMM-YYYY'}"
+                     value="{{expenseObject.Date | date:'dd-MMM-yyyy'}}" (onShown)="onShowPicker($event)">
+              <!--<ion-datetime displayFormat="DD-MMM-YYYY" class="date-box inline-block" [(ngModel)]="expenseObject.Date" name="expenseObject.Date">
+              </ion-datetime>-->
+              <span><img (click)="dp.show()" [attr.aria-expanded]="dp.isOpen" src="assets/imgs/icons/ic_calendar-for-field.png" class="calIcon" /></span>
+            </ion-col>
+          </div>
+          <div class="spacingMargin">
+            <ion-col no-padding>
+              <ion-label class="label">{{'Expense Type' | translate}}<span class="validator"></span></ion-label>
+              <!--10-18-18 Radheshyam kumar addedd tappable attribute on every ion-select to resolve the double click issue -->
+              <ion-select *ngIf="showSelects" tappable (click)="dp.hide()" interface="popover" required placeholder="{{'Select Expense Type' | translate}}" [(ngModel)]="expenseObject.Expense_Type_Id" (ionChange)="selectExpenseTypeName($event)" name="expenseObject.Expense_Type_Id" [ngClass]="!expenseObject.Expense_Type_Id ? 'select-validation expense-box select-style' : 'expense-box select-style'">
+                <ion-option disabled value="{{''}}">{{'Select Expense Type' | translate}}</ion-option>
+                <ion-option *ngFor="let item of expenseType" [value]="item.ID">{{item.Value | translate}}</ion-option>
+              </ion-select>
+            </ion-col>
+          </div>
+          <div class="spacingMargin">
+            <ion-col no-padding>
+              <ion-label class="label">{{'Currency' | translate}}<span class="validator"></span></ion-label>
+              <ion-select *ngIf="showSelects" tappable interface="popover" required placeholder="{{'Select' | translate}}" [(ngModel)]="expenseObject.Currency_Id" (ionChange)="selectCurrencyName($event)" name="expenseObject.Currency_Id" [ngClass]="!expenseObject.Currency_Id ? 'select-validation currency-box select-style' : 'currency-box select-style'">
+                <ion-option disabled value="{{''}}">{{'Select Currency' | translate}}</ion-option>
+                <ion-option *ngFor="let item of currency" [value]="item.ID">{{item.Value | translate}}</ion-option>
+              </ion-select>
+            </ion-col>
+          </div>
+          <div class="spacingMargin" *ngIf="expenseObject.Expense_Type =='Mileage'">
+            <ion-col no-padding>
+              <ion-label class="label">{{'Amount' | translate}}</ion-label>
+              <ion-input type="text" id="amountFieldOnMileage" (keypress)="_keyPress($event)" (focusout)="checkAmountFormat()" [attr.maxlength]="30" [(ngModel)]="expenseObject.Amount" name="expenseObject.Amount" class="amount-box">
+              </ion-input>
+              <span *ngIf="error" class="danger amountError">{{'Invalid Amount'|translate}}</span>
+            </ion-col>
+          </div>
+          <div class="spacingMargin" *ngIf="expenseObject.Expense_Type !='Mileage'">
+            <ion-col no-padding>
+              <ion-label class="label">{{'Amount' | translate}}<span class="validator"></span></ion-label>
+              <ion-input type="text" id="amountField" required (keypress)="_keyPress($event)" (focusout)="checkAmountFormat()" [attr.maxlength]="30" [(ngModel)]="expenseObject.Amount" name="expenseObject.Amount" class="amount-box" [ngClass]="expenseObject.Amount == '' || expenseObject.Amount == undefined || expenseObject.Amount == null ? 'input-validation' : ''">
+              </ion-input>
+              <span *ngIf="error" class="danger amountError">{{'Invalid Amount'|translate}}</span>
+            </ion-col>
+          </div>
+          <div *ngIf="expenseObject.Expense_Type =='Mileage'" class="spacingMargin">
+            <ion-col no-padding>
+              <ion-label class="label">{{'Distance' | translate}}<span class="validator"></span></ion-label>
+              <ion-input type="text" required (keypress)="_keyPress($event)" [attr.maxlength]="6" (focusout)="checkDistanceFormat()" placeholder="{{'Distance' | translate}}" [(ngModel)]="expenseObject.Distance" name="expenseObject.Distance" class="distance-box" [ngClass]="expenseObject.Distance == '' || expenseObject.Distance == undefined || expenseObject.Distance == null ? 'input-validation' : ''">
+              </ion-input>
+            </ion-col>
+          </div>
+          <div *ngIf="expenseObject.Expense_Type =='Mileage'" class="spacingMargin">
+            <ion-col no-padding>
+              <ion-label class="label">{{'UOM' | translate}}<span class="validator"></span></ion-label>
+              <ion-select *ngIf="showSelects" tappable interface="popover" required placeholder="{{'Select' | translate}}" [(ngModel)]="expenseObject.UOM_Id" (ionChange)="selectUOMName($event)" name="expenseObject.UOM_Id" [ngClass]="!expenseObject.UOM_Id ? 'select-validation UOM-box select-style' : 'UOM-box select-style'">
+                <ion-option disabled value="{{''}}">{{'Select UOM' | translate}}</ion-option>
+                <ion-option *ngFor="let uom of UOM" [value]="uom.ID">{{uom.Value | translate}}</ion-option>
+              </ion-select>
+            </ion-col>
+          </div>
+          <div class="spacingMargin">
+            <ion-col no-padding>
+              <ion-label class="label">{{'Charge Method' | translate}}</ion-label>
+              <ion-select *ngIf="showSelects" tappable interface="popover" [(ngModel)]="expenseObject.Charge_Method_Id" placeholder="{{'Select Charge Method' | translate}}" (ionChange)="selectChargeMethodName($event)" name="expenseObject.Charge_Method_Id" class="chargeMethod-box select-style">
+                <ion-option value="{{''}}">{{'Select Charge Method' | translate}}</ion-option>
+                <ion-option *ngFor="let item of chargeMethod" [value]="item.ID">{{item.Value | translate}}</ion-option>
+              </ion-select>
+            </ion-col>
+          </div>
+          <div>
+            <ion-col no-padding>
+              <ion-label text-center class="label">{{'Justification' | translate}}</ion-label>
+              <button class="comment-icon btn" type="button"><img class="comment-img inline-block pointer" src="assets/imgs/icons/Add-Note-icon.png" (click)="openJustification()"></button>
+            </ion-col>
+          </div>
+          <div>
+            <ion-col no-padding>
+              <ion-label class="label"></ion-label>
+              <button class="addbtn-box btn" no-padding type="submit" [disabled]="!myForm.form.valid"><img class="add-btn pointer" src="assets/imgs/icons/Add-button.png"></button>
+            </ion-col>
+          </div>
+        </ion-row>
+      </form>
+      <div *ngIf="expenseArraySummary!=undefined && expenseArraySummary.length>0">
+        <ion-row class="stroke"></ion-row>
+        <ion-row class="global-padding full-width">
+          <div class="eth-date label">{{'Date' | translate}}</div>
+          <div class="eth-et label">{{'Expense Type' | translate}}</div>
+          <div class="eth-distance label">{{'Distance' | translate}}</div>
+          <div class="eth-UOM label">{{'UOM' | translate}}</div>
+          <div class="eth-amount label">{{'Amount' | translate}}</div>
+          <div class="eth-cur label">{{'Currency' | translate}}</div>
+          <div class="eth-cm label">{{'Charge Method' | translate}}</div>
+          <div class="eth-just label" text-center>{{'Justification' | translate}}</div>
+          <div class="eth-icon-header label"></div>
+        </ion-row>
+        <ion-list>
+          <ion-row class="strippedClass global-padding full-width" *ngFor="let expense of expenseArraySummary; let i = index">
+            <div class="eth-date value">{{expense.Date | customDate | translate}}</div>
+            <div class="eth-et value">{{expense.Expense_Type | translate}}</div>
+            <div class="eth-distance value">{{expense.Distance | translate}}</div>
+            <div class="eth-UOM value">{{expense.UOM | translate}}</div>
+            <div class="eth-amount value">{{expense.Amount | translate}}</div>
+            <div class="eth-cur value">{{expense.Currency| translate}}</div>
+            <div class="eth-cm value">{{expense.Charge_Method | translate}}</div>
+            <div *ngIf="expense.Justification" text-center class="eth-just value" no-padding><img class="comment-img pointer" src="assets/imgs/icons/notes-list-item.png" (click)="openJustificationOnEdit(expense,i)"></div>
+            <div *ngIf="!expense.Justification" text-center class="eth-just value" no-padding><img class="comment-img" src="assets/imgs/icons/notes-list-item-disabled.png"></div>
+            <div class="eth-icon-value" no-padding>
+              <div class="full-width icon-box " text-center>
+                <img class="inline-block copy-img pointer pull-left" src="assets/imgs/icons/ic_duplicate.png" (click)="copyExpense(expense,i)">
+                <img [ngClass]="valueService.getTask().StatusID == enums.Jobstatus.Debrief_In_Progress && expense.IsAdditional == 'false' && valueService.getTask().FSR_PrintExpenseOnSite == 'true' ? 'inline-block edit-img disableImg' :'inline-block edit-img pointer'" src="assets/imgs/icons/edit-icon.png" (click)="editExpense(expense,i)">
+                <img [ngClass]="(valueService.getTask().StatusID == enums.Jobstatus.Debrief_In_Progress && expense.IsAdditional == 'false') || (valueService.getTask().StatusID == enums.Jobstatus.Debrief_Declined && (expense.Sync_Status == 'true' || expense.Original)) || expense.Sync_Status == 'true' ? 'inline-block delete-img pull-right disableImg' :'inline-block delete-img pointer pull-right'" src="assets/imgs/icons/delete-icon.png" (click)="deleteObject(expense,i)">
+              </div>
+            </div>
+          </ion-row>
+        </ion-list>
+      </div>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

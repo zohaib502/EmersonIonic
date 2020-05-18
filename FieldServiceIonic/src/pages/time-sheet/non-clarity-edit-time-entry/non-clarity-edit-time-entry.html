@@ -1,0 +1,199 @@
+
+<ion-header>
+  <page-custom-header [header]="header_data"></page-custom-header>
+</ion-header>
+
+
+<ion-content padding class="page-background">
+<ion-card>
+    <ion-row *ngIf="!vacClick" class="bdr-btm" radio-group>
+        <div class="inline-block">
+            <ion-item>
+              <ion-label class="rd-lbl">{{'Field' | translate}}</ion-label>
+              <ion-radio class="rd-ui" [checked]="isField"    (ionSelect)="manageCheckbox('','field')" value="field" item-left></ion-radio>
+            </ion-item>
+            </div>
+            <div class = "inline-block">
+            <ion-item>
+              <ion-label class="rd-lbl">{{'Depot' | translate}}</ion-label>
+              <ion-radio
+               class="rd-ui" [checked]="isDepot"  (ionSelect)="manageCheckbox('','depot')" value="depot" item-left></ion-radio>
+            </ion-item>
+            </div>
+    </ion-row>
+    <!-- <ion-row  class="bdr-btm" radio-group>
+        <ion-col col-1>
+          <ion-item>
+            <ion-label class="rd-lbl">{{'Field' | translate}}</ion-label>
+            <ion-radio class="rd-ui" checked  value="field" item-left></ion-radio>
+          </ion-item>
+        </ion-col>
+        <ion-col col-1>
+          <ion-item>
+            <ion-label class="rd-lbl">{{'Depot' | translate }}</ion-label>
+            <ion-radio class="rd-ui" value="depot" item-left></ion-radio>
+          </ion-item>
+        </ion-col>
+      </ion-row> -->
+    <!-- <form (ngSubmit)="editTime()" #myForm="ngForm"> -->
+    <ion-row style="padding-top:10px;padding-left: 30px;" *ngIf="!weekBtnClicked">
+        <div class="spacingMargin">
+          <ion-col no-padding>
+            <ion-label class="label">{{'Start Date' | translate}}</ion-label>
+            <input type="text" class="date-box inline-block" [disabled]="!isEnabled" bsDatepicker
+              [(bsValue)]="service_start_date" #dps="bsDatepicker" (onHidden)="getDurationOnDate('startDt')"
+              [bsConfig]="datepickerConfig" value="{{service_start_date | date:'dd-MMM-yyyy'}}"
+              (onShown)="onShowPicker($event)">
+            <span><img (click)="dps.show()" [attr.aria-expanded]="dps.isOpen"
+                src="assets/imgs/icons/ic_calendar-for-field.png" class="calIcon pointer" /></span>
+          </ion-col>
+        </div>
+  
+        <div class="spacingMargin">
+          <ion-col no-padding>
+            <ion-label class="label">{{'End Date' | translate}}</ion-label>
+            <!-- <input type="text" class="date-box inline-block" [disabled]="!isEnabled" [minDate]="minDate" [maxDate]="maxDate"          bsDatepicker
+            [(bsValue)]="service_end_date" #dp="bsDatepicker" [bsConfig]="{dateInputFormat: 'DD-MMM-YYYY'}" value="{{date | date:'dd-MMM-yyyy'}}"> -->
+            <input placeholder="Datepicker" class="date-box inline-block" [disabled]="!isEnabled"
+              [(bsValue)]="service_end_date" #dp="bsDatepicker" (onHidden)="getDurationOnDate('endDt')" bsDatepicker
+              [minDate]="service_start_date" [bsConfig]="datepickerConfig"
+              value="{{service_end_date | date:'dd-MMM-yyyy'}}" (onShown)="onShowPicker($event)">
+            <span>
+              <img  [attr.aria-expanded]="dp.isOpen" src="assets/imgs/icons/ic_calendar-for-field.png"
+                class="calIcon pointer" />
+            </span>
+          </ion-col>
+        </div>
+  
+        <div class="spacingMargin">
+          <div class="inline-block timepicker-icon verticalTop">
+            <label class="label block timepicker-label">{{'Start Time' | translate}}</label>
+            <img src="assets/imgs/icons/ic_time-icon_24x24.png" class="clockIcon timepicker" />
+          </div>
+          <div class="inline-block">
+            <timepicker class="timepicker-box inline-block"  [(ngModel)]="Start_Time"
+              (ngModelChange)="getTimeOnChange($event, 'Start_Time')" [showMeridian]="ismeridian" name="endTime"
+              (click)="utilityProvider.selectAllContent($event)">
+            </timepicker>
+          </div>
+        </div>
+  
+        <div class="spacingMargin">
+          <div class="inline-block timepicker-icon verticalTop">
+            <label class="label block timepicker-label">{{'End Time' | translate}}</label>
+            <img src="assets/imgs/icons/ic_end_time.png" class="clockIcon timepicker" />
+          </div>
+          <div class="inline-block">
+            <timepicker class="timepicker-box inline-block" [(ngModel)]="End_Time"
+              (ngModelChange)="getTimeOnChange($event, 'End_Time')" [showMeridian]="ismeridian" name="endTime"
+              (click)="utilityProvider.selectAllContent($event)">
+            </timepicker>
+          </div>
+        </div>
+  
+        <div class="spacingMargin">
+          <ion-col no-padding>
+            <ion-label class="label">{{'Duration' | translate}}</ion-label>
+            <ion-input [disabled]="!isEnabled" [(ngModel)]="duration" name="duration"
+              [ngClass]="isDateError ? 'select-validation duration-box select-style' : 'duration-box select-style'">
+            </ion-input>
+            <!--<span *ngIf="isDateError" class="danger durationError">{{'Start Time Should Be Less Than End Time' | translate}}</span>-->
+          </ion-col>
+        </div>
+      </ion-row>
+
+  <ion-row style="padding-left: 30px;">
+      <div class="left">
+          <ion-col no-padding>
+            <ion-label class="label">{{'Job ID' | translate }}</ion-label>
+            <ion-input [disabled]="true" [readonly]="true" tappable  [(ngModel)]="job_Id" name="job_Id" class="project-box select-style"
+        >
+            </ion-input>
+          </ion-col>
+      </div>
+      <div *ngIf="vacEntry" class="right">
+        <ion-col  no-padding *ngIf="!vacClick">
+          <ion-label class="label">{{'Serial Number' | translate }}</ion-label>
+          <ion-input  class="project-box select-style" [(ngModel)]="serial_number" name="serial_number">
+          </ion-input>
+          </ion-col>
+      </div>
+    </ion-row>
+    <ion-row style="padding-left: 30px;">
+        <div class="left">
+                 <ion-col no-padding>
+                <ion-label class="label">{{'Activity Name' | translate }}</ion-label>
+                <ion-input  [readonly]="true" tappable  [(ngModel)]="activity_name" name="activityName" class="project-box searchNSelect select-style"
+          (click)="searchModal('activityName')">
+          </ion-input>
+            </ion-col>
+        </div>
+        <div *ngIf="vacEntry" class="right">
+          <ion-col no-padding *ngIf="!vacClick">
+            <ion-label class="label">{{'Tag Number' | translate }}</ion-label>
+            <ion-input  class="project-box select-style" [(ngModel)]="tag_Number" name="tag_Number">
+            </ion-input>
+            </ion-col>
+        </div>
+      </ion-row>
+    <ion-row style="padding-left: 30px;">
+        <div class="left">
+            <ion-col no-padding>
+              <ion-label class="label">{{'ST/OT/DT/HT' | translate }}</ion-label>
+              <ion-input [readonly]="true" tappable *ngIf="!vacClick"  [(ngModel)]="item" name="item" class="project-box searchNSelect select-style"
+          (click)="searchModal('shiftCodes')">
+          </ion-input>
+          <ion-input [readonly]="true"  *ngIf="vacClick"  [(ngModel)]="item" name="item" class="project-box"
+         >
+          </ion-input>
+            </ion-col>
+        </div>
+        <div *ngIf="valueProvider.getUserPreferences()[0].ShowChargeMethod == 'true' || valueProvider.getUserPreferences()[0].ShowChargeMethod == true"  class="right">
+          <div *ngIf="vacEntry">
+              <ion-col  no-padding *ngIf="!vacClick">
+                  <ion-label class="label">{{'Charge Method' | translate }}</ion-label>
+                  <ion-input [readonly]="true" tappable  [(ngModel)]="charge_method" name="charge_method" class="project-box searchNSelect select-style"
+                  (click)="searchModal('chargemethod')">
+                  </ion-input>
+              </ion-col>
+          </div>
+            
+        </div>
+        <!-- <div class="right">
+            <ion-col no-padding>
+              <ion-label class="label">{{'Description' | translate }}</ion-label>
+              <ion-input placeholder="{{'Enter Description' | translate }}" class="project-box select-style" [(ngModel)]="description" name="description">
+              </ion-input>
+              </ion-col>
+          </div> -->
+      </ion-row>
+      <ion-row style="padding-left: 30px;">
+          <div class="left" *ngIf="!weekBtnClicked">
+              <ion-col no-padding>
+                <ion-label class="label">{{'Notes' | translate }}</ion-label>
+               <ion-textarea maxlength="255" class="notes-box select-style" placeholder="{{'Enter Notes' | translate }}" [(ngModel)]="description" name="description"></ion-textarea>
+              </ion-col>
+          </div>
+          <!-- 03/15/2019 -- Zohaib Khan -- Here condition will change for chargemethod. If charge method was entered while entring the time entry then the below dropdown will be visible   -->
+ 
+        </ion-row>
+        <ion-row class="day-row  full-width" *ngIf="weekBtnClicked">
+          <div class="daySchedule">
+            <expandable [data]="timeData" [listPage]="listPage"  style="width:100%;">                      
+              </expandable> 
+          </div>
+        </ion-row>
+        <ion-row class="bottom-row">
+          <div class="bottom-div">
+            <button *ngIf="!weekBtnClicked" ion-button type="submit"  [disabled]="duration == '00:00'" class="submit-btn" (click)="saveEdits()">{{'Save Edits' | translate }}</button>
+            <button *ngIf="weekBtnClicked" ion-button type="submit"  [disabled]="timeData.totalDuration == '00:00'" class="submit-btn" (click)="saveEdits()">{{'Save Edits' | translate }}
+              </button>
+            <button ion-button class="deleteBtn" (click)="delete()" >{{'Delete' | translate}}
+              </button>
+            <button ion-button class="cancel-btn" (click)="timeRedirect()">{{'Cancel' | translate}}
+              </button>
+            </div>
+        </ion-row>
+<!-- </form> -->
+</ion-card>
+</ion-content>

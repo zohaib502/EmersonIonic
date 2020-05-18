@@ -1,0 +1,23 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title class="padding-style">{{'Notes' | translate}}</ion-title>
+    <ion-buttons end>
+      <button ion-button class="closebtn" (click)="closeModal()"><i class="fa fa-times fa-2x"></i></button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+  <ion-row>
+    <div class="full-width block">
+      <ion-textarea maxlength="267" class="commentBox value" [(ngModel)]="allowance_notes"
+        (focusout)="checkNotesLimit(allowance_notes)" placeholder="{{'Write Note Here' | translate}}"
+        [(ngModel)]="comment"></ion-textarea>
+    </div>
+  </ion-row>
+  <div class="full-width" text-right>
+    <button ion-button class="footer-buttons" type="button" (click)="saveNotes()">{{'Save' | translate}}</button>
+    <button ion-button class="footer-buttons cancel" (click)="closeModal()">{{'Cancel' | translate}}</button>
+  </div>
+</ion-content>

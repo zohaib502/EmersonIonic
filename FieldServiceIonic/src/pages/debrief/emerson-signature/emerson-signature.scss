@@ -1,0 +1,128 @@
+page-emerson-signature {
+  .clear-button {
+    border: none;
+    font-size: 14px;
+    color: #FFFFFF;
+    border-radius: 3px;
+    background-color: #8eb15f !important;
+    text-transform: capitalize;
+  }
+
+  .signaturePage-padding {
+    padding: 12px 50px !important;
+  }
+
+  .disableSummary {
+    pointer-events: none !important;
+    color: rgba(205,205,205,1) !important;
+  }
+
+  .enableSummary {
+    color: rgba(142,177,95,1) !important;
+  }
+
+  .bg-signature-field {
+    margin-top: 15px;
+    opacity: 0.66;
+    background-color: rgba(196,192,188,0.11);
+    box-shadow: inset 0 1px 0 0 rgba(196,192,188,0.4), inset 0 -1px 0 0 rgba(196,192,188,0.4);
+  }
+
+  .text-field {
+    box-sizing: border-box;
+    height: 200%;
+    border: 1px solid #D8D5D1;
+    border-radius: 3px;
+    background-color: #F7F7F6;
+  }
+
+  .marginbottom {
+    margin-bottom: 3%;
+  }
+
+  .engSign-label {
+    margin-bottom: 2% !important;
+    font-family: "Helvetica Neue";
+    font-size: 16px;
+    color: #4a4a4a;
+    font-weight: normal;
+  }
+
+  .center-block {
+    text-align: center;
+  }
+
+  .text-input {
+    padding: 4px 0 0 4px !important;
+  }
+
+  .item.item-md .checkbox-md {
+    margin: 3px 9px 0 0;
+  }
+
+  .checkbox-icon {
+    height: 20px !important;
+    width: 20px !important;
+    border-width: 1px !important;
+    border-radius: 0px !important;
+  }
+
+  .engSign-textarea .text-input {
+    width: 80%;
+    height: 109px;
+    border: 1px solid #D8D5D1;
+    border-radius: 3px;
+    background-color: rgba(236, 235, 233, 0.4);
+    font-size: 14px;
+    color: #4a4a4a;
+    line-height: 18px;
+    font-family: "Helvetica Neue";
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .checkbox .checkbox-checked {
+    background-color: transparent !important;
+    border-color: unset !important;
+    border-radius: 0px;
+    border-width: 1px;
+  }
+
+  .checkbox .checkbox-checked .checkbox-inner {
+    left: 6px;
+    top: 2px;
+    width: 5px;
+    height: 12px;
+    border-color: black;
+  }
+
+  .checkbox-label {
+    color: #60b2d5;
+    font-family: "Helvetica Neue";
+    font-size: 14px;
+    font-weight: bold;
+  }
+
+  .followUPLabel {
+    white-space: normal !important;
+  }
+}
+
+.ios page-emerson-signature {
+
+  .followUP {
+    padding: 0px !important;
+  }
+
+  .followUP .checkbox {
+    margin: 0 5px 0 0;
+  }
+
+  .followUP .item-inner {
+    padding: 0px;
+  }
+
+  .signaturePage-padding {
+    padding: 12px !important;
+  }
+}

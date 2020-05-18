@@ -1,0 +1,218 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title class="padding-style" *ngIf="ifJustification || CommentOnEdit">{{'Comment' | translate}}</ion-title>
+    <ion-title class="padding-style" start *ngIf="editTime && ifEdit == 'Edit'"><span text-left>{{'Edit Entry' | translate}}</span><span *ngIf="timeValid" text-center class="label danger alert">{{'Entry Already Exist' | translate}}</span></ion-title>
+    <ion-title class="padding-style" start *ngIf="editTime && ifCopy == 'Copy'"><span text-left>{{'Copy Entry' | translate}}</span><span *ngIf="timeValid" text-center class="label danger alert">{{'Entry Already Exist' | translate}}</span></ion-title>
+    <ion-buttons end>
+      <button ion-button class="save-btn btn" [disabled]="((timeObject.Work_Type!='Break') && (isDateError || !timeObject.Item_Id || !timeObject.Work_Type_Id || !timeObject.Charge_Method_Id))" *ngIf="(editTime && ifEdit && userType=='NC')" (click)="save()">{{ 'Save Your Edits' | translate }}</button>
+      <button ion-button class="save-btn btn" [disabled]="((timeObject.Work_Type!='Break') && (isDateError || !timeObject.Item_Id || !timeObject.Work_Type_Id || !timeObject.Charge_Method_Id))" *ngIf="(editTime && ifCopy && userType=='NC')" (click)="save()">{{ 'Save Copy' | translate }}</button>
+      <button ion-button class="save-btn btn" [disabled]="((timeObject.Work_Type!='Break') && (isDateError || !timeObject.Item_Id || (jobname.length > 0 && !timeObject.Field_Job_Name_Id) || !timeObject.Charge_Type_Id || !timeObject.Work_Type_Id || !timeObject.Charge_Method_Id))" *ngIf="(editTime && ifEdit && userType=='C')" (click)="save()">{{ 'Save Your Edits' | translate }}</button>
+      <button ion-button class="save-btn btn" [disabled]="((timeObject.Work_Type!='Break') && (isDateError || !timeObject.Item_Id || (jobname.length > 0 && !timeObject.Field_Job_Name_Id) || !timeObject.Charge_Type_Id || !timeObject.Work_Type_Id || !timeObject.Charge_Method_Id))" *ngIf="(editTime && ifCopy && userType=='C')" (click)="save()">{{ 'Save Copy' | translate }}</button>
+      <button ion-button class="closebtn" (click)="closeModal()"><i class="fa fa-times fa-2x"></i></button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+<ion-content padding>
+  <div *ngIf="ifJustification" class="commentTextArea full-height">
+    <textarea class="commentModal value" maxlength="255" (keypress)="_keyPress($event)" placeholder="{{'Enter Comments' | translate}}" [(ngModel)]="comment"></textarea>
+  </div>
+  <textarea *ngIf="CommentOnEdit" disabled class="commentModal value" placeholder="{{'Enter Comments' | translate}}" [(ngModel)]="comment"></textarea>
+  <div *ngIf="editTime">
+    <ion-row class="global-padding">
+      <div *ngIf="userType=='C'" class="spacingMargin">
+        <ion-col no-padding>
+          <ion-label class="label">{{'Clarity Task Name' | translate}}<span class="validator"></span></ion-label>
+
+          <!-- 09/05/2019 -- Mayur Varshney -- remove flex -->
+          <!-- 09/05/2019 -- Mayur Varshney -- apply function to hide calendar when click on ion-select -->
+          <!--10-18-18 Radheshyam kumar addedd tappable attribute on evey ion-select to resolve the double click issue -->
+          <ion-select *ngIf="showSelects" tappable (click)="hideCalendar($event)" interface="popover" [disabled]="jobname.length==0 || timeObject.Work_Type=='Break'" placeholder="{{'Clarity Task Name' | translate}}" [(ngModel)]="timeObject.Field_Job_Name_Id" name="timeObject.Field_Job_Name_Id" (ionChange)="selectFieldJobName($event)" [ngClass]="!timeObject.Field_Job_Name_Id  ? 'select-validation clarity-task-name-box select-style' : 'clarity-task-name-box select-style'">
+            <ion-option disabled value="{{''}}">{{'Select Clarity Task Name' | translate}}</ion-option>
+            <ion-option *ngFor="let item of jobname" [value]="item.TaskCode">{{item.JobName  | translate}}</ion-option>
+          </ion-select>
+        </ion-col>
+      </div>
+      <div *ngIf="userType=='C'" class="spacingMargin">
+        <ion-col no-padding>
+          <ion-label class="label">{{'Charge Type' | translate}}<span class="validator"></span></ion-label>
+
+          <!-- 09/05/2019 -- Mayur Varshney -- apply function to hide calendar when click on ion-select -->
+          <ion-select *ngIf="showSelects" tappable (click)="hideCalendar($event)" interface="popover" [disabled]="chargetype.length==0 || timeObject.Work_Type=='Break'" placeholder="{{'Charge Type' | translate}}" [(ngModel)]="timeObject.Charge_Type_Id" name="timeObject.Charge_Type_Id" (ionChange)="selectChargeTypeName($event)" [ngClass]="!timeObject.Charge_Type_Id  ? 'select-validation chargeType-box select-style' : 'chargeType-box select-style'">
+            <ion-option disabled value="{{''}}">{{'Select Charge Type' | translate}}</ion-option>
+            <ion-option *ngFor="let item of chargetype" [value]="item.ID">{{item.Value | translate}}</ion-option>
+          </ion-select>
+        </ion-col>
+      </div>
+      <div class="spacingMargin">
+        <ion-col no-padding>
+          <ion-label class="label">{{'Work Type' | translate}}<span class="validator"></span></ion-label>
+
+          <!-- 09/05/2019 -- Mayur Varshney -- apply function to hide calendar when click on ion-select -->
+          <ion-select *ngIf="showSelects" tappable (click)="hideCalendar($event)" interface="popover" [disabled]="worktype.length==0" placeholder="{{'Work Type' | translate}}" [(ngModel)]="timeObject.Work_Type_Id" name="timeObject.Work_Type_Id" (ionChange)="selectWorkTypeName($event)" [ngClass]="!timeObject.Work_Type_Id  ? 'select-validation workType-box select-style' : 'workType-box select-style'">
+            <ion-option disabled value="{{''}}">{{'Select Work Type' | translate}}</ion-option>
+            <ion-option *ngFor="let item of worktype; let i = index " [value]="item.ID">{{item.Value | translate}}</ion-option>
+          </ion-select>
+        </ion-col>
+      </div>
+      <div class="spacingMargin">
+        <ion-col no-padding>
+          <ion-label class="label">{{'Item' | translate}}<span class="validator"></span></ion-label>
+
+          <!-- 09/05/2019 -- Mayur Varshney -- apply function to hide calendar when click on ion-select -->
+          <ion-select *ngIf="showSelects" tappable (click)="hideCalendar($event)" interface="popover" [disabled]="itemsList.length==0 || timeObject.Work_Type=='Break'" required placeholder="{{'Select Item' | translate}}" [(ngModel)]="timeObject.Item_Id" name="timeObject.Item_Id" (ionChange)="selectItemName($event)" [ngClass]="!timeObject.Item_Id  ? 'select-validation item-box select-style' : 'item-box select-style'">
+            <ion-option disabled value="{{''}}">{{'Select Item' | translate}}</ion-option>
+            <ion-option *ngFor="let item of itemsList; let i = index" [value]="item.ID">{{item.Value | translate}}</ion-option>
+          </ion-select>
+        </ion-col>
+      </div>
+      <div class="spacingMargin">
+        <ion-col no-padding>
+          <ion-label class="label">{{'Charge Method' | translate}}<span class="validator"></span></ion-label>
+
+          <!-- 09/05/2019 -- Mayur Varshney -- apply function to hide calendar when click on ion-select -->
+          <ion-select *ngIf="showSelects" tappable (click)="hideCalendar($event)" interface="popover" [disabled]="chargemethod.length==0 || timeObject.Work_Type=='Break'" placeholder="{{'Charge Method' | translate}}" [(ngModel)]="timeObject.Charge_Method_Id" name="timeObject.Charge_Method_Id" (ionChange)="selectChargeMethodName($event)" [ngClass]="!timeObject.Charge_Method_Id  ? 'select-validation chargeMethod-box select-style' : 'chargeMethod-box select-style'">
+            <ion-option disabled value="{{''}}">{{'Select Charge Method' | translate}}</ion-option>
+            <ion-option *ngFor="let item of chargemethod; let i = index" [value]="item.ID">{{item.Value | translate}}</ion-option>
+          </ion-select>
+        </ion-col>
+      </div>
+      <div *ngIf="userType=='C'" class="spacingMargin">
+
+        <!-- 09/05/2019 -- Mayur Varshney -- remove flex -->
+        <ion-col no-padding>
+          <ion-label class="label">{{'Clarity Time Code' | translate}}</ion-label>
+
+          <!-- 09/05/2019 -- Mayur Varshney -- apply function to hide calendar when click on ion-select -->
+          <ion-select *ngIf="showSelects" tappable (click)="hideCalendar($event)" interface="popover" [disabled]="overtime.length==0 || isLaborTravelStandard || timeObject.Work_Type=='Break'" placeholder="{{'Clarity Time Code' | translate}}" [(ngModel)]="timeObject.Time_Code_Id" name="timeObject.Time_Code_Id" (ionChange)="selectClarityTimeName($event)" class="timeCode-box select-style">
+            <!--<ion-option value="No Value">{{'No Value' | translate}}</ion-option>-->
+            <ion-option value="{{''}}">{{'Clarity Time Code' | translate}}</ion-option>
+            <ion-option *ngFor="let item of overtime" [value]="item.OverTime_Shift_Code_ID">{{item.Overtimeshiftcode | translate}}</ion-option>
+          </ion-select>
+        </ion-col>
+      </div>
+    </ion-row>
+
+    <ion-row class="global-padding">
+      <div *ngIf="userType=='C'" class="spacingMargin">
+        <ion-col no-padding>
+          <ion-label class="label">{{'Clarity Shift Code' | translate}}</ion-label>
+
+          <!-- 09/05/2019 -- Mayur Varshney -- apply function to hide calendar when click on ion-select -->
+          <ion-select *ngIf="showSelects" tappable (click)="hideCalendar($event)" interface="popover" [disabled]="shiftcode.length==0 || timeObject.Work_Type=='Break'" placeholder="{{'Clarity Shift Code' | translate}}" [(ngModel)]="timeObject.Shift_Code_Id" name="timeObject.Shift_Code_Id" (ionChange)="selectShiftCodeName($event)" class="shiftCode-box select-style">
+            <ion-option value="{{''}}">{{'Select Clarity Shift Code' | translate}}</ion-option>
+            <ion-option *ngFor="let item of shiftcode" [value]="item.Shift_Code_ID">{{item.ShiftCodeName | translate}}</ion-option>
+          </ion-select>
+        </ion-col>
+      </div>
+      <!-- 08062018 KW  START added Service start date and Service end date  -->
+      <div class="inline-block spacingMargin">
+        <ion-col no-padding>
+          <ion-label class="label">{{'Service Start Date' | translate}}</ion-label>
+          <input style="font-size: 14px" class="date-box inline-block" [disabled]="!isEnabled" bsDatepicker [(bsValue)]="service_start_date" #dps="bsDatepicker" (onHidden)="getDurationOnDate()"
+                 [bsConfig]="{dateInputFormat: 'DD-MMM-YYYY'}" value="{{service_start_date | date:'dd-MMM-yyyy'}}" (onShown)="onShowPicker($event)">
+          <span>
+            <img (click)="dps.show()" [attr.aria-expanded]="dps.isOpen" src="assets/imgs/icons/ic_calendar-for-field.png" class="calIcon" />
+          </span>
+        </ion-col>
+      </div>
+      <div class="spacingMargin">
+        <div class="inline-block timepicker-icon verticalTop">
+          <label class="label block timepicker-label">{{'Start' | translate}}</label>
+          <img src="assets/imgs/icons/ic_time-icon_24x24.png" class="clockIcon timepicker" />
+        </div>
+        <div class="inline-block">
+          <timepicker class="timepicker-box inline-block" [(ngModel)]="timeObjects.Start_Time" (ngModelChange)="getTimeOnChange($event, 'Start_Time')" [showMeridian]="ismeridian" name="endTime"></timepicker>
+        </div>
+      </div>
+      <div class="inline-block spacingMargin">
+        <ion-col no-padding>
+          <ion-label class="label">{{'Service End Date' | translate}}</ion-label>
+          <input placeholder="Datepicker" class="date-box inline-block" [disabled]="!isEnabled" [(bsValue)]="service_end_date" #dp="bsDatepicker" [minDate]="minDate" bsDatepicker (onHidden)="getDurationOnDate()"
+                 [bsConfig]="{dateInputFormat: 'DD-MMM-YYYY'}" value="{{service_end_date | date:'dd-MMM-yyyy'}}" (onShown)="onShowPicker($event)">
+          <span>
+            <img (click)="dp.show()" [attr.aria-expanded]="dp.isOpen" src="assets/imgs/icons/ic_calendar-for-field.png" class="calIcon" />
+          </span>
+        </ion-col>
+      </div>
+      <div class="spacingMargin">
+        <div class="inline-block timepicker-icon verticalTop">
+          <label class="label block timepicker-label">{{'End' | translate}}</label>
+          <img src="assets/imgs/icons/ic_time-icon_24x24.png" class="clockIcon timepicker" />
+        </div>
+        <div class="inline-block">
+          <timepicker class="timepicker-box inline-block" [(ngModel)]="timeObjects.End_Time" (ngModelChange)="getTimeOnChange($event, 'End_Time')" [showMeridian]="ismeridian" name="endTime"></timepicker>
+        </div>
+      </div>
+      <!-- END -->
+      <div class="spacingMargin">
+        <ion-col no-padding>
+          <ion-label class="label">{{'Duration' | translate}}</ion-label>
+          <ion-input [disabled]="!isEnabled" placeholder="hh:mm" [(ngModel)]="timeObject.Duration" [ngClass]="isDateError ? 'select-validation duration-box select-style' : 'duration-box select-style'" name="timeObject.Duration">
+          </ion-input>
+          <!--<span *ngIf="isDateError" class="danger durationError">{{'Start time should be less than End Time'|translate}}</span>-->
+        </ion-col>
+      </div>
+    </ion-row>
+    <ion-row class="global-padding">
+      <ion-label class="label">{{'Comments' | translate}}</ion-label>
+      <div class="full-width block">
+        <ion-textarea class="commentBoxTime value" maxlength="255" (keypress)="_keyPress($event)" placeholder="{{'Enter Comments' | translate}}" [(ngModel)]="timeObject.Comments"></ion-textarea>
+      </div>
+    </ion-row>
+  </div>
+
+    <ion-label class="label" text-left *ngIf="originalTime">{{'Original Time' | translate}}</ion-label>
+
+    <div class="shaded-block" *ngIf="originalTime">
+      <div class="inline-block DateLabel global-padding" *ngIf="originalTime.Date">
+        <span class="label">{{'Start Date Time' | translate}}</span> / <span class="label">{{'End Date Time' | translate}}</span>
+        <span class="block"></span>
+        <span class="value non-ellipsis">{{originalTime.Service_Start_Date | customDate | translate}} {{originalTime.Start_Time | translate}}</span> /
+        <span class="value non-ellipsis">{{originalTime.Service_End_Date | customDate | translate}} {{originalTime.End_Time | translate}}</span>
+      </div>
+      <div class="inline-block ChargeTypeLabel global-padding" *ngIf="originalTime.Charge_Type && userType=='C'">
+        <span class="block label" translate="Charge Type"></span>
+        <span class="value block non-ellipsis">{{originalTime.Charge_Type | translate}}</span>
+      </div>
+      <div class="inline-block ChargeTypeLabel global-padding" *ngIf="originalTime.Charge_Method">
+        <span class="block label" translate="Charge Method"></span>
+        <span class="value block non-ellipsis">{{originalTime.Charge_Method | translate}}</span>
+      </div>
+      <div class="inline-block ChargeTypeLabel global-padding" *ngIf="originalTime.Work_Type">
+        <span class="block label" translate="Work type"></span>
+        <span class="value block non-ellipsis">{{originalTime.Work_Type | translate}}</span>
+      </div>
+      <div class="inline-block ChargeTypeLabel global-padding"  *ngIf="originalTime.Time_Code && userType=='C'">
+        <span class="block label" translate="Time Code"></span>
+        <span class="value block non-ellipsis">{{originalTime.Time_Code | translate}}</span>
+      </div>
+      <div class="inline-block ChargeTypeLabel global-padding" *ngIf="originalTime.Shift_Code && userType=='C'">
+        <span class="block label" translate="Shift Code"></span>
+        <span class="value block non-ellipsis">{{originalTime.Shift_Code | translate}}</span>
+      </div>
+      <div class="inline-block ChargeTypeLabel global-padding" *ngIf="originalTime.Duration">
+        <span class="block label" translate="Duration"></span>
+        <span class="value block non-ellipsis">{{originalTime.Duration | translate}}</span>
+      </div>
+      <div class="inline-block ChargeTypeLabel global-padding" *ngIf="originalTime.Item">
+        <span class="block label" translate="Item"></span>
+        <span class="value block non-ellipsis">{{originalTime.Item | translate}}</span>
+      </div>
+      <div class="inline-block ChargeTypeLabel global-padding" *ngIf="originalTime.Comments">
+        <span class="block label" translate="Comments"></span>
+        <span class="value block non-ellipsis">{{originalTime.Comments | slice:0:20 | translate}}
+            <span *ngIf="originalTime.Comments.length > 20" class="readMore block pointer">
+                <a name="btn2" (click)="readOriginalComments(originalTime.Comments)">
+                  <span>...</span>
+                  <span>{{'Read More' | translate }}</span>
+                   
+                </a>
+              </span>
+        </span>
+        
+      </div>
+    </div>
+</ion-content>
+<ion-footer *ngIf="ifJustification">
+  <button ion-button text-center class="save-btn btn justificationBtn" [disabled]="isDateError" (click)="save()">{{ 'Save' | translate }}</button>
+</ion-footer>

@@ -1,0 +1,116 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-row>
+      <ion-col col-5>
+        <ion-title>User</ion-title>
+      </ion-col>
+      <ion-col>
+        <span class="danger"> {{resMessage}}</span>
+      </ion-col>
+      <ion-col>
+        <ion-buttons end>
+          <button ion-button (click)="addEditUser()" class="save-btn  btn" [disabled]="!name||!email || !isCorrect ||userrolesid.length==0">{{
+            'Save' | translate
+            }}</button>
+          <button ion-button class="closebtn" (click)="closeModal()"><i class="fa fa-times fa-2x"></i></button>
+        </ion-buttons>
+      </ion-col>
+    </ion-row>
+  </ion-navbar>
+</ion-header>
+<ion-content padding>
+  <ion-row>
+    <ion-col no-padding>
+      <ion-label class="label">{{'Name' | translate}}<span class="validator"></span></ion-label>
+      <ion-input [attr.maxlength]="100" type="text" required placeholder="{{'Name' | translate}}" [(ngModel)]="name"
+        class="amount-box">
+      </ion-input>
+    </ion-col>
+    <!-- <ion-col col-6>
+      <ion-item class="input-field-style input-margin-style input-logo-margin">
+        <ion-label stacked>{{ 'Name' | translate }}</ion-label>
+        <ion-input [(ngModel)]="name" type="text" class="input-margin username" autocapitalize="none" required></ion-input>
+      </ion-item>
+    </ion-col> -->
+    <!-- 01-29-2019 -- Mansi Arora -- UI Re-arranged -->
+    <ion-col no-padding>
+      <ion-label class="label">{{'Email' | translate}}<span class="validator"></span></ion-label>
+      <ion-input [(ngModel)]="email" (ngModelChange)="validateEmail(email)" [attr.maxlength]="200" type="text" required placeholder="{{'Email' | translate}}"
+         class="amount-box">
+      </ion-input>
+      <div class="email-validation-text" *ngIf="!isCorrect && email">{{'Please Enter Valid Email' | translate}}</div>
+    </ion-col>
+    <ion-col no-padding col-6 style="display:none;">
+      <!-- 02-01-2019 -- Mansi Arora -- remove required from clarity id -->
+      <ion-label class="label">{{'Clarity ID' | translate}}</ion-label>
+      <ion-input [attr.maxlength]="100" type="text" placeholder="{{'Clarity ID' | translate}}" [(ngModel)]="clarityid"
+        class="amount-box">
+      </ion-input>
+    </ion-col>
+    <ion-col no-padding col-6>
+      <ion-label class="label">
+        {{'Roles' | translate}}
+        <span class="validator"></span>
+      </ion-label>
+      <ion-select tappable required placeholder="{{'Select Roles' | translate}}" [(ngModel)]="userrolesid" class="field-box select-style"
+        multiple="true">
+        <ion-option disabled value="{{''}}">{{'Select Roles' | translate}}</ion-option>
+        <ion-option *ngFor="let item of cloudService.uniqueRoles" [value]="item.UserRoleID">{{item.RoleName}}</ion-option>
+      </ion-select>
+      <!-- <ion-label class="label">{{'Roles' | translate}}<span class="validator"></span></ion-label>
+        <ion-select  tappable  required placeholder="{{'Select Roles' | translate}}" >
+          <ion-option disabled value="{{''}}">{{'Select Roles' | translate}}</ion-option>
+          <ion-option>{{Admin | translate}}</ion-option>
+          <ion-option>{{Admin | translate}}</ion-option>
+        </ion-select> -->
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col col-6 no-padding>
+      <!-- 02-01-2019 -- Mansi Arora -- remove required from World Area -->
+      <ion-label class="label">
+        {{'World Area' | translate}}
+      </ion-label>
+      <ion-select tappable placeholder="{{'Select World Area' | translate}}" [(ngModel)]="world_area" class="field-box select-style">
+        <ion-option disabled value="{{''}}">{{'Select World Area' | translate}}</ion-option>
+        <ion-option *ngFor="let item of worldarea" [value]="item.LookupID">{{item.LookupValue}}</ion-option>
+      </ion-select>
+    </ion-col>
+    <ion-col>
+      <ion-label class="label" ></ion-label>
+      <ion-item>
+        <ion-label>
+          Is Active:
+        </ion-label>
+        <ion-checkbox [checked]="(isActive == 'Y')" class="pointer" (ionChange)="setEnable($event)"></ion-checkbox>
+      </ion-item>
+    </ion-col>
+  </ion-row>
+  <ion-row class="mg-tp">
+    <!-- 01-29-2019 -- Mansi Arora -- dropdown for country, input for state, city and zip code added -->
+    <ion-col col-3>
+      <ion-label class="label">{{'Country' | translate}}</ion-label>
+      <ion-select tappable placeholder="{{'Select Country' | translate}}" class="field-box select-style" [(ngModel)]="country">
+        <ion-option disabled value="{{''}}">{{'Select Country' | translate}}</ion-option>
+        <!-- 01-30-2019 -- Mansi Arora -- save country code instead of country name -->
+        <ion-option *ngFor="let item of countries" [value]="item.Country_Code">{{ item.Country_Name }}</ion-option>
+      </ion-select>
+    </ion-col>
+    <ion-col col-3>
+      <ion-label class="label">{{'State' | translate}}</ion-label>
+      <ion-input type="text" [attr.maxlength]="200" placeholder="{{'State' | translate}}" class="amount-box zipcodeInput"
+        [(ngModel)]="state"></ion-input>
+    </ion-col>
+    <ion-col col-3>
+      <ion-label class="label">{{'City' | translate}}</ion-label>
+      <ion-input type="text" [attr.maxlength]="200" placeholder="{{'City' | translate}}" class="amount-box zipcodeInput"
+        [(ngModel)]="city"></ion-input>
+    </ion-col>
+    <ion-col col-3>
+      <ion-label class="label">{{'Zipcode' | translate}}</ion-label>
+      <ion-input type="text" [attr.maxlength]="10" placeholder="{{'Zipcode' | translate}}" class="amount-box zipcodeInput"
+        [(ngModel)]="zipcode"></ion-input>
+    </ion-col>
+  </ion-row>
+</ion-content>

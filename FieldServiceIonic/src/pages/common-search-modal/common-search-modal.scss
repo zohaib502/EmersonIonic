@@ -1,0 +1,433 @@
+page-common-search-modal {
+  [magin-seach] {
+    margin: auto;
+  }
+
+  .search-modal,
+  ion-header,
+  .scroll-content {
+    background: #fff !important;
+  }
+
+  ion-navbar {
+    height: auto !important;
+  }
+
+  [end].bar-buttons-md,
+  [end].bar-buttons-ios {
+    position: absolute;
+    right: 5px;
+    top: 5px;
+  }
+
+  .label {
+    margin: 0px;
+  }
+
+  .commentBox1 .text-input {
+    width: 100%;
+    height: 200px;
+    padding: 10px !important;
+    background-color: rgba(216, 216, 216, 0.2);
+    border: 1px solid rgba(216, 216, 216, 0.2);
+  }
+
+  .noteAllignment {
+    margin-top: -2%;
+    height: 40%;
+  }
+
+  .select-style {
+    max-width: 100% !important;
+  }
+
+  .select-text {
+    color: rgba(128, 128, 128, 1) !important;
+    font-family: "Helvetica Neue";
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 17px;
+  }
+
+  .select {
+    padding: 6px !important;
+  }
+
+
+  .serviceInstallBase {
+    padding-top: 12px;
+    margin: 0 20px;
+  }
+
+  .modal-wrapper {
+    height: 490px;
+    width: 850px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    position: fixed;
+  }
+
+  .modal-wrapper .scroll-content {
+    background-color: rgba(255, 255, 255, 1) !important;
+    color: rgba(74, 74, 74, 1);
+    font-family: "Helvetica Neue";
+    font-size: 18px;
+    font-weight: 300;
+    line-height: 28px;
+    text-align: center;
+    overflow-y: auto;
+    padding: 0px !important;
+  }
+
+  .modal-wrapper .toolbar-title {
+    color: rgba(74, 74, 74, 1);
+    font-family: "Helvetica Neue";
+    font-size: 22px;
+    font-weight: 300;
+    line-height: 27px;
+    text-align: left;
+  }
+
+  .toolbar {
+    //height: 52px !important;
+    border-bottom: 1px solid rgba(233, 232, 232, 1) !important;
+  }
+
+  .processLabel {
+    width: 89% !important;
+  }
+
+  .searchResultRow {
+    min-height: 50px;
+    width: 100%;
+  }
+
+  .input-box .text-input {
+    margin-left: 0px;
+  }
+
+  .select-box,
+  .input-box .text-input {
+    box-sizing: border-box;
+    height: 31px;
+    border: 1px solid rgba(216, 213, 209, 1);
+    border-radius: 3px;
+    background-color: rgba(255, 255, 255, 1);
+    width: 100%;
+    color: rgba(128, 128, 128, 1);
+  }
+
+  .active-item {
+    font-weight: bold;
+
+    ion-icon {
+      color: #1976D2;
+    }
+  }
+
+  ion-searchbar {
+    padding: 0px !important;
+  }
+
+  .header-width {
+    // width: 12%;
+    margin-right: 1%;
+
+    ion-label.label {
+      margin: 11px 0px 15px 0 !important;
+    }
+  }
+
+  .headerWidth0 {
+    width: 8% !important;
+  }
+
+  .headerWidth1{
+    width: 22% !important;
+  }
+
+  .headerWidth2{
+    width: 15% !important;
+  }
+
+  .headerWidth3{
+    width: 13% !important;
+  }
+
+  .headerWidth4{
+    width: 8% !important;
+  }
+
+  .headerWidth5{
+    width: 10% !important;
+  }
+
+  .headerWidth6{
+    width: 8% !important;
+  }
+
+  .select-customer-btn{
+    background-color: #8eb15f !important;
+    text-transform: capitalize;
+    font-family: "Helvetica Neue";
+    border-radius: 3px;
+    width: 6%;
+    min-width: 45px;
+    float: right;
+    cursor: pointer;
+  }
+
+  
+
+  .search-btn {
+    margin-top: 35px;
+  }
+
+  .select-btn {
+    margin: auto 0;
+  }
+
+  .item-selected {
+    margin-top: 15px;
+  }
+
+  .no-records {
+    margin-left: 40%;
+  }
+
+  .scrollContent {
+    overflow-x: hidden;
+    overflow-y: auto;
+    height: 250px;
+  }
+
+  .scrollContent-searchdropdown {
+    overflow-x: hidden;
+    overflow-y: auto;
+    height: 480px;
+  }
+
+  .searchBoxDiv {
+    margin-right: 5px;
+  }
+
+  .headContent {
+    padding: 12px 12px 0 12px;
+  }
+
+  ion-footer .header::after,
+  [tabsPlacement='top'].tabs>.tabbar::after,
+  .footer::before,
+  [tabsPlacement='bottom'].tabs>.tabbar::before {
+    left: 0px;
+    bottom: -5px;
+    background-position: left 0 top -2px;
+    position: absolute;
+    width: 100%;
+    height: 5px;
+    background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAHBAMAAADzDtBxAAAAD1BMVEUAAAAAAAAAAAAAAAAAAABPDueNAAAABXRSTlMUCS0gBIh/TXEAAAAaSURBVAjXYxCEAgY4UIICBmMogMsgFLtAAQCNSwXZKOdPxgAAAABJRU5ErkJggg==");
+    background-repeat: repeat-x;
+    display: none;
+    content: "";
+  }
+
+  .valueLabel {
+    word-wrap: break-word !important;
+    white-space: normal;
+  }
+
+  .filtered-list {
+    z-index: 9999;
+    -webkit-box-shadow: 0px 3px 12px 2px rgba(0, 0, 0, 0.3);
+    box-shadow: 0px 3px 12px 2px rgba(0, 0, 0, 0.3);
+  }
+
+  .searchNSelect::after {
+    position: absolute;
+    right: 8px;
+    top: 7px;
+    font-family: "FontAwesome";
+    content: "\f0d7";
+    color: #999;
+    font-size: 14px;
+    pointer-events: none;
+  }
+
+  .searchNSelect .text-input {
+    cursor: pointer;
+    padding: 0 25px 0 4px !important;
+  }
+
+  .searchNSelect ::-ms-input-placeholder {
+    color: black !important;
+  }
+
+
+  .internalSearchNSelect .input-box .text-input {
+    height: 31px;
+    border-radius: 3px;
+  }
+
+  .internalSearchNSelect .content .scroll-content {
+    margin-top: 0px !important;
+    height: 260px;
+    padding: 0px !important;
+    background-color: transparent !important;
+    overflow-y: hidden !important;
+
+    .main-div {
+      height: 100%;
+      overflow-y: auto !important;
+    }
+
+    .autoSearchFields {
+      height: 100%;
+
+      .item-inner {
+        border: none !important;
+      }
+    }
+  }
+
+
+  .autoSearchFields .item-radio-checked {
+    background-color: rgba(0, 117, 189, 1) !important;
+
+    .smart-search-radio {
+      color: white !important;
+      font-weight: 600;
+    }
+
+    .radio .radio-icon {
+      border-color: transparent !important
+    }
+
+    .radio .radio-inner {
+      background-color: transparent !important
+    }
+  }
+
+  .autoSearchFields .radio .radio-icon {
+    border-color: transparent !important;
+
+    .radio .radio-inner {
+      background-color: transparent !important;
+    }
+  }
+
+  .autoSearchFields.list .item-block {
+    min-height: 32px;
+    background-color: rgba(253, 252, 252, 1);
+    border-bottom: 1px solid rgba(220, 217, 214, 1);
+    border-right: 1px solid rgba(220, 217, 214, 1);
+    border-left: 1px solid rgba(220, 217, 214, 1);
+    border-collapse: collapse;
+  }
+
+  textarea::-ms-input-placeholder {
+    color: transparent !important;
+  }
+
+  // input[type=text]::-ms-input-placeholder {
+  //   color: transparent !important;
+  // }
+
+}
+
+.CommonSearchModalPage-Customer {
+  .modal-wrapper {
+    height: 570px;
+    // width: 800px;
+    width: 83% !important;
+  }
+
+  input[type=text]::-ms-input-placeholder {
+    color: transparent !important;
+  }
+}
+
+.CommonSearchModalPage-Customer, .CommonSearchModalPage {
+
+  .modal-wrapper {
+    height: 600px;
+    width: 600px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    position: fixed;
+  }
+
+  .modal-wrapper .scroll-content {
+    background-color: rgba(255, 255, 255, 1) !important;
+    color: rgba(74, 74, 74, 1);
+    font-family: "Helvetica Neue";
+    font-size: 18px;
+    font-weight: 300;
+    line-height: 28px;
+    text-align: left;
+    overflow-y: hidden !important;
+    padding: 0px !important;
+  }
+
+  .modal-wrapper .toolbar-title {
+    color: rgba(74, 74, 74, 1) !important;
+    font-family: "Helvetica Neue";
+    font-size: 22px;
+    font-weight: 300;
+    line-height: 27px;
+    text-align: left;
+  }
+
+  .toolbar {
+    height: 52px !important;
+  }
+
+  .padding-style {
+    padding: 0 10px 1px;
+  }
+
+  .pagination {
+    font-size: 14px !important;
+    line-height: 21px !important;
+    margin-top: 4px;
+  }
+
+  .ngx-pagination .current {
+    font-family: "Helvetica Neue";
+    text-align: center;
+    padding: 2px 1px 0 0;
+    background: #8eb15f;
+    color: #fefefe;
+    cursor: default;
+    border-radius: 50%;
+    width: 26px;
+    height: 26px;
+    font-weight: bold;
+  }
+
+  .ngx-pagination {
+    margin: 14px 10px 0 0 !important;
+    padding: 0px;
+  }
+
+  pagination-controls {
+    float: right;
+  }
+
+  // 02-16-2019 -- Mansi Arora -- css for error message in customer search popup
+  .error-message {
+    margin: 0;
+    color: red;
+    font-size: 12px;
+  }
+
+  .search-div {
+    padding-top: 0px !important;
+  }
+
+}

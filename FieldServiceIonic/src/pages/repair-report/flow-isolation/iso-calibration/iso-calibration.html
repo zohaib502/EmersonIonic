@@ -1,0 +1,249 @@
+<ion-content padding class="sdr-pages">
+  <ion-card>
+    <ion-card-header>
+      <ion-row class="global-padding row">
+        <ion-col col-3>
+          <div class="header-left">{{'Calibration'|translate}}</div>
+        </ion-col>
+        <ion-col col-9 *ngIf="selectedProcess==Enums.Selected_Process.FCR_AND_SDR" class="txt-rgt">
+          <span class="ft-size verticalMiddle">Continue</span> <button (click)="gotofcr()" ion-button
+            class="frs-Btn verticalMiddle ">{{'Field Completion Report'|translate}}</button>
+        </ion-col>
+      </ion-row>
+    </ion-card-header>
+    <page-sdr-header></page-sdr-header>
+    <ion-card-content id="calibration_1">
+      <div class="global-padding full-width">
+        <ion-row class="bottom-border">
+          <ion-col (click)="expandAcc()" class="cursorPointer">
+            <span>
+              <ion-icon class="arrowIcon" item-left name="arrow-dropright" *ngIf="!expandAccordion">
+              </ion-icon>
+              <ion-icon class="arrowIcon" role="img" *ngIf="expandAccordion" aria-label="arrow dropdown"
+                name="arrow-dropdown">
+              </ion-icon>
+            </span>
+            <span class="label-asper">{{'Calibration'|translate}}</span>
+          </ion-col>
+          <ion-col class="txt-rgt">
+            <span class="label">{{'N/A'|translate}}</span>
+            <ion-checkbox [checked]="calibrationObj.CAL_NA == 'true' || calibrationObj.CAL_NA == true" id="cal_check_1"
+              [(ngModel)]="calibrationObj.CAL_NA"
+              (ionChange)="confirmAlert(calibrationObj.CAL_NA,'isoCalibration','CAL_NA')">
+            </ion-checkbox>
+          </ion-col>
+        </ion-row>
+      </div>
+      <div *ngIf="expandAccordion" class="global-padding full-width">
+        <ion-row>
+          <ion-col>
+            <span class="label-aslft">{{'As Found Performance'|translate}}</span>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col col-6>
+            <span class="label-aslft">{{'Travel'|translate}}</span>
+            <span [ngClass]="calibrationObj.CAL_TRAVEL_UOM && calibrationObj.CAL_TRAVEL_UOM !=''? 'validator'  :''"
+              class="inline-block"></span>
+            <br>
+            <ion-input maxlength="250"
+              [ngClass]="errorObj.CAL_TRAVEL && errorObj.CAL_TRAVEL !='' ? 'input-validation'  :''" id="cal_input_1"
+              [(ngModel)]="calibrationObj.CAL_TRAVEL" class="project-box  select-style">
+            </ion-input>
+          </ion-col>
+          <ion-col col-6>
+            <span class="label-aslft">{{'Signal Open'|translate}}</span>
+            <span
+              [ngClass]="calibrationObj.CAL_SIGNALOPEN_UOM && calibrationObj.CAL_SIGNALOPEN_UOM !=''? 'validator'  :''"
+              class="inline-block"></span>
+            <br>
+            <ion-input maxlength="250"
+              [ngClass]="errorObj.CAL_SIGNALOPEN && errorObj.CAL_SIGNALOPEN !='' ? 'input-validation'  :''"
+              id="cal_input_2" [(ngModel)]="calibrationObj.CAL_SIGNALOPEN" class="project-box  select-style">
+            </ion-input>
+          </ion-col>
+
+        </ion-row>
+        <ion-row>
+          <ion-col col-6>
+            <span class="label-aslft">{{'Travel UOM'|translate}}</span>
+            <span [ngClass]="calibrationObj.CAL_TRAVEL&&calibrationObj.CAL_TRAVEL !=''? 'validator'  :''"
+              class="inline-block"></span>
+            <br>
+            <ion-input [ngClass]="errorObj.CAL_TRAVEL_UOM && errorObj.CAL_TRAVEL_UOM !='' ? 'input-validation'  :''"
+              [(ngModel)]="calibrationObj.CAL_TRAVEL_UOM" id="cal_input_3" tappable
+              (click)="searchModal('TravelUOMFlowIsolation','CAL_TRAVEL_UOM')"
+              class="project-box searchNSelect select-style" [readonly]="true">
+            </ion-input>
+            <ion-input maxlength="250" id="cal_input_3" *ngIf="calibrationObj.CAL_TRAVEL_UOM == 'Other'"
+              [(ngModel)]="calibrationObj.CAL_TRAVEL_UOM_OT"
+              [ngClass]="!calibrationObj.CAL_TRAVEL_UOM_OT ? 'input-validation' : ''" class="project-box  select-style">
+            </ion-input>
+          </ion-col>
+          <ion-col col-6>
+            <span class="label-aslft">{{'Signal Open Unit Of Mesurement'|translate}}</span>
+            <span [ngClass]="calibrationObj.CAL_SIGNALOPEN&&calibrationObj.CAL_SIGNALOPEN !=''? 'validator'  :''"
+              class="inline-block"></span>
+            <br>
+            <ion-input
+              [ngClass]="errorObj.CAL_SIGNALOPEN_UOM && errorObj.CAL_SIGNALOPEN_UOM !='' ? 'input-validation'  :''"
+              [(ngModel)]="calibrationObj.CAL_SIGNALOPEN_UOM" id="cal_input_4" tappable
+              (click)="searchModal('CalibrationAsFoundAsLeftSignalOpenUnitOfMeasurementFlowIsolation','CAL_SIGNALOPEN_UOM')"
+              class="project-box searchNSelect select-style" [readonly]="true">
+            </ion-input>
+            <ion-input maxlength="250" *ngIf="calibrationObj.CAL_SIGNALOPEN_UOM == 'Other'" id="cal_input_30"
+              [(ngModel)]="calibrationObj.CAL_SIGNALOPEN_UOM_OT"
+              [ngClass]="!calibrationObj.CAL_SIGNALOPEN_UOM_OT ? 'input-validation' : ''"
+              class="project-box  select-style">
+            </ion-input>
+          </ion-col>
+        </ion-row>
+        <!-- <ion-row>
+        <ion-col col-6>
+
+          <ion-input id="cal_input_5" class="project-box input-validation   select-style">
+          </ion-input>
+        </ion-col>
+        <ion-col col-6>
+
+          <ion-input id="cal_input_6" class="project-box select-style">
+          </ion-input>
+        </ion-col>
+
+      </ion-row> -->
+        <ion-row>
+          <ion-col col-6>
+            <span class="label-aslft">{{'Bench Set'|translate}}</span>
+            <span [ngClass]="calibrationObj.CAL_BENCH_UOM&&calibrationObj.CAL_BENCH_UOM !=''? 'validator'  :''"
+              class="inline-block"></span>
+            <br>
+            <ion-input maxlength="250"
+              [ngClass]="errorObj.CAL_BENCHSET && errorObj.CAL_BENCHSET !='' ? 'input-validation'  :''"
+              [(ngModel)]="calibrationObj.CAL_BENCHSET" id="cal_input_1" class="project-box  select-style">
+            </ion-input>
+          </ion-col>
+          <ion-col col-6>
+            <span class="label-aslft">{{'Signal Closed'|translate}}</span>
+            <span
+              [ngClass]="calibrationObj.CAL_SIGNALCLOSED_UOM&&calibrationObj.CAL_SIGNALCLOSED_UOM !=''? 'validator'  :''"
+              class="inline-block"></span>
+            <br>
+            <ion-input maxlength="250"
+              [ngClass]="errorObj.CAL_SIGNALCLOSED && errorObj.CAL_SIGNALCLOSED !='' ? 'input-validation'  :''"
+              id="cal_input_2" [(ngModel)]="calibrationObj.CAL_SIGNALCLOSED" class="project-box  select-style">
+            </ion-input>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col col-6>
+            <span class="label-aslft">{{'Bench Unit Of Mesurement'|translate}}</span>
+            <span [ngClass]="calibrationObj.CAL_BENCHSET&&calibrationObj.CAL_BENCHSET !=''? 'validator'  :''"
+              class="inline-block"></span>
+            <br>
+            <ion-input [ngClass]="errorObj.CAL_BENCH_UOM && errorObj.CAL_BENCH_UOM !='' ? 'input-validation'  :''"
+              [(ngModel)]="calibrationObj.CAL_BENCH_UOM" id="cal_input_3" tappable
+              (click)="searchModal('CalibrationAsFoundAsLeftBenchSetUnitOfMeasurementFlowIsolation','CAL_BENCH_UOM')"
+              class="project-box searchNSelect select-style" [readonly]="true">
+            </ion-input>
+            <ion-input maxlength="250" *ngIf="calibrationObj.CAL_BENCH_UOM == 'Other'"
+              [(ngModel)]="calibrationObj.CAL_BENCH_UOM_OT" id="cal_input_ot_3"
+              [ngClass]="!calibrationObj.CAL_BENCH_UOM_OT ? 'input-validation' : ''" class="project-box  select-style">
+            </ion-input>
+          </ion-col>
+          <ion-col col-6>
+            <span class="label-aslft">{{'Signal Closed UOM'|translate}}</span>
+            <span [ngClass]="calibrationObj.CAL_SIGNALCLOSED&&calibrationObj.CAL_SIGNALCLOSED !=''? 'validator'  :''"
+              class="inline-block"></span>
+            <br>
+            <ion-input id="cal_input_4" tappable
+              [ngClass]="errorObj.CAL_SIGNALCLOSED_UOM && errorObj.CAL_SIGNALCLOSED_UOM !='' ? 'input-validation'  :''"
+              [(ngModel)]="calibrationObj.CAL_SIGNALCLOSED_UOM"
+              (click)="searchModal('CalibrationAsFoundAsLeftSignalClosedUnitOfMeasurementFlowIsolation','CAL_SIGNALCLOSED_UOM')"
+              class="project-box searchNSelect select-style" [readonly]="true">
+            </ion-input>
+            <ion-input maxlength="250" *ngIf="calibrationObj.CAL_SIGNALCLOSED_UOM == 'Other'" id="cal_input_4"
+              [(ngModel)]="calibrationObj.CAL_SIGNALCLOSED_UOM_OT"
+              [ngClass]="!calibrationObj.CAL_BENCH_UOM_OT ? 'input-validation' : ''" class="project-box  select-style">
+            </ion-input>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col col-6>
+
+          </ion-col>
+          <ion-col col-6>
+            <span class="label-aslft">{{'Supply'|translate}}</span>
+            <span [ngClass]="calibrationObj.CAL_SUPPLY_UOM&&calibrationObj.CAL_SUPPLY_UOM !=''? 'validator'  :''"
+              class="inline-block"></span>
+            <br>
+            <ion-input maxlength="250"
+              [ngClass]="errorObj.CAL_SUPPLY && errorObj.CAL_SUPPLY !='' ? 'input-validation'  :''" id="cal_input_5"
+              [(ngModel)]="calibrationObj.CAL_SUPPLY" class="project-box  select-style">
+            </ion-input>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col col-6>
+
+          </ion-col>
+          <ion-col col-6>
+            <span class="label-aslft">{{'Supply UOM'|translate}}</span>
+            <span [ngClass]="calibrationObj.CAL_SUPPLY&&calibrationObj.CAL_SUPPLY !=''? 'validator'  :''"
+              class="inline-block"></span>
+            <br>
+            <ion-input id="cal_input_6"
+              [ngClass]="errorObj.CAL_SUPPLY_UOM && errorObj.CAL_SUPPLY_UOM !='' ? 'input-validation'  :''"
+              [(ngModel)]="calibrationObj.CAL_SUPPLY_UOM" tappable (click)="searchModal('SupplyUOM','CAL_SUPPLY_UOM')"
+              class="project-box searchNSelect select-style" [readonly]="true">
+            </ion-input>
+            <ion-input maxlength="250" id="cal_input_7"
+              [ngClass]="!calibrationObj.CAL_SUPPLY_UOM_OT ? 'input-validation' : ''"
+              *ngIf="calibrationObj.CAL_SUPPLY_UOM == 'Other'" [(ngModel)]="calibrationObj.CAL_SUPPLY_UOM_OT"
+              class="project-box  select-style">
+            </ion-input>
+          </ion-col>
+        </ion-row>
+        <!-- <ion-row>
+          <ion-col col-6>
+
+          </ion-col>
+          <ion-col col-6>
+            <span class="label-aslft">{{'Other'|translate}}</span><br>
+            <ion-input id="cal_input_8" tappable  [(ngModel)]="calibrationObj.CAL_SUPPLYUOM_OT"
+              class="project-box searchNSelect select-style" [readonly]="true">
+            </ion-input>
+          </ion-col>
+        </ion-row> -->
+        <ion-row>
+          <ion-col col-6>
+
+          </ion-col>
+          <ion-col col-6>
+            <span class="label-aslft">{{'Fail Action'|translate}}</span>
+            <br>
+            <ion-input id="cal_input_9" tappable [(ngModel)]="calibrationObj.CAL_FAILACTION"
+              (click)="searchModal('FailActionFlowIsolation','CAL_FAILACTION')"
+              class="project-box searchNSelect select-style" [readonly]="true">
+            </ion-input>
+            <ion-input maxlength="250" id="cal_input_9" *ngIf="calibrationObj.CAL_FAILACTION == 'Other'"
+              [ngClass]="!calibrationObj.CAL_FAILACTION_OT ? 'input-validation' : ''"
+              [(ngModel)]="calibrationObj.CAL_FAILACTION_OT" class="project-box  select-style">
+            </ion-input>
+          </ion-col>
+        </ion-row>
+
+      </div>
+      <ion-row>
+        <ion-col class="align-lft">
+          <button id="cal_btn_1" (click)="redirect('back')" ion-button
+            class="footer-Button">{{'Back'|translate}}</button>
+        </ion-col>
+        <ion-col class="txt-rgt">
+          <button id="cal_btn_2" (click)="redirect('')" ion-button
+            class="footer-Button">{{ bottomNavBtn|translate}}</button>
+        </ion-col>
+      </ion-row>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

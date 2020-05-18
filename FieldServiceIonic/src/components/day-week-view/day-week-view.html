@@ -1,0 +1,116 @@
+<div>
+  <ion-row padding>
+    <ion-col class="start" no-padding>
+      <div class="time-en inline-block">
+        <button class="timeEntry-btn" (click)="addProject('addtime')" ion-button item-end icon-end>
+          {{'Time Entry' | translate}}<ion-icon name="add"></ion-icon>
+        </button>
+      </div>
+      
+      <div class="vac-en inline-block" *ngIf="!clarityUser && valueProvider.getResourceId() == '0'">
+        <button class="Vacation-btn" (click)="addProject('addVactime')" ion-button icon-end>
+          {{'Vacation/Sick Day' | translate}} <ion-icon name="add"></ion-icon>
+        </button>
+      </div>
+      <div class="vac-en inline-block" *ngIf="valueProvider.getResourceId() != '0' && valueProvider.getUser().ClarityID == ''">
+        <button [disabled]="false" class="Vacation-btn" (click)="addProject('Absences')" ion-button icon-end>
+          {{'Absences / Internal' | translate }}<ion-icon name="add"></ion-icon>
+        </button>
+      </div>
+      <div class="time-en inline-block" *ngIf="valueProvider.getPermissions().EnterAllowances">
+        <button class="timeEntry-btn" [disabled]="isFutureWeek" (click)="addProject('addAllowances')" ion-button item-end icon-end>
+          {{'Allowance' | translate}}<ion-icon name="add" ></ion-icon>
+        </button>
+      </div>
+    </ion-col>
+    <!-- <ion-col class="center">
+      <div class="awaiting-submit">
+        <button ion-button round outline class="await-btn-disable" [disabled]="true">{{'Saved' |
+          translate }}</button>
+        <button ion-button class="submit-btn-disable" [disabled]="true">Submit<span><img
+                     src="assets/imgs/icons/save-icon.png" class="active-submit-img"></span></button>
+            <span><i class="fa fa-file-pdf-o pdf-icon-disable"></i></span>
+        <span><i class="fa fa-file-pdf-o pdf-icon-active"></i></span>
+      </div>
+    </ion-col>
+    <ion-col class="end">
+      <div *ngIf="valueProvider.continueDebrief" class="continue" (click)="continueToDebrief()">
+        <span class="pageNavigationBtn pointer">{{'Continue Debrief' | translate }} ></span>
+      </div>
+    </ion-col> -->
+  </ion-row>
+  <ion-row class="stroke full-width"></ion-row>
+  <ion-row class="global-padding full-width">
+    <div class="day-week-view" *ngIf="!advSearchBtnClicked && ( weekBtnClicked || dayBtnClicked)">
+      <div class="week-left-btn inline-block" *ngIf="weekBtnClicked">
+        <div class="previous-week pointer" *ngIf="enableDisableDate" (click)="setWeekDay('setWeekStart')">
+          <i class="fa fa-angle-left left-icon"></i>
+        </div>
+      </div>
+      <div class="day-left-btn inline-block" *ngIf="dayBtnClicked">
+        <div class="previous-day pointer" *ngIf="enableDisableDate" (click)="setWeekDay('setPreviusDay')">
+          <i class="fa fa-angle-left left-icon"></i>
+        </div>
+      </div>
+      <div class="day-btn inline-block">
+        <button ion-button (click)="setWeekDay('showDayWise')"
+          [ngClass]="dayBtnClicked?'day-btn-active':'day-btn-disable'">{{'Day'
+          | translate }}</button>
+      </div>
+      <div class="week-btn inline-block">
+        <button ion-button (click)="setWeekDay('showWeekWise')"
+          [ngClass]="weekBtnClicked?'week-btn-active':'week-btn-disable'">{{'Week'
+          | translate }}</button>
+      </div>
+      <div class="week-dates inline-block" *ngIf="weekBtnClicked">
+        {{formatDate(WeekStart)}} - {{formatDate(WeekEnd)}}
+      </div>
+      <div class="day-date inline-block" *ngIf="dayBtnClicked">
+        {{formatDate(selectedDay)}}
+      </div>
+      <div *ngIf="dayBtnClicked" class="calendar inline-block">
+        <input type="text" tappable class="cal-date-box inline-block" bsDatepicker 
+        [bsConfig]="datepickerConfig" value="{{ calendarSelectedDay }}" [(ngModel)]="calendarSelectedDay" #dps="bsDatepicker" (onShown)="onShowPicker($event)" (onHidden)="getDurationOnDate('day', true)" >
+        <span>
+          <img (click)="dps.show()" tappable [attr.aria-expanded]="dps.isOpen"
+            src="assets/imgs/icons/ic_calendar-for-field.png" class="calIcon pointer" />
+        </span>
+
+      </div>
+
+      <div *ngIf="weekBtnClicked" class="calendar inline-block">
+        <input type="text" tappable class="cal-date-box inline-block" bsDatepicker 
+        [bsConfig]="datepickerConfig" value="{{ calendarSelectedDay }}" [(ngModel)]="calendarSelectedDay" #dps="bsDatepicker" (onShown)="onShowPicker($event)" (onHidden)="getDurationOnDate('week', true)"  >
+        <span>
+          <img (click)="dps.show()" tappable [attr.aria-expanded]="dps.isOpen"
+            src="assets/imgs/icons/ic_calendar-for-field.png" class="calIcon pointer" />
+        </span>
+
+      </div>
+      <div class="week-right-btn inline-block" *ngIf="weekBtnClicked">
+        <div class="next-week pointer" (click)="setWeekDay('setWeekEnd')">
+          <i class="fa fa-angle-right right-icon"></i>
+        </div>
+      </div>
+      <div class="day-right-btn inline-block" *ngIf="dayBtnClicked">
+        <div class="next-day pointer" (click)="setWeekDay('setNextDay')">
+          <i class="fa fa-angle-right right-icon"></i>
+        </div>
+      </div>
+      <div class="inline-block verticalMiddle hyperlink" *ngIf="showAllowanceButton && valueProvider.getPermissions().EnterAllowances">
+          <a class="pointer adv-link value" (click)="editAllowance()">{{ 'Allowances Entered' | translate }}</a>
+      </div>
+
+      <div class="search-box">
+        <ion-searchbar class="search" (ionChange)="setWeekDay('searchJobid')" [(ngModel)]="taskInput" (ionCancel)="onCancel($event)" placeholder="{{'Search Job ID'| translate}}">
+        </ion-searchbar>
+      </div>
+    </div>
+    <div class="search-div">
+      <div class="search-box">
+        <a class="pointer adv-link" (click)="setWeekDay('advSearchBtn', false)">{{ advBtnText | translate }}</a>
+      </div>
+    </div>
+
+  </ion-row>
+</div>

@@ -1,0 +1,44 @@
+<ion-content class="login-content" padding>
+  <div class="login-box" style="height:100%">
+    <ion-row class="logo-row" style="height:25%">
+      <div text-center class="full-width">
+        <img class="logo-style" src="assets/imgs/icons/emerson-logo.png" />
+      </div>
+    </ion-row>
+    <ion-row style="height:75%">
+      <form novalidate class="full-height full-width">
+        <div class="global-padding full-height">
+          <span class="block errorDiv">
+            <span *ngIf="loginError" class="block errorContainer">
+              <img class="error_icon" src="assets/imgs/icons/cancel.png" />
+              <span class="font-family-style">  {{loginErrorMsg | translate}}</span>
+            </span>
+          </span>
+          <span class="block credential-box">
+            <ion-list class="margin-style global-padding" inset>
+              <ion-item class="input-field-style input-margin-style input-logo-margin">
+                <ion-input type="text" id="username" [disabled]="loginProcess" autocapitalize="none" class="input-margin username" placeholder="{{ 'Username' | translate }}" name="username" [(ngModel)]="username" required></ion-input>
+              </ion-item>
+              <ion-item class="input-field-style input-logo-margin">
+                <ion-input type="password" id="password" [disabled]="loginProcess" class="input-margin password" placeholder="{{ 'Password' | translate }}" [(ngModel)]="password" name="password" required></ion-input>
+              </ion-item>
+            </ion-list>
+          </span>
+          <!-- <span class="block language-picker" text-center>
+            <span> <img src="assets/imgs/icons/en-gb.png" [ngClass]="selectedLang == 'en-uk' ? 'selected language-icon-UI':'unselected language-icon-UI'" (click)="changeLanguage('en-uk')" /></span>
+            <span> <img src="assets/imgs/icons/zh-cn.png" [ngClass]="selectedLang == 'ch' ? 'selected language-icon-UI':'unselected language-icon-UI'" (click)="changeLanguage('ch')" /></span>
+            <span> <img src="assets/imgs/icons/fr.png" [ngClass]="selectedLang == 'fr' ? 'selected language-icon-UI':'unselected language-icon-UI'" (click)="changeLanguage('fr')" /></span>
+          </span> -->
+          <span class="block login-submit-btn">
+            <button ion-button class="login-btn" id="submit" [disabled]="loginProcess" type="submit" (click)="login()"><span translate="SIGN IN"></span></button>
+          </span>
+        </div>
+      </form>
+    </ion-row>
+  </div>
+  
+  <div id="copyright" class="login-footer">
+    <span class="block version-box"><span translate="Version"></span> {{localSoftVersion}}</span>
+    <span class="policy-box" translate="@2018 Emerson Electric Co. All rights reserved"></span>
+  </div>
+</ion-content>

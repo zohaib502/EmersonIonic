@@ -1,0 +1,115 @@
+page-popover-time {
+    .timeBlock{
+        width: 40%;
+       }
+       .comm-duration{
+         padding-left: 27%;
+       }
+       .notesBlock{
+       width: 60%;
+       }
+       .notes{
+         height: 70%;
+         width: 100%;
+         padding-top: 12%;
+       }
+       .comm-save{
+        height: 30%;
+        width: 100%;
+        padding-top: 10%;
+       }
+       .notesBox .text-input{
+           box-sizing: border-box;
+           border: 1px solid rgba(216,213,209,1);
+           border-radius: 3px;
+           background-color: rgba(247,247,246,1);
+           margin: 0;
+           vertical-align: middle;
+           line-height: 30px;
+           width: 100%;
+           height: 100px;
+           padding: 5px;
+           overflow-y: auto;
+           line-height: 16px;
+         }
+         .duration-box {
+          box-sizing: border-box;
+          height: 28px;
+          border: 1px solid rgba(216,213,209,1);
+          border-radius: 3px;
+          background-color: rgba(247,247,246,1);
+          width: 72px;
+        }
+        .timepicker-box .bs-timepicker-field {
+          box-sizing: border-box;
+          height: 25px;
+          border: 1px solid rgba(216,213,209,1);
+          border-radius: 3px;
+          background-color: rgba(247,247,246,1);
+          text-align: center;
+          width: 30px;
+          font-family: "Helvetica Neue";
+          color: black !important;
+          font-size: 11px;
+          font-weight: 300;
+          line-height: 17px;
+        }
+      
+        .timepicker-icon {
+          padding-top: 5px;
+          padding-right: 5px;
+        }
+      
+        .timepicker-box .bs-chevron-up, .timepicker-box .bs-chevron-down {
+          margin: 0 auto;
+        }
+      
+        .bs-chevron {
+          border-width: 3px 0 0 3px;
+          color: rgba(193, 189, 189,1);
+          width: 10px;
+          height: 10px;
+          cursor: pointer;
+        }
+      
+        .timepicker-box .bs-chevron-down {
+          top: 0px;
+        }
+      
+        .timepicker-box .bs-chevron-up {
+          top: 5px;
+        }
+        .save-btn{
+          background-color: rgb(107, 142, 35);
+          text-transform: capitalize;
+          height: 28px !important;
+          border-radius: 3px;
+          border: none;
+          font-size: 14px !important;
+          cursor: pointer;
+          font-family: "Helvetica Neue";
+          padding: 10px;
+          width:100%;
+      }
+        
+   }
+   
+   .TimePopOver{
+       ion-card {
+           margin: 0px !important;
+           padding: 0px !important;
+           width: 100%;
+         }
+       
+         ion-card-content {
+           margin: 0px !important;
+         }
+         .popover-content {
+           min-height: 100px;
+           min-width: 300px!important;
+           width:22% !important;
+           background-color: transparent;
+           border-radius: 10px;
+           box-shadow: 10px 10px 12px 0px rgba(0, 0, 0, 0.3);
+         }
+}

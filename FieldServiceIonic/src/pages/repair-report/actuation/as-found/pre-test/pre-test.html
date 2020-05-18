@@ -1,0 +1,87 @@
+<div class="pre-test-sec">
+  <ion-row>
+    <ion-col>
+      <span class="txt-left">{{'Air Pressure Test'|translate}}</span>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col col-1>
+      <span class="pre-test label"> {{'Pre-Test'|translate}}</span>
+      <ion-checkbox [(ngModel)]="preTestObj.DONEAIRPRESSUREPRETEST" (click)="deviceTstChkValChanged($event)"
+        [checked]="preTestObj.DONEAIRPRESSUREPRETEST == 'true' || preTestObj.DONEAIRPRESSUREPRETEST == true"
+        color="dark">
+      </ion-checkbox>
+    </ion-col>
+    <ion-col col-5>
+      <span class="pre-test">{{'Pre-Test Result'|translate}}</span><br>
+      <ion-textarea [(ngModel)]="preTestObj.AIRPRESSUREPRETEST" (ionChange)="deviceTestValChanged($event)"
+        (focusout)="preTestObj.AIRPRESSUREPRETEST = utilityProvider.sliceValueUptoLimit($event.target.value, $event.target.maxLength)"
+        name="preTestObj.AIRPRESSUREPRETEST" maxlength="2000" class="cus-txt-area"></ion-textarea>
+    </ion-col>
+  </ion-row>
+</div>
+<div class="pre-test-sec">
+  <ion-row>
+    <ion-col>
+      <span class="txt-left">{{'Function Test'|translate}}</span>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col col-1>
+      <span class="pre-test label"> {{'Pre-Test'|translate}}</span>
+      <ion-checkbox [(ngModel)]="preTestObj.DONEFUNCTIONPRETEST" (click)="deviceTstChkValChanged($event)"
+        [checked]="preTestObj.DONEFUNCTIONPRETEST == 'true' || preTestObj.DONEFUNCTIONPRETEST == true" color="dark">
+      </ion-checkbox>
+    </ion-col>
+    <ion-col col-5>
+      <span class="pre-test">{{'Pre-Test Result'|translate}}</span><br>
+      <ion-textarea maxlength="2000" [(ngModel)]="preTestObj.FUNCTIONPRETEST" (ionChange)="deviceTestValChanged($event)"
+        (focusout)="preTestObj.FUNCTIONPRETEST = utilityProvider.sliceValueUptoLimit($event.target.value, $event.target.maxLength)"
+        name="preTestObj.FUNCTIONPRETEST" maxlength="2000" class="cus-txt-area"></ion-textarea>
+    </ion-col>
+  </ion-row>
+</div>
+<div class="pre-test-sec">
+  <ion-row>
+    <ion-col>
+      <span class="txt-left">{{'Hydro Test'|translate}}</span>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col col-1>
+      <span class="pre-test label"> {{'Pre-Test'|translate}}</span>
+      <ion-checkbox [(ngModel)]="preTestObj.DONEHYDROPRETEST" (click)="deviceTstChkValChanged($event)"
+        [checked]="preTestObj.DONEHYDROPRETEST == 'true' || preTestObj.DONEHYDROPRETEST == true" color="dark">
+      </ion-checkbox>
+    </ion-col>
+    <ion-col col-5>
+      <span class="pre-test">{{'Pre-Test Result'|translate}}</span><br>
+      <ion-textarea maxlength="2000" [(ngModel)]="preTestObj.HYDROPRETEST" name="preTestObj.HYDROPRETEST"
+        (focusout)="preTestObj.HYDROPRETEST = utilityProvider.sliceValueUptoLimit($event.target.value, $event.target.maxLength)"
+        (ionChange)="deviceTestValChanged($event)" class="cus-txt-area">
+      </ion-textarea>
+    </ion-col>
+  </ion-row>
+</div>
+<div class="pre-test-sec">
+  <ion-row>
+    <ion-col>
+      <span class="txt-left">{{'Visual test'|translate}}</span>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col col-1>
+      <span class="pre-test label"> {{'Pre-Test'|translate}}</span>
+      <ion-checkbox [(ngModel)]="preTestObj.DONEVISUALPRETEST" (click)="deviceTstChkValChanged($event)"
+        [checked]="preTestObj.DONEVISUALPRETEST == 'true' || preTestObj.DONEVISUALPRETEST == true" color="dark">
+      </ion-checkbox>
+    </ion-col>
+    <ion-col col-5>
+      <span class="pre-test">{{'Pre-Test Result'|translate}}</span><br>
+      <ion-textarea [(ngModel)]="preTestObj.VISUALPRETEST" (ionChange)="deviceTestValChanged($event)"
+        (focusout)="preTestObj.VISUALPRETEST = utilityProvider.sliceValueUptoLimit($event.target.value, $event.target.maxLength)"
+        name="preTestObj.VISUALPRETEST" maxlength="2000" class="cus-txt-area">
+      </ion-textarea>
+    </ion-col>
+  </ion-row>
+</div>

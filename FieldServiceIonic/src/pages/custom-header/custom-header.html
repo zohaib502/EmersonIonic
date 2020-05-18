@@ -1,0 +1,72 @@
+<ion-navbar #navbar class="global-header">
+  <ion-row class="full-height full-width">
+    <!-- Start 08/20/2018 Mayur Varshney -- Fixes UI for timestamp customer header, avoid inline styling -->
+    <div no-padding class="burgerMenu">
+      <button ion-button class="toggleButton pointer" (click)="menuToggle()"><img src="assets/imgs/icons/menu-icon.png" /></button>
+    </div>
+    <div text-right no-padding class="header-content mainHeading">
+      <ion-title text-center><span *ngIf="header_data.title1">{{ header_data.title1 | translate }}:</span><span> {{ header_data.title2 | translate }}</span><span *ngIf="header_data.taskId">{{header_data.taskId}}</span></ion-title>
+      <!-- Start 07/23/2018 Gurkirat Singh -- Show Start Time of Last Successful Sync -->
+      <!-- End 07/23/2018 Gurkirat Singh -->
+    </div>
+    <div text-right class="header-content icon-content pull-right">
+      <!-- Start 08/07/2018 Zohaib Khan: Added Last Sync UI -->
+      <div class="inline-block lastSyncStampBox">
+        <span *ngIf="syncProvider.errorLength > 0 && !syncProvider.ifAutoSyncing()" class="errorIconUIBoxOff" (click)="displayErrors()">
+          <i class="fa fa-exclamation-triangle header-error-icon-UI"></i>
+        </span>
+        <span *ngIf="syncProvider.getLastSyncTime() && syncProvider.getLastSyncTime() != ''" class="lastSync" translate="Last Sync"></span>
+        <span style="color:rgba(204, 204, 204, 0.75)">{{syncProvider.getLastSyncTime() ? Moment(syncProvider.getLastSyncTime(),'MM-DD-YYYY HH:mm').format('DD-MMM-YYYY HH:mm') : ''}}</span>
+      </div>
+      <!-- End 08/07/2018 Zohaib Khan -->
+      <div class="inline-block">
+        <!-- Start 07/23/2018 Gurkirat Singh -- Show spinner when sync is in progress -->
+        <!-- Start 08/23/2018 Mayur Varshney -- Start rotating sync icon during sync process  --Show error sync icon if sync process interrupted-->
+        <span class="header-icon-UI" *ngIf="!syncProvider.ifAutoSyncing()">
+          <img src="assets/imgs/icons/sync-icon.png" class="pointer" (click)="syncData()"/>
+          <!-- <span *ngIf="syncProvider.errorLength > 0" class="errorIconUIBox" (click)="displayErrors()">
+            <i class="fa fa-exclamation-triangle header-error-icon-UI"></i>
+          </span> -->
+        </span>
+        <span class="header-icon-UI" *ngIf="syncProvider.ifAutoSyncing()">
+          <!-- 09/04/2018 -- Mayur Varshney -- Stop Sync Spinner if user goes offline even sync process is running in background -->
+          <!--<img src="assets/imgs/icons/sync-icon.png" [ngClass]="!utilityProvider.isConnected() ? '' : 'rotate'" />-->
+          <img src="assets/imgs/icons/sync-icon.png" class="rotate" />
+          <span *ngIf="syncProvider.errorLength > 0 || !utilityProvider.isConnected()" class="errorIconUIBox">
+            <i class="fa fa-exclamation-triangle header-error-icon-UI"></i>
+          </span>
+        </span>
+        <!-- End 08/23/2018 Mayur Varshney-->
+        <!-- End 07/23/2018 Gurkirat Singh -->
+        <span *ngIf="isOnline()"><img src="assets/imgs/icons/network-indicator-online.png" class="header-icon-UI" /></span>
+        <span *ngIf="!isOnline()"><img src="assets/imgs/icons/network-indicator-offline.png" class="header-icon-UI" /></span>
+        <span class="inline-block">
+          <ion-fab #fab>
+            <button ion-fab (click)="autoCloseFab(fab)" [disabled]="valueService.getPreferredLanguage().length== 1">
+              <img *ngIf="valueService.getPreferredLanguage().length > 1" src="assets/imgs/icons/Language-picker.png" class="header-icon-UI pointer" />
+              <img *ngIf="valueService.getPreferredLanguage().length == 1 && platform.is('cordova')" [src]="sanitizer.bypassSecurityTrustUrl(filePath + valueService.getPreferredLanguage()[0] + '.png')" class="header-icon-UI" />
+            </button>
+            <ion-fab-list side="bottom">
+              <button ion-fab *ngFor="let lang of valueService.getPreferredLanguage()">
+                <img *ngIf="platform.is('cordova')" (click)="changeLanguage(lang); closeFab()" [src]="sanitizer.bypassSecurityTrustUrl(filePath + lang + '.png')" [ngClass]="valueService.getSelectedLang() == lang ? '':'unselected'" />
+              </button>
+            </ion-fab-list>
+          </ion-fab>
+        </span>
+      </div>
+    </div>
+    <div text-right class="header-content user-content">
+      <div class="login-user-UI inline-block" text-center>{{'Hello' | translate}} {{valueService.getUser().Name}}</div>
+      <div class="inline-block header-user-icon-block pointer"><img (click)="openUserPopOver($event)" src="assets/imgs/icons/user-icon.png" class="header-icon-UI userIcon" /></div>
+    </div>
+    <!-- End 08/20/2018 Mayur Varshney, avoid inline styling -->
+  </ion-row>
+
+  <ion-row class="full-width app-update-notification-bar" *ngIf="utilityProvider.isNewVersionFromConfig && !syncProvider.ifAutoSyncing()">
+    <div class="notification-content">
+      An app update is available.  &nbsp; &nbsp;
+      <button [ngClass]="platform.is('ios') ? 'update-button' : ''"  color="light" round="true" ion-button (click)="enableAppUpdate()">Update</button> &nbsp;
+      <button [ngClass]="platform.is('ios') ? 'update-button' : ''" color="light" round="true" ion-button (click)="utilityProvider.isNewVersionFromConfig = false">Later</button>
+    </div>
+  </ion-row>
+</ion-navbar>

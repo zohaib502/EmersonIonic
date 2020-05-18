@@ -1,0 +1,296 @@
+page-material-modal {
+
+  .text-input[disabled] {
+    opacity: 0.8;
+  }
+
+  .white-bg {
+    background-color: white;
+  }
+
+  .select-style {
+    max-width: 100% !important;
+  }
+
+  .select {
+    padding: 6px !important;
+  }
+
+  .description-box .text-input {
+    box-sizing: border-box;
+    height: 31px;
+    border: 1px solid rgba(216, 213, 209, 1);
+    border-radius: 2px;
+    background-color: rgba(247, 247, 246, 1);
+    width: 180px !important;
+  }
+
+  .label-text-transform {
+    text-transform: capitalize;
+  }
+
+  .stroke-UI {
+    position: relative;
+    margin: 10px 0;
+  }
+
+  .calIcon {
+    margin-right: 20px;
+  }
+
+  .select-style {
+    max-width: 100% !important;
+  }
+
+  .select-text {
+    color: rgba(0, 0, 0, 1) !important;
+    font-family: "Helvetica Neue";
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 17px;
+  }
+
+  .select {
+    padding: 6px !important;
+  }
+
+  .UOM-box {
+    box-sizing: border-box;
+    height: 31px;
+    border: 1px solid rgba(216, 213, 209, 1);
+    border-radius: 2px;
+    background-color: rgba(247, 247, 246, 1);
+  }
+
+  .chargeMethod-box {
+    box-sizing: border-box;
+    height: 31px;
+    border: 1px solid rgba(216, 213, 209, 1);
+    border-radius: 2px;
+    background-color: rgba(247, 247, 246, 1);
+    width: 170px;
+  }
+
+  .add-btn {
+    height: 33px;
+    width: 33px;
+    border-radius: 3px;
+    background-color: rgba(142, 177, 95, 1);
+  }
+
+  .addbtn-box {
+    margin-top: 12px;
+    width: 100%;
+    text-align: center;
+    background-color: transparent;
+  }
+
+  .text-input {
+    width: 100% !important;
+    margin: 0px !important;
+    padding: 0 5px 0 5px !important;
+    color: #4e4c4c;
+    font-family: "Helvetica Neue";
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 17px;
+    height: 31px;
+  }
+
+  .label {
+    margin: 0 8px 11px 0;
+  }
+
+  .productQuantity-block .text-input {
+    box-sizing: border-box;
+    height: 31px;
+    min-width: 31px;
+    max-width: 41px;
+    border: 1px solid rgba(216, 213, 209, 1);
+    border-radius: 2px;
+    background-color: rgba(247, 247, 246, 1);
+  }
+
+  .productQuantity-block>input {
+    text-align: center;
+    margin: 0px !important;
+  }
+
+  .label-text-transform {
+    text-transform: capitalize;
+  }
+
+  .material-spaceMargin {
+    margin-right: 30px;
+  }
+
+  .scrollContent {
+    overflow-x: hidden;
+    overflow-y: auto;
+    max-height: 215px;
+  }
+
+  .serialIn-block-value .text-input,
+  .serialOut-block-value .text-input {
+    box-sizing: border-box;
+    height: 31px;
+    border: 1px solid rgba(216, 213, 209, 1);
+    border-radius: 2px;
+    background-color: rgba(247, 247, 246, 1);
+  }
+
+
+  .ProductLabel {
+    width: 14%;
+    white-space: normal;
+    margin-right: 1%;
+    text-align: left;
+  }
+
+  .ChargeMethodLabel {
+    width: 14%;
+    white-space: normal;
+    margin-right: 1%;
+    text-align: left;
+  }
+
+  .SerialBlock {
+    width: 27%;
+    white-space: normal;
+    margin-right: 1%;
+    text-align: left;
+  }
+
+  .SerialLabel {
+    width: 13%;
+    white-space: normal;
+    margin-right: 1%;
+    text-align: left;
+  }
+
+  .mat-serialIn,
+  .mat-serialOut {
+    word-wrap: break-word;
+    word-break: break-all;
+    margin-bottom: 10px;
+    width: 48%;
+    margin-right: 1%;
+  }
+
+  .ItemNameLabel {
+    width: 14%;
+    white-space: normal;
+    margin-right: 1%;
+    text-align: left;
+  }
+
+  .DescriptionLabel {
+    width: 15%;
+    white-space: normal;
+    margin-right: 1%;
+    text-align: left;
+  }
+
+  .UOMLabel {
+    width: 10%;
+    white-space: normal;
+    margin-right: 1%;
+    text-align: left;
+  }
+
+  .SerialInLabel {
+    width: 20%;
+    white-space: normal;
+    margin-right: 1%;
+    text-align: left;
+  }
+
+  .SerialOutLabel {
+    width: 20%;
+    white-space: normal;
+    margin-right: 1%;
+    text-align: left;
+  }
+
+  .ChargeTypeLabel .label,
+  .JDLabel .label,
+  .ESEDLabel .label,
+  .EDLabel .label,
+  .CPNLabel .label {
+    vertical-align: top !important;
+    display: inline-block !important;
+    line-height: 20px !important;
+  }
+
+  .shaded-block,
+  .serialType-container {
+    margin-bottom: 10px;
+  }
+}
+
+.MaterialModalPage,
+.MaterialModalPageWithOriginalEntry {
+
+  .modal-wrapper {
+    height: 400px;
+    width: 850px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    position: fixed;
+  }
+
+  .modal-wrapper .scroll-content {
+    background-color: rgba(255, 255, 255, 1) !important;
+    color: rgba(74, 74, 74, 1);
+    font-family: "Helvetica Neue";
+    font-size: 18px;
+    font-weight: 300;
+    line-height: 28px;
+    text-align: left;
+    overflow-y: auto;
+  }
+
+  .modal-wrapper .toolbar-title {
+    color: rgba(74, 74, 74, 1);
+    font-family: "Helvetica Neue";
+    font-size: 22px;
+    font-weight: 300;
+    line-height: 27px;
+    text-align: left;
+  }
+
+  .toolbar {
+    height: 52px !important;
+    border-bottom: 1px solid rgba(233, 232, 232, 1) !important;
+  }
+
+  ion-footer {
+    text-align: center;
+    margin: 30px 0;
+  }
+
+  .white-color {
+    color: white !important;
+  }
+
+  .serialIn-block,
+  .serialOut-block .text-input,
+  .serialId-block {
+    width: 130px !important;
+  }
+
+  .serial-block {
+    margin: 0 20px 0 0;
+  }
+}
+
+.MaterialModalPageWithOriginalEntry {
+
+  .modal-wrapper {
+    height: 540px !important;
+  }
+
+}

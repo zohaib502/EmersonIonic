@@ -1,0 +1,25 @@
+<!--
+  Generated template for the MapModalPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <h2 *ngIf="ifNotes">{{notesType | translate}}</h2>
+    <ion-buttons end>
+      <button class="closebtn" ion-button (click)="closeModal()"><i class="fa fa-times fa-2x"></i></button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <div *ngIf="ifNotes" class="global-padding value">
+    {{notes}}
+  </div>
+  <div *ngIf="!ifNotes">
+    <div class="mapModel" #googleMap id="googleMap"></div>
+    <div class="baiduModel" #baiduMap id="baiduMap"></div>
+    <div class="mapModel" #questMap id="questMap"></div>
+  </div>
+</ion-content>

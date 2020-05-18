@@ -1,0 +1,154 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title class="padding-style" *ngIf="ifJustification || justificationOnEdit">{{'Comment' | translate}}</ion-title>
+    <ion-title class="padding-style" start *ngIf="editExpense && ifEdit == 'Edit'">{{'Edit Entry' | translate}}</ion-title>
+    <ion-title class="padding-style" start *ngIf="editExpense && ifCopy == 'Copy'">{{'Copy Entry' | translate}}</ion-title>
+    <ion-buttons end>
+      <button ion-button (click)="save()" *ngIf="ifEdit == 'Edit' && expenseObject.Expense_Type =='Mileage'" class="save-btn  btn" [disabled]="!expenseObject.Distance || !expenseObject.UOM_Id || !expenseObject.Expense_Type_Id || !expenseObject.Currency_Id">{{ 'Save Your Edits' | translate }}</button>
+      <button ion-button (click)="save()" *ngIf="ifCopy == 'Copy' && expenseObject.Expense_Type =='Mileage'" class="save-btn  btn" [disabled]="!expenseObject.Distance || !expenseObject.UOM_Id || !expenseObject.Expense_Type_Id || !expenseObject.Currency_Id">{{ 'Save Copy' | translate }}</button>
+      <button ion-button (click)="save()" *ngIf="ifEdit == 'Edit' && expenseObject.Expense_Type !='Mileage'" class="save-btn  btn" [disabled]="!expenseObject.Amount || !expenseObject.Expense_Type_Id || !expenseObject.Currency_Id">{{ 'Save Your Edits' | translate }}</button>
+      <button ion-button (click)="save()" *ngIf="ifCopy == 'Copy' && expenseObject.Expense_Type !='Mileage'" class="save-btn  btn" [disabled]="!expenseObject.Amount || !expenseObject.Expense_Type_Id || !expenseObject.Currency_Id">{{ 'Save Copy' | translate }}</button>
+      <button ion-button class="closebtn" (click)="closeModal()"><i class="fa fa-times fa-2x"></i></button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <div *ngIf="ifJustification" class="commentTextArea full-height">
+    <textarea maxlength="255" (keypress)="_keyPressInText($event)" class="commentModal value" placeholder="{{'Enter Comments' | translate}}" [(ngModel)]="justification" style="background:#fff">
+  </textarea>
+  </div>
+  <textarea *ngIf="justificationOnEdit" maxlength="255" (keypress)="_keyPressInText($event)" class="commentModal value" disabled placeholder="Write Comment" [(ngModel)]="justification" style="background:#fff">
+  </textarea>
+  <ion-row class="global-padding" style="min-height:160px;" *ngIf="editExpense">
+    <div class="spacingMargin">
+      <ion-col no-padding>
+        <ion-label class="label">{{'Date' | translate}}</ion-label>
+        <!-- <ion-datetime displayFormat="DD-MMM-YYYY" class="date-box inline-block" [(ngModel)]="expenseObject.Date" name="expenseObject.Date">
+        </ion-datetime> -->
+        <input type="text"
+               class="date-box inline-block"
+               [disabled]="!isEnabled"
+               bsDatepicker [(bsValue)]="expenseObject.Date" #dp="bsDatepicker"
+               [bsConfig]="{dateInputFormat: 'DD-MMM-YYYY'}"
+               value="{{expenseObject.Date | date:'dd-MMM-yyyy'}}" (onShown)="onShowPicker($event)">
+        <span><img (click)="dp.show()" [attr.aria-expanded]="dp.isOpen"  src="assets/imgs/icons/ic_calendar-for-field.png" class="calIcon" /></span>
+      </ion-col>
+    </div>
+    <div class="spacingMargin">
+      <ion-col no-padding>
+        <ion-label class="label">{{'Expense Type' | translate}}<span class="validator"></span></ion-label>
+        <!--10-18-18 Radheshyam kumar addedd tappable attribute on evey ion-select to resolve the double click issue -->
+        <ion-select *ngIf="showSelects" tappable interface="popover" required placeholder="{{'Select Expense Type' | translate}}" [(ngModel)]="expenseObject.Expense_Type_Id" (ionChange)="selectExpenseTypeName($event)" name="expenseObject.Expense_Type_Id" [ngClass]="!expenseObject.Expense_Type_Id ? 'select-validation expense-box select-style' : 'expense-box select-style'">
+          <ion-option disabled value="{{''}}">{{'Select Expense Type' | translate}}</ion-option>
+          <ion-option *ngFor="let item of expenseType" [value]="item.ID">{{item.Value | translate}}</ion-option>
+        </ion-select>
+      </ion-col>
+    </div>
+    <div class="spacingMargin">
+      <ion-col no-padding>
+        <ion-label class="label">{{'Currency' | translate}}<span class="validator"></span></ion-label>
+        <ion-select *ngIf="showSelects" tappable interface="popover" placeholder="Select" [(ngModel)]="expenseObject.Currency_Id" (ionChange)="selectCurrencyName($event)" name="expenseObject.Currency_Id" [ngClass]="!expenseObject.Currency_Id ? 'select-validation currency-box select-style' : 'currency-box select-style'">
+          <ion-option disabled value="{{''}}">{{'Select Currency' | translate}}</ion-option>
+          <ion-option *ngFor="let item of currency" [value]="item.ID">{{item.Value | translate}}</ion-option>
+        </ion-select>
+      </ion-col>
+    </div>
+    <div class="spacingMargin" *ngIf="expenseObject.Expense_Type =='Mileage'">
+      <ion-col no-padding>
+        <ion-label class="label">{{'Amount' | translate}}</ion-label>
+        <ion-input type="text" required id="amountField" (keypress)="_keyPress($event)" (focusout)="checkAmountFormat()" [attr.maxlength]="30" [(ngModel)]="expenseObject.Amount" name="expenseObject.Amount" class="amount-box">
+        </ion-input>
+        <span *ngIf="error" class="danger amountError">{{'Invalid Amount'|translate}}</span>
+      </ion-col>
+    </div>
+    <div class="spacingMargin" *ngIf="expenseObject.Expense_Type !='Mileage'">
+      <ion-col no-padding>
+        <ion-label class="label">{{'Amount' | translate}}<span class="validator"></span></ion-label>
+        <ion-input type="text" required id="amountField" (keypress)="_keyPress($event)" (focusout)="checkAmountFormat()" [attr.maxlength]="30" [(ngModel)]="expenseObject.Amount" name="expenseObject.Amount" class="amount-box" [ngClass]="expenseObject.Amount == '' || expenseObject.Amount == undefined || expenseObject.Amount == null ? 'input-validation' : ''">
+        </ion-input>
+        <span *ngIf="error" class="danger amountError">{{'Invalid Amount'|translate}}</span>
+      </ion-col>
+    </div>
+    <div *ngIf="expenseObject.Expense_Type =='Mileage'" class="spacingMargin">
+      <ion-col no-padding>
+        <ion-label class="label">{{'Distance' | translate}}<span class="validator"></span></ion-label>
+        <ion-input type="text" required (keypress)="_keyPress($event)" [attr.maxlength]="6" (focusout)="checkDistanceFormat()" placeholder="{{'Distance' | translate}}" [(ngModel)]="expenseObject.Distance" name="expenseObject.Distance" class="distance-box" [ngClass]="expenseObject.Distance == '' || expenseObject.Distance == undefined || expenseObject.Distance == null ? 'input-validation' : ''">
+        </ion-input>
+      </ion-col>
+    </div>
+    <div *ngIf="expenseObject.Expense_Type =='Mileage'" class="spacingMargin">
+      <ion-col no-padding>
+        <ion-label class="label">{{'UOM' | translate}}<span class="validator"></span></ion-label>
+        <ion-select *ngIf="showSelects" tappable interface="popover" placeholder="{{'Select' | translate}}" [(ngModel)]="expenseObject.UOM_Id" (ionChange)="selectUOMName($event)" name="expenseObject.UOM_Id" [ngClass]="!expenseObject.UOM_Id ? 'select-validation UOM-box select-style' : 'UOM-box select-style'">
+          <ion-option disabled value="{{''}}">{{'Select UOM' | translate}}</ion-option>
+          <ion-option *ngFor="let uom of UOM" [value]="uom.ID">{{uom.Value | translate}}</ion-option>
+        </ion-select>
+      </ion-col>
+    </div>
+    <div>
+      <ion-col no-padding>
+        <ion-label class="label">{{'Charge Method' | translate}}</ion-label>
+        <ion-select *ngIf="showSelects" tappable interface="popover" [(ngModel)]="expenseObject.Charge_Method_Id" (ionChange)="selectChargeMethodName($event)" placeholder="Select Charge Method" name="expenseObject.Charge_Method_Id" class="chargeMethod-box select-style">
+          <ion-option value="{{''}}">{{'Select Charge Method' | translate}}</ion-option>
+          <ion-option *ngFor="let item of chargeMethod" [value]="item.ID">{{item.Value | translate}}</ion-option>
+        </ion-select>
+      </ion-col>
+    </div>
+  </ion-row>
+  <div class="stroke stroke-UI" *ngIf="editExpense"></div>
+  <ion-row *ngIf="editExpense" class="global-padding">
+    <ion-label class="label">{{'Comments' | translate}}</ion-label>
+    <div class="full-width block">
+      <ion-textarea class="commentBox value" [ngClass]="originalExpense ? 'commentBox value':'originalCommentBox value'" (keypress)="_keyPressInText($event)" maxlength="255" placeholder="{{'Enter Comments' | translate}}" [(ngModel)]="expenseObject.Justification"></ion-textarea>
+    </div>
+  </ion-row>
+  <ion-label class="label" text-left *ngIf="originalExpense">{{'Original Expense' | translate}}</ion-label>
+  <div class="shaded-block" *ngIf="originalExpense">
+    <div class="inline-block DateLabel global-padding" *ngIf="originalExpense.Date">
+      <span class="block label" translate="Date"></span>
+      <span class="value block non-ellipsis">{{originalExpense.Date | customDate | translate}}</span>
+    </div>
+    <div class="inline-block DateLabel global-padding" *ngIf="originalExpense.Expense_Type">
+      <span class="block label" translate="Expense Type"></span>
+      <span class="value block non-ellipsis">{{originalExpense.Expense_Type | translate}}</span>
+    </div>
+    <div class="inline-block DateLabel global-padding" *ngIf="originalExpense.Amount">
+      <span class="block label" translate="Amount"></span>
+      <span class="value block non-ellipsis">{{originalExpense.Amount | translate}}</span>
+    </div>
+    <div class="inline-block DateLabel global-padding" *ngIf="originalExpense.Currency">
+      <span class="block label" translate="Currency"></span>
+      <span class="value block non-ellipsis">{{originalExpense.Currency | translate}}</span>
+    </div>
+    <div class="inline-block DateLabel global-padding" *ngIf="originalExpense.Distance">
+      <span class="block label" translate="Distance"></span>
+      <span class="value block non-ellipsis">{{originalExpense.Distance | translate}}</span>
+    </div>
+    <div class="inline-block DateLabel global-padding" *ngIf="originalExpense.UOM">
+      <span class="block label" translate="UOM"></span>
+      <span class="value block non-ellipsis">{{originalExpense.UOM | translate}}</span>
+    </div>
+    <div class="inline-block DateLabel global-padding" *ngIf="originalExpense.Charge_Method">
+      <span class="block label" translate="Charge Method"></span>
+      <span class="value block non-ellipsis">{{originalExpense.Charge_Method | translate}}</span>
+    </div>
+    <div class="inline-block DateLabel global-padding" *ngIf="originalExpense.Justification">
+      <span class="block label" translate="Justification"></span>
+      <span class="value block non-ellipsis">{{originalExpense.Justification | slice:0:20 | translate}}
+          <span *ngIf="originalExpense.Justification.length > 20" class="readMore block pointer">
+              <a name="btn2" (click)="readOriginalComments(originalExpense.Justification)">
+                <span>...</span><span>
+                  {{ 'Read More' | translate }}
+                </span>
+              </a>
+            </span>
+      </span>
+     
+    </div>
+  </div>
+</ion-content>
+<ion-footer *ngIf="ifComment == 'openJustification'">
+  <button ion-button text-center class="save-btn btn justificationBtn" (click)="save()">{{ 'Save' | translate }}</button>
+</ion-footer>
+

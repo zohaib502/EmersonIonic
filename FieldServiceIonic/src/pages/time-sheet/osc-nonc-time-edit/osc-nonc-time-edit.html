@@ -1,0 +1,161 @@
+<ion-header>
+  <page-custom-header [header]="header_data"></page-custom-header>
+</ion-header>
+
+
+<ion-content padding class="page-background">
+  <ion-card>
+    <ion-row class="bdr-btm" radio-group *ngIf="!isVacation">
+      <div class="inline-block">
+        <ion-item>
+          <ion-label class="rd-lbl">{{'Field' | translate}}</ion-label>
+          <ion-radio class="rd-ui" [checked]="isField" (ionSelect)="manageCheckbox('','field')" value="field" item-left>
+          </ion-radio>
+        </ion-item>
+      </div>
+      <div class="inline-block">
+        <ion-item>
+          <ion-label class="rd-lbl">{{'Depot' | translate}}</ion-label>
+          <ion-radio class="rd-ui" [checked]="isDepot" (ionSelect)="manageCheckbox('','depot')" value="depot" item-left>
+          </ion-radio>
+        </ion-item>
+      </div>
+    </ion-row>
+
+    <ion-row style="padding-left: 30px;">
+      <div class="left">
+        <ion-col no-padding>
+          <ion-label class="label">{{'Job ID' | translate }} <span class="validator"></span></ion-label>
+          <ion-input [disabled]="true" [readonly]="true" *ngIf="timeSheet.Job_Number!='Not Applicable'" tappable [(ngModel)]="timeSheet.Job_Number" name="Job_Number"
+            class="project-box select-style">
+          </ion-input>
+          <ion-input [disabled]="true" [readonly]="true" *ngIf="timeSheet.Job_Number=='Not Applicable'" [ngModel]="timeSheet.Job_Number | translate" tappable name="Job_Number"
+            class="project-box select-style">
+          </ion-input>
+        </ion-col>
+      </div>
+      <div *ngIf="vacEntry && !isVacation" class="right">
+        <ion-col no-padding>
+          <ion-label class="label">{{'Serial Number' | translate }}</ion-label>
+          <ion-input class="project-box select-style" [(ngModel)]="timeSheet.SerialNumber" name="SerialNumber">
+          </ion-input>
+        </ion-col>
+      </div>
+    </ion-row>
+    <ion-row style="padding-left: 30px;">
+      <div class="left">
+        <ion-col no-padding>
+          <ion-label *ngIf="!isVacation" class="label">{{'Work Type' | translate }}<span class="validator"></span></ion-label>
+          <ion-label *ngIf="isVacation" class="label">{{'Absences / Internal' | translate }} {{'Type' | translate}}<span class="validator"></span></ion-label>
+          <ion-input [readonly]="true" tappable [ngModel]="timeSheet.Work_Type | translate" name="Work_Type"
+            class="project-box searchNSelect select-style" (click)="searchModal('ActivityType')">
+          </ion-input>
+          <ion-input *ngIf="isVacation && timeSheet.Work_Type_Id == '-11000' &&  timeSheet.Work_Type == 'Other'"
+            [ngClass]="!timeSheet.Work_Type_OT ? 'validation-error' : ''" [(ngModel)]="timeSheet.Work_Type_OT"
+            name="timeSheet.Work_Type_OT" class="project-box otherBox margin-top-10" maxlength="255">
+          </ion-input>
+        </ion-col>
+      </div>
+      <div *ngIf="vacEntry && !isVacation" class="right">
+        <ion-col no-padding>
+          <ion-label class="label">{{'Tag Number' | translate }}</ion-label>
+          <ion-input class="project-box select-style" [(ngModel)]="timeSheet.TagNumber" name="TagNumber">
+          </ion-input>
+        </ion-col>
+      </div>
+    </ion-row>
+    <ion-row style="padding-left: 30px;">
+      <div class="left" *ngIf="!isVacation">
+        <ion-col no-padding>
+          <ion-label class="label">{{'Item' | translate }}<span class="validator"></span></ion-label>
+          <ion-input [disabled]="timeSheet.Work_Type == 'Break'" [readonly]="true" tappable [ngModel]="timeSheet.Item | translate" name="item" [ngClass]="timeSheet.Work_Type == 'Break' ? 'project-box disable-content' : 'project-box searchNSelect select-style' " (click)="searchModal('timeCodes')">
+          </ion-input>
+        </ion-col>
+      </div>
+      <div
+        *ngIf="vacEntry && !isVacation"
+        class="right">
+        <div>
+          <ion-col no-padding>
+            <ion-label class="label">{{'Charge Method' | translate }}<span class="validator"></span></ion-label>
+            <ion-input [ngClass]="timeSheet.Work_Type == 'Break' ? 'project-box disable-content' : 'project-box searchNSelect select-style' " [disabled]="timeSheet.Work_Type == 'Break'" [readonly]="true" tappable [ngModel]="timeSheet.Charge_Method | translate" name="charge_method"
+               (click)="searchModal('chargemethod')">
+            </ion-input>
+          </ion-col>
+        </div>
+      </div>
+
+      <!-- <div class="right">
+            <ion-col no-padding>
+              <ion-label class="label">{{'Description' | translate }}</ion-label>
+              <ion-input placeholder="{{'Enter Description' | translate }}" class="project-box select-style" [(ngModel)]="description" name="description">
+              </ion-input>
+              </ion-col>
+          </div> -->
+    </ion-row>
+    <ion-row style="padding-left: 30px;" class="hide-content" *ngIf="valueProvider.getUserPreferences()[0].WorldAreaID == '12060'">
+      <div class="left">
+        <ion-col no-padding>
+          <ion-label class="label">{{'Overtime Hours' | translate }}</ion-label>
+          <ion-input [(ngModel)]="timeData['Travel_Allowance']" class="project-box select-style" name="tag_Number">
+          </ion-input>
+        </ion-col>
+      </div>
+      <div class="right">
+        <ion-col no-padding>
+          <ion-label class="label">{{'Multiplier' | translate }}</ion-label>
+          <ion-input [(ngModel)]="timeData['Overtime_multiplier']" [readonly]="true"
+            name="timeSheet.Overtime_multiplier" (click)="searchModal('overtimeMultiplier')" tappable
+            class="project-box searchNSelect select-style">
+          </ion-input>
+        </ion-col>
+      </div>
+    </ion-row>
+    <ion-row class="hide-content" *ngIf="valueProvider.getUserPreferences()[0].WorldAreaID == '12060'" style="padding-left: 30px;">
+      <div class="left">
+        <ion-col no-padding>
+          <ion-label class="label">{{'Travel Allowance' | translate }}</ion-label>
+          <ion-input [(ngModel)]="timeData['Overtime_hours']" class="project-box select-style" name="travel_hours">
+          </ion-input>
+        </ion-col>
+      </div>
+      <div class="right">
+        <ion-col no-padding>
+          <ion-label class="label">{{'Shift Site' | translate }}</ion-label>
+          <ion-input [(ngModel)]="timeData['Shift_Site']" [readonly]="true" name="timeSheet.Shift_Site"
+            (click)="searchModal('Shift_Site','Value')" tappable class="project-box searchNSelect select-style">
+          </ion-input>
+        </ion-col>
+      </div>
+    </ion-row>
+    <ion-row class="day-row  full-width" *ngIf="weekBtnClicked">
+      <div class="daySchedule">
+        <expandable [data]="timeSheetTempObj" [weekEditPage]="weekEditPage" [listPage]="listPage" [isTimeEntry]="isTimeEntry"
+          style="width:100%;">
+        </expandable>
+      </div>
+    </ion-row>
+    <ion-row class="bottom-row">
+      <div class="bottom-div">
+        <button *ngIf="!valueProvider.isOSCUser()" ion-button type="submit" [disabled]=" duration == '00:00'"
+          class="submit-btn" (click)="saveEdits()">{{'Save Edits' | translate }}
+        </button>
+        <button *ngIf="valueProvider.isOSCUser() && !isVacation " ion-button type="submit" [disabled]="( timeSheet['Item'] == '' && timeSheet['Work_Type'] != 'Break') || (timeSheet['Charge_Method']=='' && timeSheet.Job_Type == 'field') || (!timeSheet.totalDuration || timeSheet.totalDuration == '00:00')"
+          class="submit-btn" (click)="saveTime()">{{'Save Edits' | translate }}
+        </button>
+        <button *ngIf="valueProvider.isOSCUser() && isVacation " ion-button type="submit" [disabled]="((!timeSheet['Work_Type_OT'] && timeSheet['Work_Type'] == 'Other') || !timeSheet.Work_Type_Id || (!timeSheet.totalDuration || timeSheet.totalDuration == '00:00'))"
+          class="submit-btn" (click)="saveTime()">{{'Save Edits' | translate }}
+        </button>
+        <button *ngIf="!valueProvider.isOSCUser()" ion-button class="deleteBtn"
+          (click)="delete()">{{'Delete' | translate}}
+        </button>
+        <button *ngIf="valueProvider.isOSCUser()" ion-button class="deleteBtn" [disabled]='timeSheet.DisableDelete'
+          (click)="deleteTime()">{{'Delete' | translate}}
+        </button>
+        <button ion-button class="cancel-btn" (click)="timeRedirect()">{{'Cancel' | translate}}
+        </button>
+      </div>
+    </ion-row>
+    <!-- </form> -->
+  </ion-card>
+</ion-content>

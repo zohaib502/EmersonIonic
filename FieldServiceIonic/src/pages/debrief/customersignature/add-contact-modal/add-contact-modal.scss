@@ -1,0 +1,134 @@
+page-add-contact-modal {
+    .select-style {
+      max-width: 100% !important;
+      height: 30px;
+      width: 213px !important;
+    }
+  
+    .select-text {
+      color: rgba(0,0,0,1) !important;
+      font-family: "Helvetica Neue";
+      font-size: 14px;
+      font-weight: 300;
+      line-height: 17px;
+    }
+  
+    .select {
+      padding: 6px !important;
+    }
+  
+    .validation.select-style {
+      border: 1px solid red;
+    }
+  
+    .addbtn-box {
+      margin-top: 12px;
+      width: 100%;
+      text-align: center;
+      background-color: transparent;
+    }
+  
+    .text-input {
+      width: 100% !important;
+      color: #4e4c4c;
+      font-family: "Helvetica Neue";
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 17px;
+      margin: 0px !important;
+      padding: 0 0 0 5px !important;
+    }
+  
+    .address-textbox .text-input, .address-selectbox {
+      box-sizing: border-box;
+      height: 31px;
+      width: 195px !important;
+      border: 1px solid rgba(216,213,209,1);
+      border-radius: 3px;
+      background-color: rgba(247,247,246,1);
+      font-weight: 500;
+      line-height: 17px;
+    }
+  
+    .item-ios.item-block .item-inner {
+      border-bottom: hidden !important;
+    }
+  
+    .item-md.item-block .item-inner {
+      border-bottom: hidden !important;
+    }
+  
+    .setDefault {
+      margin-top: 40px !important;
+      margin-bottom: 0px !important;
+      vertical-align: middle;
+    }
+  
+    .commentBox {
+      width: 100%;
+      border: 1px solid rgba(233, 232, 232, 0.8) !important;
+      height: 120px;
+      background-color: #f7f7f6;
+    }
+  
+    .commentTextArea textarea:focus {
+      border: none !important;
+    }
+
+    .customerSign-validation-text {
+      color: rgba(204,101,101,1);
+      font-family: "Helvetica Neue";
+      font-size: 12px;
+      font-weight: 300;
+      line-height: 15px;
+      margin-top: 5px;
+    }
+  
+    .label-style {
+      text-transform: capitalize !important;
+    }
+  }
+  
+  .AddContactModalPage {
+  
+    .modal-wrapper {
+      height: 250px;
+      width: 910px;
+      border-radius: 5px;
+      box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+      top: 50%;
+      left: 55%;
+      transform: translate(-50%,-50%) !important;
+      position: fixed;
+    }
+  
+    .modal-wrapper .scroll-content {
+      background-color: rgba(255,255,255,1) !important;
+      color: rgba(74,74,74,1);
+      font-family: "Helvetica Neue";
+      font-size: 18px;
+      font-weight: 300;
+      line-height: 28px;
+      text-align: left;
+      overflow-y: auto;
+    }
+  
+    .modal-wrapper .toolbar-title {
+      color: rgba(74,74,74,1);
+      font-family: "Helvetica Neue";
+      font-size: 22px;
+      font-weight: 300;
+      line-height: 27px;
+      text-align: left;
+    }
+  
+    .toolbar {
+      height: 52px !important;
+      border-bottom: 1px solid rgba(233, 232, 232,1) !important;
+    }
+  
+    .padding-style {
+      padding: 0 10px 1px;
+    }
+  }
+  

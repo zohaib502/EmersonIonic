@@ -1,0 +1,787 @@
+<ion-header *ngIf="currentReport && currentReport.REPORTSTATUS == Enums.ReportStatus.Completed && header_data">
+    <page-custom-header [header]="header_data"></page-custom-header>
+</ion-header>
+
+<ion-content padding
+    [ngClass]="currentReport && currentReport.REPORTSTATUS == Enums.ReportStatus.Completed ? 'onCompleted':''">
+
+    <ion-card>
+
+        <ion-card-header>
+            <ion-row class="global-padding">
+                <ion-col col-6 no-padding>
+                    <h1>{{'Review' | translate}}</h1>
+                </ion-col>
+                <ion-col col-6 class="alignRight">
+                    <span *ngIf="selectedProcess == Enums.Selected_Process.FCR_AND_SDR"
+                        class="ft-size">{{'Continue' | translate}}</span> <button (click)="gotofcr()" ion-button
+                        class="frs-Btn mrg-top" *ngIf="selectedProcess == Enums.Selected_Process.FCR_AND_SDR"
+                        id="isoReviewSubmit_1">{{'Field Completion Report'|translate}}</button>
+                    <span class="comSpan">
+                        <img src="assets/imgs/icons/ic_pdf.png" id="pdfbtn" (click)="GeneratePdf()" class="pdfbtn"
+                            id="isoReviewSubmit_2">
+                    </span>
+                    <span class="comSpan">
+                        <img src="assets/imgs/icons/ic_print.png" id="printbtn" (click)="GeneratePdf()" class="printbtn"
+                            id="isoReviewSubmit_3">
+                    </span>
+                    <span>
+                        <img src="assets/imgs/icons/ic_email_to.png" id="emailbtn" (click)="sendMail()" class="emailbtn"
+                            id="isoReviewSubmit_4">
+                    </span>
+                </ion-col>
+            </ion-row>
+        </ion-card-header>
+
+        <ion-card-content>
+            <ion-list>
+                <page-sdr-header></page-sdr-header>
+                <ion-row class="global-padding">
+                    <ion-col col-6 no-padding>
+                        <button ion-button id="backBtn"
+                            [disabled]="cardToDisplay=='1' && (currentReport && currentReport.REPORTSTATUS == Enums.ReportStatus.Completed)"
+                            (click)="backBtnClick()" class="back-next-button inline-block"
+                            id="isoReviewSubmit_5">{{ 'Back' | translate }}</button>
+                        <button
+                            [disabled]="cardToDisplay=='10' || (pageArray.length > 0 && cardToDisplay==pageArray.slice(-1)[0].id)"
+                            (click)="nextBtnClick()" ion-button id="nextBtn" class="back-next-button inline-block"
+                            id="isoReviewSubmit_6">{{ 'Next' | translate }}</button>
+                    </ion-col>
+                    <ion-col class="alignRight" col-6 no-padding>
+                        <button *ngIf="currentReport && currentReport.REPORTSTATUS != Enums.ReportStatus.Completed"
+                            ion-button id="submitBtn"
+                            (click)="sdrUtility.submitReport(currentReport, navCtrl, appCtrl,'IsoReviewSubmitPage')"
+                            class="back-next-button submit-button inline-block"
+                            id="isoReviewSubmit_7">{{ 'Submit' | translate }}</button>
+                        <ion-select id="selectPageOption" [(ngModel)]="cardToDisplay" (ionChange)="selectPage($event)"
+                            class="select-box select-style" tappable interface="popover" id="isoReviewSubmit_8">
+                            <ion-option disabled value="0">{{'Select Page' | translate }}</ion-option>
+                            <ion-option selected [value]="page.id" *ngFor="let page of pageArray; let i = index ">
+                                {{page.tabTitle | translate}}
+                            </ion-option>
+                        </ion-select>
+                    </ion-col>
+                </ion-row>
+            </ion-list>
+        </ion-card-content>
+
+    </ion-card>
+
+    <ion-card>
+
+        <ion-card-header>
+            <ion-row class="global-padding">
+                <ion-col col-8 no-padding>
+                    <h1>{{ headerToDisplay | translate}}</h1>
+                </ion-col>
+            </ion-row>
+        </ion-card-header>
+
+        <ion-card-content class="global-padding sdr-pages">
+            <!-- As Found Performance-->
+            <div *ngIf="headerToDisplay == 'As Found Performance' && asFoundPerformanceObj;else TestData">
+                <span>
+                    <ion-row class="global-padding"
+                        *ngIf="asFoundPerformanceObj.INLET || asFoundPerformanceObj.INLET_CONNECTION_TYPE || asFoundPerformanceObj.INLET_CONNECTION_RATING || 
+                        asFoundPerformanceObj.OUTLET || asFoundPerformanceObj.OUTLET_CONNECTION_TYPE || asFoundPerformanceObj.OUTLET_CONNECTION_RATING || asFoundPerformanceObj.TEST_MEDIUM">
+                        <div class="width-thirty spacingMargin INLET-Element" id="INLET">
+                            <ion-col no-padding>
+                                <div
+                                    class="{{asFoundPerformanceObj.INLET ? '' : 'hide-content'}} body-item-box marginTop15 inline-block">
+                                    <span class="label">{{'Inlet' | translate}}</span>
+                                    <span
+                                        class="value block">{{asFoundPerformanceObj.INLET == 'Other' ? asFoundPerformanceObj.INLET_OT : asFoundPerformanceObj.INLET}}</span>
+                                </div>
+                            </ion-col>
+                        </div>
+                        <div class="width-thirty spacingMargin INLET_CONNECTION_TYPE-Element"
+                            id="INLET_CONNECTION_TYPE">
+                            <ion-col no-padding>
+                                <div
+                                    class="{{asFoundPerformanceObj.INLET_CONNECTION_TYPE ? '' : 'hide-content'}} body-item-box marginTop15 inline-block">
+                                    <span class="label">{{'Inlet Connection Type' | translate}}</span>
+                                    <span
+                                        class="value block">{{asFoundPerformanceObj.INLET_CONNECTION_TYPE == 'Other' ? asFoundPerformanceObj.INLET_CONNECTION_TYPE_OT : asFoundPerformanceObj.INLET_CONNECTION_TYPE}}</span>
+                                </div>
+                            </ion-col>
+                        </div>
+                        <div class="width-thirty spacingMargin INLET_CONNECTION_RATING-Element"
+                            id="INLET_CONNECTION_RATING">
+                            <ion-col no-padding>
+                                <div
+                                    class="{{asFoundPerformanceObj.INLET_CONNECTION_RATING ? '' : 'hide-content'}} body-item-box marginTop15 inline-block">
+                                    <span class="label">{{'Inlet Connection Rating' | translate}}</span>
+                                    <span
+                                        class="value block">{{asFoundPerformanceObj.INLET_CONNECTION_RATING == 'Other' ? asFoundPerformanceObj.INLET_CONNECTION_RATING_OT : asFoundPerformanceObj.INLET_CONNECTION_RATING}}</span>
+                                </div>
+                            </ion-col>
+                        </div>
+                        <div class="width-thirty spacingMargin OUTLET-Element" id="OUTLET">
+                            <ion-col no-padding>
+                                <div
+                                    class="{{asFoundPerformanceObj.OUTLET ? '' : 'hide-content'}} body-item-box marginTop15 inline-block">
+                                    <span class="label">{{'Outlet' | translate}}</span>
+                                    <span
+                                        class="value block">{{asFoundPerformanceObj.OUTLET == 'Other' ? asFoundPerformanceObj.OUTLET_OT : asFoundPerformanceObj.OUTLET}}</span>
+                                </div>
+                            </ion-col>
+                        </div>
+                        <div class="width-thirty spacingMargin OUTLET_CONNECTION_TYPE-Element"
+                            id="OUTLET_CONNECTION_TYPE">
+                            <ion-col no-padding>
+                                <div
+                                    class="{{asFoundPerformanceObj.OUTLET_CONNECTION_TYPE ? '' : 'hide-content'}} body-item-box marginTop15 inline-block">
+                                    <span class="label">{{'Outlet Connection Type' | translate}}</span>
+                                    <span
+                                        class="value block">{{asFoundPerformanceObj.OUTLET_CONNECTION_TYPE == 'Other' ? asFoundPerformanceObj.OUTLET_CONNECTION_TYPE_OT : asFoundPerformanceObj.OUTLET_CONNECTION_TYPE}}</span>
+                                </div>
+                            </ion-col>
+                        </div>
+                        <div class="width-thirty spacingMargin OUTLET_CONNECTION_RATING-Element"
+                            id="OUTLET_CONNECTION_RATING">
+                            <ion-col no-padding>
+                                <div
+                                    class="{{asFoundPerformanceObj.OUTLET_CONNECTION_RATING ? '' : 'hide-content'}} body-item-box marginTop15 inline-block">
+                                    <span class="label">{{'Outlet Connection Rating' | translate}}</span>
+                                    <span
+                                        class="value block">{{asFoundPerformanceObj.OUTLET_CONNECTION_RATING == 'Other' ? asFoundPerformanceObj.OUTLET_CONNECTION_RATING_OT : asFoundPerformanceObj.OUTLET_CONNECTION_RATING}}</span>
+                                </div>
+                            </ion-col>
+                        </div>
+                        <div class="width-thirty spacingMargin TEST_MEDIUM-Element" id="TEST_MEDIUM">
+                            <ion-col no-padding>
+                                <div
+                                    class="{{asFoundPerformanceObj.TEST_MEDIUM ? '' : 'hide-content'}} body-item-box marginTop15 inline-block">
+                                    <span class="label">{{'Test Medium' | translate}}</span>
+                                    <span
+                                        class="value block">{{asFoundPerformanceObj.TEST_MEDIUM == 'Other' ? asFoundPerformanceObj.TEST_MEDIUM_OT : asFoundPerformanceObj.TEST_MEDIUM}}</span>
+                                </div>
+                            </ion-col>
+                        </div>
+                    </ion-row>
+                    <!-- PRE_TEST_DATA Accordion -->
+                    <ion-row *ngIf="accordionTitle.PRE_TEST_DATA" class="customRows">
+                        <div class="global-padding full-width">
+                            <div class="inline-block spacingMargin">
+                                <span class="label pointer accordion-label">{{'Pre-Test Data' | translate}}</span>
+                            </div>
+                            <div class="block full-width attachmentBox">
+                                <ion-row class="finalInspection"
+                                    *ngIf="asFoundPerformanceObj.PRE_TEST_DATA_FIRST_POP_PRESSURE || asFoundPerformanceObj.PRE_TEST_DATA_SECOND_POP_PRESSURE">
+                                    <div
+                                        class="{{asFoundPerformanceObj.PRE_TEST_DATA_FIRST_POP_PRESSURE ? '' : 'hide-content'}} body-item-box marginTop15 inline-block">
+                                        <span class="label">{{'First Pop Pressure' | translate}}</span>
+                                        <span
+                                            class="value block">{{asFoundPerformanceObj.PRE_TEST_DATA_FIRST_POP_PRESSURE}}</span>
+                                    </div>
+                                    <div
+                                        class="{{asFoundPerformanceObj.PRE_TEST_DATA_FIRST_POP_PRESSURE_UOM ? '' : 'hide-content'}} body-item-box marginTop15 inline-block">
+                                        <span class="label">{{'UOM' | translate}}</span>
+                                        <span
+                                            class="value block">{{asFoundPerformanceObj.PRE_TEST_DATA_FIRST_POP_PRESSURE_UOM == 'Other' ? asFoundPerformanceObj.PRE_TEST_DATA_FIRST_POP_PRESSURE_UOM_OT : asFoundPerformanceObj.PRE_TEST_DATA_FIRST_POP_PRESSURE_UOM}}</span>
+                                    </div>
+                                    <div
+                                        class="{{asFoundPerformanceObj.PRE_TEST_DATA_SECOND_POP_PRESSURE ? '' : 'hide-content'}} body-item-box marginTop15 inline-block">
+                                        <span class="label">{{'Second Pop Pressure' | translate}}</span>
+                                        <span
+                                            class="value block">{{asFoundPerformanceObj.PRE_TEST_DATA_SECOND_POP_PRESSURE}}</span>
+                                    </div>
+                                    <div
+                                        class="{{asFoundPerformanceObj.PRE_TEST_DATA_SECOND_POP_PRESSURE_UOM ? '' : 'hide-content'}} body-item-box marginTop15 inline-block">
+                                        <span class="label">{{'UOM' | translate}}</span>
+                                        <span
+                                            class="value block">{{asFoundPerformanceObj.PRE_TEST_DATA_SECOND_POP_PRESSURE_UOM == 'Other' ? asFoundPerformanceObj.PRE_TEST_DATA_SECOND_POP_PRESSURE_UOM_OT : asFoundPerformanceObj.PRE_TEST_DATA_SECOND_POP_PRESSURE_UOM}}</span>
+                                    </div>
+                                </ion-row>
+                                <ion-row class="finalInspection"
+                                    *ngIf="asFoundPerformanceObj.PRE_TEST_DATA_THIRD_POP_PRESSURE || asFoundPerformanceObj.PRE_TEST_DATA_PRE_OPEN_PRESSURE">
+                                    <div
+                                        class="{{asFoundPerformanceObj.PRE_TEST_DATA_THIRD_POP_PRESSURE ? '' : 'hide-content'}} body-item-box marginTop15 inline-block">
+                                        <span class="label">{{'Third Pop Pressure' | translate}}</span>
+                                        <span
+                                            class="value block">{{asFoundPerformanceObj.PRE_TEST_DATA_THIRD_POP_PRESSURE}}</span>
+                                    </div>
+                                    <div
+                                        class="{{asFoundPerformanceObj.PRE_TEST_DATA_THIRD_POP_PRESSURE_UOM ? '' : 'hide-content'}} body-item-box marginTop15 inline-block">
+                                        <span class="label">{{'UOM' | translate}}</span>
+                                        <span
+                                            class="value block">{{asFoundPerformanceObj.PRE_TEST_DATA_THIRD_POP_PRESSURE_UOM == 'Other' ? asFoundPerformanceObj.PRE_TEST_DATA_THIRD_POP_PRESSURE_UOM_OT : asFoundPerformanceObj.PRE_TEST_DATA_THIRD_POP_PRESSURE_UOM}}</span>
+                                    </div>
+                                    <div
+                                        class="{{asFoundPerformanceObj.PRE_TEST_DATA_PRE_OPEN_PRESSURE ? '' : 'hide-content'}} body-item-box marginTop15 inline-block">
+                                        <span class="label">{{'Third Pop Pressure' | translate}}</span>
+                                        <span
+                                            class="value block">{{asFoundPerformanceObj.PRE_TEST_DATA_PRE_OPEN_PRESSURE}}</span>
+                                    </div>
+                                    <div
+                                        class="{{asFoundPerformanceObj.PRE_TEST_DATA_PRE_OPEN_PRESSURE_UOM ? '' : 'hide-content'}} body-item-box marginTop15 inline-block">
+                                        <span class="label">{{'UOM' | translate}}</span>
+                                        <span
+                                            class="value block">{{asFoundPerformanceObj.PRE_TEST_DATA_PRE_OPEN_PRESSURE_UOM == 'Other' ? asFoundPerformanceObj.PRE_TEST_DATA_PRE_OPEN_PRESSURE_UOM_OT : asFoundPerformanceObj.PRE_TEST_DATA_PRE_OPEN_PRESSURE_UOM}}</span>
+                                    </div>
+                                </ion-row>
+                                <ion-row class="finalInspection"
+                                    *ngIf="asFoundPerformanceObj.PRE_TEST_DATA_SEAT_TIGHTNESS_PRESSURE">
+                                    <div
+                                        class="{{asFoundPerformanceObj.PRE_TEST_DATA_SEAT_TIGHTNESS_PRESSURE ? '' : 'hide-content'}} body-item-box marginTop15 inline-block">
+                                        <span class="label">{{'Seat Tightness Pressure' | translate}}</span>
+                                        <span
+                                            class="value block">{{asFoundPerformanceObj.PRE_TEST_DATA_SEAT_TIGHTNESS_PRESSURE}}</span>
+                                    </div>
+                                    <div
+                                        class="{{asFoundPerformanceObj.PRE_TEST_DATA_SEAT_TIGHTNESS_PRESSURE_UOM ? '' : 'hide-content'}} body-item-box marginTop15 inline-block">
+                                        <span class="label">{{'UOM' | translate}}</span>
+                                        <span
+                                            class="value block">{{asFoundPerformanceObj.PRE_TEST_DATA_SEAT_TIGHTNESS_PRESSURE_UOM == 'Other' ? asFoundPerformanceObj.PRE_TEST_DATA_SEAT_TIGHTNESS_PRESSURE_UOM_OT : asFoundPerformanceObj.PRE_TEST_DATA_SEAT_TIGHTNESS_PRESSURE_UOM}}</span>
+                                    </div>
+                                </ion-row>
+                                <ion-row>
+                                    <div class="body-item-box marginTop15 inline-block">
+                                        <span class="label">{{'Back Pressure' | translate}}</span>
+                                        <ion-checkbox name="PRE_TEST_DATA_BACK_PRESSURE" disabled="true"
+                                            [(ngModel)]="asFoundPerformanceObj.PRE_TEST_DATA_BACK_PRESSURE"
+                                            [checked]="asFoundPerformanceObj.PRE_TEST_DATA_BACK_PRESSURE == 'true' || asFoundPerformanceObj.PRE_TEST_DATA_BACK_PRESSURE == true">
+                                        </ion-checkbox>
+                                    </div>
+                                </ion-row>
+                                <ion-row *ngIf="asFoundPerformanceObj.PRE_TEST_DATA_BACK_PRESSURE_TEST_PRESSURE">
+                                    <div
+                                        class="{{asFoundPerformanceObj.PRE_TEST_DATA_BACK_PRESSURE_TEST_PRESSURE ? '' : 'hide-content'}} width-fifty marginTop15 inline-block">
+                                        <span class="label">{{'Back Pressure Test Pressure' | translate}}</span>
+                                        <span
+                                            class="value block">{{asFoundPerformanceObj.PRE_TEST_DATA_BACK_PRESSURE_TEST_PRESSURE}}</span>
+                                    </div>
+                                    <div
+                                        class="{{asFoundPerformanceObj.PRE_TEST_DATA_BACK_PRESSURE_TEST_PRESSURE_UOM ? '' : 'hide-content'}} width-fifty marginTop15 inline-block">
+                                        <span class="label">{{'UOM' | translate}}</span>
+                                        <span
+                                            class="value block">{{asFoundPerformanceObj.PRE_TEST_DATA_BACK_PRESSURE_TEST_PRESSURE_UOM == 'Other' ? asFoundPerformanceObj.PRE_TEST_DATA_BACK_PRESSURE_TEST_PRESSURE_UOM_OT : asFoundPerformanceObj.PRE_TEST_DATA_BACK_PRESSURE_TEST_PRESSURE_UOM}}</span>
+                                    </div>
+                                </ion-row>
+                                <ion-row>
+                                    <div class="body-item-box marginTop15 inline-block">
+                                        <span class="label">{{'Leak Test' | translate}}</span>
+                                        <ion-checkbox name="PRE_TEST_DATA_LEAK_TEST" disabled="true"
+                                            [(ngModel)]="asFoundPerformanceObj.PRE_TEST_DATA_LEAK_TEST"
+                                            [checked]="asFoundPerformanceObj.PRE_TEST_DATA_LEAK_TEST == 'true' || asFoundPerformanceObj.PRE_TEST_DATA_LEAK_TEST == true">
+                                        </ion-checkbox>
+                                    </div>
+                                </ion-row>
+                                <ion-row class="finalInspection"
+                                    *ngIf="asFoundPerformanceObj.PRE_TEST_DATA_LEAK_TEST_RESULT || asFoundPerformanceObj.PRE_TEST_DATA_BELLOWS_TEST || asFoundPerformanceObj.PRE_TEST_DATA_BACK_PRESSURE_TEST_MEDIUM || asFoundPerformanceObj.PRE_TEST_DATA_BACK_PRESSURE_TEST_RESULT">
+                                    <div
+                                        class="{{asFoundPerformanceObj.PRE_TEST_DATA_LEAK_TEST_RESULT ? '' : 'hide-content'}} body-item-box marginTop15 inline-block">
+                                        <span class="label">{{'Leak Test Results' | translate}}</span>
+                                        <span
+                                            class="value block">{{asFoundPerformanceObj.PRE_TEST_DATA_LEAK_TEST_RESULT == 'Other' ? asFoundPerformanceObj.PRE_TEST_DATA_LEAK_TEST_RESULT_OT : asFoundPerformanceObj.PRE_TEST_DATA_LEAK_TEST_RESULT}}</span>
+                                    </div>
+                                    <div
+                                        class="{{asFoundPerformanceObj.PRE_TEST_DATA_BELLOWS_TEST ? '' : 'hide-content'}} body-item-box marginTop15 inline-block">
+                                        <span class="label">{{'Bellows Test' | translate}}</span>
+                                        <span
+                                            class="value block">{{asFoundPerformanceObj.PRE_TEST_DATA_BELLOWS_TEST == 'Other' ? asFoundPerformanceObj.PRE_TEST_DATA_BELLOWS_TEST_OT : asFoundPerformanceObj.PRE_TEST_DATA_BELLOWS_TEST}}</span>
+                                    </div>
+                                    <div
+                                        class="{{asFoundPerformanceObj.PRE_TEST_DATA_BACK_PRESSURE_TEST_MEDIUM ? '' : 'hide-content'}} body-item-box marginTop15 inline-block">
+                                        <span class="label">{{'Back Pressure Test Medium' | translate}}</span>
+                                        <span
+                                            class="value block">{{asFoundPerformanceObj.PRE_TEST_DATA_BACK_PRESSURE_TEST_MEDIUM == 'Other' ? asFoundPerformanceObj.PRE_TEST_DATA_BACK_PRESSURE_TEST_MEDIUM_OT : asFoundPerformanceObj.PRE_TEST_DATA_BACK_PRESSURE_TEST_MEDIUM}}</span>
+                                    </div>
+                                    <div
+                                        class="{{asFoundPerformanceObj.PRE_TEST_DATA_BACK_PRESSURE_TEST_RESULT ? '' : 'hide-content'}} body-item-box marginTop15 inline-block">
+                                        <span class="label">{{'Back Pressure Test Result' | translate}}</span>
+                                        <span
+                                            class="value block">{{asFoundPerformanceObj.PRE_TEST_DATA_BACK_PRESSURE_TEST_RESULT == 'Other' ? asFoundPerformanceObj.PRE_TEST_DATA_BACK_PRESSURE_TEST_RESULT_OT : asFoundPerformanceObj.PRE_TEST_DATA_BACK_PRESSURE_TEST_RESULT}}</span>
+                                    </div>
+                                </ion-row>
+                                <ion-row class="finalInspection"
+                                    *ngIf="asFoundPerformanceObj.PRE_TEST_DATA_PRE_TEST_RESULT || asFoundPerformanceObj.PRE_TEST_DATA_PRE_TEST_DATE || asFoundPerformanceObj.PRE_TEST_DATA_PRE_TESTED_BY">
+                                    <div
+                                        class="{{asFoundPerformanceObj.PRE_TEST_DATA_PRE_TEST_RESULT ? '' : 'hide-content'}} body-item-box marginTop15 inline-block">
+                                        <span class="label">{{'Pre-Test Result' | translate}}</span>
+                                        <span
+                                            class="value block">{{asFoundPerformanceObj.PRE_TEST_DATA_PRE_TEST_RESULT == 'Other' ? asFoundPerformanceObj.PRE_TEST_DATA_PRE_TEST_RESULT_OT : asFoundPerformanceObj.PRE_TEST_DATA_PRE_TEST_RESULT}}</span>
+                                    </div>
+                                    <div
+                                        class="{{asFoundPerformanceObj.PRE_TEST_DATA_PRE_TEST_DATE ? '' : 'hide-content'}} body-item-box marginTop15 inline-block">
+                                        <span class="label">{{'Pre-Test Date' | translate}}</span>
+                                        <span
+                                            class="value block">{{asFoundPerformanceObj.PRE_TEST_DATA_PRE_TEST_DATE | date:'dd-MMM-yyyy'}}</span>
+                                    </div>
+                                    <div
+                                        class="{{asFoundPerformanceObj.PRE_TEST_DATA_PRE_TESTED_BY ? '' : 'hide-content'}} body-item-box marginTop15 inline-block">
+                                        <span class="label">{{'Pre-Tested By' | translate}}</span>
+                                        <span
+                                            class="value block">{{asFoundPerformanceObj.PRE_TEST_DATA_PRE_TESTED_BY}}</span>
+                                    </div>
+                                </ion-row>
+                                <ion-row *ngIf="asFoundPerformanceObj.PRE_TEST_DATA_PRE_TEST_COMMENTS">
+                                    <div class="full-width">
+                                        <div class="spacingMargin" id="PRE_TEST_DATA_PRE_TEST_COMMENTS">
+                                            <ion-col no-padding>
+                                                <span class="label">{{'Pre-Test Comments' | translate}}</span>
+                                                <span
+                                                    class="value block">{{asFoundPerformanceObj.PRE_TEST_DATA_PRE_TEST_COMMENTS}}</span>
+                                            </ion-col>
+                                        </div>
+                                    </div>
+                                </ion-row>
+                            </div>
+                        </div>
+                    </ion-row>
+                    <!-- GAUGE Accordion -->
+                    <ion-row *ngIf="accordionTitle.GAUGE" class="customRows">
+                        <div class="global-padding full-width">
+                            <div class="inline-block spacingMargin">
+                                <span class="label pointer accordion-label">{{'Gauge' | translate}}</span>
+                            </div>
+                            <div class="block full-width attachmentBox">
+                                <ion-row class="finalInspection"
+                                    *ngIf="asFoundPerformanceObj.GAUGE_PRESSURE_GAUGE_ID || asFoundPerformanceObj.GAUGE_GAUGE_CALIBRATION_DUE_DATE">
+                                    <div
+                                        class="{{asFoundPerformanceObj.GAUGE_PRESSURE_GAUGE_ID ? '' : 'hide-content'}} body-item-box marginTop15 inline-block">
+                                        <span class="label">{{'Pressure Gauge ID' | translate}}</span>
+                                        <span
+                                            class="value block">{{asFoundPerformanceObj.GAUGE_PRESSURE_GAUGE_ID}}</span>
+                                    </div>
+                                    <div
+                                        class="{{asFoundPerformanceObj.GAUGE_GAUGE_CALIBRATION_DUE_DATE ? '' : 'hide-content'}} body-item-box marginTop15 inline-block">
+                                        <span class="label">{{'Gauge Calibration Due Date' | translate}}</span>
+                                        <span
+                                            class="value block">{{asFoundPerformanceObj.GAUGE_GAUGE_CALIBRATION_DUE_DATE | date:'dd-MMM-yyyy'}}</span>
+                                    </div>
+                                </ion-row>
+                            </div>
+                        </div>
+                    </ion-row>
+                    <!-- CUSTOMER_SPECIFICATION Accordion -->
+                    <ion-row *ngIf="accordionTitle.CUSTOMER_SPECIFICATION" class="customRows">
+                        <div class="global-padding full-width">
+                            <div class="inline-block spacingMargin">
+                                <span class="label pointer accordion-label">{{'Customer Specification' | translate}}
+                                </span>
+                            </div>
+                            <div class="finalInspection block full-width attachmentBox">
+                                <ion-row>
+                                    <div
+                                        class="{{asFoundPerformanceObj.CUSTOMER_SPECIFICATION_CUSTOMER_SPECIFICATION_NUMBER ? '' : 'hide-content'}} body-item-box marginTop15 inline-block">
+                                        <span class="label">{{'Customer Specification Number' | translate}}</span>
+                                        <span
+                                            class="value block">{{asFoundPerformanceObj.CUSTOMER_SPECIFICATION_CUSTOMER_SPECIFICATION_NUMBER}}</span>
+                                    </div>
+                                    <div class="body-item-box marginTop30 inline-block">
+                                        <span class="label">{{'Customer Witness Required' | translate}}</span>
+                                        <ion-checkbox name="CUSTOMER_SPECIFICATION_CUSTOMER_WITNESS_REQUIRED"
+                                            disabled="true"
+                                            [(ngModel)]="asFoundPerformanceObj.CUSTOMER_SPECIFICATION_CUSTOMER_WITNESS_REQUIRED"
+                                            [checked]="asFoundPerformanceObj.CUSTOMER_SPECIFICATION_CUSTOMER_WITNESS_REQUIRED == 'true' || asFoundPerformanceObj.CUSTOMER_SPECIFICATION_CUSTOMER_WITNESS_REQUIRED == true">
+                                        </ion-checkbox>
+                                    </div>
+                                </ion-row>
+                            </div>
+                        </div>
+                    </ion-row>
+                </span>
+            </div>
+            <!-- Test Data -->
+            <ng-template #TestData>
+                <div *ngIf="headerToDisplay == 'Test Data' && testDataObj;else FinalInspection">
+                    <span>
+                        <!-- PRESSURE_MEASUREMENT Accordion -->
+                        <ion-row *ngIf="accordionTitle.PRESSURE_MEASUREMENT" class="customRows">
+                            <div class="global-padding full-width">
+                                <div class="inline-block spacingMargin">
+                                    <span
+                                        class="label pointer accordion-label">{{'Pressure Measurement' | translate}}</span>
+                                </div>
+                                <div class="block full-width attachmentBox">
+                                    <ion-row
+                                        *ngIf="testDataObj.PRESSURE_MEASUREMENT_GAUGE_ID || testDataObj.PRESSURE_MEASUREMENT_GAUGE_CALIBRATION_DUE_DATE">
+                                        <div
+                                            class="{{testDataObj.PRESSURE_MEASUREMENT_GAUGE_ID ? '' : 'hide-content'}} width-fifty marginTop15 inline-block">
+                                            <span class="label">{{'Gauge ID' | translate}}</span>
+                                            <span
+                                                class="value block">{{testDataObj.PRESSURE_MEASUREMENT_GAUGE_ID}}</span>
+                                        </div>
+                                        <div
+                                            class="{{testDataObj.PRESSURE_MEASUREMENT_GAUGE_CALIBRATION_DUE_DATE ? '' : 'hide-content'}} width-fifty marginTop15 inline-block">
+                                            <ion-label class="label ionLabel marginTop">
+                                                <span
+                                                    class="checkboxLabel">{{'Gauge Calibration Due Date' | translate}}</span>
+                                            </ion-label>
+                                            <span
+                                                class="value block">{{testDataObj.PRESSURE_MEASUREMENT_GAUGE_CALIBRATION_DUE_DATE | date:'dd-MMM-yyyy'}}</span>
+                                        </div>
+                                    </ion-row>
+                                    <ion-row *ngIf="testDataObj.PRESSURE_MEASUREMENT_SET_PRESSURE">
+                                        <div class="width-fifty marginTop15 inline-block">
+                                            <span class="label">{{'Set Pressure' | translate}}</span>
+                                            <span
+                                                class="value block">{{testDataObj.PRESSURE_MEASUREMENT_SET_PRESSURE}}</span>
+                                        </div>
+                                        <div class="width-fifty marginTop15 inline-block">
+                                            <span class="label">{{'UOM' | translate}}</span>
+                                            <span
+                                                class="value block">{{testDataObj.PRESSURE_MEASUREMENT_SET_PRESSURE_UOM == 'Other' ? testDataObj.PRESSURE_MEASUREMENT_SET_PRESSURE_UOM_OT : testDataObj.PRESSURE_MEASUREMENT_SET_PRESSURE_UOM}}</span>
+                                        </div>
+                                    </ion-row>
+                                    <ion-row *ngIf="testDataObj.PRESSURE_MEASUREMENT_CDTP_PRESSURE">
+                                        <div class="width-fifty marginTop15 inline-block">
+                                            <span class="label">{{'CDTP Pressure' | translate}}</span>
+                                            <span
+                                                class="value block">{{testDataObj.PRESSURE_MEASUREMENT_CDTP_PRESSURE}}</span>
+                                        </div>
+                                        <div class="width-fifty marginTop15 inline-block">
+                                            <span class="label">{{'UOM' | translate}}</span>
+                                            <span
+                                                class="value block">{{testDataObj.PRESSURE_MEASUREMENT_CDTP_PRESSURE_UOM == 'Other' ? testDataObj.PRESSURE_MEASUREMENT_CDTP_PRESSURE_UOM_OT : testDataObj.PRESSURE_MEASUREMENT_CDTP_PRESSURE_UOM}}</span>
+                                        </div>
+                                    </ion-row>
+                                    <ion-row *ngIf="testDataObj.PRESSURE_MEASUREMENT_ACTUAL_SET_PRESSURE">
+                                        <div class="width-fifty marginTop15 inline-block">
+                                            <span class="label">{{'Actual Set Pressure' | translate}}</span>
+                                            <span
+                                                class="value block">{{testDataObj.PRESSURE_MEASUREMENT_ACTUAL_SET_PRESSURE}}</span>
+                                        </div>
+                                        <div class="width-fifty marginTop15 inline-block">
+                                            <span class="label">{{'UOM' | translate}}</span>
+                                            <span
+                                                class="value block">{{testDataObj.PRESSURE_MEASUREMENT_ACTUAL_SET_PRESSURE_UOM == 'Other' ? testDataObj.PRESSURE_MEASUREMENT_ACTUAL_SET_PRESSURE_UOM_OT : testDataObj.PRESSURE_MEASUREMENT_ACTUAL_SET_PRESSURE_UOM}}</span>
+                                        </div>
+                                    </ion-row>
+                                    <ion-row *ngIf="testDataObj.PRESSURE_MEASUREMENT_PRE_OPEN_PRESSURE">
+                                        <div class="width-fifty marginTop15 inline-block">
+                                            <span class="label">{{'Pre-Open Pressure' | translate}}</span>
+                                            <span
+                                                class="value block">{{testDataObj.PRESSURE_MEASUREMENT_PRE_OPEN_PRESSURE}}</span>
+                                        </div>
+                                        <div class="width-fifty marginTop15 inline-block">
+                                            <span class="label">{{'UOM' | translate}}</span>
+                                            <span
+                                                class="value block">{{testDataObj.PRESSURE_MEASUREMENT_PRE_OPEN_PRESSURE_UOM == 'Other' ? testDataObj.PRESSURE_MEASUREMENT_PRE_OPEN_PRESSURE_UOM_OT : testDataObj.PRESSURE_MEASUREMENT_PRE_OPEN_PRESSURE_UOM}}</span>
+                                        </div>
+                                    </ion-row>
+                                    <ion-row *ngIf="testDataObj.PRESSURE_MEASUREMENT_RESEAT_PRESSURE">
+                                        <div class="width-fifty marginTop15 inline-block">
+                                            <span class="label">{{'Reseat Pressure' | translate}}</span>
+                                            <span
+                                                class="value block">{{testDataObj.PRESSURE_MEASUREMENT_RESEAT_PRESSURE}}</span>
+                                        </div>
+                                        <div class="width-fifty marginTop15 inline-block">
+                                            <span class="label">{{'UOM' | translate}}</span>
+                                            <span
+                                                class="value block">{{testDataObj.PRESSURE_MEASUREMENT_RESEAT_PRESSURE_UOM == 'Other' ? testDataObj.PRESSURE_MEASUREMENT_RESEAT_PRESSURE_UOM_OT : testDataObj.PRESSURE_MEASUREMENT_RESEAT_PRESSURE_UOM}}</span>
+                                        </div>
+                                    </ion-row>
+                                    <ion-row *ngIf="testDataObj.PRESSURE_MEASUREMENT_SEAT_TIGHTNESS_PRESSURE">
+                                        <div class="width-fifty marginTop15 inline-block">
+                                            <span class="label">{{'Seat Tightness Pressure' | translate}}</span>
+                                            <span
+                                                class="value block">{{testDataObj.PRESSURE_MEASUREMENT_SEAT_TIGHTNESS_PRESSURE}}</span>
+                                        </div>
+                                        <div class="width-fifty marginTop15 inline-block">
+                                            <span class="label">{{'UOM' | translate}}</span>
+                                            <span
+                                                class="value block">{{testDataObj.PRESSURE_MEASUREMENT_SEAT_TIGHTNESS_PRESSURE_UOM == 'Other' ? testDataObj.PRESSURE_MEASUREMENT_SEAT_TIGHTNESS_PRESSURE_UOM_OT : testDataObj.PRESSURE_MEASUREMENT_SEAT_TIGHTNESS_PRESSURE_UOM}}</span>
+                                        </div>
+                                    </ion-row>
+                                    <ion-row *ngIf="testDataObj.PRESSURE_MEASUREMENT_BACK_PRESSURE_TEST_PRESSURE">
+                                        <div class="width-fifty marginTop15 inline-block">
+                                            <span class="label">{{'Back Pressure Test Pressure' | translate}}</span>
+                                            <span
+                                                class="value block">{{testDataObj.PRESSURE_MEASUREMENT_BACK_PRESSURE_TEST_PRESSURE}}</span>
+                                        </div>
+                                        <div class="width-fifty marginTop15 inline-block">
+                                            <span class="label">{{'UOM' | translate}}</span>
+                                            <span
+                                                class="value block">{{testDataObj.PRESSURE_MEASUREMENT_BACK_PRESSURE_TEST_PRESSURE_UOM == 'Other' ? testDataObj.PRESSURE_MEASUREMENT_BACK_PRESSURE_TEST_PRESSURE_UOM_OT : testDataObj.PRESSURE_MEASUREMENT_BACK_PRESSURE_TEST_PRESSURE_UOM}}</span>
+                                        </div>
+                                    </ion-row>
+                                </div>
+                            </div>
+                        </ion-row>
+                        <!-- RING_SETTINGS Accordion -->
+                        <ion-row *ngIf="accordionTitle.RING_SETTINGS" class="customRows">
+                            <div class="global-padding full-width">
+                                <div class="inline-block spacingMargin">
+                                    <span class="label pointer accordion-label">{{'Ring Settings' | translate}}</span>
+                                </div>
+                                <div class="block full-width attachmentBox">
+                                    <ion-row *ngIf="testDataObj.RING_SETTINGS_UPPER_RING_SETTINGS">
+                                        <div class="width-fifty marginTop15 inline-block">
+                                            <span class="label">{{'Upper Ring Settings' | translate}}</span>
+                                            <span
+                                                class="value block">{{testDataObj.RING_SETTINGS_UPPER_RING_SETTINGS}}</span>
+                                        </div>
+                                        <div class="width-fifty marginTop15 inline-block">
+                                            <span class="label">{{'UOM' | translate}}</span>
+                                            <span
+                                                class="value block">{{testDataObj.RING_SETTINGS_UPPER_RING_SETTINGS_UOM == 'Other' ? testDataObj.RING_SETTINGS_UPPER_RING_SETTINGS_UOM_OT : testDataObj.RING_SETTINGS_UPPER_RING_SETTINGS_UOM}}</span>
+                                        </div>
+                                    </ion-row>
+                                    <ion-row *ngIf="testDataObj.RING_SETTINGS_LOWER_RING_SETTINGS">
+                                        <div class="width-fifty marginTop15 inline-block">
+                                            <span class="label">{{'Lower Ring Settings' | translate}}</span>
+                                            <span
+                                                class="value block">{{testDataObj.RING_SETTINGS_LOWER_RING_SETTINGS}}</span>
+                                        </div>
+                                        <div class="width-fifty marginTop15 inline-block">
+                                            <span class="label">{{'UOM' | translate}}</span>
+                                            <span
+                                                class="value block">{{testDataObj.RING_SETTINGS_LOWER_RING_SETTINGS_UOM == 'Other' ? testDataObj.RING_SETTINGS_LOWER_RING_SETTINGS_UOM_OT : testDataObj.RING_SETTINGS_LOWER_RING_SETTINGS_UOM}}</span>
+                                        </div>
+                                    </ion-row>
+                                </div>
+                            </div>
+                        </ion-row>
+                        <!-- GENERAL Accordion -->
+                        <ion-row *ngIf="accordionTitle.GENERAL" class="customRows">
+                            <div class="global-padding full-width">
+                                <div class="inline-block spacingMargin">
+                                    <span class="label pointer accordion-label">{{'General' | translate}}</span>
+                                </div>
+                                <div class="block full-width attachmentBox">
+                                    <ion-row
+                                        *ngIf="testDataObj.GENERAL_TESTED_BY || testDataObj.GENERAL_TEST_DATE_AND_TIME || testDataObj.GENERAL_TIME">
+                                        <div
+                                            class="{{testDataObj.GENERAL_TESTED_BY ? '' : 'hide-content'}} width-fifty marginTop15 inline-block">
+                                            <span class="label">{{'Tested By' | translate}}</span>
+                                            <span class="value block">{{testDataObj.GENERAL_TESTED_BY}}</span>
+                                        </div>
+                                        <div
+                                            class="{{testDataObj.GENERAL_TEST_DATE_AND_TIME ? '' : 'hide-content'}} width-fifty marginTop15 inline-block">
+                                            <span class="label">{{'Test Date And Time' | translate}}</span>
+                                            <span
+                                                class="value block">{{testDataObj.GENERAL_TEST_DATE_AND_TIME | date:'dd-MMM-yyyy'}}
+                                                {{testDataObj.GENERAL_TIME}}</span>
+                                        </div>
+                                    </ion-row>
+                                    <ion-row *ngIf="testDataObj.GENERAL_TEST_RESULTS">
+                                        <div class="full-width marginTop15 inline-block">
+                                            <span class="label">{{'Test Results' | translate}}</span>
+                                            <span
+                                                class="value block">{{testDataObj.GENERAL_TEST_RESULTS == 'Other' ? testDataObj.GENERAL_TEST_RESULTS_OT : testDataObj.GENERAL_TEST_RESULTS}}</span>
+                                        </div>
+                                    </ion-row>
+                                    <ion-row>
+                                        <div
+                                            class="{{testDataObj.GENERAL_TEST_MEDIUM ? '' : 'hide-content'}} width-fifty marginTop15 inline-block">
+                                            <span class="label">{{'Test Medium' | translate}}</span>
+                                            <span
+                                                class="value block">{{testDataObj.GENERAL_TEST_MEDIUM == 'Other' ? testDataObj.GENERAL_TEST_MEDIUM_OT : testDataObj.GENERAL_TEST_MEDIUM}}</span>
+                                        </div>
+                                        <div class="body-item-box marginTop30 inline-block">
+                                            <span class="label">{{'VR Stamp' | translate}}</span>
+                                            <ion-checkbox name="GENERAL_VR_STAMP" disabled="true"
+                                                [(ngModel)]="testDataObj.GENERAL_VR_STAMP"
+                                                [checked]="testDataObj.GENERAL_VR_STAMP == 'true' || testDataObj.GENERAL_VR_STAMP == true">
+                                            </ion-checkbox>
+                                        </div>
+                                    </ion-row>
+                                    <ion-row
+                                        *ngIf="testDataObj.GENERAL_AUTHORITY_WITNESS || testDataObj.GENERAL_AUTHORITY_WITNESS_DATE">
+                                        <div
+                                            class="{{testDataObj.GENERAL_AUTHORITY_WITNESS ? '' : 'hide-content'}} width-fifty marginTop15 inline-block">
+                                            <span class="label">{{'Authority Witness' | translate}}</span>
+                                            <span class="value block">{{testDataObj.GENERAL_AUTHORITY_WITNESS}}</span>
+                                        </div>
+                                        <div
+                                            class="{{testDataObj.GENERAL_AUTHORITY_WITNESS_DATE ? '' : 'hide-content'}} width-fifty marginTop15 inline-block">
+                                            <span class="label">{{'Authority Witness Date' | translate}}</span>
+                                            <span
+                                                class="value block">{{testDataObj.GENERAL_AUTHORITY_WITNESS_DATE | date:'dd-MMM-yyyy'}}</span>
+                                        </div>
+                                    </ion-row>
+                                    <ion-row
+                                        *ngIf="testDataObj.GENERAL_APPROVED_WITNESS_ROLE || testDataObj.GENERAL_APPROVED_WITNESS_USER">
+                                        <div
+                                            class="{{testDataObj.GENERAL_APPROVED_WITNESS_ROLE ? '' : 'hide-content'}} width-fifty marginTop15 inline-block">
+                                            <span class="label">{{'Authority Witness (Role)' | translate}}</span>
+                                            <span
+                                                class="value block">{{testDataObj.GENERAL_APPROVED_WITNESS_ROLE}}</span>
+                                        </div>
+                                        <div
+                                            class="{{testDataObj.GENERAL_APPROVED_WITNESS_USER ? '' : 'hide-content'}} width-fifty marginTop15 inline-block">
+                                            <span class="label">{{'Authority Witness (User)' | translate}}</span>
+                                            <span
+                                                class="value block">{{testDataObj.GENERAL_APPROVED_WITNESS_USER}}</span>
+                                        </div>
+                                    </ion-row>
+                                </div>
+                            </div>
+                        </ion-row>
+                        <!-- SPRING Accordion -->
+                        <ion-row *ngIf="accordionTitle.SPRING" class="customRows">
+                            <div class="global-padding full-width">
+                                <div class="inline-block spacingMargin">
+                                    <span class="label pointer accordion-label">{{'Spring' | translate}}</span>
+                                </div>
+                                <div class="block full-width attachmentBox">
+                                    <ion-row
+                                        *ngIf="testDataObj.SPRING_SPRING_NUMBER || testDataObj.SPRING_SPRING_RANGE">
+                                        <div
+                                            class="{{testDataObj.SPRING_SPRING_NUMBER ? '' : 'hide-content'}} width-fifty marginTop15 inline-block">
+                                            <span class="label">{{'Spring Number' | translate}}</span>
+                                            <span class="value block">{{testDataObj.SPRING_SPRING_NUMBER}}</span>
+                                        </div>
+                                        <div
+                                            class="{{testDataObj.SPRING_SPRING_RANGE ? '' : 'hide-content'}} width-fifty marginTop15 inline-block">
+                                            <span class="label">{{'Spring Range' | translate}}</span>
+                                            <span class="value block">{{testDataObj.SPRING_SPRING_RANGE}}</span>
+                                        </div>
+                                    </ion-row>
+                                </div>
+                            </div>
+                        </ion-row>
+                    </span>
+                </div>
+            </ng-template>
+            <!-- Final Inspection -->
+            <ng-template #FinalInspection>
+                <div *ngIf="headerToDisplay == 'Final Inspection'" class="finalInspection">
+                    <ion-row class="customRowsWithoutBorder">
+                        <div class="full-width">
+                            <ion-row *ngIf="finalInspectionObj.ACKNOWLEDGE || finalInspectionObj.INSPECTED_BY">
+                                <div
+                                    class="{{finalInspectionObj.ACKNOWLEDGE ? '' : 'hide-content'}} width-thirty body-item-box marginTop30 inline-block">
+                                    <span class="label">{{'Acknowledge' | translate}}</span>
+                                    <ion-checkbox name="ACKNOWLEDGE" (click)="checkCBValidation('RESTRICTED_LIFT')"
+                                        [(ngModel)]="finalInspectionObj.ACKNOWLEDGE" disabled="true"
+                                        [checked]="finalInspectionObj.ACKNOWLEDGE == 'true' || finalInspectionObj.ACKNOWLEDGE == true">
+                                    </ion-checkbox>
+                                </div>
+                                <div
+                                    class="{{finalInspectionObj.INSPECTED_BY ? '' : 'hide-content'}} body-item-box width-sixtyseven inline-block">
+                                    <span class="label">{{'Inspected By' | translate}}</span>
+                                    <span class="value block">{{finalInspectionObj.INSPECTED_BY}}</span>
+                                </div>
+                            </ion-row>
+                        </div>
+                    </ion-row>
+                    <ion-row class="customRowsWithoutBorder">
+                        <div class="full-width">
+                            <div class="body-item-box marginTop15"
+                                *ngIf="finalInspectionObj.REPAIR_NUMBER || finalInspectionObj.MODEL_NUMBER || finalInspectionObj.REPAIRED_BY || finalInspectionObj.REPAIR_DATE">
+                                {{'New Repair Tag' | translate}}
+                            </div>
+                            <div class="full-width">
+                                <ion-row
+                                    *ngIf="finalInspectionObj.REPAIR_NUMBER || finalInspectionObj.MODEL_NUMBER || finalInspectionObj.REPAIRED_BY || finalInspectionObj.REPAIR_DATE">
+                                    <div
+                                        class="{{finalInspectionObj.REPAIR_NUMBER ? '' : 'hide-content'}} body-item-box marginTop15 inline-block">
+                                        <span class="label">{{'Repair Number' | translate}}</span>
+                                        <span class="value block">{{finalInspectionObj.REPAIR_NUMBER}}</span>
+                                    </div>
+                                    <div
+                                        class="{{finalInspectionObj.MODEL_NUMBER ? '' : 'hide-content'}} body-item-box marginTop15 inline-block">
+                                        <span class="label">{{'Model Number' | translate}}</span>
+                                        <span class="value block">{{finalInspectionObj.MODEL_NUMBER}}</span>
+                                    </div>
+                                    <div
+                                        class="{{finalInspectionObj.REPAIRED_BY ? '' : 'hide-content'}} body-item-box marginTop15 inline-block">
+                                        <span class="label">{{'Repaired By' | translate}}</span>
+                                        <span
+                                            class="value block">{{finalInspectionObj.REPAIRED_BY == 'Other' ? finalInspectionObj.REPAIRED_BY_OT : finalInspectionObj.REPAIRED_BY}}</span>
+                                    </div>
+                                    <div
+                                        class="{{finalInspectionObj.REPAIR_DATE ? '' : 'hide-content'}} body-item-box marginTop15 inline-block repairDate">
+                                        <span class="label">{{'Repair Date' | translate}}</span>
+                                        <span class="value block">{{finalInspectionObj.REPAIR_DATE}}</span>
+                                    </div>
+                                </ion-row>
+                                <ion-row
+                                    *ngIf="finalInspectionObj.SET_PRESSURE || finalInspectionObj.SET_PRESSURE_UOM || finalInspectionObj.BACK_PRESSURE || finalInspectionObj.BACK_PRESSURE_UOM">
+                                    <div
+                                        class="{{finalInspectionObj.SET_PRESSURE ? '' : 'hide-content'}} body-item-box marginTop15 inline-block">
+                                        <span class="label">{{'Set Pressure' | translate}}</span>
+                                        <span class="value block">{{finalInspectionObj.SET_PRESSURE}}</span>
+                                    </div>
+                                    <div
+                                        class="{{finalInspectionObj.SET_PRESSURE_UOM ? '' : 'hide-content'}} body-item-box marginTop15 inline-block">
+                                        <span class="label">{{'UOM' | translate}}</span>
+                                        <span
+                                            class="value block">{{finalInspectionObj.SET_PRESSURE_UOM == 'Other' ? finalInspectionObj.SET_PRESSURE_UOM_OT : finalInspectionObj.SET_PRESSURE_UOM}}</span>
+                                    </div>
+                                    <div
+                                        class="{{finalInspectionObj.BACK_PRESSURE ? '' : 'hide-content'}} body-item-box marginTop15 inline-block">
+                                        <span class="label">{{'Back Pressure' | translate}}</span>
+                                        <span class="value block">{{finalInspectionObj.BACK_PRESSURE}}</span>
+                                    </div>
+                                    <div
+                                        class="{{finalInspectionObj.BACK_PRESSURE_UOM ? '' : 'hide-content'}} body-item-box marginTop15 inline-block">
+                                        <span class="label">{{'UOM' | translate}}</span>
+                                        <span
+                                            class="value block">{{finalInspectionObj.BACK_PRESSURE_UOM == 'Other' ? finalInspectionObj.BACK_PRESSURE_UOM_OT : finalInspectionObj.BACK_PRESSURE_UOM}}</span>
+                                    </div>
+                                </ion-row>
+                                <ion-row
+                                    *ngIf="finalInspectionObj.CAPACITY || finalInspectionObj.CAPACITY_UOM || finalInspectionObj.CDTP || finalInspectionObj.CDTP_UOM">
+                                    <div
+                                        class="{{finalInspectionObj.CAPACITY ? '' : 'hide-content'}} body-item-box marginTop15 inline-block">
+                                        <span class="label">{{'Capacity' | translate}}</span>
+                                        <span class="value block">{{finalInspectionObj.CAPACITY}}</span>
+                                    </div>
+                                    <div
+                                        class="{{finalInspectionObj.CAPACITY_UOM ? '' : 'hide-content'}} body-item-box marginTop15 inline-block">
+                                        <span class="label">{{'UOM' | translate}}</span>
+                                        <span
+                                            class="value block">{{finalInspectionObj.CAPACITY_UOM == 'Other' ? finalInspectionObj.CAPACITY_UOM_OT : finalInspectionObj.CAPACITY_UOM}}</span>
+                                    </div>
+                                    <div
+                                        class="{{finalInspectionObj.CDTP ? '' : 'hide-content'}} body-item-box marginTop15 inline-block">
+                                        <span class="label">{{'CDTP' | translate}}</span>
+                                        <span class="value block">{{finalInspectionObj.CDTP}}</span>
+                                    </div>
+                                    <div
+                                        class="{{finalInspectionObj.CDTP_UOM ? '' : 'hide-content'}} body-item-box marginTop15 inline-block">
+                                        <span class="label">{{'UOM' | translate}}</span>
+                                        <span
+                                            class="value block">{{finalInspectionObj.CDTP_UOM == 'Other' ? finalInspectionObj.CDTP_UOM_OT : finalInspectionObj.CDTP_UOM}}</span>
+                                    </div>
+                                </ion-row>
+                                <ion-row class="marginTop15"
+                                    *ngIf="finalInspectionObj.VR_STAMPED || finalInspectionObj.SEALED">
+                                    <div class="width-thirty body-item-box marginTop15 inline-block">
+                                        {{'NBBI' | translate}}:
+                                    </div>
+                                    <div class="width-thirty body-item-box marginTop15 inline-block">
+                                        <span class="label">{{'VR Stamped' | translate}}</span>
+                                        <ion-checkbox name="VR_STAMPED" (click)="checkCBValidation('VR_STAMPED')"
+                                            [(ngModel)]="finalInspectionObj.VR_STAMPED" disabled="true"
+                                            [checked]="finalInspectionObj.VR_STAMPED == 'true' || finalInspectionObj.VR_STAMPED == true">
+                                        </ion-checkbox>
+                                    </div>
+                                    <div class="width-thirty body-item-box marginTop15 inline-block">
+                                        <span class="label">{{'Sealed' | translate}}</span>
+                                        <ion-checkbox name="SEALED" (click)="checkCBValidation('SEALED')"
+                                            [(ngModel)]="finalInspectionObj.SEALED" disabled="true"
+                                            [checked]="finalInspectionObj.SEALED == 'true' || finalInspectionObj.SEALED == true">
+                                        </ion-checkbox>
+                                    </div>
+                                </ion-row>
+                            </div>
+                        </div>
+                    </ion-row>
+                </div>
+            </ng-template>
+        </ion-card-content>
+    </ion-card>
+
+    <ion-card>
+        <ion-row class="global-padding">
+            <ion-col col-6 no-padding>
+                <button
+                    [disabled]="cardToDisplay=='1' && (currentReport && currentReport.REPORTSTATUS == Enums.ReportStatus.Completed)"
+                    (click)="backBtnClick()" ion-button class="back-next-button inline-block"
+                    id="isoReviewSubmit_9">{{ 'Back' | translate }}</button>
+            </ion-col>
+            <ion-col class="alignRight" col-6 no-padding>
+                <button
+                    [disabled]="cardToDisplay=='10' || (pageArray.length > 0 && cardToDisplay==pageArray.slice(-1)[0].id)"
+                    (click)="nextBtnClick()" ion-button class="back-next-button inline-block"
+                    id="isoReviewSubmit_10">{{ 'Next' | translate }}</button>
+            </ion-col>
+        </ion-row>
+    </ion-card>
+
+</ion-content>

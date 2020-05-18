@@ -1,0 +1,100 @@
+page-signout_modal {
+  .text-input {
+    width: 100% !important;
+    margin: 0px !important;
+    padding: 0 5px 0 5px !important;
+    color: #4e4c4c;
+    font-family: "Helvetica Neue";
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 17px;
+  }
+
+  .okBtn {
+    min-width: 90px;
+    background: rgba(142,177,95,1) !important;
+    border-radius: 5px !important;
+    text-transform: capitalize;
+    margin-right: 40px;
+  }
+
+  .cancelBtn {
+    min-width: 90px;
+    background: rgba(142,177,95,1) !important;
+    border-radius: 5px !important;
+    text-transform: capitalize;
+    margin-left: 40px;
+  }
+
+  .padding-style {
+    padding: 0 10px 1px;
+  }
+
+  .scroll-content {
+    overflow-y: hidden;
+  }
+
+  .closebtn {
+    vertical-align: middle;
+  }
+
+  .toolbar {
+    min-height: unset;
+  }
+
+  h3 {
+    color: unset !important;
+  }
+
+  .signoutMsg {
+    text-align: left;
+  }
+}
+
+.SignOutModalPage {
+
+  .modal-wrapper {
+    height: 220px;
+    width: 500px;
+    border-radius: 3px;
+    border: none;
+    box-shadow: none;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%) !important;
+    position: fixed;
+  }
+
+  .modal-wrapper .scroll-content {
+    background-color: rgba(255,255,255,1) !important;
+    color: rgba(74,74,74,1);
+    font-family: "Helvetica Neue";
+    font-size: 18px;
+    font-weight: 300;
+    line-height: 28px;
+    text-align: left;
+    overflow-y: hidden;
+  }
+
+  .modal-wrapper .toolbar-title {
+    color: rgba(74,74,74,1);
+    font-family: "Helvetica Neue";
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 27px;
+    text-align: left;
+    padding: 0 12px !important;
+  }
+
+  .toolbar {
+    height: 52px !important;
+  }
+
+  ion-card-content {
+    margin-bottom: 0px !important;
+  }
+
+  .title {
+    padding: 0 5px !important;
+  }
+}

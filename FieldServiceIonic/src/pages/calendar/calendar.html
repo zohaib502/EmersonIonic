@@ -1,0 +1,17 @@
+<ion-header>
+  <page-custom-header [header]="header_data"></page-custom-header>
+</ion-header>
+<ion-content>
+
+  <div class="calendar-legend">
+    <i class="fa fa-circle completed-indicator indicator" aria-hidden="true"></i><span translate="Completed"></span>
+    <i class="fa fa-circle assigned-indicator indicator" aria-hidden="true"></i><span translate="Assigned"></span>
+    <i class="fa fa-circle accepted-indicator indicator" aria-hidden="true"></i><span translate="Working"></span>
+    <i class="fa fa-circle declined-indicator indicator" aria-hidden="true"></i><span translate="Declined"></span>
+    <i class="fa fa-circle onCall_Shift-indicator indicator" aria-hidden="true"></i><span translate="On-Call Shift"></span>
+    <i class="fa fa-circle internal_Activity-indicator indicator" aria-hidden="true"></i><span translate="Internal Activity"></span>
+  </div>
+
+  <div id='calendar' style="height:100%" class="cal_UI"></div>
+
+</ion-content>

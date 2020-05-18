@@ -1,0 +1,231 @@
+page-field-job-list {
+
+  .app-update-dummy-1{
+    display: none;
+    padding-top: 5px;
+    margin: auto;
+    width: 80%;
+    height: 100%;
+    background: lightskyblue;
+    color: black;
+    font-size: 12px;
+    font-weight: bold;
+    text-align: center;
+  }
+
+  .Accepted-indicator {
+    color: rgba(142, 177, 95, 1) !important;
+  }
+
+  .Completed-AwaitingReview-indicator {
+    color: rgba(155, 155, 155, 1) !important;
+  }
+
+  .Assigned-indicator {
+    color: rgba(96, 178, 213, 1) !important;
+  }
+
+  .DebriefInProgress-indicator,
+  .DebriefStarted-indicator,
+  .InDraft-indicator {
+    color: rgba(142, 177, 95, 1) !important;
+  }
+
+  .DebriefDeclined-indicator {
+    color: rgba(202, 0, 0, 1) !important;
+  }
+
+  .sdr-fcr-indicator{
+    font-size: 16px !important;
+    color: rgba(155, 155, 155, 1) !important;
+  }
+
+  .createJobrow {
+    margin: 10px 12px 20px 12px !important;
+    // float: right;
+
+    [col-3]{
+      padding: 0px !important;
+    }
+
+    .select {
+      width: 290px;
+      min-width: 100%;
+      background-color: rgba(142, 177, 95, 1) !important;
+      // border: 1px solid #d8d5d1;
+      border-radius:3px;
+      height: 40px;
+      line-height: 18px;
+      text-transform: uppercase;
+      font-weight: normal;
+      box-shadow: 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 3px 1px -2px rgba(0,0,0,0.2), 0px 1px 5px 0px rgba(0,0,0,0.12);
+
+      .select-icon .select-icon-inner{
+        color: #fff;
+        left: 0px !important;
+      }
+
+      .select-placeholder{
+        color: #fff;
+      }
+    }
+  }
+
+  .legends{
+    padding: 15px !important;
+  }
+
+  .searchbar-input {
+    box-shadow: 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 3px 1px -2px rgba(0,0,0,0.2), 0px 1px 5px 0px rgba(0,0,0,0.12);
+  }
+
+  .card-padding{
+    padding: 15px;
+  }
+
+  .jobListItem {
+    cursor: pointer;
+  }
+
+  .create-report-button {
+    width: 100%;
+    background-color: rgba(142, 177, 95, 1) !important;
+  }
+
+  .startDate-head {
+    width: 70%;
+    word-wrap: break-word;
+  }
+
+  .address-block,
+  .customerName-block {
+    width: 90%;
+    word-wrap: break-word;
+    white-space: normal;
+  }
+
+  .fa-sort-up:before,
+  .fa-sort-asc:before,
+  .fa-sort-down:before,
+  .fa-sort-desc:before {
+    font-size: 18px;
+  }
+
+  .dateLabel,
+  .dateValue {
+    width: 21%;
+    margin-right: 1%;
+    min-width: 170px;
+    white-space: normal;
+  }
+
+  .statusIndicator {
+    width: 3%;
+  }
+
+  .jobLabel,
+  .jobValue {
+    width: 11%;
+    min-width: 83px;
+    padding-right: 20px;
+    white-space: normal;
+  }
+
+  .customerLabel,
+  .customerValue {
+    width: 25%;
+    min-width: 130px;
+    white-space: normal;
+  }
+
+  .locationLabel,
+  .locationValue {
+    width: 39%;
+    min-width: 250px;
+    white-space: normal;
+  }
+
+  //radheshyam kumar changed legend position and added css 10-22-2018
+  .searchbar-md,
+  .searchbar-ios,
+  ion-searchbar {
+    padding: 2px !important;
+  }
+
+  [col-9] {
+    padding: 14px !important;
+  }
+
+  //radheshyam kumar changed legend position and added css 10-22-2018
+  .active-fonts {
+    font-weight: bold;
+  }
+
+  .frs-Btn {
+    background-color: rgba(96, 178, 213, 1) !important;
+    color: rgba(255, 255, 255, 1) !important;
+    text-transform: capitalize;
+    height: 36px;
+    border-radius: 3px;
+    margin-right: 5px;
+    //min-width: 60px;
+    border: none;
+    font-size: 14px;
+    font-family: "Helvetica Neue";
+    width: 40%;
+    box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
+  }
+
+  .sdr-btn {
+    background-color: rgba(244, 200, 97, 1) !important;
+    color: rgba(255, 255, 255, 1) !important;
+    text-transform: capitalize;
+    height: 36px;
+    border-radius: 3px;
+    border: none;
+    margin-right: 5px;
+    font-size: 14px;
+    font-family: "Helvetica Neue";
+    width: 40%;
+    box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
+  }
+
+  .both-btn {
+    background-color: rgba(142, 177, 95, 1) !important;
+    color: rgba(255, 255, 255, 1) !important;
+    text-transform: capitalize;
+    height: 36px;
+    // min-width: 80px;
+    border-radius: 3px;
+    border: none;
+    font-size: 14px;
+    font-family: "Helvetica Neue";
+    width: 15%;
+    box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
+  }
+}
+
+.ios page-field-job-list {
+  .jobListItem {
+    cursor: default !important;
+  }
+
+  .filter-hd {
+    color: #9b9b9b !important;
+    font-family: "Helvetica Neue" !important;
+    font-size: 14px !important;
+    font-weight: 300 !important;
+    line-height: 16px !important;
+    vertical-align: middle !important;
+  }
+
+  .searchbar-ios {
+    .searchbar-search-icon{
+      top: 15px !important;
+    }
+    .searchbar-input{
+      height: 40px !important;
+    }
+  }
+
+}

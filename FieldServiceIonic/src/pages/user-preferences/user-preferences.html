@@ -1,0 +1,373 @@
+<ion-header *ngIf="!customerSignaturePage">
+  <page-custom-header [header]="header_data"></page-custom-header>
+</ion-header>
+<ion-header *ngIf="customerSignaturePage">
+  <ion-navbar>
+    <ion-title>{{'User Preferences' | translate}}</ion-title>
+    <ion-buttons>
+      <button class="closebtn" ion-button (click)="closeModal()">
+        <i class="fa fa-times fa-2x"></i>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+<ion-content padding class="page-background">
+  <ion-card>
+    <ion-card-header *ngIf="!customerSignaturePage">
+      <ion-row class="debriefPage-padding">
+        <ion-col col-9 no-padding>
+          <h1>{{'User Preferences' | translate}}</h1>
+        </ion-col>
+        <ion-col col-3 no-padding style="text-align: right">
+          <button [disabled]="syncProvider.ifAutoSyncing() || !utilityProvider.enableReportIssueBtn" ion-button
+            (click)="openMailModal()" class="save-btn blue-btn inline-block">
+            {{ utilityProvider.enableReportIssueBtn?'Report an Issue':'Mail in process..' | translate }}
+          </button>
+        </ion-col>
+      </ion-row>
+    </ion-card-header>
+    <ion-card-content>
+      <form (ngSubmit)="saveUserPreferences()" #myForm="ngForm">
+        <ion-row class="debriefPage-padding">
+          <div class="spacingMargin">
+            <ion-col no-padding>
+              <ion-label class="label userPrefLabel">
+                {{'Default Currency' | translate}}
+                <span class="validator"></span>
+              </ion-label>
+              <!--10-18-18 Radheshyam kumar addedd tappable attribute on every ion-select to resolve the double click issue -->
+              <ion-select *ngIf="showSelects" tappable interface="popover" required
+                placeholder="{{'Select Default Currency' | translate}}" [(ngModel)]="userPrefObj.currency_Id"
+                name="userPrefObj.currency_Id"
+                [ngClass]="userPrefObj.currency_Id == '' || userPrefObj.currency_Id == undefined || userPrefObj.currency_Id == null ? 'select-validation' : ''"
+                class="field-box select-style">
+                <ion-option disabled value="{{''}}">{{'Select Currency' | translate}}</ion-option>
+                <ion-option *ngFor="let item of currency" [value]="item.ID">{{item.Value | translate}}</ion-option>
+              </ion-select>
+            </ion-col>
+          </div>
+          <div class="spacingMargin">
+            <ion-col no-padding>
+              <ion-label class="label userPrefLabel">
+                {{'Preferred Language' | translate}}
+                <span class="validator"></span>
+              </ion-label>
+              <!--10-18-18 Radheshyam kumar addedd tappable attribute on every ion-select to resolve the double click issue -->
+              <ion-select *ngIf="showSelects" tappable required
+                placeholder="{{'Select Preferred Language' | translate}}" (ionChange)="selectLangName()"
+                [(ngModel)]="userPrefObj.preLangCode" name="userPrefObj.preLangCode"
+                [ngClass]="userPrefObj.preLangCode == '' || userPrefObj.preLangCode == undefined || userPrefObj.preLangCode == null || userPrefObj.preLangCode.length>3 ? 'select-validation' : ''"
+                class="field-box select-style" multiple="true">
+                <ion-option disabled value="{{''}}">{{'Select Preferred Language' | translate}}</ion-option>
+                <ion-option *ngFor="let item of preferedLanguage" [value]="item.Code">{{item.Lang_Name | translate}}
+                </ion-option>
+              </ion-select>
+            </ion-col>
+          </div>
+          <div class="spacingMargin">
+            <ion-col no-padding>
+              <ion-label class="label userPrefLabel">
+                {{'Time Zone' | translate}}
+                <span class="validator"></span>
+              </ion-label>
+              <!--10-18-18 Radheshyam kumar addedd tappable attribute on every ion-select to resolve the double click issue -->
+              <ion-select *ngIf="showSelects" tappable interface="popover" required
+                placeholder="{{'Select Time Zone' | translate}}" (ionChange)="selectTimezoneName($event)"
+                [(ngModel)]="userPrefObj.timeZoneID" name="timeZone"
+                [ngClass]="!userPrefObj.timeZoneID ? 'select-validation' : ''" class="field-box select-style">
+                <ion-option disabled value="{{''}}">{{'Select Time Zone' | translate}}</ion-option>
+                <ion-option *ngFor="let item of timezonesList" [value]="item.TimeZoneID">
+                  {{item.TimeZone_Name | translate}}</ion-option>
+              </ion-select>
+            </ion-col>
+          </div>
+          <div class="spacingMargin">
+            <ion-col no-padding>
+              <ion-label class="label userPrefLabel">
+                {{'Date Format' | translate}}
+                <span class="validator"></span>
+              </ion-label>
+              <!--10-18-18 Radheshyam kumar addedd tappable attribute on every ion-select to resolve the double click issue -->
+              <ion-select *ngIf="showSelects" tappable interface="popover"
+                placeholder="{{'Select Date Format' | translate}}" [(ngModel)]="userPrefObj.dateFormat"
+                name="userPrefObj.dateFormat"
+                [ngClass]="userPrefObj.dateFormat == '' ||userPrefObj.dateFormat == undefined || userPrefObj.dateFormat == null ? 'select-validation' : ''"
+                class="dateformat-box select-style">
+                <ion-option disabled value="{{''}}">{{'Select Date Format' | translate}}</ion-option>
+                <ion-option>dd-mmm-yyyy</ion-option>
+                <ion-option>mm-dd-yyyy</ion-option>
+              </ion-select>
+            </ion-col>
+          </div>
+          <div class="spacingMargin">
+            <ion-col no-padding>
+              <ion-label class="label userPrefLabel">{{'Default Address' | translate}}</ion-label>
+              <div style="display: flex">
+                <!--10-18-18 Radheshyam kumar addedd tappable attribute on every ion-select to resolve the double click issue -->
+                <ion-select *ngIf="showSelects" tappable interface="popover"
+                  placeholder="{{'Select Country'| translate}}" [(ngModel)]="userPrefObj.country"
+                  (ionChange)="selectCountyAddress()" name="userPrefObj.country" class="cuntry-box select-style">
+                  <ion-option value="{{''}}">{{'Select Country' | translate}}</ion-option>
+                  <ion-option *ngFor="let item of allAddressesCountry" [value]="item">{{item | translate}}</ion-option>
+                </ion-select>
+              </div>
+            </ion-col>
+          </div>
+          <div class="spacingMargin">
+            <ion-col no-padding>
+              <ion-label class="label" style="height: 16px;"></ion-label>
+              <div style="display: flex">
+                <!--10-18-18 Radheshyam kumar addedd tappable attribute on every ion-select to resolve the double click issue -->
+                <ion-select *ngIf="showSelects" tappable interface="popover"
+                  placeholder="{{'Select Address' | translate}}" [(ngModel)]="userPrefObj.address"
+                  name="userPrefObj.address" [disabled]="filteredAddress.length==0" class="address-box select-style">
+                  <ion-option value="{{''}}">{{'Select Address' | translate}}</ion-option>
+                  <ion-option *ngFor="let item of filteredAddress" [value]="item.AddressId">{{item.Address_Line_1 | translate}}</ion-option>
+                </ion-select>
+              </div>
+            </ion-col>
+          </div>
+          <div class="spacingMargin">
+            <ion-col no-padding>
+              <ion-label class="label userPrefLabel">{{'Chinese Address' | translate}}</ion-label>
+              <!--10-18-18 Radheshyam kumar addedd tappable attribute on every ion-select to resolve the double click issue -->
+              <ion-select *ngIf="showSelects" tappable interface="popover"
+                placeholder="{{'Select Chinese Address' | translate}}" [(ngModel)]="userPrefObj.chineseAddress"
+                name="userPrefObj.chineseAddress" class="dateformat-box select-style">
+                <ion-option value="{{''}}">{{'Select Chinese Address' | translate}}</ion-option>
+                <ion-option *ngFor="let item of chineseAddressList" [value]="item.AddressId">{{item.Address_Line_1 | translate}}</ion-option>
+              </ion-select>
+            </ion-col>
+          </div>
+          <div class="spacingMargin">
+            <ion-col no-padding>
+              <ion-label class="label userPrefLabel">{{'UOM' | translate}}</ion-label>
+              <!--10-18-18 Radheshyam kumar addedd tappable attribute on every ion-select to resolve the double click issue -->
+              <ion-select *ngIf="showSelects" tappable interface="popover" placeholder="{{'Select UOM' | translate}}"
+                [(ngModel)]="userPrefObj.UOM_Id" (ionChange)="selectUOMName($event)" name="userPrefObj.UOM_Id"
+                class="dateformat-box select-style">
+                <ion-option value="{{''}}">{{'Select UOM' | translate}}</ion-option>
+                <ion-option *ngFor="let item of UOM" [value]="item.ID">{{item.Value | translate}}</ion-option>
+              </ion-select>
+            </ion-col>
+          </div>
+          <div class="spacingMargin">
+            <ion-col no-padding>
+              <ion-label class="label userPrefLabel">{{'World Area' | translate}}</ion-label>
+              <!--10-18-18 Radheshyam kumar addedd tappable attribute on every ion-select to resolve the double click issue -->
+              <ion-select *ngIf="showSelects" tappable interface="popover"
+                placeholder="{{'Select World Area' | translate}}" [(ngModel)]="userPrefObj.WorldAreaID"
+                name="userPrefObj.WorldAreaID" class="field-box select-style">
+                <ion-option value="{{''}}">{{'Select World Area' | translate}}</ion-option>
+                <ion-option *ngFor="let item of worldarea" [value]="item.LookupID">{{item.LookupValue}}</ion-option>
+              </ion-select>
+            </ion-col>
+          </div>
+
+        </ion-row>
+
+        <ion-row class="debriefPage-padding full-width">
+
+          <div *ngIf="!valueService.isOSCUser() && !valueService.getUser().ClarityID" class="checkBoxDiv" col-4>
+            <ion-label class="label">{{'Timesheet Options' | translate}}
+            </ion-label>
+            <div  class="inline-block verticalMiddle">
+              <div class="inline-block verticalMiddle">
+                <ion-item class="userPrefItem spacingMargin">
+                  <ion-label [ngClass]="userPrefObj.showChargeMethod ? 'checkbox-label checkboxLabel':'checkboxLabel'"
+                    translate="Show Charge Method"></ion-label>
+                  <ion-checkbox checkbox-positive ng-checked="userPrefObj.showChargeMethod"
+                    [(ngModel)]="userPrefObj.showChargeMethod" name="userPrefObj.showChargeMethod"></ion-checkbox>
+                </ion-item>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="checkBoxDiv" col-4>
+            <ion-label class="label">{{'Time View' | translate}}</ion-label>
+            <div class="inline-block verticalMiddle">
+              <div class="inline-block verticalMiddle">
+                <ion-item class="userPrefItem spacingMargin">
+                  <ion-label [ngClass]="!dayWise ? 'checkbox-label checkboxLabel':'checkboxLabel'" translate="Week">
+                  </ion-label>
+
+                  <ion-checkbox checkbox-positive [checked]="!dayWise" name="userPrefObj.listView"
+                    (click)="viewSelected()"></ion-checkbox>
+                </ion-item>
+
+                <ion-item class="userPrefItem spacingMargin">
+                  <ion-label [ngClass]="dayWise ? 'checkbox-label checkboxLabel':'checkboxLabel'" translate="Day">
+                  </ion-label>
+
+                  <ion-checkbox checkbox-positive [checked]="dayWise" name="userPrefObj.listView"
+                    (click)="viewSelected()"></ion-checkbox>
+                </ion-item>
+              </div>
+            </div>
+          </div>
+
+          <div class="checkBoxDiv" col-4>
+            <div class="inline-block verticalMiddle">
+              <div class="inline-block verticalMiddle">
+                <ion-label class="label userPrefLabel">
+                  {{'Start Day For Week' | translate}}
+                </ion-label>
+                <!--10-18-18 Radheshyam kumar addedd tappable attribute on every ion-select to resolve the double click issue -->
+                <ion-select tappable interface="popover" placeholder="{{'Select Start Day For Week' | translate}}"
+                  [(ngModel)]="userPrefObj.STARTDAYOFWEEK" name="userPrefObj.STARTDAYOFWEEK"
+                  class="dateformat-box select-style startDayOfmonth">
+                  <ion-option disabled value="{{null}}">{{'Select Start Day For Week' | translate}}</ion-option>
+                  <ion-option >{{'Sunday' | translate }}</ion-option>
+                  <ion-option >{{'Monday' | translate }}</ion-option>
+                  <ion-option >{{'Tuesday' | translate }}</ion-option>
+                  <ion-option >{{'Wednesday' | translate }}</ion-option>
+                  <ion-option >{{'Thursday' | translate }}</ion-option>
+                  <ion-option >{{'Friday' | translate }}</ion-option>
+                  <ion-option >{{'Saturday' | translate }}</ion-option>
+                </ion-select>
+              </div>
+            </div>
+          </div>
+
+          <!--04/25/2019 Vivek Sharma added dropdown for selecting user list view -->
+
+          <!-- <ion-label class="label userPrefLabel">{{'List View' | translate}}</ion-label>
+                <ion-select tappable placeholder="{{'Select Preferred List View' | translate}}" (ionChange)="selectListView()" [(ngModel)]="userPrefObj.listView" name="userPrefObj.listView" [ngClass]="userPrefObj.listView == '' || userPrefObj.listView == undefined || userPrefObj.listView == null ? 'select-validation' : ''"  class="field-box select-style">
+                        <ion-option value="d">{{ 'Day Wise' | translate}}</ion-option>
+                        <ion-option value="w">{{ 'Week Wise' | translate}}</ion-option>
+                </ion-select> -->
+
+        </ion-row>
+        <ion-row class="debriefPage-padding full-width">
+          <div class="checkBoxDiv">
+            <ion-label class="label">{{'FSR Options' | translate}}</ion-label>
+            <div class="inline-block verticalMiddle">
+              <ion-item class="userPrefItem spacingMargin">
+                <ion-label [ngClass]="userPrefObj.printNote ? 'checkbox-label checkboxLabel':'checkboxLabel'"
+                  translate="Print Note"></ion-label>
+                <ion-checkbox checkbox-positive ng-checked="userPrefObj.printNote" [(ngModel)]="userPrefObj.printNote"
+                  name="userPrefObj.printNote"></ion-checkbox>
+              </ion-item>
+              <ion-item class="userPrefItem spacingMargin">
+                <ion-label [ngClass]="userPrefObj.printTime ? 'checkbox-label checkboxLabel':'checkboxLabel'"
+                  translate="Print Time"></ion-label>
+                <ion-checkbox checkbox-positive ng-checked="userPrefObj.printTime" [(ngModel)]="userPrefObj.printTime"
+                  name="userPrefObj.printTime"></ion-checkbox>
+              </ion-item>
+              <ion-item class="userPrefItem spacingMargin">
+                <ion-label [ngClass]="userPrefObj.printMaterial ? 'checkbox-label checkboxLabel':'checkboxLabel'"
+                  translate="Print Material"></ion-label>
+                <ion-checkbox checkbox-positive ng-checked="userPrefObj.printMaterial"
+                  [(ngModel)]="userPrefObj.printMaterial" name="userPrefObj.printMaterial"></ion-checkbox>
+              </ion-item>
+              <ion-item class="userPrefItem spacingMargin">
+                <ion-label [ngClass]="userPrefObj.printExpense ? 'checkbox-label checkboxLabel':'checkboxLabel'"
+                  translate="Print Expenses In On-Site Report"></ion-label>
+                <ion-checkbox
+                  [disabled]="valueService.getTask() && (((valueService.getTaskData().length > 0 && valueService.getTaskData().Status == enums.Jobstatus.Debrief_In_Progress) || valueService.getTask().StatusID == enums.Jobstatus.Debrief_In_Progress) || (valueService.getTask().StatusID == enums.Jobstatus.Debrief_Declined))"
+                  checkbox-positive ng-checked="userPrefObj.printExpense" [(ngModel)]="userPrefObj.printExpense"
+                  name="userPrefObj.printExpense"></ion-checkbox>
+              </ion-item>
+              <ion-item class="userPrefItem spacingMargin">
+                <ion-label
+                  [ngClass]="userPrefObj.printExpenseCompleted ? 'checkbox-label checkboxLabel':'checkboxLabel'"
+                  translate="Print Expenses In Completed Report"></ion-label>
+                <ion-checkbox checkbox-positive ng-checked="userPrefObj.printExpenseCompleted"
+                  [(ngModel)]="userPrefObj.printExpenseCompleted" name="userPrefObj.printExpenseCompleted">
+                </ion-checkbox>
+              </ion-item>
+              <ion-item class="userPrefItem spacingMargin">
+                <ion-label [ngClass]="userPrefObj.printinstall ? 'checkbox-label checkboxLabel':'checkboxLabel'"
+                  translate="Print Installed Base"></ion-label>
+                <ion-checkbox checkbox-positive ng-checked="userPrefObj.printinstall"
+                  [(ngModel)]="userPrefObj.printinstall" name="userPrefObj.printinstall"></ion-checkbox>
+              </ion-item>
+              <ion-item class="userPrefItem spacingMargin">
+                <ion-label [ngClass]="userPrefObj.printAttach ? 'checkbox-label checkboxLabel':'checkboxLabel'"
+                  translate="Print Attachment"></ion-label>
+                <ion-checkbox checkbox-positive ng-checked="userPrefObj.printAttach"
+                  [(ngModel)]="userPrefObj.printAttach" name="userPrefObj.printAttach"></ion-checkbox>
+              </ion-item>
+              <ion-item class="userPrefItem spacingMargin">
+                <ion-label [ngClass]="userPrefObj.euiso ? 'checkbox-label checkboxLabel':'checkboxLabel'"
+                  translate="EU-ISO"></ion-label>
+                <ion-checkbox checkbox-positive ng-checked="userPrefObj.euiso" [(ngModel)]="userPrefObj.euiso"
+                  name="userPrefObj.euiso"></ion-checkbox>
+              </ion-item>
+              <ion-item class="userPrefItem spacingMargin">
+                <ion-label [ngClass]="userPrefObj.disclaimer ? 'checkbox-label checkboxLabel':'checkboxLabel'"
+                  translate="Print Travel Disclaimer"></ion-label>
+                <ion-checkbox checkbox-positive ng-checked="userPrefObj.disclaimer" [(ngModel)]="userPrefObj.disclaimer"
+                  name="userPrefObj.disclaimer"></ion-checkbox>
+              </ion-item>
+              <ion-item class="userPrefItem spacingMargin">
+                <ion-label
+                  [ngClass]="userPrefObj.ShowNonBillableEntries ? 'checkbox-label checkboxLabel':'checkboxLabel'"
+                  translate="Print Non-Billable Entries"></ion-label>
+                <ion-checkbox checkbox-positive ng-checked="userPrefObj.ShowNonBillableEntries"
+                  [(ngModel)]="userPrefObj.ShowNonBillableEntries" name="userPrefObj.ShowNonBillableEntries">
+                </ion-checkbox>
+              </ion-item>
+              <ion-item class="userPrefItem spacingMargin" *ngIf="valueService.isOSCUser()">
+                <ion-label
+                  [ngClass]="userPrefObj.FSR_PrintChargeMethod ? 'checkbox-label checkboxLabel':'checkboxLabel'"
+                  translate="Print Charge Method"></ion-label>
+                <ion-checkbox checkbox-positive ng-checked="userPrefObj.FSR_PrintChargeMethod"
+                  [(ngModel)]="userPrefObj.FSR_PrintChargeMethod" name="userPrefObj.FSR_PrintChargeMethod">
+                </ion-checkbox>
+              </ion-item>
+            </div>
+            <div class="spacingMargin">
+              <ion-col no-padding>
+                <ion-label class="label userPrefLabel">
+                  {{'FSR Print Language' | translate}}
+                  <span class="validator"></span>
+                </ion-label>
+                <!--10-18-18 Radheshyam kumar addedd tappable attribute on every ion-select to resolve the double click issue -->
+                <ion-select *ngIf="showSelects" tappable required placeholder="{{'Select FSR Languages' | translate}}"
+                  (ionChange)="selectFSRLangName()" [(ngModel)]="userPrefObj.FSRLang" name="userPrefObj.FSRLang"
+                  [ngClass]="userPrefObj.FSRLang == '' || userPrefObj.FSRLang == undefined || userPrefObj.FSRLang == null || userPrefObj.FSRLang.length>2 ? 'select-validation' : ''"
+                  class="field-box select-style" multiple="true">
+                  <ion-option disabled value="{{''}}">{{'Select FSR Languages' | translate}}</ion-option>
+                  <ion-option *ngFor="let item of FSRPrintLanguages" [value]="item.Code">{{item.Lang_Name | translate}}
+                  </ion-option>
+                </ion-select>
+              </ion-col>
+            </div>
+          </div>
+        </ion-row>
+        <!-- START
+          07/27/2018 Zohaib Khan
+          Added new section for frs modal
+        -->
+        <ion-row class="debriefPage-padding full-width">
+          <div class="fsrModal">
+            <ion-label class="label">{{'FSR Modal' | translate}}</ion-label>
+            <div class="inline-block verticalMiddle">
+              <ion-item class="userPrefItem spacingMargin">
+                <ion-label [ngClass]="userPrefObj.do_not_show_modal ? 'checkbox-label checkboxLabel':'checkboxLabel'"
+                  translate="Do not show FSR print options"></ion-label>
+                <ion-checkbox checkbox-positive ng-checked="userPrefObj.do_not_show_modal"
+                  [(ngModel)]="userPrefObj.do_not_show_modal" name="userPrefObj.do_not_show_modal"></ion-checkbox>
+              </ion-item>
+            </div>
+          </div>
+          <div class="btnDiv">
+            <ion-label></ion-label>
+            <div class="pull-right">
+              <ion-item class="inline-block" style="width:auto;padding-left:0px;">
+                <button ion-button
+                  [disabled]="!myForm.form.valid || isDateError || !userPrefObj.dateFormat || !userPrefObj.preLangCode || userPrefObj.preLangCode.length>3 || userPrefObj.FSRLang.length>2"
+                  class="save-btn btn inline-block userPrefBtn">
+                  {{ 'Save' | translate }}
+                </button>
+              </ion-item>
+            </div>
+          </div>
+        </ion-row>
+        <!-- END   -->
+      </form>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

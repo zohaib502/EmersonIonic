@@ -1,0 +1,2840 @@
+<ion-content class="workflow-loader" *ngIf="showLoader">
+
+  <ion-card>
+    <ion-spinner class="spinner" icon="spiral"></ion-spinner>
+  </ion-card>
+
+</ion-content>
+
+<ion-content *ngIf="!showLoader" padding class="sdr-pages page-background">
+
+  <ion-card class="CardSection Photos" id="FinalInspectionSection">
+
+    <ion-card-header class="card-header card-header-md">
+      <ion-row class="global-padding row">
+        <ion-col col-3>
+          <div class="header-left">{{'Post Valve Final Inspection'|translate}}</div>
+        </ion-col>
+        <ion-col col-9 *ngIf="selectedProcess==Enums.Selected_Process.FCR_AND_SDR" class="txt-rgt">
+          <span class="ft-size verticalMiddle">Continue</span> <button (click)="goToFcr()" ion-button
+            class="frs-Btn verticalMiddle ">{{'Field Completion Report'|translate}}</button>
+        </ion-col>
+      </ion-row>
+    </ion-card-header>
+
+    <page-sdr-header></page-sdr-header>
+
+    <ion-card-content>
+
+      <ion-row class="global-padding">
+        <ion-item>
+          <ion-label *ngIf="toggleAllaccordion == false" text-right>{{'Expand all' | translate}}</ion-label>
+          <ion-label *ngIf="toggleAllaccordion == true" text-right>{{'Collapse all' | translate}}</ion-label>
+          <ion-toggle [(ngModel)]="toggleAllaccordion" (ionChange)="toggleAccordion($event)"></ion-toggle>
+        </ion-item>
+      </ion-row>
+
+      <div class="full-width global-padding">
+
+        <!-- Body Assembly Row -->
+        <ion-row class="customRows" *ngIf="deviceId == Enums.FlowIsolationProductId.ControlValve">
+          <div class="full-width">
+            <div class="inline-block spacingMargin"
+              [ngClass]="FinalInspectionObj.BodyAssembly_NA == 'true' || FinalInspectionObj.BodyAssembly_NA == true ? 'disable-content' : ''">
+              <span (click)="expandOuter('BodyAssembly')">
+                <ion-icon class="arrowIcon" item-left name="arrow-dropright" *ngIf="!expandOuterAccordion.BodyAssembly">
+                </ion-icon>
+                <ion-icon class="arrowIcon" role="img" *ngIf="expandOuterAccordion.BodyAssembly"
+                  aria-label="arrow dropdown" name="arrow-dropdown">
+                </ion-icon>
+              </span>
+              <span (click)="expandOuter('BodyAssembly')"
+                class="label pointer accordion-label">{{'Body Assembly' | translate}}</span>
+            </div>
+            <div class="inline-block pull-right">
+              <div class="spacingMargin">
+                <div class="WF-checkbox">
+                  <span class="label checkboxLabel">{{'N/A' | translate}}</span>
+                  <input id="checkbox-BodyAssembly-NA" type="checkbox"
+                    [checked]="FinalInspectionObj.BodyAssembly_NA == true || FinalInspectionObj.BodyAssembly_NA == 'true'"
+                    [ngModel] class="accordionCheckBox" (change)="confirmAlert($event, 'BodyAssembly')">
+                  <label for="checkbox-BodyAssembly-NA"></label>
+                </div>
+              </div>
+            </div>
+            <div class="block full-width attachmentBox" *ngIf="expandOuterAccordion.BodyAssembly">
+
+              <ion-row>
+
+                <div class="marginTop radioListElement">
+                  <div class="spacingMargin BODYHT-Element" id="BODYHT">
+                    <ion-col no-padding>
+                      <ion-label class="label ionLabel marginTop">
+                        <span class="checkboxLabel">{{'Body Ht' | translate}}</span>
+                      </ion-label>
+                      <ion-input maxlength="250" [(ngModel)]="FinalInspectionObj.BodyAssembly.BODYHT" name="BODYHT"
+                        [ngClass]="errorObj && errorObj['TAG'] ? 'validation-error' : ''" required="false"
+                        class="input-box marginTop WF-input">
+                      </ion-input>
+                    </ion-col>
+                  </div>
+                </div>
+
+                <div class="marginTop radioListElement">
+                  <div class="spacingMargin BONNETHT-Element" id="BONNETHT">
+                    <ion-col no-padding>
+                      <ion-label class="label ionLabel marginTop">
+                        <span class="checkboxLabel">{{'Bonnet Ht' | translate}}</span>
+                      </ion-label>
+                      <ion-input maxlength="250" [(ngModel)]="FinalInspectionObj.BodyAssembly.BONNETHT" name="BONNETHT"
+                        [ngClass]="errorObj && errorObj['TAG'] ? 'validation-error' : ''" required="false"
+                        class="input-box marginTop WF-input">
+                      </ion-input>
+                    </ion-col>
+                  </div>
+                </div>
+
+                <div class="marginTop radioListElement">
+                  <div class="spacingMargin BOTTOMHT-Element" id="BOTTOMHT">
+                    <ion-col no-padding>
+                      <ion-label class="label ionLabel marginTop">
+                        <span class="checkboxLabel">{{'Bottom Ht' | translate}}</span>
+                      </ion-label>
+                      <ion-input maxlength="250" [(ngModel)]="FinalInspectionObj.BodyAssembly.BOTTOMHT" name="BOTTOMHT"
+                        required="false" class="input-box marginTop WF-input">
+                      </ion-input>
+                    </ion-col>
+                  </div>
+                </div>
+
+                <div class="marginTop radioListElement">
+                  <div class="spacingMargin SEALPROTECTORRINGHT-Element" id="SEALPROTECTORRINGHT">
+                    <ion-col no-padding>
+                      <ion-label class="label ionLabel marginTop">
+                        <span class="checkboxLabel">{{'Seal Protector Ring Ht' | translate}}</span>
+                      </ion-label>
+                      <ion-input maxlength="250" [(ngModel)]="FinalInspectionObj.BodyAssembly.SEALPROTECTORRINGHT"
+                        name="SEALPROTECTORRINGHT" required="false" class="input-box marginTop WF-input">
+                      </ion-input>
+                    </ion-col>
+                  </div>
+                </div>
+
+                <div class="accordionOpen-content passAllCheckbox marginTop">
+                  <div class="spacingMargin Element PassAll-Element">
+                    <ion-col no-padding>
+                      <div class="WF-checkbox pull-right">
+                        <span class="label">Pass All</span>
+
+                        <input id="checkbox-BodyAssembly-PassAll" type="checkbox" item-right
+                          [checked]="FinalInspectionObj.BodyAssembly.PassAll === true || FinalInspectionObj.BodyAssembly.PassAll === 'true'"
+                          class="accordionCheckBox" (change)="passAllOrFailAll('PassAll', 'BodyAssembly', $event)">
+                        <label for="checkbox-BodyAssembly-PassAll"></label>
+                      </div>
+                    </ion-col>
+                  </div>
+                </div>
+
+                <div class="accordionOpen-content failAllCheckbox marginTop">
+                  <div class="spacingMargin Element FailAll-Element">
+                    <ion-col no-padding>
+                      <div class="WF-checkbox ">
+                        <span class="label">Fail All</span>
+
+                        <input id="checkbox-BodyAssembly-FailAll" type="checkbox" item-right
+                          [checked]="FinalInspectionObj.BodyAssembly.FailAll === true || FinalInspectionObj.BodyAssembly.FailAll === 'true'"
+                          class="accordionCheckBox" (change)="passAllOrFailAll('FailAll', 'BodyAssembly', $event)">
+                        <label for="checkbox-BodyAssembly-FailAll"></label>
+                      </div>
+                    </ion-col>
+                  </div>
+                </div>
+
+                <div class="accordionOpen-content radioListElement">
+                  <div class="spacingMargin Element PassFailNA-Element">
+                    <ion-col no-padding>
+                      <div>
+                        <ion-list radio-group [(ngModel)]="FinalInspectionObj.BodyAssembly.BODYSIZERATING">
+                          <span>{{'Body Size/Rating' | translate}}</span>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Pass' | translate}}</span>
+                            <input type="radio" mode="md" value="Pass"
+                              (change)="setRadioButtonValue(FinalInspectionObj.BodyAssembly, 'BODYSIZERATING', 'Pass')"
+                              [checked]="FinalInspectionObj.BodyAssembly.BODYSIZERATING == 'Pass'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Fail' | translate}}</span>
+                            <input type="radio" mode="md" value="Fail"
+                              (change)="setRadioButtonValue(FinalInspectionObj.BodyAssembly, 'BODYSIZERATING', 'Fail')"
+                              [checked]="FinalInspectionObj.BodyAssembly.BODYSIZERATING == 'Fail'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'N/A' | translate}}</span>
+                            <input type="radio" mode="md" value="N/A"
+                              (change)="setRadioButtonValue(FinalInspectionObj.BodyAssembly, 'BODYSIZERATING', 'N/A')"
+                              [checked]="FinalInspectionObj.BodyAssembly.BODYSIZERATING == 'N/A'">
+                          </ion-item>
+                        </ion-list>
+                      </div>
+                    </ion-col>
+                  </div>
+                </div>
+
+                <div class="accordionOpen-content radioListElement">
+                  <div class="spacingMargin Element PassFailNA-Element">
+                    <ion-col no-padding>
+                      <div>
+                        <ion-list radio-group [(ngModel)]="FinalInspectionObj.BodyAssembly.BODYBONNETMATERIAL">
+                          <span>{{'Body/Bonnet Material' | translate}}</span>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Pass' | translate}}</span>
+                            <input type="radio" mode="md" value="Pass"
+                              (change)="setRadioButtonValue(FinalInspectionObj.BodyAssembly, 'BODYBONNETMATERIAL', 'Pass')"
+                              [checked]="FinalInspectionObj.BodyAssembly.BODYBONNETMATERIAL == 'Pass'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Fail' | translate}}</span>
+                            <input type="radio" mode="md" value="Fail"
+                              (change)="setRadioButtonValue(FinalInspectionObj.BodyAssembly, 'BODYBONNETMATERIAL', 'Fail')"
+                              [checked]="FinalInspectionObj.BodyAssembly.BODYBONNETMATERIAL == 'Fail'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'N/A' | translate}}</span>
+                            <input type="radio" mode="md" value="N/A"
+                              (change)="setRadioButtonValue(FinalInspectionObj.BodyAssembly, 'BODYBONNETMATERIAL', 'N/A')"
+                              [checked]="FinalInspectionObj.BodyAssembly.BODYBONNETMATERIAL == 'N/A'">
+                          </ion-item>
+                        </ion-list>
+                      </div>
+                    </ion-col>
+                  </div>
+                </div>
+
+                <div class="accordionOpen-content radioListElement">
+                  <div class="spacingMargin Element PassFailNA-Element">
+                    <ion-col no-padding>
+                      <div>
+                        <ion-list radio-group [(ngModel)]="FinalInspectionObj.BodyAssembly.BODYMATERIALCORRECT">
+                          <span>{{'Body Material Correct' | translate}}</span>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Pass' | translate}}</span>
+                            <input type="radio" mode="md" value="Pass"
+                              (change)="setRadioButtonValue(FinalInspectionObj.BodyAssembly, 'BODYMATERIALCORRECT', 'Pass')"
+                              [checked]="FinalInspectionObj.BodyAssembly.BODYMATERIALCORRECT == 'Pass'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Fail' | translate}}</span>
+                            <input type="radio" mode="md" value="Fail"
+                              (change)="setRadioButtonValue(FinalInspectionObj.BodyAssembly, 'BODYMATERIALCORRECT', 'Fail')"
+                              [checked]="FinalInspectionObj.BodyAssembly.BODYMATERIALCORRECT == 'Fail'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'N/A' | translate}}</span>
+                            <input type="radio" mode="md" value="N/A"
+                              (change)="setRadioButtonValue(FinalInspectionObj.BodyAssembly, 'BODYMATERIALCORRECT', 'N/A')"
+                              [checked]="FinalInspectionObj.BodyAssembly.BODYMATERIALCORRECT == 'N/A'">
+                          </ion-item>
+                        </ion-list>
+                      </div>
+                    </ion-col>
+                  </div>
+                </div>
+
+                <div class="accordionOpen-content radioListElement">
+                  <div class="spacingMargin Element PassFailNA-Element">
+                    <ion-col no-padding>
+                      <div>
+                        <ion-list radio-group
+                          [(ngModel)]="FinalInspectionObj.BodyAssembly.BOLTINGTORQUEDTOSPECIFICATION">
+                          <span>{{'Bolting Torqued To Specification' | translate}}</span>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Pass' | translate}}</span>
+                            <input type="radio" mode="md" value="Pass"
+                              (change)="setRadioButtonValue(FinalInspectionObj.BodyAssembly, 'BOLTINGTORQUEDTOSPECIFICATION', 'Pass')"
+                              [checked]="FinalInspectionObj.BodyAssembly.BOLTINGTORQUEDTOSPECIFICATION == 'Pass'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Fail' | translate}}</span>
+                            <input type="radio" mode="md" value="Fail"
+                              (change)="setRadioButtonValue(FinalInspectionObj.BodyAssembly, 'BOLTINGTORQUEDTOSPECIFICATION', 'Fail')"
+                              [checked]="FinalInspectionObj.BodyAssembly.BOLTINGTORQUEDTOSPECIFICATION == 'Fail'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'N/A' | translate}}</span>
+                            <input type="radio" mode="md" value="N/A"
+                              (change)="setRadioButtonValue(FinalInspectionObj.BodyAssembly, 'BOLTINGTORQUEDTOSPECIFICATION', 'N/A')"
+                              [checked]="FinalInspectionObj.BodyAssembly.BOLTINGTORQUEDTOSPECIFICATION == 'N/A'">
+                          </ion-item>
+                        </ion-list>
+                      </div>
+                    </ion-col>
+                  </div>
+                </div>
+
+                <div class="accordionOpen-content radioListElement">
+                  <div class="spacingMargin Element PassFailNA-Element">
+                    <ion-col no-padding>
+                      <div>
+                        <ion-list radio-group [(ngModel)]="FinalInspectionObj.BodyAssembly.PAINTEDPERFFS6A28COLOR">
+                          <span>{{'Painted Per FFS 6A28 (Color)' | translate}}</span>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Pass' | translate}}</span>
+                            <input type="radio" mode="md" value="Pass"
+                              (change)="setRadioButtonValue(FinalInspectionObj.BodyAssembly, 'PAINTEDPERFFS6A28COLOR', 'Pass')"
+                              [checked]="FinalInspectionObj.BodyAssembly.PAINTEDPERFFS6A28COLOR == 'Pass'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Fail' | translate}}</span>
+                            <input type="radio" mode="md" value="Fail"
+                              (change)="setRadioButtonValue(FinalInspectionObj.BodyAssembly, 'PAINTEDPERFFS6A28COLOR', 'Fail')"
+                              [checked]="FinalInspectionObj.BodyAssembly.PAINTEDPERFFS6A28COLOR == 'Fail'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'N/A' | translate}}</span>
+                            <input type="radio" mode="md" value="N/A"
+                              (change)="setRadioButtonValue(FinalInspectionObj.BodyAssembly, 'PAINTEDPERFFS6A28COLOR', 'N/A')"
+                              [checked]="FinalInspectionObj.BodyAssembly.PAINTEDPERFFS6A28COLOR == 'N/A'">
+                          </ion-item>
+                        </ion-list>
+                      </div>
+                    </ion-col>
+                  </div>
+                </div>
+
+                <div class="accordionOpen-content radioListElement">
+                  <div class="spacingMargin Element PassFailNA-Element">
+                    <ion-col no-padding>
+                      <div>
+                        <ion-list radio-group
+                          [(ngModel)]="FinalInspectionObj.BodyAssembly.PAINTEDPERCUSTOMERREQUIREMENTS">
+                          <span>{{'Painted Per Customer Requirements' | translate}}</span>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Pass' | translate}}</span>
+                            <input type="radio" mode="md" value="Pass"
+                              (change)="setRadioButtonValue(FinalInspectionObj.BodyAssembly, 'PAINTEDPERCUSTOMERREQUIREMENTS', 'Pass')"
+                              [checked]="FinalInspectionObj.BodyAssembly.PAINTEDPERCUSTOMERREQUIREMENTS == 'Pass'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Fail' | translate}}</span>
+                            <input type="radio" mode="md" value="Fail"
+                              (change)="setRadioButtonValue(FinalInspectionObj.BodyAssembly, 'PAINTEDPERCUSTOMERREQUIREMENTS', 'Fail')"
+                              [checked]="FinalInspectionObj.BodyAssembly.PAINTEDPERCUSTOMERREQUIREMENTS == 'Fail'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'N/A' | translate}}</span>
+                            <input type="radio" mode="md" value="N/A"
+                              (change)="setRadioButtonValue(FinalInspectionObj.BodyAssembly, 'PAINTEDPERCUSTOMERREQUIREMENTS', 'N/A')"
+                              [checked]="FinalInspectionObj.BodyAssembly.PAINTEDPERCUSTOMERREQUIREMENTS == 'N/A'">
+                          </ion-item>
+                        </ion-list>
+                      </div>
+                    </ion-col>
+                  </div>
+                </div>
+
+                <div class="accordionOpen-content radioListElement">
+                  <div class="spacingMargin Element PassFailNA-Element">
+                    <ion-col no-padding>
+                      <div>
+                        <ion-list radio-group [(ngModel)]="FinalInspectionObj.BodyAssembly.SERIALNUMBER">
+                          <span>{{'Serial Number' | translate}}</span>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Pass' | translate}}</span>
+                            <input type="radio" mode="md" value="Pass"
+                              (change)="setRadioButtonValue(FinalInspectionObj.BodyAssembly, 'SERIALNUMBER', 'Pass')"
+                              [checked]="FinalInspectionObj.BodyAssembly.SERIALNUMBER == 'Pass'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Fail' | translate}}</span>
+                            <input type="radio" mode="md" value="Fail"
+                              (change)="setRadioButtonValue(FinalInspectionObj.BodyAssembly, 'SERIALNUMBER', 'Fail')"
+                              [checked]="FinalInspectionObj.BodyAssembly.SERIALNUMBER == 'Fail'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'N/A' | translate}}</span>
+                            <input type="radio" mode="md" value="N/A"
+                              (change)="setRadioButtonValue(FinalInspectionObj.BodyAssembly, 'SERIALNUMBER', 'N/A')"
+                              [checked]="FinalInspectionObj.BodyAssembly.SERIALNUMBER == 'N/A'">
+                          </ion-item>
+                        </ion-list>
+                      </div>
+                    </ion-col>
+                  </div>
+                </div>
+
+                <div class="accordionOpen-content radioListElement">
+                  <div class="spacingMargin Element PassFailNA-Element">
+                    <ion-col no-padding>
+                      <div>
+                        <ion-list radio-group [(ngModel)]="FinalInspectionObj.BodyAssembly.NAMEPLATEINFORMATIONCORRECT">
+                          <span>{{'Name Plate Information Correct' | translate}}</span>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Pass' | translate}}</span>
+                            <input type="radio" mode="md" value="Pass"
+                              (change)="setRadioButtonValue(FinalInspectionObj.BodyAssembly, 'NAMEPLATEINFORMATIONCORRECT', 'Pass')"
+                              [checked]="FinalInspectionObj.BodyAssembly.NAMEPLATEINFORMATIONCORRECT == 'Pass'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Fail' | translate}}</span>
+                            <input type="radio" mode="md" value="Fail"
+                              (change)="setRadioButtonValue(FinalInspectionObj.BodyAssembly, 'NAMEPLATEINFORMATIONCORRECT', 'Fail')"
+                              [checked]="FinalInspectionObj.BodyAssembly.NAMEPLATEINFORMATIONCORRECT == 'Fail'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'N/A' | translate}}</span>
+                            <input type="radio" mode="md" value="N/A"
+                              (change)="setRadioButtonValue(FinalInspectionObj.BodyAssembly, 'NAMEPLATEINFORMATIONCORRECT', 'N/A')"
+                              [checked]="FinalInspectionObj.BodyAssembly.NAMEPLATEINFORMATIONCORRECT == 'N/A'">
+                          </ion-item>
+                        </ion-list>
+                      </div>
+                    </ion-col>
+                  </div>
+                </div>
+
+                <div class="accordionOpen-content radioListElement">
+                  <div class="spacingMargin Element PassFailNA-Element">
+                    <ion-col no-padding>
+                      <div>
+                        <ion-list radio-group [(ngModel)]="FinalInspectionObj.BodyAssembly.FLOWDIRECTIONARROW">
+                          <span>{{'Flow Direction Arrow' | translate}}</span>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Pass' | translate}}</span>
+                            <input type="radio" mode="md" value="Pass"
+                              (change)="setRadioButtonValue(FinalInspectionObj.BodyAssembly, 'FLOWDIRECTIONARROW', 'Pass')"
+                              [checked]="FinalInspectionObj.BodyAssembly.FLOWDIRECTIONARROW == 'Pass'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Fail' | translate}}</span>
+                            <input type="radio" mode="md" value="Fail"
+                              (change)="setRadioButtonValue(FinalInspectionObj.BodyAssembly, 'FLOWDIRECTIONARROW', 'Fail')"
+                              [checked]="FinalInspectionObj.BodyAssembly.FLOWDIRECTIONARROW == 'Fail'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'N/A' | translate}}</span>
+                            <input type="radio" mode="md" value="N/A"
+                              (change)="setRadioButtonValue(FinalInspectionObj.BodyAssembly, 'FLOWDIRECTIONARROW', 'N/A')"
+                              [checked]="FinalInspectionObj.BodyAssembly.FLOWDIRECTIONARROW == 'N/A'">
+                          </ion-item>
+                        </ion-list>
+                      </div>
+                    </ion-col>
+                  </div>
+                </div>
+
+                <div class="accordionOpen-content radioListElement">
+                  <div class="spacingMargin Element PassFailNA-Element">
+                    <ion-col no-padding>
+                      <div>
+                        <ion-list radio-group [(ngModel)]="FinalInspectionObj.BodyAssembly.MINIMUMWALLTHICKNESS">
+                          <span>{{'Minimum wall thickness' | translate}}</span>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Pass' | translate}}</span>
+                            <input type="radio" mode="md" value="Pass"
+                              (change)="setRadioButtonValue(FinalInspectionObj.BodyAssembly, 'MINIMUMWALLTHICKNESS', 'Pass')"
+                              [checked]="FinalInspectionObj.BodyAssembly.MINIMUMWALLTHICKNESS == 'Pass'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Fail' | translate}}</span>
+                            <input type="radio" mode="md" value="Fail"
+                              (change)="setRadioButtonValue(FinalInspectionObj.BodyAssembly, 'MINIMUMWALLTHICKNESS', 'Fail')"
+                              [checked]="FinalInspectionObj.BodyAssembly.MINIMUMWALLTHICKNESS == 'Fail'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'N/A' | translate}}</span>
+                            <input type="radio" mode="md" value="N/A"
+                              (change)="setRadioButtonValue(FinalInspectionObj.BodyAssembly, 'MINIMUMWALLTHICKNESS', 'N/A')"
+                              [checked]="FinalInspectionObj.BodyAssembly.MINIMUMWALLTHICKNESS == 'N/A'">
+                          </ion-item>
+                        </ion-list>
+                      </div>
+                    </ion-col>
+                  </div>
+                </div>
+
+                <div class="accordionOpen-content radioListElement">
+                  <div class="spacingMargin Element PassFailNA-Element">
+                    <ion-col no-padding>
+                      <div>
+                        <ion-list radio-group [(ngModel)]="FinalInspectionObj.BodyAssembly.ROTATIONINDICATOR">
+                          <span>{{'Rotation Indicator' | translate}}</span>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Pass' | translate}}</span>
+                            <input type="radio" mode="md" value="Pass"
+                              (change)="setRadioButtonValue(FinalInspectionObj.BodyAssembly, 'ROTATIONINDICATOR', 'Pass')"
+                              [checked]="FinalInspectionObj.BodyAssembly.ROTATIONINDICATOR == 'Pass'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Fail' | translate}}</span>
+                            <input type="radio" mode="md" value="Fail"
+                              (change)="setRadioButtonValue(FinalInspectionObj.BodyAssembly, 'ROTATIONINDICATOR', 'Fail')"
+                              [checked]="FinalInspectionObj.BodyAssembly.ROTATIONINDICATOR == 'Fail'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'N/A' | translate}}</span>
+                            <input type="radio" mode="md" value="N/A"
+                              (change)="setRadioButtonValue(FinalInspectionObj.BodyAssembly, 'ROTATIONINDICATOR', 'N/A')"
+                              [checked]="FinalInspectionObj.BodyAssembly.ROTATIONINDICATOR == 'N/A'">
+                          </ion-item>
+                        </ion-list>
+                      </div>
+                    </ion-col>
+                  </div>
+                </div>
+
+                <div class="accordionOpen-content radioListElement">
+                  <div class="spacingMargin Element PassFailNA-Element">
+                    <ion-col no-padding>
+                      <div>
+                        <ion-list radio-group [(ngModel)]="FinalInspectionObj.BodyAssembly.HYDROSTAMP">
+                          <span>{{'Hydro Stamp' | translate}}</span>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Pass' | translate}}</span>
+                            <input type="radio" mode="md" value="Pass"
+                              (change)="setRadioButtonValue(FinalInspectionObj.BodyAssembly, 'HYDROSTAMP', 'Pass')"
+                              [checked]="FinalInspectionObj.BodyAssembly.HYDROSTAMP == 'Pass'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Fail' | translate}}</span>
+                            <input type="radio" mode="md" value="Fail"
+                              (change)="setRadioButtonValue(FinalInspectionObj.BodyAssembly, 'HYDROSTAMP', 'Fail')"
+                              [checked]="FinalInspectionObj.BodyAssembly.HYDROSTAMP == 'Fail'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'N/A' | translate}}</span>
+                            <input type="radio" mode="md" value="N/A"
+                              (change)="setRadioButtonValue(FinalInspectionObj.BodyAssembly, 'HYDROSTAMP', 'N/A')"
+                              [checked]="FinalInspectionObj.BodyAssembly.HYDROSTAMP == 'N/A'">
+                          </ion-item>
+                        </ion-list>
+                      </div>
+                    </ion-col>
+                  </div>
+                </div>
+
+                <div class="accordionOpen-content radioListElement">
+                  <div class="spacingMargin Element PassFailNA-Element">
+                    <ion-col no-padding>
+                      <div>
+                        <ion-list radio-group [(ngModel)]="FinalInspectionObj.BodyAssembly.SERVICECOTAGATTACHED">
+                          <span>{{'Service Co. Tag Attached' | translate}}</span>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Pass' | translate}}</span>
+                            <input type="radio" mode="md" value="Pass"
+                              (change)="setRadioButtonValue(FinalInspectionObj.BodyAssembly, 'SERVICECOTAGATTACHED', 'Pass')"
+                              [checked]="FinalInspectionObj.BodyAssembly.SERVICECOTAGATTACHED == 'Pass'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Fail' | translate}}</span>
+                            <input type="radio" mode="md" value="Fail"
+                              (change)="setRadioButtonValue(FinalInspectionObj.BodyAssembly, 'SERVICECOTAGATTACHED', 'Fail')"
+                              [checked]="FinalInspectionObj.BodyAssembly.SERVICECOTAGATTACHED == 'Fail'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'N/A' | translate}}</span>
+                            <input type="radio" mode="md" value="N/A"
+                              (change)="setRadioButtonValue(FinalInspectionObj.BodyAssembly, 'SERVICECOTAGATTACHED', 'N/A')"
+                              [checked]="FinalInspectionObj.BodyAssembly.SERVICECOTAGATTACHED == 'N/A'">
+                          </ion-item>
+                        </ion-list>
+                      </div>
+                    </ion-col>
+                  </div>
+                </div>
+
+                <div class="accordionOpen-content radioListElement">
+                  <div class="spacingMargin Element PassFailNA-Element">
+                    <ion-col no-padding>
+                      <div>
+                        <ion-list radio-group
+                          [(ngModel)]="FinalInspectionObj.BodyAssembly.CORROSIONPROTECTIONOILAPPLIED">
+                          <span>{{'Corrosion Protection Oil Applied' | translate}}</span>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Pass' | translate}}</span>
+                            <input type="radio" mode="md" value="Pass"
+                              (change)="setRadioButtonValue(FinalInspectionObj.BodyAssembly, 'CORROSIONPROTECTIONOILAPPLIED', 'Pass')"
+                              [checked]="FinalInspectionObj.BodyAssembly.CORROSIONPROTECTIONOILAPPLIED == 'Pass'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Fail' | translate}}</span>
+                            <input type="radio" mode="md" value="Fail"
+                              (change)="setRadioButtonValue(FinalInspectionObj.BodyAssembly, 'CORROSIONPROTECTIONOILAPPLIED', 'Fail')"
+                              [checked]="FinalInspectionObj.BodyAssembly.CORROSIONPROTECTIONOILAPPLIED == 'Fail'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'N/A' | translate}}</span>
+                            <input type="radio" mode="md" value="N/A"
+                              (change)="setRadioButtonValue(FinalInspectionObj.BodyAssembly, 'CORROSIONPROTECTIONOILAPPLIED', 'N/A')"
+                              [checked]="FinalInspectionObj.BodyAssembly.CORROSIONPROTECTIONOILAPPLIED == 'N/A'">
+                          </ion-item>
+                        </ion-list>
+                      </div>
+                    </ion-col>
+                  </div>
+                </div>
+
+                <div class="accordionOpen-content radioListElement">
+                  <div class="spacingMargin Element PassFailNA-Element">
+                    <ion-col no-padding>
+                      <div>
+                        <ion-list radio-group
+                          [(ngModel)]="FinalInspectionObj.BodyAssembly.HEATNUMBERONBODYBONNETLISTONRIGHT">
+                          <span>{{'Heat Number On Body/Bonnet (List On Right)' | translate}}</span>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Pass' | translate}}</span>
+                            <input type="radio" mode="md" value="Pass"
+                              (change)="setRadioButtonValue(FinalInspectionObj.BodyAssembly, 'HEATNUMBERONBODYBONNETLISTONRIGHT', 'Pass')"
+                              [checked]="FinalInspectionObj.BodyAssembly.HEATNUMBERONBODYBONNETLISTONRIGHT == 'Pass'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Fail' | translate}}</span>
+                            <input type="radio" mode="md" value="Fail"
+                              (change)="setRadioButtonValue(FinalInspectionObj.BodyAssembly, 'HEATNUMBERONBODYBONNETLISTONRIGHT', 'Fail')"
+                              [checked]="FinalInspectionObj.BodyAssembly.HEATNUMBERONBODYBONNETLISTONRIGHT == 'Fail'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'N/A' | translate}}</span>
+                            <input type="radio" mode="md" value="N/A"
+                              (change)="setRadioButtonValue(FinalInspectionObj.BodyAssembly, 'HEATNUMBERONBODYBONNETLISTONRIGHT', 'N/A')"
+                              [checked]="FinalInspectionObj.BodyAssembly.HEATNUMBERONBODYBONNETLISTONRIGHT == 'N/A'">
+                          </ion-item>
+                        </ion-list>
+                      </div>
+                    </ion-col>
+                  </div>
+                </div>
+
+                <div class="accordionOpen-content radioListElement">
+                  <div class="spacingMargin Element PassFailNA-Element">
+                    <ion-col no-padding>
+                      <div>
+                        <ion-list radio-group [(ngModel)]="FinalInspectionObj.BodyAssembly.ENDCONNECTIONSFLANGES">
+                          <span>{{'End Connections/Flanges' | translate}}</span>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Pass' | translate}}</span>
+                            <input type="radio" mode="md" value="Pass"
+                              (change)="setRadioButtonValue(FinalInspectionObj.BodyAssembly, 'ENDCONNECTIONSFLANGES', 'Pass')"
+                              [checked]="FinalInspectionObj.BodyAssembly.ENDCONNECTIONSFLANGES == 'Pass'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Fail' | translate}}</span>
+                            <input type="radio" mode="md" value="Fail"
+                              (change)="setRadioButtonValue(FinalInspectionObj.BodyAssembly, 'ENDCONNECTIONSFLANGES', 'Fail')"
+                              [checked]="FinalInspectionObj.BodyAssembly.ENDCONNECTIONSFLANGES == 'Fail'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'N/A' | translate}}</span>
+                            <input type="radio" mode="md" value="N/A"
+                              (change)="setRadioButtonValue(FinalInspectionObj.BodyAssembly, 'ENDCONNECTIONSFLANGES', 'N/A')"
+                              [checked]="FinalInspectionObj.BodyAssembly.ENDCONNECTIONSFLANGES == 'N/A'">
+                          </ion-item>
+                        </ion-list>
+                      </div>
+                    </ion-col>
+                  </div>
+                </div>
+
+                <div class="accordionOpen-content radioListElement">
+                  <div class="spacingMargin Element PassFailNA-Element">
+                    <ion-col no-padding>
+                      <div>
+                        <ion-list radio-group [(ngModel)]="FinalInspectionObj.BodyAssembly.CASTINGSMEETMSSSP55">
+                          <span>{{'Casting Meet MSS-SP55' | translate}}</span>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Pass' | translate}}</span>
+                            <input type="radio" mode="md" value="Pass"
+                              (change)="setRadioButtonValue(FinalInspectionObj.BodyAssembly, 'CASTINGSMEETMSSSP55', 'Pass')"
+                              [checked]="FinalInspectionObj.BodyAssembly.CASTINGSMEETMSSSP55 == 'Pass'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Fail' | translate}}</span>
+                            <input type="radio" mode="md" value="Fail"
+                              (change)="setRadioButtonValue(FinalInspectionObj.BodyAssembly, 'CASTINGSMEETMSSSP55', 'Fail')"
+                              [checked]="FinalInspectionObj.BodyAssembly.CASTINGSMEETMSSSP55 == 'Fail'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'N/A' | translate}}</span>
+                            <input type="radio" mode="md" value="N/A"
+                              (change)="setRadioButtonValue(FinalInspectionObj.BodyAssembly, 'CASTINGSMEETMSSSP55', 'N/A')"
+                              [checked]="FinalInspectionObj.BodyAssembly.CASTINGSMEETMSSSP55 == 'N/A'">
+                          </ion-item>
+                        </ion-list>
+                      </div>
+                    </ion-col>
+                  </div>
+                </div>
+
+                <div class="accordionOpen-content radioListElement">
+                  <div class="spacingMargin Element PassFailNA-Element">
+                    <ion-col no-padding>
+                      <div>
+                        <ion-list radio-group [(ngModel)]="FinalInspectionObj.BodyAssembly.FISHERCERTIFIEDTAGATTACHED">
+                          <span>{{'Fisher Certified Tag Attached' | translate}}</span>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Pass' | translate}}</span>
+                            <input type="radio" mode="md" value="Pass"
+                              (change)="setRadioButtonValue(FinalInspectionObj.BodyAssembly, 'FISHERCERTIFIEDTAGATTACHED', 'Pass')"
+                              [checked]="FinalInspectionObj.BodyAssembly.FISHERCERTIFIEDTAGATTACHED == 'Pass'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Fail' | translate}}</span>
+                            <input type="radio" mode="md" value="Fail"
+                              (change)="setRadioButtonValue(FinalInspectionObj.BodyAssembly, 'FISHERCERTIFIEDTAGATTACHED', 'Fail')"
+                              [checked]="FinalInspectionObj.BodyAssembly.FISHERCERTIFIEDTAGATTACHED == 'Fail'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'N/A' | translate}}</span>
+                            <input type="radio" mode="md" value="N/A"
+                              (change)="setRadioButtonValue(FinalInspectionObj.BodyAssembly, 'FISHERCERTIFIEDTAGATTACHED', 'N/A')"
+                              [checked]="FinalInspectionObj.BodyAssembly.FISHERCERTIFIEDTAGATTACHED == 'N/A'">
+                          </ion-item>
+                        </ion-list>
+                      </div>
+                    </ion-col>
+                  </div>
+                </div>
+
+
+              </ion-row>
+
+            </div>
+          </div>
+        </ion-row>
+
+        <!-- Actuator Assembly Row -->
+        <ion-row class="customRows" *ngIf="deviceId == Enums.FlowIsolationProductId.ControlValve">
+          <div class="full-width">
+            <div class="inline-block spacingMargin"
+              [ngClass]="FinalInspectionObj.ActuatorAssembly_NA == 'true' || FinalInspectionObj.ActuatorAssembly_NA == true ? 'disable-content' : ''">
+              <span (click)="expandOuter('ActuatorAssembly')">
+                <ion-icon class="arrowIcon" item-left name="arrow-dropright"
+                  *ngIf="!expandOuterAccordion.ActuatorAssembly">
+                </ion-icon>
+                <ion-icon class="arrowIcon" role="img" *ngIf="expandOuterAccordion.ActuatorAssembly"
+                  aria-label="arrow dropdown" name="arrow-dropdown">
+                </ion-icon>
+              </span>
+              <span (click)="expandOuter('ActuatorAssembly')"
+                class="label pointer accordion-label">{{'Actuator Assembly' | translate}}</span>
+            </div>
+            <div class="inline-block pull-right">
+              <div class="spacingMargin">
+                <div class="WF-checkbox">
+                  <span class="label checkboxLabel">{{'N/A' | translate}}</span>
+                  <input id="checkbox-ActuatorAssembly-NA" type="checkbox"
+                    [checked]="FinalInspectionObj.ActuatorAssembly_NA == true || FinalInspectionObj.ActuatorAssembly_NA == 'true'"
+                    [ngModel] class="accordionCheckBox" (change)="confirmAlert($event, 'ActuatorAssembly')">
+                  <label for="checkbox-ActuatorAssembly-NA"></label>
+                </div>
+              </div>
+            </div>
+            <div class="block full-width attachmentBox" *ngIf="expandOuterAccordion.ActuatorAssembly">
+
+              <ion-row>
+                <div class="accordionOpen-content passAllCheckbox">
+                  <div class="spacingMargin Element PassAll-Element">
+                    <ion-col no-padding>
+                      <div class="WF-checkbox pull-right">
+                        <span class="label">Pass All</span>
+
+                        <input id="checkbox-ActuatorAssembly-PassAll" type="checkbox" item-right
+                          [checked]="FinalInspectionObj.ActuatorAssembly.PassAll === true || FinalInspectionObj.ActuatorAssembly.PassAll === 'true'"
+                          class="accordionCheckBox" (change)="passAllOrFailAll('PassAll', 'ActuatorAssembly', $event)">
+                        <label for="checkbox-ActuatorAssembly-PassAll"></label>
+                      </div>
+                    </ion-col>
+                  </div>
+                </div>
+
+                <div class="accordionOpen-content failAllCheckbox">
+                  <div class="spacingMargin Element FailAll-Element">
+                    <ion-col no-padding>
+                      <div class="WF-checkbox ">
+                        <span class="label">Fail All</span>
+
+                        <input id="checkbox-ActuatorAssembly-FailAll" type="checkbox" item-right
+                          [checked]="FinalInspectionObj.ActuatorAssembly.FailAll === true || FinalInspectionObj.ActuatorAssembly.FailAll === 'true'"
+                          class="accordionCheckBox" (change)="passAllOrFailAll('FailAll', 'ActuatorAssembly', $event)">
+                        <label for="checkbox-ActuatorAssembly-FailAll"></label>
+                      </div>
+                    </ion-col>
+                  </div>
+                </div>
+
+
+                <div class="accordionOpen-content radioListElement">
+                  <div class="spacingMargin Element PassFailNA-Element">
+                    <ion-col no-padding>
+                      <div>
+                        <ion-list radio-group
+                          [(ngModel)]="FinalInspectionObj.ActuatorAssembly.NAMEPLATEINFORMATIONCORRECT">
+                          <span>{{'Name Plate Information Correct' | translate}}</span>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Pass' | translate}}</span>
+                            <input type="radio" mode="md" value="Pass"
+                              (change)="setRadioButtonValue(FinalInspectionObj.ActuatorAssembly, 'NAMEPLATEINFORMATIONCORRECT', 'Pass')"
+                              [checked]="FinalInspectionObj.ActuatorAssembly.NAMEPLATEINFORMATIONCORRECT == 'Pass'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Fail' | translate}}</span>
+                            <input type="radio" mode="md" value="Fail"
+                              (change)="setRadioButtonValue(FinalInspectionObj.ActuatorAssembly, 'NAMEPLATEINFORMATIONCORRECT', 'Fail')"
+                              [checked]="FinalInspectionObj.ActuatorAssembly.NAMEPLATEINFORMATIONCORRECT == 'Fail'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'N/A' | translate}}</span>
+                            <input type="radio" mode="md" value="N/A"
+                              (change)="setRadioButtonValue(FinalInspectionObj.ActuatorAssembly, 'NAMEPLATEINFORMATIONCORRECT', 'N/A')"
+                              [checked]="FinalInspectionObj.ActuatorAssembly.NAMEPLATEINFORMATIONCORRECT == 'N/A'">
+                          </ion-item>
+                        </ion-list>
+                      </div>
+                    </ion-col>
+                  </div>
+                </div>
+
+                <div class="accordionOpen-content radioListElement">
+                  <div class="spacingMargin Element PassFailNA-Element">
+                    <ion-col no-padding>
+                      <div>
+                        <ion-list radio-group [(ngModel)]="FinalInspectionObj.ActuatorAssembly.SAFETYTAGATTACHED">
+                          <span>{{'Safety Tag Attached' | translate}}</span>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Pass' | translate}}</span>
+                            <input type="radio" mode="md" value="Pass"
+                              (change)="setRadioButtonValue(FinalInspectionObj.ActuatorAssembly, 'SAFETYTAGATTACHED', 'Pass')"
+                              [checked]="FinalInspectionObj.ActuatorAssembly.SAFETYTAGATTACHED == 'Pass'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Fail' | translate}}</span>
+                            <input type="radio" mode="md" value="Fail"
+                              (change)="setRadioButtonValue(FinalInspectionObj.ActuatorAssembly, 'SAFETYTAGATTACHED', 'Fail')"
+                              [checked]="FinalInspectionObj.ActuatorAssembly.SAFETYTAGATTACHED == 'Fail'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'N/A' | translate}}</span>
+                            <input type="radio" mode="md" value="N/A"
+                              (change)="setRadioButtonValue(FinalInspectionObj.ActuatorAssembly, 'SAFETYTAGATTACHED', 'N/A')"
+                              [checked]="FinalInspectionObj.ActuatorAssembly.SAFETYTAGATTACHED == 'N/A'">
+                          </ion-item>
+                        </ion-list>
+                      </div>
+                    </ion-col>
+                  </div>
+                </div>
+
+                <div class="accordionOpen-content radioListElement">
+                  <div class="spacingMargin Element PassFailNA-Element">
+                    <ion-col no-padding>
+                      <div>
+                        <ion-list radio-group [(ngModel)]="FinalInspectionObj.ActuatorAssembly.PAINTEDPERFFS6A28COLOR">
+                          <span>{{'Painted Per FFS 6A28 (Color)' | translate}}</span>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Pass' | translate}}</span>
+                            <input type="radio" mode="md" value="Pass"
+                              (change)="setRadioButtonValue(FinalInspectionObj.ActuatorAssembly, 'PAINTEDPERFFS6A28COLOR', 'Pass')"
+                              [checked]="FinalInspectionObj.ActuatorAssembly.PAINTEDPERFFS6A28COLOR == 'Pass'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Fail' | translate}}</span>
+                            <input type="radio" mode="md" value="Fail"
+                              (change)="setRadioButtonValue(FinalInspectionObj.ActuatorAssembly, 'PAINTEDPERFFS6A28COLOR', 'Fail')"
+                              [checked]="FinalInspectionObj.ActuatorAssembly.PAINTEDPERFFS6A28COLOR == 'Fail'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'N/A' | translate}}</span>
+                            <input type="radio" mode="md" value="N/A"
+                              (change)="setRadioButtonValue(FinalInspectionObj.ActuatorAssembly, 'PAINTEDPERFFS6A28COLOR', 'N/A')"
+                              [checked]="FinalInspectionObj.ActuatorAssembly.PAINTEDPERFFS6A28COLOR == 'N/A'">
+                          </ion-item>
+                        </ion-list>
+                      </div>
+                    </ion-col>
+                  </div>
+                </div>
+
+                <div class="accordionOpen-content radioListElement">
+                  <div class="spacingMargin Element PassFailNA-Element">
+                    <ion-col no-padding>
+                      <div>
+                        <ion-list radio-group
+                          [(ngModel)]="FinalInspectionObj.ActuatorAssembly.PAINTEDPERCUSTOMERREQUIREMENTS">
+                          <span>{{'Painted Per Customer Requirements' | translate}}</span>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Pass' | translate}}</span>
+                            <input type="radio" mode="md" value="Pass"
+                              (change)="setRadioButtonValue(FinalInspectionObj.ActuatorAssembly, 'PAINTEDPERCUSTOMERREQUIREMENTS', 'Pass')"
+                              [checked]="FinalInspectionObj.ActuatorAssembly.PAINTEDPERCUSTOMERREQUIREMENTS == 'Pass'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Fail' | translate}}</span>
+                            <input type="radio" mode="md" value="Fail"
+                              (change)="setRadioButtonValue(FinalInspectionObj.ActuatorAssembly, 'PAINTEDPERCUSTOMERREQUIREMENTS', 'Fail')"
+                              [checked]="FinalInspectionObj.ActuatorAssembly.PAINTEDPERCUSTOMERREQUIREMENTS == 'Fail'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'N/A' | translate}}</span>
+                            <input type="radio" mode="md" value="N/A"
+                              (change)="setRadioButtonValue(FinalInspectionObj.ActuatorAssembly, 'PAINTEDPERCUSTOMERREQUIREMENTS', 'N/A')"
+                              [checked]="FinalInspectionObj.ActuatorAssembly.PAINTEDPERCUSTOMERREQUIREMENTS == 'N/A'">
+                          </ion-item>
+                        </ion-list>
+                      </div>
+                    </ion-col>
+                  </div>
+                </div>
+
+                <div class="accordionOpen-content radioListElement">
+                  <div class="spacingMargin Element PassFailNA-Element">
+                    <ion-col no-padding>
+                      <div>
+                        <ion-list radio-group [(ngModel)]="FinalInspectionObj.ActuatorAssembly.VENTCAPATTACHED">
+                          <span>{{'Vent Cap Attached' | translate}}</span>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Pass' | translate}}</span>
+                            <input type="radio" mode="md" value="Pass"
+                              (change)="setRadioButtonValue(FinalInspectionObj.ActuatorAssembly, 'VENTCAPATTACHED', 'Pass')"
+                              [checked]="FinalInspectionObj.ActuatorAssembly.VENTCAPATTACHED == 'Pass'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Fail' | translate}}</span>
+                            <input type="radio" mode="md" value="Fail"
+                              (change)="setRadioButtonValue(FinalInspectionObj.ActuatorAssembly, 'VENTCAPATTACHED', 'Fail')"
+                              [checked]="FinalInspectionObj.ActuatorAssembly.VENTCAPATTACHED == 'Fail'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'N/A' | translate}}</span>
+                            <input type="radio" mode="md" value="N/A"
+                              (change)="setRadioButtonValue(FinalInspectionObj.ActuatorAssembly, 'VENTCAPATTACHED', 'N/A')"
+                              [checked]="FinalInspectionObj.ActuatorAssembly.VENTCAPATTACHED == 'N/A'">
+                          </ion-item>
+                        </ion-list>
+                      </div>
+                    </ion-col>
+                  </div>
+                </div>
+
+                <div class="accordionOpen-content radioListElement">
+                  <div class="spacingMargin Element PassFailNA-Element">
+                    <ion-col no-padding>
+                      <div>
+                        <ion-list radio-group [(ngModel)]="FinalInspectionObj.ActuatorAssembly.TOPLOADINGPORTCAPPEDOFF">
+                          <span>{{'Top Loading Port Capped Off' | translate}}</span>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Pass' | translate}}</span>
+                            <input type="radio" mode="md" value="Pass"
+                              (change)="setRadioButtonValue(FinalInspectionObj.ActuatorAssembly, 'TOPLOADINGPORTCAPPEDOFF', 'Pass')"
+                              [checked]="FinalInspectionObj.ActuatorAssembly.TOPLOADINGPORTCAPPEDOFF == 'Pass'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Fail' | translate}}</span>
+                            <input type="radio" mode="md" value="Fail"
+                              (change)="setRadioButtonValue(FinalInspectionObj.ActuatorAssembly, 'TOPLOADINGPORTCAPPEDOFF', 'Fail')"
+                              [checked]="FinalInspectionObj.ActuatorAssembly.TOPLOADINGPORTCAPPEDOFF == 'Fail'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'N/A' | translate}}</span>
+                            <input type="radio" mode="md" value="N/A"
+                              (change)="setRadioButtonValue(FinalInspectionObj.ActuatorAssembly, 'TOPLOADINGPORTCAPPEDOFF', 'N/A')"
+                              [checked]="FinalInspectionObj.ActuatorAssembly.TOPLOADINGPORTCAPPEDOFF == 'N/A'">
+                          </ion-item>
+                        </ion-list>
+                      </div>
+                    </ion-col>
+                  </div>
+                </div>
+
+                <div class="accordionOpen-content radioListElement">
+                  <div class="spacingMargin Element PassFailNA-Element">
+                    <ion-col no-padding>
+                      <div>
+                        <ion-list radio-group [(ngModel)]="FinalInspectionObj.ActuatorAssembly.SERIALNUMBER">
+                          <span>{{'Serial Number' | translate}}</span>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Pass' | translate}}</span>
+                            <input type="radio" mode="md" value="Pass"
+                              (change)="setRadioButtonValue(FinalInspectionObj.ActuatorAssembly, 'SERIALNUMBER', 'Pass')"
+                              [checked]="FinalInspectionObj.ActuatorAssembly.SERIALNUMBER == 'Pass'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Fail' | translate}}</span>
+                            <input type="radio" mode="md" value="Fail"
+                              (change)="setRadioButtonValue(FinalInspectionObj.ActuatorAssembly, 'SERIALNUMBER', 'Fail')"
+                              [checked]="FinalInspectionObj.ActuatorAssembly.SERIALNUMBER == 'Fail'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'N/A' | translate}}</span>
+                            <input type="radio" mode="md" value="N/A"
+                              (change)="setRadioButtonValue(FinalInspectionObj.ActuatorAssembly, 'SERIALNUMBER', 'N/A')"
+                              [checked]="FinalInspectionObj.ActuatorAssembly.SERIALNUMBER == 'N/A'">
+                          </ion-item>
+                        </ion-list>
+                      </div>
+                    </ion-col>
+                  </div>
+                </div>
+
+                <div class="accordionOpen-content radioListElement">
+                  <div class="spacingMargin Element PassFailNA-Element">
+                    <ion-col no-padding>
+                      <div>
+                        <ion-list radio-group [(ngModel)]="FinalInspectionObj.ActuatorAssembly.SIZEANDTYPE">
+                          <span>{{'Size And Type' | translate}}</span>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Pass' | translate}}</span>
+                            <input type="radio" mode="md" value="Pass"
+                              (change)="setRadioButtonValue(FinalInspectionObj.ActuatorAssembly, 'SIZEANDTYPE', 'Pass')"
+                              [checked]="FinalInspectionObj.ActuatorAssembly.SIZEANDTYPE == 'Pass'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Fail' | translate}}</span>
+                            <input type="radio" mode="md" value="Fail"
+                              (change)="setRadioButtonValue(FinalInspectionObj.ActuatorAssembly, 'SIZEANDTYPE', 'Fail')"
+                              [checked]="FinalInspectionObj.ActuatorAssembly.SIZEANDTYPE == 'Fail'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'N/A' | translate}}</span>
+                            <input type="radio" mode="md" value="N/A"
+                              (change)="setRadioButtonValue(FinalInspectionObj.ActuatorAssembly, 'SIZEANDTYPE', 'N/A')"
+                              [checked]="FinalInspectionObj.ActuatorAssembly.SIZEANDTYPE == 'N/A'">
+                          </ion-item>
+                        </ion-list>
+                      </div>
+                    </ion-col>
+                  </div>
+                </div>
+
+                <div class="accordionOpen-content radioListElement">
+                  <div class="spacingMargin Element PassFailNA-Element">
+                    <ion-col no-padding>
+                      <div>
+                        <ion-list radio-group
+                          [(ngModel)]="FinalInspectionObj.ActuatorAssembly.STEMCONNASSYTIGHTCORRECTPOS">
+                          <span>{{'Stem Conn. Assy Tight/Correct Pos.' | translate}}</span>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Pass' | translate}}</span>
+                            <input type="radio" mode="md" value="Pass"
+                              (change)="setRadioButtonValue(FinalInspectionObj.ActuatorAssembly, 'STEMCONNASSYTIGHTCORRECTPOS', 'Pass')"
+                              [checked]="FinalInspectionObj.ActuatorAssembly.STEMCONNASSYTIGHTCORRECTPOS == 'Pass'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Fail' | translate}}</span>
+                            <input type="radio" mode="md" value="Fail"
+                              (change)="setRadioButtonValue(FinalInspectionObj.ActuatorAssembly, 'STEMCONNASSYTIGHTCORRECTPOS', 'Fail')"
+                              [checked]="FinalInspectionObj.ActuatorAssembly.STEMCONNASSYTIGHTCORRECTPOS == 'Fail'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'N/A' | translate}}</span>
+                            <input type="radio" mode="md" value="N/A"
+                              (change)="setRadioButtonValue(FinalInspectionObj.ActuatorAssembly, 'STEMCONNASSYTIGHTCORRECTPOS', 'N/A')"
+                              [checked]="FinalInspectionObj.ActuatorAssembly.STEMCONNASSYTIGHTCORRECTPOS == 'N/A'">
+                          </ion-item>
+                        </ion-list>
+                      </div>
+                    </ion-col>
+                  </div>
+                </div>
+
+                <div class="accordionOpen-content radioListElement">
+                  <div class="spacingMargin Element PassFailNA-Element">
+                    <ion-col no-padding>
+                      <div>
+                        <ion-list radio-group [(ngModel)]="FinalInspectionObj.ActuatorAssembly.SERVICECOTAGATTACHED">
+                          <span>{{'Service Co. Tag Attached' | translate}}</span>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Pass' | translate}}</span>
+                            <input type="radio" mode="md" value="Pass"
+                              (change)="setRadioButtonValue(FinalInspectionObj.ActuatorAssembly, 'SERVICECOTAGATTACHED', 'Pass')"
+                              [checked]="FinalInspectionObj.ActuatorAssembly.SERVICECOTAGATTACHED == 'Pass'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Fail' | translate}}</span>
+                            <input type="radio" mode="md" value="Fail"
+                              (change)="setRadioButtonValue(FinalInspectionObj.ActuatorAssembly, 'SERVICECOTAGATTACHED', 'Fail')"
+                              [checked]="FinalInspectionObj.ActuatorAssembly.SERVICECOTAGATTACHED == 'Fail'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'N/A' | translate}}</span>
+                            <input type="radio" mode="md" value="N/A"
+                              (change)="setRadioButtonValue(FinalInspectionObj.ActuatorAssembly, 'SERVICECOTAGATTACHED', 'N/A')"
+                              [checked]="FinalInspectionObj.ActuatorAssembly.SERVICECOTAGATTACHED == 'N/A'">
+                          </ion-item>
+                        </ion-list>
+                      </div>
+                    </ion-col>
+                  </div>
+                </div>
+
+                <div class="accordionOpen-content radioListElement">
+                  <div class="spacingMargin Element PassFailNA-Element">
+                    <ion-col no-padding>
+                      <div>
+                        <ion-list radio-group [(ngModel)]="FinalInspectionObj.ActuatorAssembly.ALLOTHERCONNSECURED">
+                          <span>{{'All Other Conn. Secured' | translate}}</span>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Pass' | translate}}</span>
+                            <input type="radio" mode="md" value="Pass"
+                              (change)="setRadioButtonValue(FinalInspectionObj.ActuatorAssembly, 'ALLOTHERCONNSECURED', 'Pass')"
+                              [checked]="FinalInspectionObj.ActuatorAssembly.ALLOTHERCONNSECURED == 'Pass'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Fail' | translate}}</span>
+                            <input type="radio" mode="md" value="Fail"
+                              (change)="setRadioButtonValue(FinalInspectionObj.ActuatorAssembly, 'ALLOTHERCONNSECURED', 'Fail')"
+                              [checked]="FinalInspectionObj.ActuatorAssembly.ALLOTHERCONNSECURED == 'Fail'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'N/A' | translate}}</span>
+                            <input type="radio" mode="md" value="N/A"
+                              (change)="setRadioButtonValue(FinalInspectionObj.ActuatorAssembly, 'ALLOTHERCONNSECURED', 'N/A')"
+                              [checked]="FinalInspectionObj.ActuatorAssembly.ALLOTHERCONNSECURED == 'N/A'">
+                          </ion-item>
+                        </ion-list>
+                      </div>
+                    </ion-col>
+                  </div>
+                </div>
+
+
+              </ion-row>
+
+            </div>
+          </div>
+        </ion-row>
+
+        <!-- Instrumentation/Accessories Row -->
+        <ion-row class="customRows"
+          *ngIf="deviceId == Enums.FlowIsolationProductId.ControlValve || deviceId == Enums.FlowIsolationProductId.Instrument">
+          <div class="full-width">
+            <div class="inline-block spacingMargin"
+              [ngClass]="FinalInspectionObj.InstrumentationAccessories_NA == 'true' || FinalInspectionObj.InstrumentationAccessories_NA == true ? 'disable-content' : ''">
+              <span (click)="expandOuter('InstrumentationAccessories')">
+                <ion-icon class="arrowIcon" item-left name="arrow-dropright"
+                  *ngIf="!expandOuterAccordion.InstrumentationAccessories">
+                </ion-icon>
+                <ion-icon class="arrowIcon" role="img" *ngIf="expandOuterAccordion.InstrumentationAccessories"
+                  aria-label="arrow dropdown" name="arrow-dropdown">
+                </ion-icon>
+              </span>
+              <span (click)="expandOuter('InstrumentationAccessories')"
+                class="label pointer accordion-label">{{'Instrumentation/Accessories' | translate}}</span>
+            </div>
+            <div class="inline-block pull-right">
+              <div class="spacingMargin">
+                <div class="WF-checkbox">
+                  <span class="label checkboxLabel">{{'N/A' | translate}}</span>
+                  <input id="checkbox-InstrumentationAccessories-NA" type="checkbox"
+                    [checked]="FinalInspectionObj.InstrumentationAccessories_NA == true || FinalInspectionObj.InstrumentationAccessories_NA == 'true'"
+                    [ngModel] class="accordionCheckBox" (change)="confirmAlert($event, 'InstrumentationAccessories')">
+                  <label for="checkbox-InstrumentationAccessories-NA"></label>
+                </div>
+              </div>
+            </div>
+            <div class="block full-width attachmentBox" *ngIf="expandOuterAccordion.InstrumentationAccessories">
+
+              <ion-row>
+                <div class="accordionOpen-content passAllCheckbox">
+                  <div class="spacingMargin Element PassAll-Element">
+                    <ion-col no-padding>
+                      <div class="WF-checkbox pull-right">
+                        <span class="label">Pass All</span>
+
+                        <input id="checkbox-InstrumentationAccessories-PassAll" type="checkbox" item-right
+                          [checked]="FinalInspectionObj.InstrumentationAccessories.PassAll === true || FinalInspectionObj.InstrumentationAccessories.PassAll === 'true'"
+                          class="accordionCheckBox"
+                          (change)="passAllOrFailAll('PassAll', 'InstrumentationAccessories', $event)">
+                        <label for="checkbox-InstrumentationAccessories-PassAll"></label>
+                      </div>
+                    </ion-col>
+                  </div>
+                </div>
+
+                <div class="accordionOpen-content failAllCheckbox">
+                  <div class="spacingMargin Element FailAll-Element">
+                    <ion-col no-padding>
+                      <div class="WF-checkbox ">
+                        <span class="label">Fail All</span>
+
+                        <input id="checkbox-InstrumentationAccessories-FailAll" type="checkbox" item-right
+                          [checked]="FinalInspectionObj.InstrumentationAccessories.FailAll === true || FinalInspectionObj.InstrumentationAccessories.FailAll === 'true'"
+                          class="accordionCheckBox"
+                          (change)="passAllOrFailAll('FailAll', 'InstrumentationAccessories', $event)">
+                        <label for="checkbox-InstrumentationAccessories-FailAll"></label>
+                      </div>
+                    </ion-col>
+                  </div>
+                </div>
+
+
+                <div class="accordionOpen-content radioListElement">
+                  <div class="spacingMargin Element PassFailNA-Element">
+                    <ion-col no-padding>
+                      <div>
+                        <ion-list radio-group
+                          [(ngModel)]="FinalInspectionObj.InstrumentationAccessories.PaintedPerFFS6A28">
+                          <span>{{'Painted Per FFS 6A28 (COLOR)' | translate}}</span>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Pass' | translate}}</span>
+                            <input type="radio" mode="md" value="Pass"
+                              (change)="setRadioButtonValue(FinalInspectionObj.InstrumentationAccessories, 'PaintedPerFFS6A28', 'Pass')"
+                              [checked]="FinalInspectionObj.InstrumentationAccessories.PaintedPerFFS6A28 == 'Pass'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Fail' | translate}}</span>
+                            <input type="radio" mode="md" value="Fail"
+                              (change)="setRadioButtonValue(FinalInspectionObj.InstrumentationAccessories, 'PaintedPerFFS6A28', 'Fail')"
+                              [checked]="FinalInspectionObj.InstrumentationAccessories.PaintedPerFFS6A28 == 'Fail'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'N/A' | translate}}</span>
+                            <input type="radio" mode="md" value="N/A"
+                              (change)="setRadioButtonValue(FinalInspectionObj.InstrumentationAccessories, 'PaintedPerFFS6A28', 'N/A')"
+                              [checked]="FinalInspectionObj.InstrumentationAccessories.PaintedPerFFS6A28 == 'N/A'">
+                          </ion-item>
+                        </ion-list>
+                      </div>
+                    </ion-col>
+                  </div>
+                </div>
+
+                <div class="accordionOpen-content radioListElement">
+                  <div class="spacingMargin Element PassFailNA-Element">
+                    <ion-col no-padding>
+                      <div>
+                        <ion-list radio-group
+                          [(ngModel)]="FinalInspectionObj.InstrumentationAccessories.PaintedPerCustomerRequirements">
+                          <span>{{'Painted Per Customer Requirements' | translate}}</span>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Pass' | translate}}</span>
+                            <input type="radio" mode="md" value="Pass"
+                              (change)="setRadioButtonValue(FinalInspectionObj.InstrumentationAccessories, 'PaintedPerCustomerRequirements', 'Pass')"
+                              [checked]="FinalInspectionObj.InstrumentationAccessories.PaintedPerCustomerRequirements == 'Pass'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Fail' | translate}}</span>
+                            <input type="radio" mode="md" value="Fail"
+                              (change)="setRadioButtonValue(FinalInspectionObj.InstrumentationAccessories, 'PaintedPerCustomerRequirements', 'Fail')"
+                              [checked]="FinalInspectionObj.InstrumentationAccessories.PaintedPerCustomerRequirements == 'Fail'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'N/A' | translate}}</span>
+                            <input type="radio" mode="md" value="N/A"
+                              (change)="setRadioButtonValue(FinalInspectionObj.InstrumentationAccessories, 'PaintedPerCustomerRequirements', 'N/A')"
+                              [checked]="FinalInspectionObj.InstrumentationAccessories.PaintedPerCustomerRequirements == 'N/A'">
+                          </ion-item>
+                        </ion-list>
+                      </div>
+                    </ion-col>
+                  </div>
+                </div>
+
+
+                <div class="accordionOpen-content radioListElement">
+                  <div class="spacingMargin Element PassFailNA-Element">
+                    <ion-col no-padding>
+                      <div>
+                        <ion-list radio-group
+                          [(ngModel)]="FinalInspectionObj.InstrumentationAccessories.NamePlateInformationCorrect">
+                          <span>{{'Name Plate Information Correct' | translate}}</span>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Pass' | translate}}</span>
+                            <input type="radio" mode="md" value="Pass"
+                              (change)="setRadioButtonValue(FinalInspectionObj.InstrumentationAccessories, 'NamePlateInformationCorrect', 'Pass')"
+                              [checked]="FinalInspectionObj.InstrumentationAccessories.NamePlateInformationCorrect == 'Pass'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Fail' | translate}}</span>
+                            <input type="radio" mode="md" value="Fail"
+                              (change)="setRadioButtonValue(FinalInspectionObj.InstrumentationAccessories, 'NamePlateInformationCorrect', 'Fail')"
+                              [checked]="FinalInspectionObj.InstrumentationAccessories.NamePlateInformationCorrect == 'Fail'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'N/A' | translate}}</span>
+                            <input type="radio" mode="md" value="N/A"
+                              (change)="setRadioButtonValue(FinalInspectionObj.InstrumentationAccessories, 'NamePlateInformationCorrect', 'N/A')"
+                              [checked]="FinalInspectionObj.InstrumentationAccessories.NamePlateInformationCorrect == 'N/A'">
+                          </ion-item>
+                        </ion-list>
+                      </div>
+                    </ion-col>
+                  </div>
+                </div>
+
+
+                <div class="accordionOpen-content radioListElement">
+                  <div class="spacingMargin Element PassFailNA-Element">
+                    <ion-col no-padding>
+                      <div>
+                        <ion-list radio-group
+                          [(ngModel)]="FinalInspectionObj.InstrumentationAccessories.ServiceCoTagAttached">
+                          <span>{{'Service Co. Tag Attached' | translate}}</span>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Pass' | translate}}</span>
+                            <input type="radio" mode="md" value="Pass"
+                              (change)="setRadioButtonValue(FinalInspectionObj.InstrumentationAccessories, 'ServiceCoTagAttached', 'Pass')"
+                              [checked]="FinalInspectionObj.InstrumentationAccessories.ServiceCoTagAttached == 'Pass'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Fail' | translate}}</span>
+                            <input type="radio" mode="md" value="Fail"
+                              (change)="setRadioButtonValue(FinalInspectionObj.InstrumentationAccessories, 'ServiceCoTagAttached', 'Fail')"
+                              [checked]="FinalInspectionObj.InstrumentationAccessories.ServiceCoTagAttached == 'Fail'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'N/A' | translate}}</span>
+                            <input type="radio" mode="md" value="N/A"
+                              (change)="setRadioButtonValue(FinalInspectionObj.InstrumentationAccessories, 'ServiceCoTagAttached', 'N/A')"
+                              [checked]="FinalInspectionObj.InstrumentationAccessories.ServiceCoTagAttached == 'N/A'">
+                          </ion-item>
+                        </ion-list>
+                      </div>
+                    </ion-col>
+                  </div>
+                </div>
+
+
+                <div class="accordionOpen-content radioListElement">
+                  <div class="spacingMargin Element PassFailNA-Element">
+                    <ion-col no-padding>
+                      <div>
+                        <ion-list radio-group
+                          [(ngModel)]="FinalInspectionObj.InstrumentationAccessories.HazardousApprovalMarksValidated">
+                          <span>{{'Hazardous Approval Marks Validated' | translate}}</span>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Pass' | translate}}</span>
+                            <input type="radio" mode="md" value="Pass"
+                              (change)="setRadioButtonValue(FinalInspectionObj.InstrumentationAccessories, 'HazardousApprovalMarksValidated', 'Pass')"
+                              [checked]="FinalInspectionObj.InstrumentationAccessories.HazardousApprovalMarksValidated == 'Pass'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Fail' | translate}}</span>
+                            <input type="radio" mode="md" value="Fail"
+                              (change)="setRadioButtonValue(FinalInspectionObj.InstrumentationAccessories, 'HazardousApprovalMarksValidated', 'Fail')"
+                              [checked]="FinalInspectionObj.InstrumentationAccessories.HazardousApprovalMarksValidated == 'Fail'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'N/A' | translate}}</span>
+                            <input type="radio" mode="md" value="N/A"
+                              (change)="setRadioButtonValue(FinalInspectionObj.InstrumentationAccessories, 'HazardousApprovalMarksValidated', 'N/A')"
+                              [checked]="FinalInspectionObj.InstrumentationAccessories.HazardousApprovalMarksValidated == 'N/A'">
+                          </ion-item>
+                        </ion-list>
+                      </div>
+                    </ion-col>
+                  </div>
+                </div>
+
+
+                <div class="accordionOpen-content radioListElement">
+                  <div class="spacingMargin Element PassFailNA-Element">
+                    <ion-col no-padding>
+                      <div>
+                        <ion-list radio-group
+                          [(ngModel)]="FinalInspectionObj.InstrumentationAccessories.CorrectTubingFittings">
+                          <span>{{'Correct Tubing/Fittings' | translate}}</span>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Pass' | translate}}</span>
+                            <input type="radio" mode="md" value="Pass"
+                              (change)="setRadioButtonValue(FinalInspectionObj.InstrumentationAccessories, 'CorrectTubingFittings', 'Pass')"
+                              [checked]="FinalInspectionObj.InstrumentationAccessories.CorrectTubingFittings == 'Pass'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Fail' | translate}}</span>
+                            <input type="radio" mode="md" value="Fail"
+                              (change)="setRadioButtonValue(FinalInspectionObj.InstrumentationAccessories, 'CorrectTubingFittings', 'Fail')"
+                              [checked]="FinalInspectionObj.InstrumentationAccessories.CorrectTubingFittings == 'Fail'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'N/A' | translate}}</span>
+                            <input type="radio" mode="md" value="N/A"
+                              (change)="setRadioButtonValue(FinalInspectionObj.InstrumentationAccessories, 'CorrectTubingFittings', 'N/A')"
+                              [checked]="FinalInspectionObj.InstrumentationAccessories.CorrectTubingFittings == 'N/A'">
+                          </ion-item>
+                        </ion-list>
+                      </div>
+                    </ion-col>
+                  </div>
+                </div>
+
+
+                <div class="accordionOpen-content radioListElement">
+                  <div class="spacingMargin Element PassFailNA-Element">
+                    <ion-col no-padding>
+                      <div>
+                        <ion-list radio-group
+                          [(ngModel)]="FinalInspectionObj.InstrumentationAccessories.CorrectMountingOrientation">
+                          <span>{{'Correct Mounting Orientation' | translate}}</span>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Pass' | translate}}</span>
+                            <input type="radio" mode="md" value="Pass"
+                              (change)="setRadioButtonValue(FinalInspectionObj.InstrumentationAccessories, 'CorrectMountingOrientation', 'Pass')"
+                              [checked]="FinalInspectionObj.InstrumentationAccessories.CorrectMountingOrientation == 'Pass'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Fail' | translate}}</span>
+                            <input type="radio" mode="md" value="Fail"
+                              (change)="setRadioButtonValue(FinalInspectionObj.InstrumentationAccessories, 'CorrectMountingOrientation', 'Fail')"
+                              [checked]="FinalInspectionObj.InstrumentationAccessories.CorrectMountingOrientation == 'Fail'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'N/A' | translate}}</span>
+                            <input type="radio" mode="md" value="N/A"
+                              (change)="setRadioButtonValue(FinalInspectionObj.InstrumentationAccessories, 'CorrectMountingOrientation', 'N/A')"
+                              [checked]="FinalInspectionObj.InstrumentationAccessories.CorrectMountingOrientation == 'N/A'">
+                          </ion-item>
+                        </ion-list>
+                      </div>
+                    </ion-col>
+                  </div>
+                </div>
+
+
+                <div class="accordionOpen-content radioListElement">
+                  <div class="spacingMargin Element PassFailNA-Element">
+                    <ion-col no-padding>
+                      <div>
+                        <ion-list radio-group
+                          [(ngModel)]="FinalInspectionObj.InstrumentationAccessories.CalibrationTagAttached">
+                          <span>{{'Calibration Tag Attached' | translate}}</span>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Pass' | translate}}</span>
+                            <input type="radio" mode="md" value="Pass"
+                              (change)="setRadioButtonValue(FinalInspectionObj.InstrumentationAccessories, 'CalibrationTagAttached', 'Pass')"
+                              [checked]="FinalInspectionObj.InstrumentationAccessories.CalibrationTagAttached == 'Pass'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Fail' | translate}}</span>
+                            <input type="radio" mode="md" value="Fail"
+                              (change)="setRadioButtonValue(FinalInspectionObj.InstrumentationAccessories, 'CalibrationTagAttached', 'Fail')"
+                              [checked]="FinalInspectionObj.InstrumentationAccessories.CalibrationTagAttached == 'Fail'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'N/A' | translate}}</span>
+                            <input type="radio" mode="md" value="N/A"
+                              (change)="setRadioButtonValue(FinalInspectionObj.InstrumentationAccessories, 'CalibrationTagAttached', 'N/A')"
+                              [checked]="FinalInspectionObj.InstrumentationAccessories.CalibrationTagAttached == 'N/A'">
+                          </ion-item>
+                        </ion-list>
+                      </div>
+                    </ion-col>
+                  </div>
+                </div>
+
+
+                <div class="accordionOpen-content radioListElement">
+                  <div class="spacingMargin Element PassFailNA-Element">
+                    <ion-col no-padding>
+                      <div>
+                        <ion-list radio-group
+                          [(ngModel)]="FinalInspectionObj.InstrumentationAccessories.IfPerformedFlowscannerTagAtt">
+                          <span>{{'If Performed, Flowscanner Tag Att.' | translate}}</span>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Pass' | translate}}</span>
+                            <input type="radio" mode="md" value="Pass"
+                              (change)="setRadioButtonValue(FinalInspectionObj.InstrumentationAccessories, 'IfPerformedFlowscannerTagAtt', 'Pass')"
+                              [checked]="FinalInspectionObj.InstrumentationAccessories.IfPerformedFlowscannerTagAtt == 'Pass'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Fail' | translate}}</span>
+                            <input type="radio" mode="md" value="Fail"
+                              (change)="setRadioButtonValue(FinalInspectionObj.InstrumentationAccessories, 'IfPerformedFlowscannerTagAtt', 'Fail')"
+                              [checked]="FinalInspectionObj.InstrumentationAccessories.IfPerformedFlowscannerTagAtt == 'Fail'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'N/A' | translate}}</span>
+                            <input type="radio" mode="md" value="N/A"
+                              (change)="setRadioButtonValue(FinalInspectionObj.InstrumentationAccessories, 'IfPerformedFlowscannerTagAtt', 'N/A')"
+                              [checked]="FinalInspectionObj.InstrumentationAccessories.IfPerformedFlowscannerTagAtt == 'N/A'">
+                          </ion-item>
+                        </ion-list>
+                      </div>
+                    </ion-col>
+                  </div>
+                </div>
+
+
+                <div class="accordionOpen-content radioListElement">
+                  <div class="spacingMargin Element PassFailNA-Element">
+                    <ion-col no-padding>
+                      <div>
+                        <ion-list radio-group
+                          [(ngModel)]="FinalInspectionObj.InstrumentationAccessories.AllOtherConnMtgPartSecured">
+                          <span>{{'All Other Conn./Mtg. Part Secured' | translate}}</span>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Pass' | translate}}</span>
+                            <input type="radio" mode="md" value="Pass"
+                              (change)="setRadioButtonValue(FinalInspectionObj.InstrumentationAccessories, 'AllOtherConnMtgPartSecured', 'Pass')"
+                              [checked]="FinalInspectionObj.InstrumentationAccessories.AllOtherConnMtgPartSecured == 'Pass'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Fail' | translate}}</span>
+                            <input type="radio" mode="md" value="Fail"
+                              (change)="setRadioButtonValue(FinalInspectionObj.InstrumentationAccessories, 'AllOtherConnMtgPartSecured', 'Fail')"
+                              [checked]="FinalInspectionObj.InstrumentationAccessories.AllOtherConnMtgPartSecured == 'Fail'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'N/A' | translate}}</span>
+                            <input type="radio" mode="md" value="N/A"
+                              (change)="setRadioButtonValue(FinalInspectionObj.InstrumentationAccessories, 'AllOtherConnMtgPartSecured', 'N/A')"
+                              [checked]="FinalInspectionObj.InstrumentationAccessories.AllOtherConnMtgPartSecured == 'N/A'">
+                          </ion-item>
+                        </ion-list>
+                      </div>
+                    </ion-col>
+                  </div>
+                </div>
+
+
+              </ion-row>
+
+            </div>
+          </div>
+        </ion-row>
+
+        <!-- Level-Trol Assembly Row -->
+        <ion-row class="customRows" *ngIf="deviceId == Enums.FlowIsolationProductId.LevelTroll">
+          <div class="full-width">
+            <div class="inline-block spacingMargin"
+              [ngClass]="FinalInspectionObj.LevelTrolAssembly_NA == 'true' || FinalInspectionObj.LevelTrolAssembly_NA == true ? 'disable-content' : ''">
+              <span (click)="expandOuter('LevelTrolAssembly')">
+                <ion-icon class="arrowIcon" item-left name="arrow-dropright"
+                  *ngIf="!expandOuterAccordion.LevelTrolAssembly">
+                </ion-icon>
+                <ion-icon class="arrowIcon" role="img" *ngIf="expandOuterAccordion.LevelTrolAssembly"
+                  aria-label="arrow dropdown" name="arrow-dropdown">
+                </ion-icon>
+              </span>
+              <span (click)="expandOuter('LevelTrolAssembly')"
+                class="label pointer accordion-label">{{'Level-Trol Assembly' | translate}}</span>
+            </div>
+            <div class="inline-block pull-right">
+              <div class="spacingMargin">
+                <div class="WF-checkbox">
+                  <span class="label checkboxLabel">{{'N/A' | translate}}</span>
+                  <input id="checkbox-LevelTrolAssembly-NA" type="checkbox"
+                    [checked]="FinalInspectionObj.LevelTrolAssembly_NA == true || FinalInspectionObj.LevelTrolAssembly_NA == 'true'"
+                    [ngModel] class="accordionCheckBox" (change)="confirmAlert($event, 'LevelTrolAssembly')">
+                  <label for="checkbox-LevelTrolAssembly-NA"></label>
+                </div>
+              </div>
+            </div>
+            <div class="block full-width attachmentBox" *ngIf="expandOuterAccordion.LevelTrolAssembly">
+
+              <ion-row>
+                <div class="accordionOpen-content passAllCheckbox">
+                  <div class="spacingMargin Element PassAll-Element">
+                    <ion-col no-padding>
+                      <div class="WF-checkbox pull-right">
+                        <span class="label">Pass All</span>
+
+                        <input id="checkbox-LevelTrolAssembly-PassAll" type="checkbox" item-right
+                          [checked]="FinalInspectionObj.LevelTrolAssembly.PassAll === true || FinalInspectionObj.LevelTrolAssembly.PassAll === 'true'"
+                          class="accordionCheckBox" (change)="passAllOrFailAll('PassAll', 'LevelTrolAssembly', $event)">
+                        <label for="checkbox-LevelTrolAssembly-PassAll"></label>
+                      </div>
+                    </ion-col>
+                  </div>
+                </div>
+
+                <div class="accordionOpen-content failAllCheckbox">
+                  <div class="spacingMargin Element FailAll-Element">
+                    <ion-col no-padding>
+                      <div class="WF-checkbox ">
+                        <span class="label">Fail All</span>
+
+                        <input id="checkbox-LevelTrolAssembly-FailAll" type="checkbox" item-right
+                          [checked]="FinalInspectionObj.LevelTrolAssembly.FailAll === true || FinalInspectionObj.LevelTrolAssembly.FailAll === 'true'"
+                          class="accordionCheckBox" (change)="passAllOrFailAll('FailAll', 'LevelTrolAssembly', $event)">
+                        <label for="checkbox-LevelTrolAssembly-FailAll"></label>
+                      </div>
+                    </ion-col>
+                  </div>
+                </div>
+
+
+                <div class="accordionOpen-content radioListElement">
+                  <div class="spacingMargin Element PassFailNA-Element">
+                    <ion-col no-padding>
+                      <div>
+                        <ion-list radio-group [(ngModel)]="FinalInspectionObj.LevelTrolAssembly.PaintedPerFFS6A28">
+                          <span>{{'Painted Per FFS 6A28 (COLOR)' | translate}}</span>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Pass' | translate}}</span>
+                            <input type="radio" mode="md" value="Pass"
+                              (change)="setRadioButtonValue(FinalInspectionObj.LevelTrolAssembly, 'PaintedPerFFS6A28', 'Pass')"
+                              [checked]="FinalInspectionObj.LevelTrolAssembly.PaintedPerFFS6A28 == 'Pass'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Fail' | translate}}</span>
+                            <input type="radio" mode="md" value="Fail"
+                              (change)="setRadioButtonValue(FinalInspectionObj.LevelTrolAssembly, 'PaintedPerFFS6A28', 'Fail')"
+                              [checked]="FinalInspectionObj.LevelTrolAssembly.PaintedPerFFS6A28 == 'Fail'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'N/A' | translate}}</span>
+                            <input type="radio" mode="md" value="N/A"
+                              (change)="setRadioButtonValue(FinalInspectionObj.LevelTrolAssembly, 'PaintedPerFFS6A28', 'N/A')"
+                              [checked]="FinalInspectionObj.LevelTrolAssembly.PaintedPerFFS6A28 == 'N/A'">
+                          </ion-item>
+                        </ion-list>
+                      </div>
+                    </ion-col>
+                  </div>
+                </div>
+
+                <div class="accordionOpen-content radioListElement">
+                  <div class="spacingMargin Element PassFailNA-Element">
+                    <ion-col no-padding>
+                      <div>
+                        <ion-list radio-group [(ngModel)]="FinalInspectionObj.LevelTrolAssembly.CageHeadMaterial">
+                          <span>{{'Cage/Head Material' | translate}}</span>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Pass' | translate}}</span>
+                            <input type="radio" mode="md" value="Pass"
+                              (change)="setRadioButtonValue(FinalInspectionObj.LevelTrolAssembly, 'CageHeadMaterial', 'Pass')"
+                              [checked]="FinalInspectionObj.LevelTrolAssembly.CageHeadMaterial == 'Pass'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Fail' | translate}}</span>
+                            <input type="radio" mode="md" value="Fail"
+                              (change)="setRadioButtonValue(FinalInspectionObj.LevelTrolAssembly, 'CageHeadMaterial', 'Fail')"
+                              [checked]="FinalInspectionObj.LevelTrolAssembly.CageHeadMaterial == 'Fail'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'N/A' | translate}}</span>
+                            <input type="radio" mode="md" value="N/A"
+                              (change)="setRadioButtonValue(FinalInspectionObj.LevelTrolAssembly, 'CageHeadMaterial', 'N/A')"
+                              [checked]="FinalInspectionObj.LevelTrolAssembly.CageHeadMaterial == 'N/A'">
+                          </ion-item>
+                        </ion-list>
+                      </div>
+                    </ion-col>
+                  </div>
+                </div>
+
+                <div class="accordionOpen-content radioListElement">
+                  <div class="spacingMargin Element PassFailNA-Element">
+                    <ion-col no-padding>
+                      <div>
+                        <ion-list radio-group
+                          [(ngModel)]="FinalInspectionObj.LevelTrolAssembly.PaintedPerCustomerRequirements">
+                          <span>{{'Painted Per Customer Requirements' | translate}}</span>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Pass' | translate}}</span>
+                            <input type="radio" mode="md" value="Pass"
+                              (change)="setRadioButtonValue(FinalInspectionObj.LevelTrolAssembly, 'PaintedPerCustomerRequirements', 'Pass')"
+                              [checked]="FinalInspectionObj.LevelTrolAssembly.PaintedPerCustomerRequirements == 'Pass'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Fail' | translate}}</span>
+                            <input type="radio" mode="md" value="Fail"
+                              (change)="setRadioButtonValue(FinalInspectionObj.LevelTrolAssembly, 'PaintedPerCustomerRequirements', 'Fail')"
+                              [checked]="FinalInspectionObj.LevelTrolAssembly.PaintedPerCustomerRequirements == 'Fail'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'N/A' | translate}}</span>
+                            <input type="radio" mode="md" value="N/A"
+                              (change)="setRadioButtonValue(FinalInspectionObj.LevelTrolAssembly, 'PaintedPerCustomerRequirements', 'N/A')"
+                              [checked]="FinalInspectionObj.LevelTrolAssembly.PaintedPerCustomerRequirements == 'N/A'">
+                          </ion-item>
+                        </ion-list>
+                      </div>
+                    </ion-col>
+                  </div>
+                </div>
+
+                <div class="accordionOpen-content radioListElement">
+                  <div class="spacingMargin Element PassFailNA-Element">
+                    <ion-col no-padding>
+                      <div>
+                        <ion-list radio-group [(ngModel)]="FinalInspectionObj.LevelTrolAssembly.SerialNumber">
+                          <span>{{'Serial Number' | translate}}</span>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Pass' | translate}}</span>
+                            <input type="radio" mode="md" value="Pass"
+                              (change)="setRadioButtonValue(FinalInspectionObj.LevelTrolAssembly, 'SerialNumber', 'Pass')"
+                              [checked]="FinalInspectionObj.LevelTrolAssembly.SerialNumber == 'Pass'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Fail' | translate}}</span>
+                            <input type="radio" mode="md" value="Fail"
+                              (change)="setRadioButtonValue(FinalInspectionObj.LevelTrolAssembly, 'SerialNumber', 'Fail')"
+                              [checked]="FinalInspectionObj.LevelTrolAssembly.SerialNumber == 'Fail'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'N/A' | translate}}</span>
+                            <input type="radio" mode="md" value="N/A"
+                              (change)="setRadioButtonValue(FinalInspectionObj.LevelTrolAssembly, 'SerialNumber', 'N/A')"
+                              [checked]="FinalInspectionObj.LevelTrolAssembly.SerialNumber == 'N/A'">
+                          </ion-item>
+                        </ion-list>
+                      </div>
+                    </ion-col>
+                  </div>
+                </div>
+
+                <div class="accordionOpen-content radioListElement">
+                  <div class="spacingMargin Element PassFailNA-Element">
+                    <ion-col no-padding>
+                      <div>
+                        <ion-list radio-group
+                          [(ngModel)]="FinalInspectionObj.LevelTrolAssembly.NamePlateInformationCorrect">
+                          <span>{{'Name Plate Information Correct' | translate}}</span>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Pass' | translate}}</span>
+                            <input type="radio" mode="md" value="Pass"
+                              (change)="setRadioButtonValue(FinalInspectionObj.LevelTrolAssembly, 'NamePlateInformationCorrect', 'Pass')"
+                              [checked]="FinalInspectionObj.LevelTrolAssembly.NamePlateInformationCorrect == 'Pass'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Fail' | translate}}</span>
+                            <input type="radio" mode="md" value="Fail"
+                              (change)="setRadioButtonValue(FinalInspectionObj.LevelTrolAssembly, 'NamePlateInformationCorrect', 'Fail')"
+                              [checked]="FinalInspectionObj.LevelTrolAssembly.NamePlateInformationCorrect == 'Fail'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'N/A' | translate}}</span>
+                            <input type="radio" mode="md" value="N/A"
+                              (change)="setRadioButtonValue(FinalInspectionObj.LevelTrolAssembly, 'NamePlateInformationCorrect', 'N/A')"
+                              [checked]="FinalInspectionObj.LevelTrolAssembly.NamePlateInformationCorrect == 'N/A'">
+                          </ion-item>
+                        </ion-list>
+                      </div>
+                    </ion-col>
+                  </div>
+                </div>
+
+                <div class="accordionOpen-content radioListElement">
+                  <div class="spacingMargin Element PassFailNA-Element">
+                    <ion-col no-padding>
+                      <div>
+                        <ion-list radio-group [(ngModel)]="FinalInspectionObj.LevelTrolAssembly.HydroStamp">
+                          <span>{{'Hydro Stamp' | translate}}</span>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Pass' | translate}}</span>
+                            <input type="radio" mode="md" value="Pass"
+                              (change)="setRadioButtonValue(FinalInspectionObj.LevelTrolAssembly, 'HydroStamp', 'Pass')"
+                              [checked]="FinalInspectionObj.LevelTrolAssembly.HydroStamp == 'Pass'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Fail' | translate}}</span>
+                            <input type="radio" mode="md" value="Fail"
+                              (change)="setRadioButtonValue(FinalInspectionObj.LevelTrolAssembly, 'HydroStamp', 'Fail')"
+                              [checked]="FinalInspectionObj.LevelTrolAssembly.HydroStamp == 'Fail'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'N/A' | translate}}</span>
+                            <input type="radio" mode="md" value="N/A"
+                              (change)="setRadioButtonValue(FinalInspectionObj.LevelTrolAssembly, 'HydroStamp', 'N/A')"
+                              [checked]="FinalInspectionObj.LevelTrolAssembly.HydroStamp == 'N/A'">
+                          </ion-item>
+                        </ion-list>
+                      </div>
+                    </ion-col>
+                  </div>
+                </div>
+
+                <div class="accordionOpen-content radioListElement">
+                  <div class="spacingMargin Element PassFailNA-Element">
+                    <ion-col no-padding>
+                      <div>
+                        <ion-list radio-group [(ngModel)]="FinalInspectionObj.LevelTrolAssembly.ServiceCoTagAttached">
+                          <span>{{'Service Co. Tag Attached' | translate}}</span>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Pass' | translate}}</span>
+                            <input type="radio" mode="md" value="Pass"
+                              (change)="setRadioButtonValue(FinalInspectionObj.LevelTrolAssembly, 'ServiceCoTagAttached', 'Pass')"
+                              [checked]="FinalInspectionObj.LevelTrolAssembly.ServiceCoTagAttached == 'Pass'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Fail' | translate}}</span>
+                            <input type="radio" mode="md" value="Fail"
+                              (change)="setRadioButtonValue(FinalInspectionObj.LevelTrolAssembly, 'ServiceCoTagAttached', 'Fail')"
+                              [checked]="FinalInspectionObj.LevelTrolAssembly.ServiceCoTagAttached == 'Fail'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'N/A' | translate}}</span>
+                            <input type="radio" mode="md" value="N/A"
+                              (change)="setRadioButtonValue(FinalInspectionObj.LevelTrolAssembly, 'ServiceCoTagAttached', 'N/A')"
+                              [checked]="FinalInspectionObj.LevelTrolAssembly.ServiceCoTagAttached == 'N/A'">
+                          </ion-item>
+                        </ion-list>
+                      </div>
+                    </ion-col>
+                  </div>
+                </div>
+
+                <div class="accordionOpen-content radioListElement">
+                  <div class="spacingMargin Element PassFailNA-Element">
+                    <ion-col no-padding>
+                      <div>
+                        <ion-list radio-group
+                          [(ngModel)]="FinalInspectionObj.LevelTrolAssembly.CorrosionProtectionOilApplied">
+                          <span>{{'Corrosion Protection Oil Applied' | translate}}</span>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Pass' | translate}}</span>
+                            <input type="radio" mode="md" value="Pass"
+                              (change)="setRadioButtonValue(FinalInspectionObj.LevelTrolAssembly, 'CorrosionProtectionOilApplied', 'Pass')"
+                              [checked]="FinalInspectionObj.LevelTrolAssembly.CorrosionProtectionOilApplied == 'Pass'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Fail' | translate}}</span>
+                            <input type="radio" mode="md" value="Fail"
+                              (change)="setRadioButtonValue(FinalInspectionObj.LevelTrolAssembly, 'CorrosionProtectionOilApplied', 'Fail')"
+                              [checked]="FinalInspectionObj.LevelTrolAssembly.CorrosionProtectionOilApplied == 'Fail'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'N/A' | translate}}</span>
+                            <input type="radio" mode="md" value="N/A"
+                              (change)="setRadioButtonValue(FinalInspectionObj.LevelTrolAssembly, 'CorrosionProtectionOilApplied', 'N/A')"
+                              [checked]="FinalInspectionObj.LevelTrolAssembly.CorrosionProtectionOilApplied == 'N/A'">
+                          </ion-item>
+                        </ion-list>
+                      </div>
+                    </ion-col>
+                  </div>
+                </div>
+
+                <div class="accordionOpen-content radioListElement">
+                  <div class="spacingMargin Element PassFailNA-Element">
+                    <ion-col no-padding>
+                      <div>
+                        <ion-list radio-group
+                          [(ngModel)]="FinalInspectionObj.LevelTrolAssembly.CorrectCageHeadAssyOrientation">
+                          <span>{{'Correct Cage/Head Assy Orientation' | translate}}</span>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Pass' | translate}}</span>
+                            <input type="radio" mode="md" value="Pass"
+                              (change)="setRadioButtonValue(FinalInspectionObj.LevelTrolAssembly, 'CorrectCageHeadAssyOrientation', 'Pass')"
+                              [checked]="FinalInspectionObj.LevelTrolAssembly.CorrectCageHeadAssyOrientation == 'Pass'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Fail' | translate}}</span>
+                            <input type="radio" mode="md" value="Fail"
+                              (change)="setRadioButtonValue(FinalInspectionObj.LevelTrolAssembly, 'CorrectCageHeadAssyOrientation', 'Fail')"
+                              [checked]="FinalInspectionObj.LevelTrolAssembly.CorrectCageHeadAssyOrientation == 'Fail'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'N/A' | translate}}</span>
+                            <input type="radio" mode="md" value="N/A"
+                              (change)="setRadioButtonValue(FinalInspectionObj.LevelTrolAssembly, 'CorrectCageHeadAssyOrientation', 'N/A')"
+                              [checked]="FinalInspectionObj.LevelTrolAssembly.CorrectCageHeadAssyOrientation == 'N/A'">
+                          </ion-item>
+                        </ion-list>
+                      </div>
+                    </ion-col>
+                  </div>
+                </div>
+
+                <div class="accordionOpen-content radioListElement">
+                  <div class="spacingMargin Element PassFailNA-Element">
+                    <ion-col no-padding>
+                      <div>
+                        <ion-list radio-group
+                          [(ngModel)]="FinalInspectionObj.LevelTrolAssembly.CenterLinePlateAttached">
+                          <span>{{'Center Line Plate Attached' | translate}}</span>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Pass' | translate}}</span>
+                            <input type="radio" mode="md" value="Pass"
+                              (change)="setRadioButtonValue(FinalInspectionObj.LevelTrolAssembly, 'CenterLinePlateAttached', 'Pass')"
+                              [checked]="FinalInspectionObj.LevelTrolAssembly.CenterLinePlateAttached == 'Pass'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Fail' | translate}}</span>
+                            <input type="radio" mode="md" value="Fail"
+                              (change)="setRadioButtonValue(FinalInspectionObj.LevelTrolAssembly, 'CenterLinePlateAttached', 'Fail')"
+                              [checked]="FinalInspectionObj.LevelTrolAssembly.CenterLinePlateAttached == 'Fail'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'N/A' | translate}}</span>
+                            <input type="radio" mode="md" value="N/A"
+                              (change)="setRadioButtonValue(FinalInspectionObj.LevelTrolAssembly, 'CenterLinePlateAttached', 'N/A')"
+                              [checked]="FinalInspectionObj.LevelTrolAssembly.CenterLinePlateAttached == 'N/A'">
+                          </ion-item>
+                        </ion-list>
+                      </div>
+                    </ion-col>
+                  </div>
+                </div>
+
+                <div class="accordionOpen-content radioListElement">
+                  <div class="spacingMargin Element PassFailNA-Element">
+                    <ion-col no-padding>
+                      <div>
+                        <ion-list radio-group
+                          [(ngModel)]="FinalInspectionObj.LevelTrolAssembly.TorqueTubeCoverCapSecured">
+                          <span>{{'Torque Tube Cover Cap Secured' | translate}}</span>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Pass' | translate}}</span>
+                            <input type="radio" mode="md" value="Pass"
+                              (change)="setRadioButtonValue(FinalInspectionObj.LevelTrolAssembly, 'TorqueTubeCoverCapSecured', 'Pass')"
+                              [checked]="FinalInspectionObj.LevelTrolAssembly.TorqueTubeCoverCapSecured == 'Pass'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Fail' | translate}}</span>
+                            <input type="radio" mode="md" value="Fail"
+                              (change)="setRadioButtonValue(FinalInspectionObj.LevelTrolAssembly, 'TorqueTubeCoverCapSecured', 'Fail')"
+                              [checked]="FinalInspectionObj.LevelTrolAssembly.TorqueTubeCoverCapSecured == 'Fail'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'N/A' | translate}}</span>
+                            <input type="radio" mode="md" value="N/A"
+                              (change)="setRadioButtonValue(FinalInspectionObj.LevelTrolAssembly, 'TorqueTubeCoverCapSecured', 'N/A')"
+                              [checked]="FinalInspectionObj.LevelTrolAssembly.TorqueTubeCoverCapSecured == 'N/A'">
+                          </ion-item>
+                        </ion-list>
+                      </div>
+                    </ion-col>
+                  </div>
+                </div>
+
+                <div class="accordionOpen-content radioListElement">
+                  <div class="spacingMargin Element PassFailNA-Element">
+                    <ion-col no-padding>
+                      <div>
+                        <ion-list radio-group
+                          [(ngModel)]="FinalInspectionObj.LevelTrolAssembly.ShippingBlocksInPlaceAndSecure">
+                          <span>{{'Shipping Blocks In Place And Secure' | translate}}</span>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Pass' | translate}}</span>
+                            <input type="radio" mode="md" value="Pass"
+                              (change)="setRadioButtonValue(FinalInspectionObj.LevelTrolAssembly, 'ShippingBlocksInPlaceAndSecure', 'Pass')"
+                              [checked]="FinalInspectionObj.LevelTrolAssembly.ShippingBlocksInPlaceAndSecure == 'Pass'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Fail' | translate}}</span>
+                            <input type="radio" mode="md" value="Fail"
+                              (change)="setRadioButtonValue(FinalInspectionObj.LevelTrolAssembly, 'ShippingBlocksInPlaceAndSecure', 'Fail')"
+                              [checked]="FinalInspectionObj.LevelTrolAssembly.ShippingBlocksInPlaceAndSecure == 'Fail'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'N/A' | translate}}</span>
+                            <input type="radio" mode="md" value="N/A"
+                              (change)="setRadioButtonValue(FinalInspectionObj.LevelTrolAssembly, 'ShippingBlocksInPlaceAndSecure', 'N/A')"
+                              [checked]="FinalInspectionObj.LevelTrolAssembly.ShippingBlocksInPlaceAndSecure == 'N/A'">
+                          </ion-item>
+                        </ion-list>
+                      </div>
+                    </ion-col>
+                  </div>
+                </div>
+
+
+              </ion-row>
+
+            </div>
+          </div>
+        </ion-row>
+
+        <!-- Regulator Assembly Row -->
+        <ion-row class="customRows" *ngIf="deviceId == Enums.FlowIsolationProductId.Regulator">
+          <div class="full-width">
+            <div class="inline-block spacingMargin"
+              [ngClass]="FinalInspectionObj.RegulatorAssembly_NA == 'true' || FinalInspectionObj.RegulatorAssembly_NA == true ? 'disable-content' : ''">
+              <span (click)="expandOuter('RegulatorAssembly')">
+                <ion-icon class="arrowIcon" item-left name="arrow-dropright"
+                  *ngIf="!expandOuterAccordion.RegulatorAssembly">
+                </ion-icon>
+                <ion-icon class="arrowIcon" role="img" *ngIf="expandOuterAccordion.RegulatorAssembly"
+                  aria-label="arrow dropdown" name="arrow-dropdown">
+                </ion-icon>
+              </span>
+              <span (click)="expandOuter('RegulatorAssembly')"
+                class="label pointer accordion-label">{{'Regulator Assembly' | translate}}</span>
+            </div>
+            <div class="inline-block pull-right">
+              <div class="spacingMargin">
+                <div class="WF-checkbox">
+                  <span class="label checkboxLabel">{{'N/A' | translate}}</span>
+                  <input id="checkbox-RegulatorAssembly-NA" type="checkbox"
+                    [checked]="FinalInspectionObj.RegulatorAssembly_NA == true || FinalInspectionObj.RegulatorAssembly_NA == 'true'"
+                    [ngModel] class="accordionCheckBox" (change)="confirmAlert($event, 'RegulatorAssembly')">
+                  <label for="checkbox-RegulatorAssembly-NA"></label>
+                </div>
+              </div>
+            </div>
+            <div class="block full-width attachmentBox" *ngIf="expandOuterAccordion.RegulatorAssembly">
+
+              <ion-row>
+                <div class="accordionOpen-content passAllCheckbox">
+                  <div class="spacingMargin Element PassAll-Element">
+                    <ion-col no-padding>
+                      <div class="WF-checkbox pull-right">
+                        <span class="label">Pass All</span>
+
+                        <input id="checkbox-RegulatorAssembly-PassAll" type="checkbox" item-right
+                          [checked]="FinalInspectionObj.RegulatorAssembly.PassAll === true || FinalInspectionObj.RegulatorAssembly.PassAll === 'true'"
+                          class="accordionCheckBox" (change)="passAllOrFailAll('PassAll', 'RegulatorAssembly', $event)">
+                        <label for="checkbox-RegulatorAssembly-PassAll"></label>
+                      </div>
+                    </ion-col>
+                  </div>
+                </div>
+
+                <div class="accordionOpen-content failAllCheckbox">
+                  <div class="spacingMargin Element FailAll-Element">
+                    <ion-col no-padding>
+                      <div class="WF-checkbox ">
+                        <span class="label">Fail All</span>
+
+                        <input id="checkbox-RegulatorAssembly-FailAll" type="checkbox" item-right
+                          [checked]="FinalInspectionObj.RegulatorAssembly.FailAll === true || FinalInspectionObj.RegulatorAssembly.FailAll === 'true'"
+                          class="accordionCheckBox" (change)="passAllOrFailAll('FailAll', 'RegulatorAssembly', $event)">
+                        <label for="checkbox-RegulatorAssembly-FailAll"></label>
+                      </div>
+                    </ion-col>
+                  </div>
+                </div>
+
+
+                <div class="accordionOpen-content radioListElement">
+                  <div class="spacingMargin Element PassFailNA-Element">
+                    <ion-col no-padding>
+                      <div>
+                        <ion-list radio-group [(ngModel)]="FinalInspectionObj.RegulatorAssembly.PaintedPerFFS6A28">
+                          <span>{{'Painted Per FFS 6A28 (COLOR)' | translate}}</span>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Pass' | translate}}</span>
+                            <input type="radio" mode="md" value="Pass"
+                              (change)="setRadioButtonValue(FinalInspectionObj.RegulatorAssembly, 'PaintedPerFFS6A28', 'Pass')"
+                              [checked]="FinalInspectionObj.RegulatorAssembly.PaintedPerFFS6A28 == 'Pass'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Fail' | translate}}</span>
+                            <input type="radio" mode="md" value="Fail"
+                              (change)="setRadioButtonValue(FinalInspectionObj.RegulatorAssembly, 'PaintedPerFFS6A28', 'Fail')"
+                              [checked]="FinalInspectionObj.RegulatorAssembly.PaintedPerFFS6A28 == 'Fail'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'N/A' | translate}}</span>
+                            <input type="radio" mode="md" value="N/A"
+                              (change)="setRadioButtonValue(FinalInspectionObj.RegulatorAssembly, 'PaintedPerFFS6A28', 'N/A')"
+                              [checked]="FinalInspectionObj.RegulatorAssembly.PaintedPerFFS6A28 == 'N/A'">
+                          </ion-item>
+                        </ion-list>
+                      </div>
+                    </ion-col>
+                  </div>
+                </div>
+
+                <div class="accordionOpen-content radioListElement">
+                  <div class="spacingMargin Element PassFailNA-Element">
+                    <ion-col no-padding>
+                      <div>
+                        <ion-list radio-group
+                          [(ngModel)]="FinalInspectionObj.RegulatorAssembly.PaintedPerCustomerRequirements">
+                          <span>{{'Painted Per Customer Requirements' | translate}}</span>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Pass' | translate}}</span>
+                            <input type="radio" mode="md" value="Pass"
+                              (change)="setRadioButtonValue(FinalInspectionObj.RegulatorAssembly, 'PaintedPerCustomerRequirements', 'Pass')"
+                              [checked]="FinalInspectionObj.RegulatorAssembly.PaintedPerCustomerRequirements == 'Pass'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Fail' | translate}}</span>
+                            <input type="radio" mode="md" value="Fail"
+                              (change)="setRadioButtonValue(FinalInspectionObj.RegulatorAssembly, 'PaintedPerCustomerRequirements', 'Fail')"
+                              [checked]="FinalInspectionObj.RegulatorAssembly.PaintedPerCustomerRequirements == 'Fail'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'N/A' | translate}}</span>
+                            <input type="radio" mode="md" value="N/A"
+                              (change)="setRadioButtonValue(FinalInspectionObj.RegulatorAssembly, 'PaintedPerCustomerRequirements', 'N/A')"
+                              [checked]="FinalInspectionObj.RegulatorAssembly.PaintedPerCustomerRequirements == 'N/A'">
+                          </ion-item>
+                        </ion-list>
+                      </div>
+                    </ion-col>
+                  </div>
+                </div>
+
+                <div class="accordionOpen-content radioListElement">
+                  <div class="spacingMargin Element PassFailNA-Element">
+                    <ion-col no-padding>
+                      <div>
+                        <ion-list radio-group
+                          [(ngModel)]="FinalInspectionObj.RegulatorAssembly.NamePlateInformationCorrect">
+                          <span>{{'Name Plate Information Correct' | translate}}</span>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Pass' | translate}}</span>
+                            <input type="radio" mode="md" value="Pass"
+                              (change)="setRadioButtonValue(FinalInspectionObj.RegulatorAssembly, 'NamePlateInformationCorrect', 'Pass')"
+                              [checked]="FinalInspectionObj.RegulatorAssembly.NamePlateInformationCorrect == 'Pass'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Fail' | translate}}</span>
+                            <input type="radio" mode="md" value="Fail"
+                              (change)="setRadioButtonValue(FinalInspectionObj.RegulatorAssembly, 'NamePlateInformationCorrect', 'Fail')"
+                              [checked]="FinalInspectionObj.RegulatorAssembly.NamePlateInformationCorrect == 'Fail'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'N/A' | translate}}</span>
+                            <input type="radio" mode="md" value="N/A"
+                              (change)="setRadioButtonValue(FinalInspectionObj.RegulatorAssembly, 'NamePlateInformationCorrect', 'N/A')"
+                              [checked]="FinalInspectionObj.RegulatorAssembly.NamePlateInformationCorrect == 'N/A'">
+                          </ion-item>
+                        </ion-list>
+                      </div>
+                    </ion-col>
+                  </div>
+                </div>
+
+                <div class="accordionOpen-content radioListElement">
+                  <div class="spacingMargin Element PassFailNA-Element">
+                    <ion-col no-padding>
+                      <div>
+                        <ion-list radio-group [(ngModel)]="FinalInspectionObj.RegulatorAssembly.SpecialTaggingAttached">
+                          <span>{{'Special Tagging Attached' | translate}}</span>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Pass' | translate}}</span>
+                            <input type="radio" mode="md" value="Pass"
+                              (change)="setRadioButtonValue(FinalInspectionObj.RegulatorAssembly, 'SpecialTaggingAttached', 'Pass')"
+                              [checked]="FinalInspectionObj.RegulatorAssembly.SpecialTaggingAttached == 'Pass'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Fail' | translate}}</span>
+                            <input type="radio" mode="md" value="Fail"
+                              (change)="setRadioButtonValue(FinalInspectionObj.RegulatorAssembly, 'SpecialTaggingAttached', 'Fail')"
+                              [checked]="FinalInspectionObj.RegulatorAssembly.SpecialTaggingAttached == 'Fail'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'N/A' | translate}}</span>
+                            <input type="radio" mode="md" value="N/A"
+                              (change)="setRadioButtonValue(FinalInspectionObj.RegulatorAssembly, 'SpecialTaggingAttached', 'N/A')"
+                              [checked]="FinalInspectionObj.RegulatorAssembly.SpecialTaggingAttached == 'N/A'">
+                          </ion-item>
+                        </ion-list>
+                      </div>
+                    </ion-col>
+                  </div>
+                </div>
+
+                <div class="accordionOpen-content radioListElement">
+                  <div class="spacingMargin Element PassFailNA-Element">
+                    <ion-col no-padding>
+                      <div>
+                        <ion-list radio-group [(ngModel)]="FinalInspectionObj.RegulatorAssembly.ServiceCoTagAttached">
+                          <span>{{'Service Co. Tag Attached' | translate}}</span>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Pass' | translate}}</span>
+                            <input type="radio" mode="md" value="Pass"
+                              (change)="setRadioButtonValue(FinalInspectionObj.RegulatorAssembly, 'ServiceCoTagAttached', 'Pass')"
+                              [checked]="FinalInspectionObj.RegulatorAssembly.ServiceCoTagAttached == 'Pass'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Fail' | translate}}</span>
+                            <input type="radio" mode="md" value="Fail"
+                              (change)="setRadioButtonValue(FinalInspectionObj.RegulatorAssembly, 'ServiceCoTagAttached', 'Fail')"
+                              [checked]="FinalInspectionObj.RegulatorAssembly.ServiceCoTagAttached == 'Fail'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'N/A' | translate}}</span>
+                            <input type="radio" mode="md" value="N/A"
+                              (change)="setRadioButtonValue(FinalInspectionObj.RegulatorAssembly, 'ServiceCoTagAttached', 'N/A')"
+                              [checked]="FinalInspectionObj.RegulatorAssembly.ServiceCoTagAttached == 'N/A'">
+                          </ion-item>
+                        </ion-list>
+                      </div>
+                    </ion-col>
+                  </div>
+                </div>
+
+                <div class="accordionOpen-content radioListElement">
+                  <div class="spacingMargin Element PassFailNA-Element">
+                    <ion-col no-padding>
+                      <div>
+                        <ion-list radio-group
+                          [(ngModel)]="FinalInspectionObj.RegulatorAssembly.RegulatorPresetandTagged">
+                          <span>{{'Regulator Preset and Tagged' | translate}}</span>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Pass' | translate}}</span>
+                            <input type="radio" mode="md" value="Pass"
+                              (change)="setRadioButtonValue(FinalInspectionObj.RegulatorAssembly, 'RegulatorPresetandTagged', 'Pass')"
+                              [checked]="FinalInspectionObj.RegulatorAssembly.RegulatorPresetandTagged == 'Pass'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Fail' | translate}}</span>
+                            <input type="radio" mode="md" value="Fail"
+                              (change)="setRadioButtonValue(FinalInspectionObj.RegulatorAssembly, 'RegulatorPresetandTagged', 'Fail')"
+                              [checked]="FinalInspectionObj.RegulatorAssembly.RegulatorPresetandTagged == 'Fail'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'N/A' | translate}}</span>
+                            <input type="radio" mode="md" value="N/A"
+                              (change)="setRadioButtonValue(FinalInspectionObj.RegulatorAssembly, 'RegulatorPresetandTagged', 'N/A')"
+                              [checked]="FinalInspectionObj.RegulatorAssembly.RegulatorPresetandTagged == 'N/A'">
+                          </ion-item>
+                        </ion-list>
+                      </div>
+                    </ion-col>
+                  </div>
+                </div>
+
+
+              </ion-row>
+
+            </div>
+          </div>
+        </ion-row>
+
+        <!-- Documentation Row -->
+        <ion-row class="customRows">
+          <div class="full-width">
+            <div class="inline-block spacingMargin"
+              [ngClass]="FinalInspectionObj.Documentation_NA == 'true' || FinalInspectionObj.Documentation_NA == true ? 'disable-content' : ''">
+              <span (click)="expandOuter('Documentation')">
+                <ion-icon class="arrowIcon" item-left name="arrow-dropright"
+                  *ngIf="!expandOuterAccordion.Documentation">
+                </ion-icon>
+                <ion-icon class="arrowIcon" role="img" *ngIf="expandOuterAccordion.Documentation"
+                  aria-label="arrow dropdown" name="arrow-dropdown">
+                </ion-icon>
+              </span>
+              <span (click)="expandOuter('Documentation')"
+                class="label pointer accordion-label">{{'Documentation' | translate}}</span>
+            </div>
+            <div class="inline-block pull-right">
+              <div class="spacingMargin">
+                <div class="WF-checkbox">
+                  <span class="label checkboxLabel">{{'N/A' | translate}}</span>
+                  <input id="checkbox-Documentation-NA" type="checkbox"
+                    [checked]="FinalInspectionObj.Documentation_NA == true || FinalInspectionObj.Documentation_NA == 'true'"
+                    [ngModel] class="accordionCheckBox" (change)="confirmAlert($event, 'Documentation')">
+                  <label for="checkbox-Documentation-NA"></label>
+                </div>
+              </div>
+            </div>
+            <div class="block full-width attachmentBox" *ngIf="expandOuterAccordion.Documentation">
+              <ion-row>
+                <div class="accordionOpen-content passAllCheckbox">
+                  <div class="spacingMargin Element PassAll-Element">
+                    <ion-col no-padding>
+                      <div class="WF-checkbox pull-right">
+                        <span class="label">Pass All</span>
+
+                        <input id="checkbox-Documentation-PassAll" type="checkbox" item-right
+                          [checked]="FinalInspectionObj.Documentation.PassAll === true || FinalInspectionObj.Documentation.PassAll === 'true'"
+                          class="accordionCheckBox" (change)="passAllOrFailAll('PassAll', 'Documentation', $event)">
+                        <label for="checkbox-Documentation-PassAll"></label>
+                      </div>
+                    </ion-col>
+                  </div>
+                </div>
+
+                <div class="accordionOpen-content failAllCheckbox">
+                  <div class="spacingMargin Element FailAll-Element">
+                    <ion-col no-padding>
+                      <div class="WF-checkbox ">
+                        <span class="label">Fail All</span>
+
+                        <input id="checkbox-Documentation-FailAll" type="checkbox" item-right
+                          [checked]="FinalInspectionObj.Documentation.FailAll === true || FinalInspectionObj.Documentation.FailAll === 'true'"
+                          class="accordionCheckBox" (change)="passAllOrFailAll('FailAll', 'Documentation', $event)">
+                        <label for="checkbox-Documentation-FailAll"></label>
+                      </div>
+                    </ion-col>
+                  </div>
+                </div>
+
+
+                <div class="accordionOpen-content radioListElement">
+                  <div class="spacingMargin Element PassFailNA-Element">
+                    <ion-col no-padding>
+                      <div>
+                        <ion-list radio-group [(ngModel)]="FinalInspectionObj.Documentation.RepairOrderComplete">
+                          <span>{{'Repair Order Complete' | translate}}</span>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Pass' | translate}}</span>
+                            <input type="radio" mode="md" value="Pass"
+                              (change)="setRadioButtonValue(FinalInspectionObj.Documentation, 'RepairOrderComplete', 'Pass')"
+                              [checked]="FinalInspectionObj.Documentation.RepairOrderComplete == 'Pass'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Fail' | translate}}</span>
+                            <input type="radio" mode="md" value="Fail"
+                              (change)="setRadioButtonValue(FinalInspectionObj.Documentation, 'RepairOrderComplete', 'Fail')"
+                              [checked]="FinalInspectionObj.Documentation.RepairOrderComplete == 'Fail'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'N/A' | translate}}</span>
+                            <input type="radio" mode="md" value="N/A"
+                              (change)="setRadioButtonValue(FinalInspectionObj.Documentation, 'RepairOrderComplete', 'N/A')"
+                              [checked]="FinalInspectionObj.Documentation.RepairOrderComplete == 'N/A'">
+                          </ion-item>
+                        </ion-list>
+                      </div>
+                    </ion-col>
+                  </div>
+                </div>
+
+                <div class="accordionOpen-content radioListElement">
+                  <div class="spacingMargin Element PassFailNA-Element">
+                    <ion-col no-padding>
+                      <div>
+                        <ion-list radio-group [(ngModel)]="FinalInspectionObj.Documentation.JobInstructionsComplete">
+                          <span>{{'Job Instructions Complete' | translate}}</span>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Pass' | translate}}</span>
+                            <input type="radio" mode="md" value="Pass"
+                              (change)="setRadioButtonValue(FinalInspectionObj.Documentation, 'JobInstructionsComplete', 'Pass')"
+                              [checked]="FinalInspectionObj.Documentation.JobInstructionsComplete == 'Pass'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Fail' | translate}}</span>
+                            <input type="radio" mode="md" value="Fail"
+                              (change)="setRadioButtonValue(FinalInspectionObj.Documentation, 'JobInstructionsComplete', 'Fail')"
+                              [checked]="FinalInspectionObj.Documentation.JobInstructionsComplete == 'Fail'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'N/A' | translate}}</span>
+                            <input type="radio" mode="md" value="N/A"
+                              (change)="setRadioButtonValue(FinalInspectionObj.Documentation, 'JobInstructionsComplete', 'N/A')"
+                              [checked]="FinalInspectionObj.Documentation.JobInstructionsComplete == 'N/A'">
+                          </ion-item>
+                        </ion-list>
+                      </div>
+                    </ion-col>
+                  </div>
+                </div>
+
+                <div class="accordionOpen-content radioListElement">
+                  <div class="spacingMargin Element PassFailNA-Element">
+                    <ion-col no-padding>
+                      <div>
+                        <ion-list radio-group [(ngModel)]="FinalInspectionObj.Documentation.RepairReportComplete">
+                          <span>{{'Repair Report Complete' | translate}}</span>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Pass' | translate}}</span>
+                            <input type="radio" mode="md" value="Pass"
+                              (change)="setRadioButtonValue(FinalInspectionObj.Documentation, 'RepairReportComplete', 'Pass')"
+                              [checked]="FinalInspectionObj.Documentation.RepairReportComplete == 'Pass'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Fail' | translate}}</span>
+                            <input type="radio" mode="md" value="Fail"
+                              (change)="setRadioButtonValue(FinalInspectionObj.Documentation, 'RepairReportComplete', 'Fail')"
+                              [checked]="FinalInspectionObj.Documentation.RepairReportComplete == 'Fail'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'N/A' | translate}}</span>
+                            <input type="radio" mode="md" value="N/A"
+                              (change)="setRadioButtonValue(FinalInspectionObj.Documentation, 'RepairReportComplete', 'N/A')"
+                              [checked]="FinalInspectionObj.Documentation.RepairReportComplete == 'N/A'">
+                          </ion-item>
+                        </ion-list>
+                      </div>
+                    </ion-col>
+                  </div>
+                </div>
+
+                <div class="accordionOpen-content radioListElement">
+                  <div class="spacingMargin Element PassFailNA-Element">
+                    <ion-col no-padding>
+                      <div>
+                        <ion-list radio-group
+                          [(ngModel)]="FinalInspectionObj.Documentation.OracleQualityReportComplete">
+                          <span>{{'Oracle Quality Report Complete' | translate}}</span>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Pass' | translate}}</span>
+                            <input type="radio" mode="md" value="Pass"
+                              (change)="setRadioButtonValue(FinalInspectionObj.Documentation, 'OracleQualityReportComplete', 'Pass')"
+                              [checked]="FinalInspectionObj.Documentation.OracleQualityReportComplete == 'Pass'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Fail' | translate}}</span>
+                            <input type="radio" mode="md" value="Fail"
+                              (change)="setRadioButtonValue(FinalInspectionObj.Documentation, 'OracleQualityReportComplete', 'Fail')"
+                              [checked]="FinalInspectionObj.Documentation.OracleQualityReportComplete == 'Fail'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'N/A' | translate}}</span>
+                            <input type="radio" mode="md" value="N/A"
+                              (change)="setRadioButtonValue(FinalInspectionObj.Documentation, 'OracleQualityReportComplete', 'N/A')"
+                              [checked]="FinalInspectionObj.Documentation.OracleQualityReportComplete == 'N/A'">
+                          </ion-item>
+                        </ion-list>
+                      </div>
+                    </ion-col>
+                  </div>
+                </div>
+
+                <div class="accordionOpen-content radioListElement">
+                  <div class="spacingMargin Element PassFailNA-Element">
+                    <ion-col no-padding>
+                      <div>
+                        <ion-list radio-group [(ngModel)]="FinalInspectionObj.Documentation.DiagnosticsReportComplete">
+                          <span>{{'Diagnostics Report Complete' | translate}}</span>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Pass' | translate}}</span>
+                            <input type="radio" mode="md" value="Pass"
+                              (change)="setRadioButtonValue(FinalInspectionObj.Documentation, 'DiagnosticsReportComplete', 'Pass')"
+                              [checked]="FinalInspectionObj.Documentation.DiagnosticsReportComplete == 'Pass'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Fail' | translate}}</span>
+                            <input type="radio" mode="md" value="Fail"
+                              (change)="setRadioButtonValue(FinalInspectionObj.Documentation, 'DiagnosticsReportComplete', 'Fail')"
+                              [checked]="FinalInspectionObj.Documentation.DiagnosticsReportComplete == 'Fail'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'N/A' | translate}}</span>
+                            <input type="radio" mode="md" value="N/A"
+                              (change)="setRadioButtonValue(FinalInspectionObj.Documentation, 'DiagnosticsReportComplete', 'N/A')"
+                              [checked]="FinalInspectionObj.Documentation.DiagnosticsReportComplete == 'N/A'">
+                          </ion-item>
+                        </ion-list>
+                      </div>
+                    </ion-col>
+                  </div>
+                </div>
+
+                <div class="accordionOpen-content radioListElement">
+                  <div class="spacingMargin Element PassFailNA-Element">
+                    <ion-col no-padding>
+                      <div>
+                        <ion-list radio-group [(ngModel)]="FinalInspectionObj.Documentation.AsShippedPhoto">
+                          <span>{{'As Shipped Photo' | translate}}</span>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Pass' | translate}}</span>
+                            <input type="radio" mode="md" value="Pass"
+                              (change)="setRadioButtonValue(FinalInspectionObj.Documentation, 'AsShippedPhoto', 'Pass')"
+                              [checked]="FinalInspectionObj.Documentation.AsShippedPhoto == 'Pass'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Fail' | translate}}</span>
+                            <input type="radio" mode="md" value="Fail"
+                              (change)="setRadioButtonValue(FinalInspectionObj.Documentation, 'AsShippedPhoto', 'Fail')"
+                              [checked]="FinalInspectionObj.Documentation.AsShippedPhoto == 'Fail'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'N/A' | translate}}</span>
+                            <input type="radio" mode="md" value="N/A"
+                              (change)="setRadioButtonValue(FinalInspectionObj.Documentation, 'AsShippedPhoto', 'N/A')"
+                              [checked]="FinalInspectionObj.Documentation.AsShippedPhoto == 'N/A'">
+                          </ion-item>
+                        </ion-list>
+                      </div>
+                    </ion-col>
+                  </div>
+                </div>
+
+                <div class="accordionOpen-content radioListElement">
+                  <div class="spacingMargin Element PassFailNA-Element">
+                    <ion-col no-padding>
+                      <div>
+                        <ion-list radio-group [(ngModel)]="FinalInspectionObj.Documentation.PIDTag">
+                          <span>{{'P.I.D. Tag' | translate}}</span>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Pass' | translate}}</span>
+                            <input type="radio" mode="md" value="Pass"
+                              (change)="setRadioButtonValue(FinalInspectionObj.Documentation, 'PIDTag', 'Pass')"
+                              [checked]="FinalInspectionObj.Documentation.PIDTag == 'Pass'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Fail' | translate}}</span>
+                            <input type="radio" mode="md" value="Fail"
+                              (change)="setRadioButtonValue(FinalInspectionObj.Documentation, 'PIDTag', 'Fail')"
+                              [checked]="FinalInspectionObj.Documentation.PIDTag == 'Fail'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'N/A' | translate}}</span>
+                            <input type="radio" mode="md" value="N/A"
+                              (change)="setRadioButtonValue(FinalInspectionObj.Documentation, 'PIDTag', 'N/A')"
+                              [checked]="FinalInspectionObj.Documentation.PIDTag == 'N/A'">
+                          </ion-item>
+                        </ion-list>
+                      </div>
+                    </ion-col>
+                  </div>
+                </div>
+
+                <div class="accordionOpen-content radioListElement">
+                  <div class="spacingMargin Element PassFailNA-Element">
+                    <ion-col no-padding>
+                      <div>
+                        <ion-list radio-group
+                          [(ngModel)]="FinalInspectionObj.Documentation.WeldReportsPWHTChartsComplete">
+                          <span>{{'Weld Reports & PWHT Charts Complete' | translate}}</span>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Pass' | translate}}</span>
+                            <input type="radio" mode="md" value="Pass"
+                              (change)="setRadioButtonValue(FinalInspectionObj.Documentation, 'WeldReportsPWHTChartsComplete', 'Pass')"
+                              [checked]="FinalInspectionObj.Documentation.WeldReportsPWHTChartsComplete == 'Pass'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Fail' | translate}}</span>
+                            <input type="radio" mode="md" value="Fail"
+                              (change)="setRadioButtonValue(FinalInspectionObj.Documentation, 'WeldReportsPWHTChartsComplete', 'Fail')"
+                              [checked]="FinalInspectionObj.Documentation.WeldReportsPWHTChartsComplete == 'Fail'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'N/A' | translate}}</span>
+                            <input type="radio" mode="md" value="N/A"
+                              (change)="setRadioButtonValue(FinalInspectionObj.Documentation, 'WeldReportsPWHTChartsComplete', 'N/A')"
+                              [checked]="FinalInspectionObj.Documentation.WeldReportsPWHTChartsComplete == 'N/A'">
+                          </ion-item>
+                        </ion-list>
+                      </div>
+                    </ion-col>
+                  </div>
+                </div>
+
+                <div class="accordionOpen-content radioListElement">
+                  <div class="spacingMargin Element PassFailNA-Element">
+                    <ion-col no-padding>
+                      <div>
+                        <ion-list radio-group [(ngModel)]="FinalInspectionObj.Documentation.NDEReportsComplete">
+                          <span>{{'NDE Reports Complete' | translate}}</span>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Pass' | translate}}</span>
+                            <input type="radio" mode="md" value="Pass"
+                              (change)="setRadioButtonValue(FinalInspectionObj.Documentation, 'NDEReportsComplete', 'Pass')"
+                              [checked]="FinalInspectionObj.Documentation.NDEReportsComplete == 'Pass'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Fail' | translate}}</span>
+                            <input type="radio" mode="md" value="Fail"
+                              (change)="setRadioButtonValue(FinalInspectionObj.Documentation, 'NDEReportsComplete', 'Fail')"
+                              [checked]="FinalInspectionObj.Documentation.NDEReportsComplete == 'Fail'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'N/A' | translate}}</span>
+                            <input type="radio" mode="md" value="N/A"
+                              (change)="setRadioButtonValue(FinalInspectionObj.Documentation, 'NDEReportsComplete', 'N/A')"
+                              [checked]="FinalInspectionObj.Documentation.NDEReportsComplete == 'N/A'">
+                          </ion-item>
+                        </ion-list>
+                      </div>
+                    </ion-col>
+                  </div>
+                </div>
+
+              </ion-row>
+
+            </div>
+          </div>
+        </ion-row>
+
+        <!-- Shipping Row -->
+        <ion-row class="customRows">
+          <div class="full-width">
+            <div class="inline-block spacingMargin"
+              [ngClass]="FinalInspectionObj.Shipping_NA == 'true' || FinalInspectionObj.Shipping_NA == true ? 'disable-content' : ''">
+              <span (click)="expandOuter('Shipping')">
+                <ion-icon class="arrowIcon" item-left name="arrow-dropright" *ngIf="!expandOuterAccordion.Shipping">
+                </ion-icon>
+                <ion-icon class="arrowIcon" role="img" *ngIf="expandOuterAccordion.Shipping" aria-label="arrow dropdown"
+                  name="arrow-dropdown">
+                </ion-icon>
+              </span>
+              <span (click)="expandOuter('Shipping')"
+                class="label pointer accordion-label">{{'Shipping' | translate}}</span>
+            </div>
+            <div class="inline-block pull-right">
+              <div class="spacingMargin">
+                <div class="WF-checkbox">
+                  <span class="label checkboxLabel">{{'N/A' | translate}}</span>
+                  <input id="checkbox-Shipping-NA" type="checkbox"
+                    [checked]="FinalInspectionObj.Shipping_NA == true || FinalInspectionObj.Shipping_NA == 'true'"
+                    [ngModel] class="accordionCheckBox" (change)="confirmAlert($event, 'Shipping')">
+                  <label for="checkbox-Shipping-NA"></label>
+                </div>
+              </div>
+            </div>
+            <div class="block full-width attachmentBox" *ngIf="expandOuterAccordion.Shipping">
+              <ion-row>
+                <div class="accordionOpen-content passAllCheckbox">
+                  <div class="spacingMargin Element PassAll-Element">
+                    <ion-col no-padding>
+                      <div class="WF-checkbox pull-right">
+                        <span class="label">Pass All</span>
+
+                        <input id="checkbox-Shipping-PassAll" type="checkbox" item-right
+                          [checked]="FinalInspectionObj.Shipping.PassAll === true || FinalInspectionObj.Shipping.PassAll === 'true'"
+                          class="accordionCheckBox" (change)="passAllOrFailAll('PassAll', 'Shipping', $event)">
+                        <label for="checkbox-Shipping-PassAll"></label>
+                      </div>
+                    </ion-col>
+                  </div>
+                </div>
+
+                <div class="accordionOpen-content failAllCheckbox">
+                  <div class="spacingMargin Element FailAll-Element">
+                    <ion-col no-padding>
+                      <div class="WF-checkbox ">
+                        <span class="label">Fail All</span>
+
+                        <input id="checkbox-Shipping-FailAll" type="checkbox" item-right
+                          [checked]="FinalInspectionObj.Shipping.FailAll === true || FinalInspectionObj.Shipping.FailAll === 'true'"
+                          class="accordionCheckBox" (change)="passAllOrFailAll('FailAll', 'Shipping', $event)">
+                        <label for="checkbox-Shipping-FailAll"></label>
+                      </div>
+                    </ion-col>
+                  </div>
+                </div>
+
+
+                <div class="accordionOpen-content radioListElement">
+                  <div class="spacingMargin Element PassFailNA-Element">
+                    <ion-col no-padding>
+                      <div>
+                        <ion-list radio-group [(ngModel)]="FinalInspectionObj.Shipping.JobInstructionsComplete">
+                          <span>{{'Job Instructions Complete' | translate}}</span>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Pass' | translate}}</span>
+                            <input type="radio" mode="md" value="Pass"
+                              (change)="setRadioButtonValue(FinalInspectionObj.Shipping, 'JobInstructionsComplete', 'Pass')"
+                              [checked]="FinalInspectionObj.Shipping.JobInstructionsComplete == 'Pass'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Fail' | translate}}</span>
+                            <input type="radio" mode="md" value="Fail"
+                              (change)="setRadioButtonValue(FinalInspectionObj.Shipping, 'JobInstructionsComplete', 'Fail')"
+                              [checked]="FinalInspectionObj.Shipping.JobInstructionsComplete == 'Fail'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'N/A' | translate}}</span>
+                            <input type="radio" mode="md" value="N/A"
+                              (change)="setRadioButtonValue(FinalInspectionObj.Shipping, 'JobInstructionsComplete', 'N/A')"
+                              [checked]="FinalInspectionObj.Shipping.JobInstructionsComplete == 'N/A'">
+                          </ion-item>
+                        </ion-list>
+                      </div>
+                    </ion-col>
+                  </div>
+                </div>
+
+                <div class="accordionOpen-content radioListElement">
+                  <div class="spacingMargin Element PassFailNA-Element">
+                    <ion-col no-padding>
+                      <div>
+                        <ion-list radio-group [(ngModel)]="FinalInspectionObj.Shipping.FinalOverallVisual">
+                          <span>{{'Final Overall Visual' | translate}}</span>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Pass' | translate}}</span>
+                            <input type="radio" mode="md" value="Pass"
+                              (change)="setRadioButtonValue(FinalInspectionObj.Shipping, 'FinalOverallVisual', 'Pass')"
+                              [checked]="FinalInspectionObj.Shipping.FinalOverallVisual == 'Pass'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Fail' | translate}}</span>
+                            <input type="radio" mode="md" value="Fail"
+                              (change)="setRadioButtonValue(FinalInspectionObj.Shipping, 'FinalOverallVisual', 'Fail')"
+                              [checked]="FinalInspectionObj.Shipping.FinalOverallVisual == 'Fail'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'N/A' | translate}}</span>
+                            <input type="radio" mode="md" value="N/A"
+                              (change)="setRadioButtonValue(FinalInspectionObj.Shipping, 'FinalOverallVisual', 'N/A')"
+                              [checked]="FinalInspectionObj.Shipping.FinalOverallVisual == 'N/A'">
+                          </ion-item>
+                        </ion-list>
+                      </div>
+                    </ion-col>
+                  </div>
+                </div>
+
+                <div class="accordionOpen-content radioListElement">
+                  <div class="spacingMargin Element PassFailNA-Element">
+                    <ion-col no-padding>
+                      <div>
+                        <ion-list radio-group [(ngModel)]="FinalInspectionObj.Shipping.InstructionManuals">
+                          <span>{{'Instruction Manuals' | translate}}</span>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Pass' | translate}}</span>
+                            <input type="radio" mode="md" value="Pass"
+                              (change)="setRadioButtonValue(FinalInspectionObj.Shipping, 'InstructionManuals', 'Pass')"
+                              [checked]="FinalInspectionObj.Shipping.InstructionManuals == 'Pass'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Fail' | translate}}</span>
+                            <input type="radio" mode="md" value="Fail"
+                              (change)="setRadioButtonValue(FinalInspectionObj.Shipping, 'InstructionManuals', 'Fail')"
+                              [checked]="FinalInspectionObj.Shipping.InstructionManuals == 'Fail'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'N/A' | translate}}</span>
+                            <input type="radio" mode="md" value="N/A"
+                              (change)="setRadioButtonValue(FinalInspectionObj.Shipping, 'InstructionManuals', 'N/A')"
+                              [checked]="FinalInspectionObj.Shipping.InstructionManuals == 'N/A'">
+                          </ion-item>
+                        </ion-list>
+                      </div>
+                    </ion-col>
+                  </div>
+                </div>
+
+                <div class="accordionOpen-content radioListElement">
+                  <div class="spacingMargin Element PassFailNA-Element">
+                    <ion-col no-padding>
+                      <div>
+                        <ion-list radio-group [(ngModel)]="FinalInspectionObj.Shipping.FlangeCovers">
+                          <span>{{'Flange Covers' | translate}}</span>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Pass' | translate}}</span>
+                            <input type="radio" mode="md" value="Pass"
+                              (change)="setRadioButtonValue(FinalInspectionObj.Shipping, 'FlangeCovers', 'Pass')"
+                              [checked]="FinalInspectionObj.Shipping.FlangeCovers == 'Pass'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Fail' | translate}}</span>
+                            <input type="radio" mode="md" value="Fail"
+                              (change)="setRadioButtonValue(FinalInspectionObj.Shipping, 'FlangeCovers', 'Fail')"
+                              [checked]="FinalInspectionObj.Shipping.FlangeCovers == 'Fail'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'N/A' | translate}}</span>
+                            <input type="radio" mode="md" value="N/A"
+                              (change)="setRadioButtonValue(FinalInspectionObj.Shipping, 'FlangeCovers', 'N/A')"
+                              [checked]="FinalInspectionObj.Shipping.FlangeCovers == 'N/A'">
+                          </ion-item>
+                        </ion-list>
+                      </div>
+                    </ion-col>
+                  </div>
+                </div>
+
+                <div class="accordionOpen-content radioListElement">
+                  <div class="spacingMargin Element PassFailNA-Element">
+                    <ion-col no-padding>
+                      <div>
+                        <ion-list radio-group [(ngModel)]="FinalInspectionObj.Shipping.OpenPortsCapped">
+                          <span>{{'Open Ports Capped' | translate}}</span>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Pass' | translate}}</span>
+                            <input type="radio" mode="md" value="Pass"
+                              (change)="setRadioButtonValue(FinalInspectionObj.Shipping, 'OpenPortsCapped', 'Pass')"
+                              [checked]="FinalInspectionObj.Shipping.OpenPortsCapped == 'Pass'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Fail' | translate}}</span>
+                            <input type="radio" mode="md" value="Fail"
+                              (change)="setRadioButtonValue(FinalInspectionObj.Shipping, 'OpenPortsCapped', 'Fail')"
+                              [checked]="FinalInspectionObj.Shipping.OpenPortsCapped == 'Fail'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'N/A' | translate}}</span>
+                            <input type="radio" mode="md" value="N/A"
+                              (change)="setRadioButtonValue(FinalInspectionObj.Shipping, 'OpenPortsCapped', 'N/A')"
+                              [checked]="FinalInspectionObj.Shipping.OpenPortsCapped == 'N/A'">
+                          </ion-item>
+                        </ion-list>
+                      </div>
+                    </ion-col>
+                  </div>
+                </div>
+
+                <div class="accordionOpen-content radioListElement">
+                  <div class="spacingMargin Element PassFailNA-Element">
+                    <ion-col no-padding>
+                      <div>
+                        <ion-list radio-group [(ngModel)]="FinalInspectionObj.Shipping.PaperWorkCompleted">
+                          <span>{{'Paper Work Completed' | translate}}</span>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Pass' | translate}}</span>
+                            <input type="radio" mode="md" value="Pass"
+                              (change)="setRadioButtonValue(FinalInspectionObj.Shipping, 'PaperWorkCompleted', 'Pass')"
+                              [checked]="FinalInspectionObj.Shipping.PaperWorkCompleted == 'Pass'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Fail' | translate}}</span>
+                            <input type="radio" mode="md" value="Fail"
+                              (change)="setRadioButtonValue(FinalInspectionObj.Shipping, 'PaperWorkCompleted', 'Fail')"
+                              [checked]="FinalInspectionObj.Shipping.PaperWorkCompleted == 'Fail'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'N/A' | translate}}</span>
+                            <input type="radio" mode="md" value="N/A"
+                              (change)="setRadioButtonValue(FinalInspectionObj.Shipping, 'PaperWorkCompleted', 'N/A')"
+                              [checked]="FinalInspectionObj.Shipping.PaperWorkCompleted == 'N/A'">
+                          </ion-item>
+                        </ion-list>
+                      </div>
+                    </ion-col>
+                  </div>
+                </div>
+
+                <div class="accordionOpen-content radioListElement">
+                  <div class="spacingMargin Element PassFailNA-Element">
+                    <ion-col no-padding>
+                      <div>
+                        <ion-list radio-group [(ngModel)]="FinalInspectionObj.Shipping.OldPartsReturned">
+                          <span>{{'Old Parts Returned' | translate}}</span>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Pass' | translate}}</span>
+                            <input type="radio" mode="md" value="Pass"
+                              (change)="setRadioButtonValue(FinalInspectionObj.Shipping, 'OldPartsReturned', 'Pass')"
+                              [checked]="FinalInspectionObj.Shipping.OldPartsReturned == 'Pass'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Fail' | translate}}</span>
+                            <input type="radio" mode="md" value="Fail"
+                              (change)="setRadioButtonValue(FinalInspectionObj.Shipping, 'OldPartsReturned', 'Fail')"
+                              [checked]="FinalInspectionObj.Shipping.OldPartsReturned == 'Fail'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'N/A' | translate}}</span>
+                            <input type="radio" mode="md" value="N/A"
+                              (change)="setRadioButtonValue(FinalInspectionObj.Shipping, 'OldPartsReturned', 'N/A')"
+                              [checked]="FinalInspectionObj.Shipping.OldPartsReturned == 'N/A'">
+                          </ion-item>
+                        </ion-list>
+                      </div>
+                    </ion-col>
+                  </div>
+                </div>
+
+                <div class="accordionOpen-content radioListElement">
+                  <div class="spacingMargin Element PassFailNA-Element">
+                    <ion-col no-padding>
+                      <div>
+                        <ion-list radio-group [(ngModel)]="FinalInspectionObj.Shipping.Scrapped">
+                          <span>{{'Scrapped' | translate}}</span>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Pass' | translate}}</span>
+                            <input type="radio" mode="md" value="Pass"
+                              (change)="setRadioButtonValue(FinalInspectionObj.Shipping, 'Scrapped', 'Pass')"
+                              [checked]="FinalInspectionObj.Shipping.Scrapped == 'Pass'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'Fail' | translate}}</span>
+                            <input type="radio" mode="md" value="Fail"
+                              (change)="setRadioButtonValue(FinalInspectionObj.Shipping, 'Scrapped', 'Fail')"
+                              [checked]="FinalInspectionObj.Shipping.Scrapped == 'Fail'">
+                          </ion-item>
+                          <ion-item class="radioButton" tappable debounce="100">
+                            <span class="smart-search-radio inline-block">{{'N/A' | translate}}</span>
+                            <input type="radio" mode="md" value="N/A"
+                              (change)="setRadioButtonValue(FinalInspectionObj.Shipping, 'Scrapped', 'N/A')"
+                              [checked]="FinalInspectionObj.Shipping.Scrapped == 'N/A'">
+                          </ion-item>
+                        </ion-list>
+                      </div>
+                    </ion-col>
+                  </div>
+                </div>
+
+
+              </ion-row>
+            </div>
+          </div>
+
+        </ion-row>
+
+      </div>
+
+      <!-- Footer Button -->
+      <ion-row>
+        <ion-col text-left>
+          <button (click)="redirect('back')" ion-button class="footer-Button">{{'Back' | translate}}</button>
+        </ion-col>
+        <ion-col text-right>
+          <button (click)="redirect('reportnotes')" ion-button
+            class="footer-Button">{{ bottomNavBtn | translate}}</button>
+        </ion-col>
+      </ion-row>
+
+    </ion-card-content>
+
+  </ion-card>
+</ion-content>

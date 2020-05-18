@@ -1,0 +1,238 @@
+<ion-header>
+  <page-custom-header [header]="headerData"></page-custom-header>
+</ion-header>
+<ion-content padding class="page-background common-css">
+  <ion-card>
+    <div class="full-width global-padding">
+      <ion-row>
+        <div class="half-screen marginTop15  inline-block">
+          <span class="label">{{'Job ID' | translate}}</span>
+          <span class="validator inline-block"></span>
+          <ion-input [readonly]="true" *ngIf="timeSheet.Job_Number!='Not Applicable'" [(ngModel)]="timeSheet.Job_Number"
+            [ngClass]="editClarity || jobNumber?'disable-content':''" name="timeSheet.Job_Number"
+            (click)="searchModal('Job_Number','Task_Number')" tappable class="project-box searchNSelect select-style">
+          </ion-input>
+
+          <ion-input [readonly]="true" *ngIf="timeSheet.Job_Number=='Not Applicable'" [ngModel]="timeSheet.Job_Number | translate"
+            [ngClass]="editClarity || jobNumber?'disable-content':''" name="timeSheet.Job_Number"
+            (click)="searchModal('Job_Number','Task_Number')" tappable class="project-box searchNSelect select-style">
+          </ion-input>
+        </div>
+      </ion-row>
+      <ion-row>
+        <div class="half-screen marginTop15  inline-block">
+          <span class="label">{{'Project' | translate}}</span>
+          <span class="validator inline-block"></span>
+          <ion-input [readonly]="true"
+            [ngClass]="disableProject || editClarity || (fieldLovs['Clarity_Project'] && !fieldLovs['Clarity_Project'].length)?'disable-content':''"
+            (ionChange)="clearFields(['Job_Number', 'Clarity_Project', 'Item', 'Work_Type', 'Work_Type_Id', 'Charge_Method_Id', 'Charge_Method', 'Charge_Type', 'City', 'State', 'Country_Code'])" [(ngModel)]="timeSheet.Clarity_Project"
+            name="timeSheet.Clarity_Project" (click)="searchModal('Clarity_Project','P_PROJECTNUMBER')" tappable
+            class="project-box searchNSelect select-style">
+          </ion-input>
+        </div>
+        <div class="half-screen marginTop15  inline-block">
+          <span class="label">{{'Task' | translate}}</span>
+          <span class="validator inline-block"></span>
+          <ion-input [readonly]="true"
+            [ngClass]="!timeSheet.Clarity_Project || isBreakSelected || (fieldLovs['Field_Job_Name'] && !fieldLovs['Field_Job_Name'].length)?'disable-content':''"
+            [(ngModel)]="timeSheet.Field_Job_Name" name="timeSheet.Field_Job_Name"
+            (click)="searchModal('Field_Job_Name','TASK_NAME')" tappable class="project-box searchNSelect select-style">
+          </ion-input>
+        </div>
+      </ion-row>
+      <ion-row>
+        <div class="half-screen marginTop15  inline-block">
+          <span class="label">{{'Overtime Code' | translate}}</span>
+          <ion-input [readonly]="true"
+            [ngClass]="!timeSheet.Clarity_Project || isBreakSelected || (fieldLovs['Time_Code'] && !fieldLovs['Time_Code'].length)?'disable-content':''"
+            [(ngModel)]="timeSheet.Time_Code" name="timeSheet.Time_Code"
+            (click)="searchModal('Time_Code','OVERTIMECODE')" tappable class="project-box searchNSelect select-style">
+          </ion-input>
+        </div>
+        <div class="half-screen marginTop15  inline-block">
+          <span class="label">{{'Shift Code' | translate}}</span>
+          <ion-input [readonly]="true"
+            [ngClass]="!timeSheet.Clarity_Project || isBreakSelected || (fieldLovs['Shift_Code'] && !fieldLovs['Shift_Code'].length)?'disable-content':''"
+            [(ngModel)]="timeSheet.Shift_Code" name="timeSheet.Shift_Code"
+            (click)="searchModal('Shift_Code','SHIFTCODE')" tappable class="project-box searchNSelect select-style">
+          </ion-input>
+        </div>
+      </ion-row>
+      <ion-row>
+        <div class="half-screen marginTop15  inline-block">
+          <span class="label">{{'Charge Type' | translate}}</span>
+          <span class="validator inline-block"></span>
+
+          <ion-input [readonly]="true"
+            [ngClass]="isBreakSelected || fieldLovs['Charge_Type'] && !fieldLovs['Charge_Type'].length?'disable-content':''"
+            [ngModel]="timeSheet.Charge_Type | translate" name="timeSheet.Charge_Type"
+            (click)="searchModal('Charge_Type','Value')" tappable class="project-box searchNSelect select-style">
+          </ion-input>
+        </div>
+        <div class="half-screen marginTop15  inline-block">
+          <span class="label">{{'Work Type' | translate}}</span>
+          <span class="validator inline-block"></span>
+          <ion-input [readonly]="true"
+            [ngClass]=" fieldLovs['Work_Type'] && !fieldLovs['Work_Type'].length?'disable-content':''"
+            [ngModel]="timeSheet.Work_Type | translate" name="timeSheet.Work_Type" (click)="searchModal('Work_Type','Value')"
+            tappable class="project-box searchNSelect select-style">
+          </ion-input>
+        </div>
+      </ion-row>
+      <ion-row>
+        <div class="half-screen marginTop15  inline-block">
+          <span class="label">{{'Item' | translate}}</span>
+          <span class="validator inline-block"></span>
+          <ion-input [readonly]="true"  [ngClass]="isBreakSelected || !timeSheet.Work_Type || (fieldLovs['Item'] && !fieldLovs['Item'].length)?'disable-content':''"
+            [ngModel]="timeSheet.Item | translate" name="timeSheet.Item" (click)="searchModal('Item','Value')" tappable
+            class="project-box searchNSelect select-style">
+          </ion-input>
+        </div>
+        <div class="half-screen marginTop15  inline-block">
+          <span class="label">{{'Charge Method' | translate}}</span>
+          <span class="validator inline-block"></span>
+          <ion-input [readonly]="true" [ngModel]="timeSheet.Charge_Method | translate" name="timeSheet.Charge_Method"
+            [ngClass]="!isBreakSelected && !chargeMethodDisable && (fieldLovs['Charge_Method'] && fieldLovs['Charge_Method'].length) ?'':'disable-content'"
+            (click)="searchModal('Charge_Method','Value')" tappable class="project-box searchNSelect select-style">
+          </ion-input>
+        </div>
+      </ion-row>
+      <ion-row>
+          <div class="half-screen marginTop15  inline-block">
+              <span class="label">{{'Country' | translate}}</span>
+              <ion-input [readonly]="true"
+                [ngClass]="OSCJob ?'disable-content':''"
+                [(ngModel)]="timeSheet.Country_Code" name="timeSheet.Country_Code"
+                (click)="searchModal('Country_Code','Country_Name')" tappable
+                class="project-box searchNSelect select-style">
+              </ion-input>
+            </div>
+            <div class="body-item-box marginTop15 inline-block" *ngIf="OSCJob || !stateDropdown">
+                <span class="label">{{'State' | translate}}</span>
+                <ion-input [ngClass]="OSCJob ?'disable-content':''" [(ngModel)]="timeSheet.State" (focusout)="getWeekData('cityState',true)" class="project-box select-style" maxlength="200">
+                </ion-input>
+              </div>
+              <div class="body-item-box marginTop15 inline-block" *ngIf="!OSCJob && stateDropdown">
+                <span class="label">{{'State' | translate}}</span>
+                <ion-input [readonly]="true" [ngClass]="OSCJob ?'disable-content':''" [(ngModel)]="timeSheet.State" (click)="searchModal('State','StateName')" tappable
+                  class="project-box searchNSelect select-style">
+                </ion-input>
+              </div>
+        <div class="body-item-box marginTop15 inline-block">
+          <span class="label">{{'City' | translate}}</span>
+          <ion-input [ngClass]="OSCJob ?'disable-content':''" [(ngModel)]="timeSheet.City" (focusout)="getWeekData('cityState',true)" name="timeSheet.City"
+            class="project-box select-style" maxlength="200">
+          </ion-input>
+        </div>
+        
+        
+      </ion-row>
+    </div>
+    <div class="full-width" *ngIf="!debriefEdit">
+      <div class="calendar inline-block" *ngIf="!editClarity">
+
+        <span [attr.aria-expanded]="dps.isOpen" class="label" tappable (click)="dps.show()">
+
+          <img src="assets/imgs/icons/ic_calendar-for-field.png" class="calIcon pointer" />
+          {{'Sort By Week'| translate}} </span>
+        <input type="text" placement="right" tappable bsDatepicker class="cal-date-box inline-block" #dps="bsDatepicker"
+          (onShown)="onShowPicker($event)" [(bsValue)]="selectedDay" (onHidden)="getDurationOnDate()"
+          [bsConfig]="datepickerConfig" />
+
+      </div>
+      <div [ngClass]="editClarity?'marginTop15':''">
+        <ion-row
+          [ngClass]="((!(timeSheet.Job_Number && timeSheet.Clarity_Project && timeSheet.Field_Job_Name && timeSheet.Charge_Type && timeSheet.Item && timeSheet.Work_Type && timeSheet.Charge_Method) && (timeSheet.Work_Type !='Break')) || (isBreakSelected && !timeSheet.Clarity_Project))?'errorPointer':''"
+          class="full-width">
+          <expandable
+            [ngClass]="((!(timeSheet.Job_Number && timeSheet.Clarity_Project && timeSheet.Field_Job_Name && timeSheet.Charge_Type && timeSheet.Item && timeSheet.Work_Type && timeSheet.Charge_Method) && (timeSheet.Work_Type !='Break')) || (isBreakSelected && !timeSheet.Clarity_Project))?'disable-content':''"
+            [data]="dayList" [weekEditPage]="weekEditPage" [selectedDate]="selectedDate" [isTimeEntry]="isTimeEntry"
+            style="width:100%;">
+          </expandable>
+        </ion-row>
+      </div>
+    </div>
+    <div class="full-width" *ngIf="debriefEdit">
+      <ion-row class="full-width dateRow">
+        <ion-col no-padding col-2>
+          <ion-label class="label inline-block">{{'Start Date' | translate }}</ion-label>
+          <ion-label class="value inline-block">{{formatDate(displayDate)}}</ion-label>
+        </ion-col>
+        <ion-col no-padding col-2>
+          <ion-label class="label inline-block">{{'End Date' | translate }}</ion-label>
+          <ion-label class="value inline-block">{{formatDate(displayEndDate)}}</ion-label>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <div class="half-screen marginTop15  inline-block">
+          <div class="comm-start inline-block">
+            <div class="inline-block timepicker-icon verticalMiddle">
+              <img src="assets/imgs/icons/ic_time-icon_24x24.png" class="clockIcon timepicker" />
+            </div>
+            <div class="inline-block verticalMiddle">
+              <timepicker class="timepicker-box inline-block" [(ngModel)]="startTime"
+                (ngModelChange)="getTimeOnChange($event, 'startTime')" [showMeridian]="false"
+                (click)="utilityProvider.selectAllContent($event)"></timepicker>
+            </div>
+          </div>
+          <div class="comm-end inline-block">
+            <div class="inline-block timepicker-icon verticalMiddle">
+              <img src="assets/imgs/icons/ic_end_time.png" class="clockIcon timepicker" />
+            </div>
+            <div class="inline-block verticalMiddle">
+              <timepicker class="timepicker-box inline-block" [(ngModel)]="endTime"
+                (ngModelChange)="getTimeOnChange($event, 'endTime')" [showMeridian]="false"
+                (click)="utilityProvider.selectAllContent($event)"></timepicker>
+            </div>
+          </div>
+          <div class="comm-duration inline-block">
+            <span class="label">Duration</span>
+            <div>
+              <ion-input [disabled]="!isEnabled" [(ngModel)]="duration" class="duration-box"
+                [ngClass]="zeroDuration?'zeroDuration':'duration-box'"></ion-input>
+            </div>
+          </div>
+        </div>
+        <div class="half-screen marginTop15  inline-block">
+          <ion-textarea (ionChange)="checkforspace($event)" maxlength="255" class="notesBox value"
+            placeholder="{{'Notes' | translate}}" [(ngModel)]="timeSheet.Comments"></ion-textarea>
+        </div>
+      </ion-row>
+    </div>
+    <ion-row class="footer-row">
+      <div class="footerRight">
+        <button [disabled]="!isDayEntry"
+        *ngIf="!editClarity" ion-button class="save-btn footer-Button" (click)="saveBtnClick()"
+          id="tsCreateEntryBtn">{{'Create New Entry' | translate }}</button>
+          <button [disabled]="!isDayEntry"
+          *ngIf="!editClarity" ion-button class="save-btn footer-Button" (click)="saveBtnClick(true)"
+          id="tsSaveCloseBtn">{{'Save & Close' | translate }}</button>
+        <!-- <button *ngIf="!editClarity"
+          [ngClass]="(!(timeSheet.Job_Number && timeSheet.Clarity_Project && timeSheet.Field_Job_Name && isDayEntry))?'disable-content':''"
+          ion-button class="save-btn footer-Button" (click)="saveBtnClick()"
+          id="tsSaveTaskBtn">{{'Save Task' | translate }}</button> -->
+        <!-- <button *ngIf="!editClarity"
+          [ngClass]="(!(timeSheet.Job_Number && timeSheet.Clarity_Project && timeSheet.Field_Job_Name && isDayEntry))?'disable-content':''"
+          ion-button class="save-btn footer-Button" (click)="saveBtnClick('clear')"
+          id="tsSaveClearBtn">{{'Save Task and Close' | translate }}</button> -->
+          <button *ngIf="editClarity && !this.fromDebrief"
+          [ngClass]="(((!(timeSheet.Job_Number && timeSheet.Clarity_Project && timeSheet.Field_Job_Name && timeSheet.Charge_Type && timeSheet.Item && timeSheet.Work_Type && timeSheet.Charge_Method) && (timeSheet.Work_Type !='Break')) || (isBreakSelected && !timeSheet.Clarity_Project)) || ((this.editClarity && (timeEntriesArr.length == 0)) || disableSaveBtn))?'disable-content':''"
+          ion-button class="save-btn footer-Button" (click)="saveMSTData('edit')"
+          id="tsSaveBtn">{{'Save' | translate }}</button>
+
+          <button *ngIf="editClarity && this.fromDebrief"
+          [ngClass]="(((!(timeSheet.Job_Number && timeSheet.Clarity_Project && timeSheet.Field_Job_Name && timeSheet.Charge_Type && timeSheet.Item && timeSheet.Work_Type && timeSheet.Charge_Method) && (timeSheet.Work_Type !='Break')) || (isBreakSelected && !timeSheet.Clarity_Project)) || ((this.editClarity && (duration == '00:00' || duration=='')) || disableSaveBtn))?'disable-content':''"
+          ion-button class="save-btn footer-Button" (click)="saveMSTData('edit')"
+          id="tsSaveFromDebriefBtn">{{'Save' | translate }}</button>
+
+          <button *ngIf="!editClarity"
+          ion-button class="cancel-btn footer-Button-close" (click)="cancelBtn()"
+          id="tsSaveClearBtn">{{'Close' | translate }}</button>
+        <!-- <button *ngIf="!editClarity" ion-button class="cancel-btn footer-Button-close" (click)="cancelBtn()"
+          id="tsSaveClearBtn">{{'Close' | translate }}</button> -->
+        <button *ngIf="editClarity" ion-button class="cancel-btn footer-Button-close" (click)="cancelBtn()"
+          id="tsSaveClearBtn">{{'Cancel' | translate }}</button>
+      </div>
+    </ion-row>
+  </ion-card>
+</ion-content>

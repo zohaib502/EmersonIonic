@@ -1,0 +1,39 @@
+<ion-content padding class="sdr-pages">
+  <ion-card>
+    <ion-card-header class="global-padding">
+      <ion-row global>
+        <ion-col>
+          <div class="header-left">{{'Tech Notes'|translate}}</div>
+        </ion-col>
+        <ion-col *ngIf="selectedProcess==Enums.Selected_Process.FCR_AND_SDR" class="align-rgt" col-9>
+          <span class="ft-size verticalMiddle">{{'Continue'|translate}}</span>
+          <button (click)="gotofcr()" ion-button
+            class="frs-Btn verticalMiddle">{{'Field Completion Report'|translate}}</button>
+        </ion-col>
+      </ion-row>
+    </ion-card-header>
+    <page-sdr-header></page-sdr-header>
+    <ion-card-content>
+      <ion-row class="global-padding">
+        <ion-col class="lft-align" no-padding>
+          <ion-label> {{'TECHNICIAN NOTES (NOT INCLUDED IN REPAIR REPORT)'|translate}}</ion-label><br>
+          <ion-textarea [(ngModel)]="technotes.TECHNOTES"
+            placeholder="{{'Enter TECHNICIAN NOTES (NOT INCLUDED IN REPAIR REPORT)'|translate}}"
+            class="input input-md WF-textAreaNoLimit ng-pristine ng-valid ng-touched" rows="6" id="techNotes_1">
+          </ion-textarea>
+        </ion-col>
+
+      </ion-row>
+      <ion-row>
+        <ion-col class="align-lft" no-padding>
+          <button (click)="redirect('back')" ion-button class="footer-Button "
+            id="techNotes_2">{{'Back'|translate}}</button>
+        </ion-col>
+        <ion-col class="align-rgt" no-padding>
+          <button (click)="redirect('review')" ion-button class="footer-Button"
+            id="techNotes_3">{{ bottomNavBtn|translate}}</button>
+        </ion-col>
+      </ion-row>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

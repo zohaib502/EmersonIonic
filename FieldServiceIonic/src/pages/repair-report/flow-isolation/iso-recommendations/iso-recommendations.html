@@ -1,0 +1,54 @@
+<ion-content padding class="sdr-pages">
+  <ion-card>
+
+    <ion-card-header>
+      <ion-row class="global-padding row">
+        <ion-col col-3>
+          <div class="header-left">{{'Recommendations'|translate}}</div>
+        </ion-col>
+        <ion-col col-9 *ngIf="selectedProcess==Enums.Selected_Process.FCR_AND_SDR" class="txt-rgt">
+          <span class="ft-size verticalMiddle">Continue</span> <button (click)="goToFcr()" ion-button
+            class="frs-Btn verticalMiddle ">{{'Field Completion Report'|translate}}</button>
+        </ion-col>
+      </ion-row>
+    </ion-card-header>
+    <page-sdr-header></page-sdr-header>
+    <ion-card-content>
+      <ion-row class="global-padding">
+        <div class="frec">
+          <span class="label inline-block">{{'Future Recommendations' | translate}}</span>
+          <ion-input class="project-box searchNSelect select-style" tappable
+            (click)="searchModal('FurtherRecommendations')" [readonly]="true"
+            [(ngModel)]="recommendationObj.FutureRecommendationsOptionName" id="recommendation_1">
+          </ion-input>
+          <ion-input maxlength="250" *ngIf="recommendationObj.FutureRecommendationsOptionName == 'Other'" class="project-box "
+            [ngClass]="!recommendationObj.FUTURERECOMMENDATIONS_OT ? 'input-validation': '' "
+            [(ngModel)]="recommendationObj.FUTURERECOMMENDATIONS_OT" id="recommendation_2">
+          </ion-input>
+        </div>
+      </ion-row>
+        <ion-row class="global-padding">
+          <div class="full-width">
+            <ion-label>
+              {{'RECOMMENDATIONS (USE THIS FIELD TO PROVIDE RECOMMENDATIONS FOR THE NEXT REPAIR)'|translate}}
+            </ion-label>
+            <ion-textarea [(ngModel)]="recommendationObj.RECOMMENDATIONS" maxlength="1000"
+            (focusout)="checkNotesLimit(recommendationObj.RECOMMENDATIONS)"
+              placeholder="{{'Examples: Upgrade to Enviro-Seal Packing ,Replace Actuator Stem,Body/Bonnet will require weld/repair or replacement, Recommend Application Review due to Cavitation,Flashing, or Outgassing damage,Replace Trim'|translate}}"
+              class="techNotes-box" rows="6" id="recommendation_3"></ion-textarea>
+          </div>
+
+        </ion-row>
+        <ion-row class="footer-row">
+          <div class="inline-block footerLeft">
+            <button ion-button class="save-btn footer-Button" (click)="redirect('back')"
+              id="recommendation_4">{{'Back' | translate }}</button>
+          </div>
+          <div class="footerRight">
+            <button ion-button class="save-btn footer-Button" (click)="redirect('techNotes')"
+              id="recommendation_5">{{ bottomNavBtn | translate }}</button>
+          </div>
+        </ion-row>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

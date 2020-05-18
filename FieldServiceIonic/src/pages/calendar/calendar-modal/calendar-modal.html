@@ -1,0 +1,40 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title *ngIf="eventData.Type == 'CUSTOMER'">{{'Field Job Details' | translate}}</ion-title>
+    <ion-title *ngIf="eventData.Type == 'INTERNAL'">{{'Internal Activity Details' | translate}}</ion-title>
+    <ion-title *ngIf="eventData.type == 'on-call'">{{'On-Call Shift Details' | translate}}</ion-title>
+    <ion-buttons end>
+      <button ion-button class="closebtn" (click)="closeModal()">
+        <i class="fa fa-times fa-2x"></i>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-row class="shaded-block global-padding">
+    <span class="label">{{eventData.customerName}}</span>
+  </ion-row>
+  <ion-row class="global-padding">
+    <div class="inline-block startDateTime">
+      <span class="block label">{{'Start Time' | translate}}</span>
+      <span class="non-ellipsis value">{{Moment(eventData.Start_Date).format('DD-MMM-YYYY HH:mm:ss')}}</span>
+    </div>
+    <div class="inline-block endDateTime">
+      <span class="block label">{{'End Time' | translate}}</span>
+      <span class="non-ellipsis value">{{Moment(eventData.End_Date).format('DD-MMM-YYYY HH:mm:ss')}}</span>
+    </div>
+  </ion-row>
+  <ion-row class="global-padding">
+    <span class="block label">{{eventData.Comments ? 'Comments' : 'Description' | translate}}</span>
+    <div class="full-width">
+      <span class="description value block">{{eventData.Comments ? eventData.Comments : eventData.Job_Description}}</span>
+    </div>
+  </ion-row>
+</ion-content>
+<ion-footer *ngIf="eventData.Type == 'CUSTOMER'">
+  <button *ngIf="eventData.StatusID != enums.Jobstatus.Completed_Awaiting_Review" ion-button [ngClass]="eventData.StatusID == enums.Jobstatus.Assigned ? 'accept-btn' : 'debrief-btn'"
+    (click)="goToJobDetails()"><span translate="Field Job Overview"></span></button>
+  <button *ngIf="eventData.StatusID == enums.Jobstatus.Completed_Awaiting_Review" ion-button class="gotoCompletedJobDetail-btn"
+    (click)="goToJobDetails()"><span translate="Completed Report"></span></button>
+</ion-footer>

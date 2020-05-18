@@ -1,0 +1,650 @@
+<ion-content class="workflow-loader" *ngIf="showLoader">
+
+    <ion-card>
+        <ion-spinner class="spinner" icon="spiral"></ion-spinner>
+    </ion-card>
+
+</ion-content>
+
+<ion-content *ngIf="!showLoader" padding class="sdr-pages page-background">
+
+    <ion-card class="CardSection Photos" id="Section_AsFoundPerformance">
+
+        <ion-card-header class="card-header card-header-md">
+            <ion-row class="global-padding">
+                <ion-col>
+                    <div class="header-left">{{'Final Test Data'|translate}}</div>
+                </ion-col>
+                <ion-col *ngIf="selectedProcess==Enums.Selected_Process.FCR_AND_SDR" class="align-rgt" col-9>
+                    <span class="ft-size">{{'Continue'|translate}}</span>
+                    <button (click)="goToFcr()" ion-button
+                        class="frs-Btn mrg-tp">{{'Field Completion Report'|translate}}</button>
+                </ion-col>
+            </ion-row>
+        </ion-card-header>
+
+        <page-sdr-header></page-sdr-header>
+
+        <ion-card-content>
+
+            <ion-row class="global-padding">
+                <ion-item>
+                    <ion-label *ngIf="toggleAllaccordion == false" text-right>{{'Expand all' | translate}}</ion-label>
+                    <ion-label *ngIf="toggleAllaccordion == true" text-right>{{'Collapse all' | translate}}</ion-label>
+                    <ion-toggle [(ngModel)]="toggleAllaccordion" (ionChange)="toggleAccordion($event)"></ion-toggle>
+                </ion-item>
+            </ion-row>
+
+            <div class="full-width global-padding">
+
+                <!-- Pressure Measurement Row -->
+                <ion-row class="customRows">
+                    <div class="full-width">
+                        <div class="inline-block spacingMargin"
+                            [ngClass]="TestDataObj.PRESSURE_MEASUREMENT_PRESSURE_MEASUREMENT_NA == 'true' || TestDataObj.PRESSURE_MEASUREMENT_PRESSURE_MEASUREMENT_NA == true ? 'disable-content' : ''">
+                            <span (click)="expandOuter('PRESSURE_MEASUREMENT')">
+                                <ion-icon class="arrowIcon" item-left name="arrow-dropright"
+                                    *ngIf="!expandOuterAccordion.PRESSURE_MEASUREMENT">
+                                </ion-icon>
+                                <ion-icon class="arrowIcon" role="img" *ngIf="expandOuterAccordion.PRESSURE_MEASUREMENT"
+                                    aria-label="arrow dropdown" name="arrow-dropdown">
+                                </ion-icon>
+                            </span>
+                            <span (click)="expandOuter('PRESSURE_MEASUREMENT')"
+                                class="label pointer accordion-label">{{'Pressure Measurement' | translate}}</span>
+                        </div>
+                        <div class="inline-block pull-right">
+                            <div class="spacingMargin">
+                                <div class="WF-checkbox">
+                                    <span class="label checkboxLabel">{{'N/A' | translate}}</span>
+                                    <input id="checkbox-PRESSURE_MEASUREMENT-NA" type="checkbox"
+                                        [checked]="TestDataObj.PRESSURE_MEASUREMENT_PRESSURE_MEASUREMENT_NA == true || TestDataObj.PRESSURE_MEASUREMENT_PRESSURE_MEASUREMENT_NA == 'true'"
+                                        [ngModel] class="accordionCheckBox"
+                                        (change)="confirmAlert($event, 'PRESSURE_MEASUREMENT')">
+                                    <label for="checkbox-PRESSURE_MEASUREMENT-NA"></label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="block full-width attachmentBox" *ngIf="expandOuterAccordion.PRESSURE_MEASUREMENT">
+                            <ion-row>
+                                <div class="radioListElement spacingMarginUsingPadding inline-block">
+                                    <span class="label">{{'Gauge ID' | translate}}</span>
+                                    <ion-input maxlength="250" [(ngModel)]="TestDataObj.PRESSURE_MEASUREMENT_GAUGE_ID"
+                                        name="TestDataObj.PRESSURE_MEASUREMENT_GAUGE_ID"
+                                        class="project-box select-style">
+                                    </ion-input>
+                                </div>
+                                <div class="radioListElement spacingMarginUsingPadding inline-block">
+                                    <ion-label class="label ionLabel marginTop">
+                                        <span class="checkboxLabel">{{'Gauge Calibration Due Date' | translate}}</span>
+                                    </ion-label>
+                                    <ion-input name="PRESSURE_MEASUREMENT_GAUGE_CALIBRATION_DUE_DATE"
+                                        class="marginTop8 input-box dateField WF-input inline-block" bsDatepicker
+                                        #calibrationDueDate="bsDatepicker"
+                                        [(bsValue)]="TestDataObj.PRESSURE_MEASUREMENT_GAUGE_CALIBRATION_DUE_DATE"
+                                        [bsConfig]="{dateInputFormat: 'DD-MMM-YYYY'}"
+                                        value="{{TestDataObj.PRESSURE_MEASUREMENT_GAUGE_CALIBRATION_DUE_DATE | date:'dd-MMM-yyyy'}}"
+                                        (onShown)="onShowPicker($event)">
+                                    </ion-input>
+                                    <span class="inline-block">
+                                        <img (click)="calibrationDueDate.show()"
+                                            [attr.aria-expanded]="calibrationDueDate.isOpen"
+                                            src="assets/imgs/icons/ic_calendar-for-field.png" class="calIcon pointer" />
+                                    </span>
+                                </div>
+                            </ion-row>
+                            <ion-row>
+                                <div class="radioListElement spacingMarginUsingPadding inline-block">
+                                    <span class="label">{{'Set Pressure' | translate}}</span>
+                                    <span
+                                        [ngClass]="showValidationClass(TestDataObj.PRESSURE_MEASUREMENT_SET_PRESSURE_UOM) ? 'validator' : ''"></span>
+                                    <ion-input maxlength="250"
+                                        [ngClass]="errorObj.indexOf('PRESSURE_MEASUREMENT_SET_PRESSURE') != -1 && !TestDataObj.PRESSURE_MEASUREMENT_SET_PRESSURE ? 'validation-error' : ''"
+                                        [(ngModel)]="TestDataObj.PRESSURE_MEASUREMENT_SET_PRESSURE"
+                                        name="TestDataObj.PRESSURE_MEASUREMENT_SET_PRESSURE"
+                                        class="project-box select-style">
+                                    </ion-input>
+                                </div>
+                                <div class="radioListElement spacingMarginUsingPadding inline-block">
+                                    <ion-label class="label ionLabel marginTop">
+                                        <span class="checkboxLabel">{{'UOM' | translate}}</span>
+                                        <span
+                                            [ngClass]="showValidationClass(TestDataObj.PRESSURE_MEASUREMENT_SET_PRESSURE) ? 'validator' : ''"></span>
+                                    </ion-label>
+                                    <ion-input maxlength="250" [readonly]="true"
+                                        [ngClass]="errorObj.indexOf('PRESSURE_MEASUREMENT_SET_PRESSURE_UOM') != -1 && !TestDataObj.PRESSURE_MEASUREMENT_SET_PRESSURE_UOM ? 'validation-error' : ''"
+                                        [(ngModel)]="TestDataObj.PRESSURE_MEASUREMENT_SET_PRESSURE_UOM"
+                                        name="TestDataObj.PRESSURE_MEASUREMENT_SET_PRESSURE_UOM"
+                                        (click)="searchModal('UnitOfMeasurement','PRESSURE_MEASUREMENT_SET_PRESSURE_UOM')"
+                                        tappable class="project-box searchNSelect select-style">
+                                    </ion-input>
+                                    <ion-input maxlength="250"
+                                        *ngIf="TestDataObj.PRESSURE_MEASUREMENT_SET_PRESSURE_UOM == 'Other'"
+                                        [(ngModel)]="TestDataObj.PRESSURE_MEASUREMENT_SET_PRESSURE_UOM_OT"
+                                        name="TestDataObj.PRESSURE_MEASUREMENT_SET_PRESSURE_UOM_OT"
+                                        [ngClass]="!TestDataObj.PRESSURE_MEASUREMENT_SET_PRESSURE_UOM_OT ? 'validation-error' : ''"
+                                        class="project-box select-style otherBox"> </ion-input>
+                                </div>
+                            </ion-row>
+                            <ion-row>
+                                <div class="radioListElement spacingMarginUsingPadding inline-block">
+                                    <span class="label">{{'CDTP Pressure' | translate}}</span>
+                                    <span
+                                        [ngClass]="showValidationClass(TestDataObj.PRESSURE_MEASUREMENT_CDTP_PRESSURE_UOM) ? 'validator' : ''"></span>
+                                    <ion-input maxlength="250"
+                                        [ngClass]="errorObj.indexOf('PRESSURE_MEASUREMENT_CDTP_PRESSURE') != -1 && !TestDataObj.PRESSURE_MEASUREMENT_CDTP_PRESSURE ? 'validation-error' : ''"
+                                        [(ngModel)]="TestDataObj.PRESSURE_MEASUREMENT_CDTP_PRESSURE"
+                                        name="TestDataObj.PRESSURE_MEASUREMENT_CDTP_PRESSURE"
+                                        class="project-box select-style">
+                                    </ion-input>
+                                </div>
+                                <div class="radioListElement spacingMarginUsingPadding inline-block">
+                                    <ion-label class="label ionLabel marginTop">
+                                        <span class="checkboxLabel">{{'UOM' | translate}}</span>
+                                        <span
+                                            [ngClass]="showValidationClass(TestDataObj.PRESSURE_MEASUREMENT_CDTP_PRESSURE) ? 'validator' : ''"></span>
+                                    </ion-label>
+                                    <ion-input maxlength="250" [readonly]="true"
+                                        [ngClass]="errorObj.indexOf('PRESSURE_MEASUREMENT_CDTP_PRESSURE_UOM') != -1 && !TestDataObj.PRESSURE_MEASUREMENT_CDTP_PRESSURE_UOM ? 'validation-error' : ''"
+                                        [(ngModel)]="TestDataObj.PRESSURE_MEASUREMENT_CDTP_PRESSURE_UOM"
+                                        name="TestDataObj.PRESSURE_MEASUREMENT_CDTP_PRESSURE_UOM"
+                                        (click)="searchModal('UnitOfMeasurement','PRESSURE_MEASUREMENT_CDTP_PRESSURE_UOM')"
+                                        tappable class="project-box searchNSelect select-style">
+                                    </ion-input>
+                                    <ion-input maxlength="250"
+                                        *ngIf="TestDataObj.PRESSURE_MEASUREMENT_CDTP_PRESSURE_UOM == 'Other'"
+                                        [(ngModel)]="TestDataObj.PRESSURE_MEASUREMENT_CDTP_PRESSURE_UOM_OT"
+                                        name="TestDataObj.PRESSURE_MEASUREMENT_CDTP_PRESSURE_UOM_OT"
+                                        [ngClass]="!TestDataObj.PRESSURE_MEASUREMENT_CDTP_PRESSURE_UOM_OT ? 'validation-error' : ''"
+                                        class="project-box select-style otherBox"> </ion-input>
+                                </div>
+                            </ion-row>
+                            <ion-row>
+                                <div class="radioListElement spacingMarginUsingPadding inline-block">
+                                    <span class="label">{{'Actual Set Pressure' | translate}}</span>
+                                    <span
+                                        [ngClass]="showValidationClass(TestDataObj.PRESSURE_MEASUREMENT_ACTUAL_SET_PRESSURE_UOM) ? 'validator' : ''"></span>
+                                    <ion-input maxlength="250"
+                                        [ngClass]="errorObj.indexOf('PRESSURE_MEASUREMENT_ACTUAL_SET_PRESSURE') != -1 && !TestDataObj.PRESSURE_MEASUREMENT_ACTUAL_SET_PRESSURE ? 'validation-error' : ''"
+                                        [(ngModel)]="TestDataObj.PRESSURE_MEASUREMENT_ACTUAL_SET_PRESSURE"
+                                        name="TestDataObj.PRESSURE_MEASUREMENT_ACTUAL_SET_PRESSURE"
+                                        class="project-box select-style">
+                                    </ion-input>
+                                </div>
+                                <div class="radioListElement spacingMarginUsingPadding inline-block">
+                                    <ion-label class="label ionLabel marginTop">
+                                        <span class="checkboxLabel">{{'UOM' | translate}}</span>
+                                        <span
+                                            [ngClass]="showValidationClass(TestDataObj.PRESSURE_MEASUREMENT_ACTUAL_SET_PRESSURE) ? 'validator' : ''"></span>
+                                    </ion-label>
+                                    <ion-input maxlength="250" [readonly]="true"
+                                        [ngClass]="errorObj.indexOf('PRESSURE_MEASUREMENT_ACTUAL_SET_PRESSURE_UOM') != -1 && !TestDataObj.PRESSURE_MEASUREMENT_ACTUAL_SET_PRESSURE_UOM ? 'validation-error' : ''"
+                                        [(ngModel)]="TestDataObj.PRESSURE_MEASUREMENT_ACTUAL_SET_PRESSURE_UOM"
+                                        name="TestDataObj.PRESSURE_MEASUREMENT_ACTUAL_SET_PRESSURE_UOM"
+                                        (click)="searchModal('UnitOfMeasurement','PRESSURE_MEASUREMENT_ACTUAL_SET_PRESSURE_UOM')"
+                                        tappable class="project-box searchNSelect select-style">
+                                    </ion-input>
+                                    <ion-input maxlength="250"
+                                        *ngIf="TestDataObj.PRESSURE_MEASUREMENT_ACTUAL_SET_PRESSURE_UOM == 'Other'"
+                                        [(ngModel)]="TestDataObj.PRESSURE_MEASUREMENT_ACTUAL_SET_PRESSURE_UOM_OT"
+                                        name="TestDataObj.PRESSURE_MEASUREMENT_ACTUAL_SET_PRESSURE_UOM_OT"
+                                        [ngClass]="!TestDataObj.PRESSURE_MEASUREMENT_ACTUAL_SET_PRESSURE_UOM_OT ? 'validation-error' : ''"
+                                        class="project-box select-style otherBox"> </ion-input>
+                                </div>
+                            </ion-row>
+                            <ion-row>
+                                <div class="radioListElement spacingMarginUsingPadding inline-block">
+                                    <span class="label">{{'Pre-Open Pressure' | translate}}</span>
+                                    <span
+                                        [ngClass]="showValidationClass(TestDataObj.PRESSURE_MEASUREMENT_PRE_OPEN_PRESSURE_UOM) ? 'validator' : ''"></span>
+                                    <ion-input maxlength="250"
+                                        [ngClass]="errorObj.indexOf('PRESSURE_MEASUREMENT_PRE_OPEN_PRESSURE') != -1 && !TestDataObj.PRESSURE_MEASUREMENT_PRE_OPEN_PRESSURE ? 'validation-error' : ''"
+                                        [(ngModel)]="TestDataObj.PRESSURE_MEASUREMENT_PRE_OPEN_PRESSURE"
+                                        name="TestDataObj.PRESSURE_MEASUREMENT_PRE_OPEN_PRESSURE"
+                                        class="project-box select-style">
+                                    </ion-input>
+                                </div>
+                                <div class="radioListElement spacingMarginUsingPadding inline-block">
+                                    <ion-label class="label ionLabel marginTop">
+                                        <span class="checkboxLabel">{{'UOM' | translate}}</span>
+                                        <span
+                                            [ngClass]="showValidationClass(TestDataObj.PRESSURE_MEASUREMENT_PRE_OPEN_PRESSURE) ? 'validator' : ''"></span>
+                                    </ion-label>
+                                    <ion-input maxlength="250" [readonly]="true"
+                                        [ngClass]="errorObj.indexOf('PRESSURE_MEASUREMENT_PRE_OPEN_PRESSURE_UOM') != -1 && !TestDataObj.PRESSURE_MEASUREMENT_PRE_OPEN_PRESSURE_UOM ? 'validation-error' : ''"
+                                        [(ngModel)]="TestDataObj.PRESSURE_MEASUREMENT_PRE_OPEN_PRESSURE_UOM"
+                                        name="TestDataObj.PRESSURE_MEASUREMENT_PRE_OPEN_PRESSURE_UOM"
+                                        (click)="searchModal('UnitOfMeasurement','PRESSURE_MEASUREMENT_PRE_OPEN_PRESSURE_UOM')"
+                                        tappable class="project-box searchNSelect select-style">
+                                    </ion-input>
+                                    <ion-input maxlength="250"
+                                        *ngIf="TestDataObj.PRESSURE_MEASUREMENT_PRE_OPEN_PRESSURE_UOM == 'Other'"
+                                        [(ngModel)]="TestDataObj.PRESSURE_MEASUREMENT_PRE_OPEN_PRESSURE_UOM_OT"
+                                        name="TestDataObj.PRESSURE_MEASUREMENT_PRE_OPEN_PRESSURE_UOM_OT"
+                                        [ngClass]="!TestDataObj.PRESSURE_MEASUREMENT_PRE_OPEN_PRESSURE_UOM_OT ? 'validation-error' : ''"
+                                        class="project-box select-style otherBox"> </ion-input>
+                                </div>
+                            </ion-row>
+                            <ion-row>
+                                <div class="radioListElement spacingMarginUsingPadding inline-block">
+                                    <span class="label">{{'Reseat Pressure' | translate}}</span>
+                                    <span
+                                        [ngClass]="showValidationClass(TestDataObj.PRESSURE_MEASUREMENT_RESEAT_PRESSURE_UOM) ? 'validator' : ''"></span>
+                                    <ion-input maxlength="250"
+                                        [ngClass]="errorObj.indexOf('PRESSURE_MEASUREMENT_RESEAT_PRESSURE') != -1 && !TestDataObj.PRESSURE_MEASUREMENT_RESEAT_PRESSURE ? 'validation-error' : ''"
+                                        [(ngModel)]="TestDataObj.PRESSURE_MEASUREMENT_RESEAT_PRESSURE"
+                                        name="TestDataObj.PRESSURE_MEASUREMENT_RESEAT_PRESSURE"
+                                        class="project-box select-style">
+                                    </ion-input>
+                                </div>
+                                <div class="radioListElement spacingMarginUsingPadding inline-block">
+                                    <ion-label class="label ionLabel marginTop">
+                                        <span class="checkboxLabel">{{'UOM' | translate}}</span>
+                                        <span
+                                            [ngClass]="showValidationClass(TestDataObj.PRESSURE_MEASUREMENT_RESEAT_PRESSURE) ? 'validator' : ''"></span>
+                                    </ion-label>
+                                    <ion-input maxlength="250" [readonly]="true"
+                                        [ngClass]="errorObj.indexOf('PRESSURE_MEASUREMENT_RESEAT_PRESSURE_UOM') != -1 && !TestDataObj.PRESSURE_MEASUREMENT_RESEAT_PRESSURE_UOM ? 'validation-error' : ''"
+                                        [(ngModel)]="TestDataObj.PRESSURE_MEASUREMENT_RESEAT_PRESSURE_UOM"
+                                        name="TestDataObj.PRESSURE_MEASUREMENT_RESEAT_PRESSURE_UOM"
+                                        (click)="searchModal('UnitOfMeasurement','PRESSURE_MEASUREMENT_RESEAT_PRESSURE_UOM')"
+                                        tappable class="project-box searchNSelect select-style">
+                                    </ion-input>
+                                    <ion-input maxlength="250"
+                                        *ngIf="TestDataObj.PRESSURE_MEASUREMENT_RESEAT_PRESSURE_UOM == 'Other'"
+                                        [(ngModel)]="TestDataObj.PRESSURE_MEASUREMENT_RESEAT_PRESSURE_UOM_OT"
+                                        name="TestDataObj.PRESSURE_MEASUREMENT_RESEAT_PRESSURE_UOM_OT"
+                                        [ngClass]="!TestDataObj.PRESSURE_MEASUREMENT_RESEAT_PRESSURE_UOM_OT ? 'validation-error' : ''"
+                                        class="project-box select-style otherBox"> </ion-input>
+                                </div>
+                            </ion-row>
+                            <ion-row>
+                                <div class="radioListElement spacingMarginUsingPadding inline-block">
+                                    <span class="label">{{'Seat Tightness Pressure' | translate}}</span>
+                                    <span
+                                        [ngClass]="showValidationClass(TestDataObj.PRESSURE_MEASUREMENT_SEAT_TIGHTNESS_PRESSURE_UOM) ? 'validator' : ''"></span>
+                                    <ion-input maxlength="250"
+                                        [ngClass]="errorObj.indexOf('PRESSURE_MEASUREMENT_SEAT_TIGHTNESS_PRESSURE') != -1 && !TestDataObj.PRESSURE_MEASUREMENT_SEAT_TIGHTNESS_PRESSURE ? 'validation-error' : ''"
+                                        [(ngModel)]="TestDataObj.PRESSURE_MEASUREMENT_SEAT_TIGHTNESS_PRESSURE"
+                                        name="TestDataObj.PRESSURE_MEASUREMENT_SEAT_TIGHTNESS_PRESSURE"
+                                        class="project-box select-style">
+                                    </ion-input>
+                                </div>
+                                <div class="radioListElement spacingMarginUsingPadding inline-block">
+                                    <ion-label class="label ionLabel marginTop">
+                                        <span class="checkboxLabel">{{'UOM' | translate}}</span>
+                                        <span
+                                            [ngClass]="showValidationClass(TestDataObj.PRESSURE_MEASUREMENT_SEAT_TIGHTNESS_PRESSURE) ? 'validator' : ''"></span>
+                                    </ion-label>
+                                    <ion-input maxlength="250" [readonly]="true"
+                                        [ngClass]="errorObj.indexOf('PRESSURE_MEASUREMENT_SEAT_TIGHTNESS_PRESSURE_UOM') != -1 && !TestDataObj.PRESSURE_MEASUREMENT_SEAT_TIGHTNESS_PRESSURE_UOM ? 'validation-error' : ''"
+                                        [(ngModel)]="TestDataObj.PRESSURE_MEASUREMENT_SEAT_TIGHTNESS_PRESSURE_UOM"
+                                        name="TestDataObj.PRESSURE_MEASUREMENT_SEAT_TIGHTNESS_PRESSURE_UOM"
+                                        (click)="searchModal('UnitOfMeasurement','PRESSURE_MEASUREMENT_SEAT_TIGHTNESS_PRESSURE_UOM')"
+                                        tappable class="project-box searchNSelect select-style">
+                                    </ion-input>
+                                    <ion-input maxlength="250"
+                                        *ngIf="TestDataObj.PRESSURE_MEASUREMENT_SEAT_TIGHTNESS_PRESSURE_UOM == 'Other'"
+                                        [(ngModel)]="TestDataObj.PRESSURE_MEASUREMENT_SEAT_TIGHTNESS_PRESSURE_UOM_OT"
+                                        name="TestDataObj.PRESSURE_MEASUREMENT_SEAT_TIGHTNESS_PRESSURE_UOM_OT"
+                                        [ngClass]="!TestDataObj.PRESSURE_MEASUREMENT_SEAT_TIGHTNESS_PRESSURE_UOM_OT ? 'validation-error' : ''"
+                                        class="project-box select-style otherBox"> </ion-input>
+                                </div>
+                            </ion-row>
+                            <ion-row>
+                                <div class="radioListElement spacingMarginUsingPadding inline-block">
+                                    <span class="label">{{'Back Pressure Test Pressure' | translate}}</span>
+                                    <span
+                                        [ngClass]="showValidationClass(TestDataObj.PRESSURE_MEASUREMENT_BACK_PRESSURE_TEST_PRESSURE_UOM) ? 'validator' : ''"></span>
+                                    <ion-input maxlength="250"
+                                        [ngClass]="errorObj.indexOf('PRESSURE_MEASUREMENT_BACK_PRESSURE_TEST_PRESSURE') != -1 && !TestDataObj.PRESSURE_MEASUREMENT_BACK_PRESSURE_TEST_PRESSURE ? 'validation-error' : ''"
+                                        [(ngModel)]="TestDataObj.PRESSURE_MEASUREMENT_BACK_PRESSURE_TEST_PRESSURE"
+                                        name="TestDataObj.PRESSURE_MEASUREMENT_BACK_PRESSURE_TEST_PRESSURE"
+                                        class="project-box select-style">
+                                    </ion-input>
+                                </div>
+                                <div class="radioListElement spacingMarginUsingPadding inline-block">
+                                    <ion-label class="label ionLabel marginTop">
+                                        <span class="checkboxLabel">{{'UOM' | translate}}</span>
+                                        <span
+                                            [ngClass]="showValidationClass(TestDataObj.PRESSURE_MEASUREMENT_BACK_PRESSURE_TEST_PRESSURE) ? 'validator' : ''"></span>
+                                    </ion-label>
+                                    <ion-input maxlength="250" [readonly]="true"
+                                        [ngClass]="errorObj.indexOf('PRESSURE_MEASUREMENT_BACK_PRESSURE_TEST_PRESSURE_UOM') != -1 && !TestDataObj.PRESSURE_MEASUREMENT_BACK_PRESSURE_TEST_PRESSURE_UOM ? 'validation-error' : ''"
+                                        [(ngModel)]="TestDataObj.PRESSURE_MEASUREMENT_BACK_PRESSURE_TEST_PRESSURE_UOM"
+                                        name="TestDataObj.PRESSURE_MEASUREMENT_BACK_PRESSURE_TEST_PRESSURE_UOM"
+                                        (click)="searchModal('UnitOfMeasurement','PRESSURE_MEASUREMENT_BACK_PRESSURE_TEST_PRESSURE_UOM')"
+                                        tappable class="project-box searchNSelect select-style">
+                                    </ion-input>
+                                    <ion-input maxlength="250"
+                                        *ngIf="TestDataObj.PRESSURE_MEASUREMENT_BACK_PRESSURE_TEST_PRESSURE_UOM == 'Other'"
+                                        [(ngModel)]="TestDataObj.PRESSURE_MEASUREMENT_BACK_PRESSURE_TEST_PRESSURE_UOM_OT"
+                                        name="TestDataObj.PRESSURE_MEASUREMENT_BACK_PRESSURE_TEST_PRESSURE_UOM_OT"
+                                        [ngClass]="!TestDataObj.PRESSURE_MEASUREMENT_BACK_PRESSURE_TEST_PRESSURE_UOM_OT ? 'validation-error' : ''"
+                                        class="project-box select-style otherBox"> </ion-input>
+                                </div>
+                            </ion-row>
+                        </div>
+                    </div>
+                </ion-row>
+
+                <!-- Ring Settings Row -->
+                <ion-row class="customRows">
+                    <div class="full-width">
+                        <div class="inline-block spacingMargin"
+                            [ngClass]="TestDataObj.RING_SETTINGS_RING_SETTINGS_NA == 'true' || TestDataObj.RING_SETTINGS_RING_SETTINGS_NA == true ? 'disable-content' : ''">
+                            <span (click)="expandOuter('RING_SETTINGS')">
+                                <ion-icon class="arrowIcon" item-left name="arrow-dropright"
+                                    *ngIf="!expandOuterAccordion.RING_SETTINGS">
+                                </ion-icon>
+                                <ion-icon class="arrowIcon" role="img" *ngIf="expandOuterAccordion.RING_SETTINGS"
+                                    aria-label="arrow dropdown" name="arrow-dropdown">
+                                </ion-icon>
+                            </span>
+                            <span (click)="expandOuter('RING_SETTINGS')"
+                                class="label pointer accordion-label">{{'Ring Settings' | translate}}</span>
+                        </div>
+                        <div class="inline-block pull-right">
+                            <div class="spacingMargin">
+                                <div class="WF-checkbox">
+                                    <span class="label checkboxLabel">{{'N/A' | translate}}</span>
+                                    <input id="checkbox-RING_SETTINGS-NA" type="checkbox"
+                                        [checked]="TestDataObj.RING_SETTINGS_RING_SETTINGS_NA == true || TestDataObj.RING_SETTINGS_RING_SETTINGS_NA == 'true'"
+                                        [ngModel] class="accordionCheckBox"
+                                        (change)="confirmAlert($event, 'RING_SETTINGS')">
+                                    <label for="checkbox-RING_SETTINGS-NA"></label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="block full-width attachmentBox" *ngIf="expandOuterAccordion.RING_SETTINGS">
+                            <ion-row>
+                                <div class="radioListElement spacingMarginUsingPadding inline-block">
+                                    <span class="label">{{'Upper Ring Settings' | translate}}</span>
+                                    <span
+                                        [ngClass]="showValidationClass(TestDataObj.RING_SETTINGS_UPPER_RING_SETTINGS_UOM) ? 'validator' : ''"></span>
+                                    <ion-input maxlength="250"
+                                        [ngClass]="errorObj.indexOf('RING_SETTINGS_UPPER_RING_SETTINGS') != -1 && !TestDataObj.RING_SETTINGS_UPPER_RING_SETTINGS ? 'validation-error' : ''"
+                                        [(ngModel)]="TestDataObj.RING_SETTINGS_UPPER_RING_SETTINGS"
+                                        name="TestDataObj.RING_SETTINGS_UPPER_RING_SETTINGS"
+                                        class="project-box select-style">
+                                    </ion-input>
+                                </div>
+                                <div class="radioListElement spacingMarginUsingPadding inline-block">
+                                    <ion-label class="label ionLabel marginTop">
+                                        <span class="checkboxLabel">{{'UOM' | translate}}</span>
+                                        <span
+                                            [ngClass]="showValidationClass(TestDataObj.RING_SETTINGS_UPPER_RING_SETTINGS) ? 'validator' : ''"></span>
+                                    </ion-label>
+                                    <ion-input maxlength="250" [readonly]="true"
+                                        [ngClass]="errorObj.indexOf('RING_SETTINGS_UPPER_RING_SETTINGS_UOM') != -1 && !TestDataObj.RING_SETTINGS_UPPER_RING_SETTINGS_UOM ? 'validation-error' : ''"
+                                        [(ngModel)]="TestDataObj.RING_SETTINGS_UPPER_RING_SETTINGS_UOM"
+                                        name="TestDataObj.RING_SETTINGS_UPPER_RING_SETTINGS_UOM"
+                                        (click)="searchModal('RingSettingsPressure','RING_SETTINGS_UPPER_RING_SETTINGS_UOM')"
+                                        tappable class="project-box searchNSelect select-style">
+                                    </ion-input>
+                                    <ion-input maxlength="250"
+                                        *ngIf="TestDataObj.RING_SETTINGS_UPPER_RING_SETTINGS_UOM == 'Other'"
+                                        [(ngModel)]="TestDataObj.RING_SETTINGS_UPPER_RING_SETTINGS_UOM_OT"
+                                        name="TestDataObj.RING_SETTINGS_UPPER_RING_SETTINGS_UOM_OT"
+                                        [ngClass]="!TestDataObj.RING_SETTINGS_UPPER_RING_SETTINGS_UOM_OT ? 'validation-error' : ''"
+                                        class="project-box select-style otherBox"> </ion-input>
+                                </div>
+                            </ion-row>
+                            <ion-row>
+                                <div class="radioListElement spacingMarginUsingPadding inline-block">
+                                    <span class="label">{{'Lower Ring Settings' | translate}}</span>
+                                    <span
+                                        [ngClass]="showValidationClass(TestDataObj.RING_SETTINGS_LOWER_RING_SETTINGS_UOM) ? 'validator' : ''"></span>
+                                    <ion-input maxlength="250"
+                                        [ngClass]="errorObj.indexOf('RING_SETTINGS_LOWER_RING_SETTINGS') != -1 && !TestDataObj.RING_SETTINGS_LOWER_RING_SETTINGS ? 'validation-error' : ''"
+                                        [(ngModel)]="TestDataObj.RING_SETTINGS_LOWER_RING_SETTINGS"
+                                        name="TestDataObj.RING_SETTINGS_LOWER_RING_SETTINGS"
+                                        class="project-box select-style">
+                                    </ion-input>
+                                </div>
+                                <div class="radioListElement spacingMarginUsingPadding inline-block">
+                                    <ion-label class="label ionLabel marginTop">
+                                        <span class="checkboxLabel">{{'UOM' | translate}}</span>
+                                        <span
+                                            [ngClass]="showValidationClass(TestDataObj.RING_SETTINGS_LOWER_RING_SETTINGS) ? 'validator' : ''"></span>
+                                    </ion-label>
+                                    <ion-input maxlength="250" [readonly]="true"
+                                        [ngClass]="errorObj.indexOf('RING_SETTINGS_LOWER_RING_SETTINGS_UOM') != -1 && !TestDataObj.RING_SETTINGS_LOWER_RING_SETTINGS_UOM ? 'validation-error' : ''"
+                                        [(ngModel)]="TestDataObj.RING_SETTINGS_LOWER_RING_SETTINGS_UOM"
+                                        name="TestDataObj.RING_SETTINGS_LOWER_RING_SETTINGS_UOM"
+                                        (click)="searchModal('RingSettingsPressure','RING_SETTINGS_LOWER_RING_SETTINGS_UOM')"
+                                        tappable class="project-box searchNSelect select-style">
+                                    </ion-input>
+                                    <ion-input maxlength="250"
+                                        *ngIf="TestDataObj.RING_SETTINGS_LOWER_RING_SETTINGS_UOM == 'Other'"
+                                        [(ngModel)]="TestDataObj.RING_SETTINGS_LOWER_RING_SETTINGS_UOM_OT"
+                                        name="TestDataObj.RING_SETTINGS_LOWER_RING_SETTINGS_UOM_OT"
+                                        [ngClass]="!TestDataObj.RING_SETTINGS_LOWER_RING_SETTINGS_UOM_OT ? 'validation-error' : ''"
+                                        class="project-box select-style otherBox"> </ion-input>
+                                </div>
+                            </ion-row>
+                        </div>
+                    </div>
+                </ion-row>
+
+                <!-- General Row -->
+                <ion-row class="customRows">
+                    <div class="full-width">
+                        <div class="inline-block spacingMargin"
+                            [ngClass]="TestDataObj.GENERAL_GENERAL_NA == 'true' || TestDataObj.GENERAL_GENERAL_NA == true ? 'disable-content' : ''">
+                            <span (click)="expandOuter('GENERAL')">
+                                <ion-icon class="arrowIcon" item-left name="arrow-dropright"
+                                    *ngIf="!expandOuterAccordion.GENERAL">
+                                </ion-icon>
+                                <ion-icon class="arrowIcon" role="img" *ngIf="expandOuterAccordion.GENERAL"
+                                    aria-label="arrow dropdown" name="arrow-dropdown">
+                                </ion-icon>
+                            </span>
+                            <span (click)="expandOuter('GENERAL')"
+                                class="label pointer accordion-label">{{'General' | translate}}</span>
+                        </div>
+                        <div class="inline-block pull-right">
+                            <div class="spacingMargin">
+                                <div class="WF-checkbox">
+                                    <span class="label checkboxLabel">{{'N/A' | translate}}</span>
+                                    <input id="checkbox-GENERAL-NA" type="checkbox"
+                                        [checked]="TestDataObj.GENERAL_GENERAL_NA == true || TestDataObj.GENERAL_GENERAL_NA == 'true'"
+                                        [ngModel] class="accordionCheckBox" (change)="confirmAlert($event, 'GENERAL')">
+                                    <label for="checkbox-GENERAL-NA"></label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="block full-width attachmentBox" *ngIf="expandOuterAccordion.GENERAL">
+                            <ion-row>
+                                <div class="radioListElement spacingMarginUsingPadding inline-block">
+                                    <span class="label">{{'Tested By' | translate}}</span>
+                                    <ion-input maxlength="250" [(ngModel)]="TestDataObj.GENERAL_TESTED_BY"
+                                        name="TestDataObj.GENERAL_TESTED_BY" class="project-box select-style">
+                                    </ion-input>
+                                </div>
+                                <div class="width-thirty spacingMarginUsingPadding inline-block">
+                                    <ion-label class="label ionLabel marginTop">
+                                        <span class="checkboxLabel">{{'Test Date And Time' | translate}}</span>
+                                    </ion-label>
+                                    <ion-input name="GENERAL_TEST_DATE_AND_TIME"
+                                        class="marginTop8 input-box dateField WF-input inline-block" bsDatepicker
+                                        #testDateAndTime="bsDatepicker"
+                                        [(bsValue)]="TestDataObj.GENERAL_TEST_DATE_AND_TIME"
+                                        [bsConfig]="{dateInputFormat: 'DD-MMM-YYYY'}"
+                                        value="{{TestDataObj.GENERAL_TEST_DATE_AND_TIME | date:'dd-MMM-yyyy'}}"
+                                        (onShown)="onShowPicker($event)">
+                                    </ion-input>
+                                    <span class="inline-block">
+                                        <img (click)="testDateAndTime.show()"
+                                            [attr.aria-expanded]="testDateAndTime.isOpen"
+                                            src="assets/imgs/icons/ic_calendar-for-field.png" class="calIcon pointer" />
+                                    </span>
+                                </div>
+                                <div class="width-fifteen inline-block">
+                                    <timepicker class="timepicker-box inline-block"
+                                        [(ngModel)]="TestDataObj.GENERAL_TIME" [showMeridian]="false"
+                                        name="GENERAL_TIME">
+                                    </timepicker>
+                                </div>
+                            </ion-row>
+                            <ion-row>
+                                <div class="full-width spacingMarginUsingPadding inline-block">
+                                    <ion-label class="label ionLabel marginTop">
+                                        <span class="checkboxLabel">{{'Test Results' | translate}}</span>
+                                        <span
+                                            [ngClass]="showValidationClass(TestDataObj.GENERAL_TEST_RESULTS) ? 'validator' : ''"></span>
+                                    </ion-label>
+                                    <ion-input maxlength="250" [readonly]="true"
+                                        [ngClass]="errorObj.indexOf('GENERAL_TEST_RESULTS') != -1 && !TestDataObj.GENERAL_TEST_RESULTS ? 'validation-error' : ''"
+                                        [(ngModel)]="TestDataObj.GENERAL_TEST_RESULTS"
+                                        name="TestDataObj.GENERAL_TEST_RESULTS"
+                                        (click)="searchModal('TestResultPressure','GENERAL_TEST_RESULTS')" tappable
+                                        class="project-box searchNSelect select-style">
+                                    </ion-input>
+                                    <ion-input maxlength="250" *ngIf="TestDataObj.GENERAL_TEST_RESULTS == 'Other'"
+                                        [(ngModel)]="TestDataObj.GENERAL_TEST_RESULTS_OT"
+                                        name="TestDataObj.GENERAL_TEST_RESULTS_OT"
+                                        [ngClass]="!TestDataObj.GENERAL_TEST_RESULTS_OT ? 'validation-error' : ''"
+                                        class="project-box select-style otherBox"> </ion-input>
+                                </div>
+                            </ion-row>
+                            <ion-row>
+                                <div class="radioListElement spacingMarginUsingPadding inline-block">
+                                    <ion-label class="label ionLabel marginTop">
+                                        <span class="checkboxLabel">{{'Test Medium' | translate}}</span>
+                                        <span
+                                            [ngClass]="showValidationClass(TestDataObj.GENERAL_TEST_MEDIUM) ? 'validator' : ''"></span>
+                                    </ion-label>
+                                    <ion-input maxlength="250" [readonly]="true"
+                                        [ngClass]="errorObj.indexOf('GENERAL_TEST_MEDIUM') != -1 && !TestDataObj.GENERAL_TEST_MEDIUM ? 'validation-error' : ''"
+                                        [(ngModel)]="TestDataObj.GENERAL_TEST_MEDIUM"
+                                        name="TestDataObj.GENERAL_TEST_MEDIUM"
+                                        (click)="searchModal('TestMediumPressure','GENERAL_TEST_MEDIUM')" tappable
+                                        class="project-box searchNSelect select-style">
+                                    </ion-input>
+                                    <ion-input maxlength="250" *ngIf="TestDataObj.GENERAL_TEST_MEDIUM == 'Other'"
+                                        [(ngModel)]="TestDataObj.GENERAL_TEST_MEDIUM_OT"
+                                        name="TestDataObj.GENERAL_TEST_MEDIUM_OT"
+                                        [ngClass]="!TestDataObj.GENERAL_TEST_MEDIUM_OT ? 'validation-error' : ''"
+                                        class="project-box select-style otherBox"> </ion-input>
+                                </div>
+                                <div class="body-item-box marginTop30 inline-block">
+                                    <span class="label">{{'VR Stamp' | translate}}</span>
+                                    <ion-checkbox name="GENERAL_VR_STAMP" [(ngModel)]="TestDataObj.GENERAL_VR_STAMP"
+                                        [checked]="TestDataObj.GENERAL_VR_STAMP == 'true' || TestDataObj.GENERAL_VR_STAMP == true">
+                                    </ion-checkbox>
+                                </div>
+                            </ion-row>
+                            <ion-row>
+                                <div class="radioListElement spacingMarginUsingPadding inline-block">
+                                    <span class="label">{{'Authority Witness' | translate}}</span>
+                                    <ion-input maxlength="250" [(ngModel)]="TestDataObj.GENERAL_AUTHORITY_WITNESS"
+                                        name="TestDataObj.GENERAL_AUTHORITY_WITNESS" class="project-box select-style">
+                                    </ion-input>
+                                </div>
+                                <div class="width-thirty spacingMarginUsingPadding inline-block">
+                                    <ion-label class="label ionLabel marginTop">
+                                        <span class="checkboxLabel">{{'Authority Witness Date' | translate}}</span>
+                                    </ion-label>
+                                    <ion-input name="GENERAL_AUTHORITY_WITNESS_DATE"
+                                        class="marginTop8 input-box dateField WF-input inline-block" bsDatepicker
+                                        #authorityWitnessDate="bsDatepicker"
+                                        [(bsValue)]="TestDataObj.GENERAL_AUTHORITY_WITNESS_DATE"
+                                        [bsConfig]="{dateInputFormat: 'DD-MMM-YYYY'}"
+                                        value="{{TestDataObj.GENERAL_AUTHORITY_WITNESS_DATE | date:'dd-MMM-yyyy'}}"
+                                        (onShown)="onShowPicker($event)">
+                                    </ion-input>
+                                    <span class="inline-block">
+                                        <img (click)="authorityWitnessDate.show()"
+                                            [attr.aria-expanded]="authorityWitnessDate.isOpen"
+                                            src="assets/imgs/icons/ic_calendar-for-field.png" class="calIcon pointer" />
+                                    </span>
+                                </div>
+                            </ion-row>
+                            <ion-row>
+                                <div class="radioListElement spacingMarginUsingPadding inline-block">
+                                    <span class="label">{{'Authority Witness (Role)' | translate}}</span>
+                                    <ion-input maxlength="250" [(ngModel)]="TestDataObj.GENERAL_APPROVED_WITNESS_ROLE"
+                                        name="TestDataObj.GENERAL_APPROVED_WITNESS_ROLE"
+                                        class="project-box select-style">
+                                    </ion-input>
+                                </div>
+                                <div class="radioListElement spacingMarginUsingPadding inline-block">
+                                    <span class="label">{{'Authority Witness (User)' | translate}}</span>
+                                    <ion-input maxlength="250" [(ngModel)]="TestDataObj.GENERAL_APPROVED_WITNESS_USER"
+                                        name="TestDataObj.GENERAL_APPROVED_WITNESS_USER"
+                                        class="project-box select-style">
+                                    </ion-input>
+                                </div>
+                            </ion-row>
+                        </div>
+                    </div>
+                </ion-row>
+
+                <!-- Spring Row -->
+                <ion-row class="customRows">
+                    <div class="full-width">
+                        <div class="inline-block spacingMargin"
+                            [ngClass]="TestDataObj.SPRING_SPRING_NA == 'true' || TestDataObj.SPRING_SPRING_NA == true ? 'disable-content' : ''">
+                            <span (click)="expandOuter('SPRING')">
+                                <ion-icon class="arrowIcon" item-left name="arrow-dropright"
+                                    *ngIf="!expandOuterAccordion.SPRING">
+                                </ion-icon>
+                                <ion-icon class="arrowIcon" role="img" *ngIf="expandOuterAccordion.SPRING"
+                                    aria-label="arrow dropdown" name="arrow-dropdown">
+                                </ion-icon>
+                            </span>
+                            <span (click)="expandOuter('SPRING')"
+                                class="label pointer accordion-label">{{'Spring' | translate}}</span>
+                        </div>
+                        <div class="inline-block pull-right">
+                            <div class="spacingMargin">
+                                <div class="WF-checkbox">
+                                    <span class="label checkboxLabel">{{'N/A' | translate}}</span>
+                                    <input id="checkbox-SPRING-NA" type="checkbox"
+                                        [checked]="TestDataObj.SPRING_SPRING_NA == true || TestDataObj.SPRING_SPRING_NA == 'true'"
+                                        [ngModel] class="accordionCheckBox" (change)="confirmAlert($event, 'SPRING')">
+                                    <label for="checkbox-SPRING-NA"></label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="block full-width attachmentBox" *ngIf="expandOuterAccordion.SPRING">
+                            <ion-row>
+                                <div class="radioListElement spacingMarginUsingPadding inline-block">
+                                    <ion-label class="label ionLabel marginTop">
+                                        <span class="checkboxLabel">{{'Spring Number' | translate}}</span>
+                                    </ion-label>
+                                    <ion-input maxlength="250" [(ngModel)]="TestDataObj.SPRING_SPRING_NUMBER"
+                                        name="TestDataObj.SPRING_SPRING_NUMBER" class="project-box select-style">
+                                    </ion-input>
+                                </div>
+                                <div class="radioListElement spacingMarginUsingPadding inline-block">
+                                    <ion-label class="label ionLabel marginTop">
+                                        <span class="checkboxLabel">{{'Spring Range' | translate}}</span>
+                                    </ion-label>
+                                    <ion-input maxlength="250" [(ngModel)]="TestDataObj.SPRING_SPRING_RANGE"
+                                        name="TestDataObj.SPRING_SPRING_RANGE" class="project-box select-style">
+                                    </ion-input>
+                                </div>
+                            </ion-row>
+                        </div>
+                    </div>
+                </ion-row>
+
+            </div>
+
+            <!-- Footer Button -->
+            <ion-row>
+                <ion-col text-left>
+                    <button (click)="redirect('back')" ion-button class="footer-Button">{{'Back' | translate}}</button>
+                </ion-col>
+                <ion-col text-right>
+                    <button (click)="redirect('finalinspection')" ion-button
+                        class="footer-Button">{{ bottomNavBtn | translate}}</button>
+                </ion-col>
+            </ion-row>
+
+        </ion-card-content>
+
+    </ion-card>
+</ion-content>

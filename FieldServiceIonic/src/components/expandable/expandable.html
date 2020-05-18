@@ -1,0 +1,32 @@
+<div #expandWrapper class='expand-wrapper'>
+  <div class="full-width">
+     
+     
+     <ion-row class="full-width global-padding" >
+         
+         <div *ngFor="let day of days" class="days">
+          <!--   -->
+         <div class="day-col" [ngClass]="(!valueProvider.isNonOSCNonClarityUser() && Data.StatusID ==  enums.Jobstatus.Completed_Awaiting_Review && !day.duration)?'disable-content':''">
+           <div [ngClass]="(!getFomatedDate(day.entryDate, selectedDate))?'disable-content':''">
+             <label class="label">{{day.dayName}}<span class="date-label">{{getFomatedDate(day.entryDate)}}</span></label>
+             <div *ngIf="valueProvider.getUser().ClarityID">
+              <div *ngIf="day.Import_Level == enums.clarityStatus.Submitted" [ngClass]="(day.isSubmitted == 'true' || day.isSubmitted == true) && day.Import_Level == enums.clarityStatus.Submitted ?'submitted-sq-box':'sq-box'" (click)="openTimeDurationPopOver(day,$event)" tappable>{{day.duration}}</div>
+              <div *ngIf="day.Import_Level != enums.clarityStatus.Submitted" [ngClass]="(day.isSubmitted == 'true' || day.isSubmitted == true) && day.Import_Level != enums.clarityStatus.Submitted ?'saved-sq-box':'sq-box'" (click)="openTimeDurationPopOver(day,$event)" tappable>{{day.duration}}</div>
+             </div>
+             <div *ngIf="!valueProvider.getUser().ClarityID">
+              <div  [ngClass]="(day.isSubmitted == 'true' || day.isSubmitted == true) ?'submitted-sq-box':'sq-box'" (click)="openTimeDurationPopOver(day,$event)" tappable>{{day.duration}}</div>
+             </div>
+             
+            </div>
+         </div>
+        </div>
+        <div class="days" >
+          <div class="day-col">
+              <label class="label">{{'Total' | translate }}<span class="date-label">{{'Hours' | translate }}</span></label>
+              <div class="sq-box">{{total_hours}}</div>
+          </div>
+        </div>
+       
+     </ion-row>
+  </div>
+</div>

@@ -1,0 +1,271 @@
+page-custom-header {
+  .toolbar-content {
+    height: 100%;
+  }
+
+  .header-icon-UI {
+    height: 28px;
+    width: 28px;
+    margin: 0 8px;
+  }
+
+  .icon-content,
+  .user-content {
+    padding-top: 18px;
+  }
+
+  .user-content {
+    padding-right: 6px;
+  }
+
+  .header-content {
+    height: 66px;
+    position: relative;
+  }
+
+  .app-update-notification-bar {
+    height: 55px;
+
+    .notification-content {
+      line-height: 2.5;
+      margin: auto;
+      width: 70%;
+      height: 100%;
+      background: #759CAD;
+      color: white;
+      font-size: 18px;
+      text-align: center;
+      vertical-align: middle;
+      border-bottom: 1px solid #3B677D;
+      border-left: 1px solid #3B677D;
+      border-right: 1px solid #3B677D;
+      border-bottom-left-radius: 9px;
+      border-bottom-right-radius: 9px;
+      box-shadow: -1px 2px 6px 1px rgba(0, 0, 0, 0.33);
+      padding-top: 5px;
+      padding-bottom: 5px;
+    }
+
+    .update-button {
+      height: 90%;
+      margin-bottom: 15px;
+    }
+
+    .button {
+      font-weight: 300;
+    }
+
+  }
+
+  .login-user-UI {
+    color: rgba(255, 255, 255, 0.54);
+    font-family: "Helvetica Neue";
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 20px;
+    text-align: right;
+    word-wrap: break-word;
+    vertical-align: middle;
+    width: 85%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .fab[mini] {
+    height: 28px;
+    width: 28px;
+    margin: 0px !important;
+    background-color: #1b3c79 !important;
+  }
+
+  .fab[mini] img {
+    max-width: unset !important;
+  }
+
+  .back-button.show-back-button {
+    margin-left: 70px;
+    position: absolute;
+    height: 100%;
+    z-index: 2;
+  }
+
+  .languagepicker {
+    background-color: #FFF;
+    display: inline-block;
+    padding: 0;
+    height: 40px;
+    overflow: hidden;
+    transition: all .3s ease-in;
+    margin: 0 50px 10px 0;
+    vertical-align: top;
+    float: left;
+  }
+
+  .languagepicker:hover {
+    height: 81px;
+  }
+
+  .languagepicker a {
+    color: #000;
+    text-decoration: none;
+  }
+
+  .languagepicker li {
+    display: block;
+    padding: 0px 20px;
+    line-height: 40px;
+    border-top: 1px solid #EEE;
+  }
+
+  .languagepicker li:hover {
+    background-color: #EEE;
+  }
+
+  .languagepicker a:first-child li {
+    border: none;
+    background: #FFF !important;
+  }
+
+  .languagepicker li img {
+    margin-right: 5px;
+  }
+
+  .roundborders {
+    border-radius: 5px;
+  }
+
+  .large:hover {
+    height: 245px;
+  }
+
+  .toolbar {
+    height: 66px !important;
+    padding: 0 4px;
+  }
+
+  .ion-md-arrow-back::before {
+    content: url("../assets/imgs/icons/ic_header-back.png") !important;
+  }
+
+  .ion-ios-arrow-back::before {
+    content: url("../assets/imgs/icons/ic_header-back.png") !important;
+  }
+
+  .toggleButton {
+    background-color: transparent !important;
+    position: absolute;
+    margin: 0 0 0 20px;
+    height: 66px;
+    padding: 0 !important;
+    border-radius: 50%;
+    box-shadow: none;
+    border: none;
+  }
+
+  .title {
+    color: rgb(126, 126, 126);
+    font-family: "Helvetica Neue";
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 15px;
+    padding: 0 5px;
+    height: 66px;
+  }
+
+  ion-fab {
+    position: unset;
+  }
+
+  .header-user-icon-block {
+    vertical-align: middle;
+    width: 13%;
+    min-width: 28px;
+  }
+
+  .lastSync {
+    display: block;
+    color: rgba(204, 204, 204, 0.75);
+  }
+
+  .fab a[disabled],
+  button[disabled],
+  [ion-button][disabled] {
+    opacity: 1 !important;
+    cursor: none;
+  }
+
+  .burgerMenu {
+    width: 10%;
+  }
+
+  .mainHeading {
+    width: 30%;
+  }
+
+  .icon-content {
+    width: 35%;
+  }
+
+  .user-content {
+    width: 25%;
+  }
+
+  @-webkit-keyframes rotate {
+    from {
+      -webkit-transform: rotate(0deg);
+    }
+
+    to {
+      -webkit-transform: rotate(360deg);
+    }
+  }
+
+  .rotate {
+    animation: rotate 1s infinite linear;
+  }
+
+  .header-error-icon-UI {
+    color: rgba(255, 255, 0, 0.8);
+  }
+
+  .lastSyncStampBox {
+    position: absolute;
+    right: 0;
+    margin-right: 160px;
+  }
+
+  .errorIconUIBox {
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+    margin-bottom: 10px;
+    margin-right: 110px;
+    cursor: pointer;
+  }
+
+  .errorIconUIBoxOff {
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+    margin-bottom: 18px;
+    margin-right: 68px;
+    cursor: pointer;
+  }
+}
+
+.ios {
+  page-custom-header {
+    .fab-in-list.show {
+      padding: 0 !important;
+    }
+
+    .fab-ios {
+      padding: 0;
+    }
+
+    .userIcon {
+      margin: 4px 0 0 !important;
+    }
+  }
+}

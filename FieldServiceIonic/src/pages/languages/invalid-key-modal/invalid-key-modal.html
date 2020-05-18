@@ -1,0 +1,46 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>{{'Import done with errors' | translate}}</ion-title>
+    <ion-buttons end>
+      <button ion-button block class="export-language-button" (click)="exportInvalidKeyFile()">{{'Export' | translate}}</button>
+      <button ion-button class="closebtn" (click)="closeModal()"><i class="fa fa-times fa-2x"></i></button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+<ion-content>
+  <div class="bottom-border global-padding">
+    <h3 class="danger">{{'Following keys exceed translation length limit, re-import the csv file after fixing these keys' | translate}}</h3>
+  </div>
+  <div>
+    <ion-row class="global-padding">
+      <ion-col col-1></ion-col>
+      <ion-col col-3 class="label">
+        <span>{{'App Label' | translate}}</span>
+      </ion-col>
+      <ion-col col-5 class="label">
+        <span>{{'Translation' | translate}}</span>
+      </ion-col>
+      <ion-col col-2 class="label">
+        <span>{{'Length' | translate}}</span>
+      </ion-col>
+    </ion-row>
+    <ion-list class="table-striped">
+      <div class="errorKeyModalScroll">
+        <ion-row class="strippedClass global-padding" *ngFor="let jsonArr of invalidKeyJsonArr">
+          <ion-col col-1>
+            <span><i class="fa fa-circle bullet"></i></span>
+          </ion-col>
+          <ion-col col-3 class="value">
+            <span>{{jsonArr.Key_Name}}</span>
+          </ion-col>
+          <ion-col col-5 class="value">
+            <span>{{jsonArr.Value}}</span>
+          </ion-col>
+          <ion-col col-2 class="value">
+            <span class="danger">{{jsonArr.Value.length}}</span> / <span>{{jsonArr.Key_Length}}</span>
+          </ion-col>
+        </ion-row>
+      </div>
+    </ion-list>
+  </div>
+</ion-content>

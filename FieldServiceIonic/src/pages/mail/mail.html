@@ -1,0 +1,68 @@
+<ion-header>
+  <ion-navbar>
+    <h2>{{ 'Report an Issue' | translate }}</h2>
+    <ion-buttons end>
+      <button ion-button (click)="closeModal()"><i class="fa fa-times fa-2x closebtn"></i></button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+<ion-content>
+  <div class="global-padding full-width full-height">
+    <div class="full-width headerBox">
+      <ion-row>
+        <div (click)="sendMail()"
+          [ngClass]="mailObj.attachment.length == 0 ? 'no-click unselected sendBlock' : 'sendBlock'">
+          <button ion-button class="sendButton" block icon-only>
+            <ion-icon class="block" ios="ios-mail" md="md-mail"></ion-icon>
+          </button>
+          <span class="label block">{{ 'Send' | translate }}</span>
+        </div>
+        <div class="detailsBlock">
+          <ion-row>
+            <div class="detailBlockLabel">
+              <span class="label">{{'To' | translate}}</span>
+            </div>
+            <div class="detailBlockValue value">
+              <ion-input type="text" disabled [(ngModel)]="mailObj.to" name="to" (keyup)="_keyUp()"></ion-input>
+              <div class="recipient-validation-text" *ngIf="!isCorrectRecipient">
+                {{'Please Enter valid Recipient to send mail' | translate}}</div>
+            </div>
+          </ion-row>
+          <!-- <ion-row>
+              <div class="detailBlockLabel">
+                <span class="label">{{'CC' | translate}}</span>
+              </div>
+              <div class="detailBlockValue value">
+                <ion-input type="text" required [(ngModel)]="mailObj.mailObj.cc" name="cc"></ion-input>
+              </div>
+            </ion-row> -->
+          <ion-row>
+            <div class="detailBlockLabel subjectLabel">
+              <span class="label">{{'Subject' | translate}}</span>
+            </div>
+            <div class="detailBlockValue value">
+              <ion-input type="text" required [(ngModel)]="mailObj.subject" name="subject"></ion-input>
+            </div>
+          </ion-row>
+        </div>
+      </ion-row>
+    </div>
+    <div class="full-width attachmentBox">
+      <div class="attachment-block" *ngIf="mailObj.attachment.length > 0 && mailObj.attachment[0].file_name">
+        <i class="fa fa-file-zip-o" aria-hidden="true"></i>
+        <span class='value'>{{mailObj.attachment[0].file_name}}</span>
+      </div>
+      <div class="attachment-block" *ngIf="mailObj.attachment.length == 0">
+        <span class='value'>{{'Compressing Files....'}}</span><span>
+          <ion-spinner name="crescent"></ion-spinner>
+        </span>
+      </div>
+    </div>
+    <div class="full-width contentBox">
+      <div [ngClass]="mailObj.attachment.length == 0 ? 'no-click unselected full-height' : 'full-height'">
+        <ion-textarea placeholder="Enter detail information here..." [(ngModel)]="mailObj.body" name="body"
+          class="mailBody full-height value"></ion-textarea>
+      </div>
+    </div>
+  </div>
+</ion-content>

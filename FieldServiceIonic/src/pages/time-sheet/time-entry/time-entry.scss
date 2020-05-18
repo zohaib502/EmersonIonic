@@ -1,0 +1,100 @@
+page-time-entry {
+    .page-background{
+        background-color: white;
+    }
+    .left{
+        width:50%;
+    }
+    .right{
+        width:50%;
+    }
+    .select-style {
+        max-width: 100% !important;
+      }
+      .select-text {
+        color: rgba(0, 0, 0, 1) !important;
+        font-family: "Helvetica Neue";
+        font-size: 14px;
+        font-weight: 300;
+        line-height: 17px;
+      }
+    
+      .select {
+        padding: 6px !important;
+      }
+      .project-box , .task-box{
+        box-sizing: border-box;
+        height: 31px;
+        border: 1px solid rgba(216,213,209,1);
+        border-radius: 3px;
+        background-color: rgba(247,247,246,1);
+        width: 90%;
+      }
+     
+    .day-row{
+        justify-content: center;
+        background-color:rgba(247, 247, 246, 1);
+        margin-top: 50px;
+        padding: 15px;
+    
+    }
+    .daySchedule{
+        width: 80%;
+    }
+    .state-box .text-input {
+        box-sizing: border-box;
+        height: 31px;
+        width:80%;
+        border: 1px solid rgba(216, 213, 209, 1);
+        border-radius: 2px;
+        background-color: rgba(247, 247, 246, 1);
+      }
+      .city-box .text-input {
+        box-sizing: border-box;
+        height: 31px;
+        width:90%;
+        border: 1px solid rgba(216, 213, 209, 1);
+        border-radius: 2px;
+        background-color: rgba(247, 247, 246, 1);
+      }
+      .left1{
+          width:25%;
+      }
+      .left2{
+          width: 25%;
+      }
+      .bottom-div{
+          width: 100%;
+          text-align: right;
+      }
+      .submit-btn{
+        background-color: rgb(107, 142, 35);
+        text-transform: capitalize;
+        height: 28px !important;
+        border-radius: 3px;
+        border: none;
+        font-size: 12px !important;
+        cursor: pointer;
+        font-family: "Helvetica Neue";
+        padding: 10px;
+    }
+    .cancel-btn{
+        background-color: rgba(155, 155, 155, 1);
+        text-transform: capitalize;
+        height: 28px !important;
+        border-radius: 3px;
+        border: none;
+        font-size: 12px !important;
+        cursor: pointer;
+        font-family: "Helvetica Neue";
+        padding: 10px;
+    }
+    .bottom-row{
+        margin-top: 20px;
+        padding: 30px;
+    }
+    .select-validation {
+        border: 1px solid red;
+      }
+
+}

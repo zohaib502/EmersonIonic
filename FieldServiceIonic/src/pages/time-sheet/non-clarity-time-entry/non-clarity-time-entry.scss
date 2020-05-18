@@ -1,0 +1,432 @@
+non-clarity-page-time-entry {
+
+  .select-icon{
+    position: relative;
+    width: 9px;
+    height: 19px;
+    margin-right: 0.5%;
+  }
+
+  .jobId_List {
+    width: 50% !important;
+    box-shadow: 1px 0px 10px #888888;
+    margin-left: 1px;
+  }
+
+  .insideList{
+    border-bottom: 1px solid #DFDFDF !important;
+  }
+
+  .searchNSelect .text-input {
+    cursor: default;
+  }
+
+  .internalSearchNSelect .content .scroll-content {
+    margin-top: 0px !important;
+    height: 260px;
+    padding: 0px !important;
+    background-color: transparent !important;
+    overflow-y: hidden !important;
+
+    .main-div {
+      height: 100%;
+      overflow-y: auto !important;
+    }
+
+    .autoSearchFields {
+      height: 100%;
+
+      .item-inner {
+        border: none !important;
+      }
+
+      .item {
+        transition: background-color 0ms cubic-bezier(0.4, 0, 0.2, 1) !important;
+      }
+    }
+  }
+
+  .smart-search-radio {
+    color: white !important;
+    font-weight: 600;
+  }
+
+
+  .internalSearchNSelect .input-box .text-input {
+    height: 31px;
+    border-radius: 3px;
+  }
+
+  .searchNSelect::after {
+    position: absolute;
+    right: 8px;
+    top: 5px;
+    font-family: "FontAwesome";
+    content: "\f0d7";
+    color: #999;
+    font-size: 14px;
+  }
+
+  .searchNSelect .text-input {
+    cursor: pointer;
+    padding: 0 25px 0 4px !important;
+  }
+
+  .searchNSelect ::-ms-input-placeholder {
+    color: black !important;
+  }
+
+  .internalSearchNSelect .input-box .text-input {
+    height: 31px;
+    border-radius: 3px;
+  }
+
+  .select-box,
+  .input-box .text-input {
+    box-sizing: border-box;
+    height: 31px;
+    border: 1px solid rgba(216, 213, 209, 1);
+    border-radius: 3px;
+    background-color: rgba(255, 255, 255, 1);
+    width: 90%;
+    color: rgba(128, 128, 128, 1);
+  }
+
+
+    .select-style {
+        max-width: 100%;
+      }
+
+    .startTime-box, .endTime-box, .select-validation {
+        border: 1px solid red;
+      }
+
+    .startTime-box, .endTime-box, .duration-box {
+        box-sizing: border-box;
+        height: 31px;
+        border: 1px solid rgba(216,213,209,1);
+        border-radius: 3px;
+        background-color: rgba(247,247,246,1);
+        width: 75px;
+      }
+
+
+      .date-box {
+        box-sizing: border-box;
+        height: 31px;
+        border: 1px solid rgba(216,213,209,1);
+        border-radius: 3px;
+        background-color: rgba(247,247,246,1);
+        vertical-align: middle;
+        width: 120px;
+        text-align: center;
+        color: rgba(74,74,74,0.7);
+        font-family: "Helvetica Neue";
+        font-size: 14px;
+        font-weight: 300;
+        line-height: 17px;
+      }
+
+      
+      .timepicker-box .bs-timepicker-field {
+        box-sizing: border-box;
+        height: 31px;
+        border: 1px solid rgba(216,213,209,1);
+        border-radius: 3px;
+        background-color: rgba(247,247,246,1);
+        text-align: center;
+        width: 35px;
+        font-family: "Helvetica Neue";
+        color: black !important;
+        font-size: 13px;
+        font-weight: 300;
+        line-height: 17px;
+      }
+    
+      .timepicker-icon {
+        padding: 12px 7px 0 0;
+      }
+    
+      .timepicker-box {
+        margin: 11px 10px 0 0;
+      }
+    
+      .timepicker-box .bs-chevron-up, .timepicker-box .bs-chevron-down {
+        margin: 0 auto;
+      }
+
+      .bs-chevron {
+        border-width: 3px 0 0 3px;
+        color: rgba(193, 189, 189,1);
+        width: 15px;
+        height: 15px;
+        cursor: pointer;
+      }
+
+      .timepicker-box {
+        margin: 12px 10px 0 0;
+      }
+
+      .timepicker-box .bs-chevron-down {
+        top: 0px;
+      }
+    
+      .timepicker-box .bs-chevron-up {
+        top: 10px;
+      }
+    
+      .timepicker-box .btn-link {
+        height: 25px;
+        display: block;
+      }
+    
+      .timepicker.clockIcon {
+        margin-left: 30px;
+      }
+    
+      .timepicker-label {
+        margin-bottom: 12px;
+      }
+    .page-background{
+        background-color: white;
+    }
+    .left{
+        width:47%;
+        margin-right: 3%;
+    }
+    .right{
+        width:47%;
+        margin-right: 3%;
+    }
+    .select-style {
+        max-width: 100% !important;
+      }
+      .select-text {
+        color: rgba(0, 0, 0, 1) !important;
+        font-family: "Helvetica Neue";
+        font-size: 14px;
+        font-weight: 300;
+        line-height: 17px;
+      }
+    
+      .select {
+        padding: 6px !important;
+      }
+      .project-box .text-input{
+        box-sizing: border-box;
+        height: 31px;
+        border: 1px solid rgba(216,213,209,1);
+        border-radius: 3px;
+        background-color: rgba(247,247,246,1);
+        width: 100%;
+      }
+
+    .notes-box{
+        box-sizing: border-box;
+        height: 100px;
+        border: 1px solid rgba(216,213,209,1);
+        border-radius: 3px;
+        width: 100%;
+        padding-top: 2px
+    }
+     
+    .day-row{
+        justify-content: center;
+        background-color:rgba(247, 247, 246, 1);
+        margin-top: 50px;
+        padding: 15px;
+    
+    }
+    .daySchedule{
+        width: 80%;
+    }
+    .state-box .text-input {
+        box-sizing: border-box;
+        height: 31px;
+        width:90%;
+        border: 1px solid rgba(216, 213, 209, 1);
+        border-radius: 2px;
+        background-color: rgba(247, 247, 246, 1);
+      }
+      .city-box .text-input {
+        box-sizing: border-box;
+        height: 31px;
+        width:83%;
+        border: 1px solid rgba(216, 213, 209, 1);
+        border-radius: 2px;
+        background-color: rgba(247, 247, 246, 1);
+      }
+      .right1{
+          width:20%;
+      }
+      .right2{
+          width: 30%;
+      }
+      .bottom-div{
+          width: 100%;
+          text-align: right;
+          height: 55%;
+          padding-top: 30px;
+      }
+      .submit-btn{
+        background-color: rgb(107, 142, 35);
+        text-transform: capitalize;
+        height: 28px !important;
+        border-radius: 3px;
+        border: none;
+        font-size: 12px !important;
+        cursor: pointer;
+        font-family: "Helvetica Neue";
+        padding: 10px;
+    }
+
+    .new-activity-btn{
+      background-color: #60b2d5 !important;
+      text-transform: capitalize;
+      height: 28px !important;
+      border-radius: 3px;
+      border: none;
+      font-size: 12px !important;
+      cursor: pointer;
+      font-family: "Helvetica Neue";
+      padding: 10px;
+  }
+
+    .cancel-btn{
+        background-color: rgba(155, 155, 155, 1);
+        text-transform: capitalize;
+        height: 28px !important;
+        border-radius: 3px;
+        border: none;
+        font-size: 12px !important;
+        cursor: pointer;
+        font-family: "Helvetica Neue";
+        padding: 10px;
+    }
+    .bottom-row{
+        margin-top: 20px;
+        padding: 30px;
+    }
+
+    .radio-md .radio-icon {
+      left: 0;
+      top: 0;
+      margin: 0;
+      border-radius: 50%;
+      position: relative;
+      display: block;
+      width: 16px;
+      height: 16px;
+      border-width: 2px;
+      border-style: solid;
+      border-color: #787878;
+    }
+    .radio-md .radio-inner {
+      border-radius: 50%;
+      background-color: #8eb15f;
+         }
+         .item-radio-checked.item-md ion-label {
+          color: #787878;
+        }
+        .bdr-btm {
+          border-bottom: 1px solid #e7e7e7;
+          
+          .left-div {
+            border-width: 1px 0px 1px 1px; 
+            border-style: solid; 
+            border-color: rgb(238, 238, 238); 
+            margin: 5px 0px 5px 5px; 
+            border-image: none;
+          }
+          .right-div {
+            border-width: 1px 1px 1px 0px; 
+            border-style: solid; 
+            border-color: rgb(238, 238, 238); 
+            margin: 5px 5px 5px 0px; 
+            border-image: none;
+          }
+          .more-margin {
+            margin-top: 5px;
+          }
+        }
+        .rd-ui{
+        margin:11px 10px 10px 4px !important;
+        }
+        .rd-lbl{
+          font-size: 16px;
+        }
+        .input-wrapper {
+          overflow: visible;
+        }
+
+        .des-lbl{
+          white-space:normal;
+          color:#e2951d;
+          font-size:13px;
+          background-color: #fae9c1;
+          padding:10px;
+          text-align:center;
+          max-width:100%;
+          margin-left:0% !important;
+          margin-top: 0px !important;
+          overflow: visible;
+        }
+
+        .error-msg{
+          font-size: 13px;
+          color:#cf3d11;
+          background-color: #fadbd8;
+          padding:20px;
+          text-align:center;
+          max-width:100%;
+          margin-left:0% !important;
+          margin-top: 0px !important;
+          overflow: visible;
+        }
+
+        .bottom-btn{
+          margin-top:10px;
+          float: right;
+          margin-right: 5%;
+        }
+        .banner-div{
+          width: 96%;
+          text-align: right;
+          height: 90px;
+          padding-top: 33px;
+        }
+        .info-icn{
+          width: 20px;
+          height: 20px;
+          margin-bottom: -6px;
+          margin-right: 10px;
+        }
+        
+}
+.ios non-clarity-page-time-entry{
+  .radio-ios .radio-checked .radio-inner {
+    left: 2px;
+    top: 2px;
+    position: absolute;
+    width: 5px;
+    height: 0px;
+    border-radius: 50%;
+    border-width: 5px;
+    border-style: solid;
+    border-color: rgb(107, 142, 35);
+    }
+    .radio-ios .radio-icon {
+      position: relative;
+      display: block;
+      width: 16px;
+      height: 16px;
+      border: 1px solid #9b9b9b;
+      border-radius: 50%;
+      }
+      .item-radio-checked.item-ios ion-label{
+        color: #9b9b9b;
+      }
+      .label + ion-input .text-input, .label + ion-textarea .text-input, .label + .input + .cloned-input{
+        margin-left: 0px;
+      }
+}

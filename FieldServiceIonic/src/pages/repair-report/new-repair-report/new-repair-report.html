@@ -1,0 +1,130 @@
+<ion-content padding>
+    <ion-card>
+        <ion-card-header>
+            <ion-row class="global-padding">
+                <div class="header-left">{{'New Repair Report' | translate}}</div>
+                <div class="header-right">
+                    <span class="label inline-block">{{'Business Group' | translate }}</span>
+                    <span class="validator inline-block"></span>
+                    <ion-select class="select-box select-style" [(ngModel)]="sdrReportObj.BUSINESSGROUP" tappable
+                        interface="popover">
+                        <ion-option disabled value="{{''}}">{{'Select Business Group' | translate }}</ion-option>
+                        <ion-option value="1">{{'Final Control' | translate}}</ion-option>
+                    </ion-select>
+                </div>
+            </ion-row>
+        </ion-card-header>
+        <ion-card-content>
+            <ion-row class="global-padding bgcolor">
+                <div class="fdo inline-block">
+                    <span class="label inline-block">{{'Field Diagnostic Only' | translate}}</span>
+                    <ion-toggle
+                        [disabled]="(sdrReportObj.FIELDREPAIR == 'true' || sdrReportObj.FIELDREPAIR == true) || (sdrReportObj.DEPOTREPAIR == 'true' || sdrReportObj.DEPOTREPAIR == true)"
+                        class="inline-block" (ngModelChange)="fdoToggle($event)" [(ngModel)]="sdrReportObj.FIELDSERVICEDIANOSTICONLY"></ion-toggle>
+                </div>
+                <div class="frdr inline-block">
+                    <div class="fdr inline-block">
+                        <span class="label inline-block">{{'Field Repair' | translate }}</span>
+                        <ion-checkbox
+                            [disabled]="(sdrReportObj.FIELDSERVICEDIANOSTICONLY == 'true' || sdrReportObj.FIELDSERVICEDIANOSTICONLY == true) || (sdrReportObj.DEPOTREPAIR == 'true' || sdrReportObj.DEPOTREPAIR == true)"
+                            [(ngModel)]="sdrReportObj.FIELDREPAIR" color="dark"></ion-checkbox>
+                    </div>
+                    <div class="dr inline-block">
+                        <span class="label inline-block">{{'Depot Repair' | translate }}</span>
+                        <ion-checkbox
+                            [disabled]="(sdrReportObj.FIELDSERVICEDIANOSTICONLY == 'true' || sdrReportObj.FIELDSERVICEDIANOSTICONLY == true) || (sdrReportObj.FIELDREPAIR == 'true' || sdrReportObj.FIELDREPAIR == true)"
+                            [(ngModel)]="sdrReportObj.DEPOTREPAIR" color="dark"></ion-checkbox>
+                    </div>
+                </div>
+                <div class="rd inline-block">
+                    <span class="block">
+                        <span class="label inline-block">{{'Repair Date' | translate }}</span>
+                        <span class="validator inline-block"></span>
+                    </span>
+
+                   <span class="inline-block">
+                        <input type="text"
+                     class="date-box inline-block"
+                     [disabled]="!isEnabled" bsDatepicker
+                     #datepicker="bsDatepicker" [(bsValue)]="sdrReportObj.REPAIRDATE"
+                     [bsConfig]="{dateInputFormat: 'DD-MMM-YYYY'}"
+                     value="{{sdrReportObj.REPAIRDATE | date:'dd-MMM-yyyy'}}" (onShown)="onShowPicker($event)">
+                   </span>
+                    <span class="inline-block"><img (click)="datepicker.show()" [attr.aria-expanded]="datepicker.isOpen"
+                            src="assets/imgs/icons/ic_calendar-for-field.png" class="calIcon pointer" /></span>
+                </div>
+                <div class="cb inline-block">
+                    <span class="label inline-block">{{'Created By' | translate }}</span>
+                    <ion-input class="project-box select-style" [disabled]="true" [readonly]="true"
+                        [(ngModel)]="sdrReportObj.CREATEDBYNAME"></ion-input>
+                </div>
+            </ion-row>
+            <ion-row class="global-padding">
+                <div class="css">
+                    <span class="label inline-block">{{'Customer Service Site' | translate }}</span>
+                    <span class="validator inline-block"></span>
+                    <ion-input [readonly]="true" tappable  [ngClass]="errorObj.CUSTOMERNAME ? 'validation-error' : '' "
+                        class="project-box searchNSelect select-style" (click)="showCustomerModal('CUSTOMERNAME')"
+                        [(ngModel)]="sdrReportObj.CUSTOMERNAME" [disabled]="isDisabled">
+                    </ion-input>
+                </div>
+                <div class="cpo">
+                    <span class="label inline-block">{{'Customer PO #' | translate}}</span>
+                    <ion-input class="project-box select-style" [(ngModel)]="sdrReportObj.CUSTOMERPO" maxlength="20">
+                    </ion-input>
+                </div>
+                <div class="spo">
+                    <span class="label inline-block">{{'Sales PO #' | translate}}</span>
+                    <ion-input class="project-box select-style" [(ngModel)]="sdrReportObj.SALESPO" maxlength="20">
+                    </ion-input>
+                </div>
+
+            </ion-row>
+            <ion-row class="global-padding">
+                <div class="ji">
+                    <span class="label inline-block">{{'Job ID' | translate }}</span>
+                    <span class="validator inline-block"></span>
+                    <ion-input [disabled]="isDisabled || disableJobID" [ngClass]="errorObj.JOBID ? 'validation-error' : '' " class="project-box select-style"
+                        [(ngModel)]="sdrReportObj.JOBID" (focusout)="clearValidation('JOBID')" maxlength="20">
+                    </ion-input>
+                </div>
+                <div class="wa">
+                    <span class="label inline-block">{{'World Area' | translate }}</span>
+                    <span class="validator inline-block"></span>
+                    <ion-input [ngClass]="errorObj.WORLDAREANAME ? 'validation-error' : '' "
+                        class="project-box searchNSelect select-style" [readonly]="true" tappable
+                        (click)="searchModal('WORLDAREANAME')" [(ngModel)]="sdrReportObj.WORLDAREANAME"
+                        >
+                    </ion-input>
+                </div>
+                <div class="ess">
+                    <span class="label inline-block">{{'Emerson Service Site' | translate}}</span>
+                    <span class="validator inline-block"></span>
+                    <ion-input [ngClass]="[errorObj.SERVICESITENAME ? 'validation-error' : '' , allEmservicesite.length==0 ? 'disable-content' : '']"
+                   [disabled]="allEmservicesite.length==0" class="project-box searchNSelect select-style" tappable
+                        (click)="searchModal('SERVICESITENAME')" [readonly]="true" [(ngModel)]="sdrReportObj.SERVICESITENAME">
+                    </ion-input>
+                </div>
+                <div class="pno">
+                    <span class="label inline-block">{{'Project #' | translate}}</span>
+                    <ion-input class="project-box select-style" [(ngModel)]="sdrReportObj.PROJECTNO" maxlength="20"></ion-input>
+                </div>
+            </ion-row>
+            <ion-row *ngIf="valueService.getSelectedprocess() != enums.Selected_Process.FCR" class="global-padding">
+                <div class="full-width">
+                    <span class="label block">{{'Scope of Work' | translate}}</span>
+                    <ion-textarea maxlength="4000" (focusout)="checkNotesLimit(sdrReportObj.SCOPEOFWORK)" rows="3" class="scope-box select-style"
+                        [(ngModel)]="sdrReportObj.SCOPEOFWORK"></ion-textarea>
+                </div>
+            </ion-row>
+            <ion-row class="footer-row">
+                <div class="inline-block footerLeft">
+                </div>
+                <div class="footerRight">
+                    <button ion-button class="save-btn"
+                        (click)="redirect()">{{'Device Selection' | translate }}</button>
+                </div>
+            </ion-row>
+        </ion-card-content>
+    </ion-card>
+</ion-content>

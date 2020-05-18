@@ -1,0 +1,64 @@
+<ion-header>
+  <ion-navbar>
+    <ion-buttons end>
+      <button ion-button class="closebtn" (click)="closeModal()">
+        <i class="fa fa-times fa-2x"></i>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+<ion-content>
+  <ion-row class="global-padding noteAllignment">
+    <ion-col col-7 text-left class="global-padding">
+      <div>
+        <ion-label class="label">{{'Note Type' | translate}}<span class="validator"></span></ion-label>
+        <ion-list radio-group [(ngModel)]="note_type" (ionChange)="CheckForIB()">
+          <ion-item no-lines no-padding *ngFor="let note of notetype" class="inline-block transparent">
+            <!-- 12-31-2018 -- Mansi Arora -- show installed base checkbox only if IsStandalone is false -->
+            <ion-label class="inline-block" *ngIf="(note.Value != 'Installed Base') || (note.Value == 'Installed Base' && (!valueService.getTask().IsStandalone || valueService.getTask().IsStandalone == 'false'))">{{ note.Value | translate }}</ion-label>
+            <ion-radio class="inline-block" item-left [value]="note.Value" *ngIf="(note.Value != 'Installed Base') || (note.Value == 'Installed Base' && (!valueService.getTask().IsStandalone || valueService.getTask().IsStandalone == 'false'))"></ion-radio>
+          </ion-item>
+        </ion-list>
+      </div>
+    </ion-col>
+    <div class="serviceInstallBase">
+      <ion-col no-padding text-left>
+        <ion-label class="label">{{'Service Date' | translate }}</ion-label>
+        <input type="text"
+               class="date-box inline-block"
+               [disabled]="!isEnabled"
+               bsDatepicker [(bsValue)]="date" #dp="bsDatepicker"
+               [bsConfig]="{dateInputFormat: 'DD-MMM-YYYY'}"
+               value="{{date | date:'dd-MMM-yyyy'}}" (onShown)="onShowPicker($event)">
+        <span><img (click)="dp.show()" [attr.aria-expanded]="dp.isOpen" src="assets/imgs/icons/ic_calendar-for-field.png" class="calIcon" /></span>
+      </ion-col>
+      <ion-col *ngIf="isInstallBase" text-left no-padding>
+        <ion-label class="label">{{'Installed Base' | translate }}<span class="validator"></span></ion-label>
+        <!--10-18-18 Radheshyam kumar addedd tappable attribute on evey ion-select to resolve the double click issue -->
+        <ion-select *ngIf="showSelects" tappable [disabled]="!ibList.length > 0" interface="popover" placeholder="{{'Select Installed Base' | translate}}" [(ngModel)]="IBase" name="IBase" [ngClass]="!IBase  ? 'select-validation field-box select-style' : 'field-box select-style'">
+          <ion-option disabled value="{{''}}">{{'Select Installed Base' | translate}}</ion-option>
+          <ion-option *ngFor="let item of ibList" [value]="item.InstalledBaseId">
+            <span *ngIf="item.System_ID">{{item.System_ID}}</span>
+            <span *ngIf="!item.System_ID">{{item.Item_Number}}<span *ngIf="item.Serial_Number">-</span>{{item.Serial_Number}}</span>
+          </ion-option>
+        </ion-select>
+      </ion-col>
+    </div>
+    <div text-left class="global-padding" style="width: 17%">
+      <ion-label class="label">{{'Created By' | translate}}</ion-label>
+      <span class="value block" style="word-wrap: break-word;margin-top: 15px;">{{createdBy}}</span>
+    </div>
+  </ion-row>
+  <ion-row>
+    <div class="full-width block">
+      <ion-textarea maxlength="2000" (keypress)="_keyPressInText($event)" class="commentBox1 global-padding value" placeholder="{{'Write Note Here' | translate}}" [(ngModel)]="comment"></ion-textarea>
+    </div>
+  </ion-row>
+  <ion-row>
+    <div class="full-width" text-center>
+      <button ion-button *ngIf="!title" [disabled]="comment == '' || note_type == '' || (isInstallBase && IBase == '')" class="save-btn btn" (click)="saveNotes('insert')">{{ 'Save' | translate }}</button>
+      <button ion-button *ngIf="title=='Edit'" [disabled]="comment == '' || note_type == '' || (isInstallBase && IBase == '')" class="save-btn btn" (click)="saveNotes('edit')">{{ 'Save' | translate }}</button>
+      <button ion-button *ngIf="title=='Copy'" [disabled]="comment == '' || note_type == '' || (isInstallBase && IBase == '')" class="save-btn btn" (click)="saveNotes('copy')">{{ 'Save' | translate }}</button>
+    </div>
+  </ion-row>
+</ion-content>

@@ -1,0 +1,51 @@
+<ion-content padding class="sdr-pages">
+  <ion-card>
+
+        <ion-card-header>
+            <ion-row class="global-padding row">
+                <ion-col col-3>
+                  <div class="header-left">{{'Report Notes'|translate}}</div>
+                </ion-col>
+                <ion-col col-9 *ngIf="selectedProcess==Enums.Selected_Process.FCR_AND_SDR" class="txt-rgt">
+                  <span class="ft-size verticalMiddle">Continue</span> <button (click)="goToFcr()" ion-button
+                    class="frs-Btn verticalMiddle ">{{'Field Completion Report'|translate}}</button>
+                </ion-col>
+              </ion-row>
+        </ion-card-header>
+        <page-sdr-header></page-sdr-header>
+        <ion-card-content>
+            <ion-row class="global-padding">
+                <div class="frec">
+                    <span class="label inline-block">{{'Repair Scope Completed' | translate}}</span>
+                    <ion-input class="project-box searchNSelect select-style" tappable
+                        (click)="searchModal('MenuReportNotes')" [readonly]="true"
+                        [(ngModel)]="reportNotesObj.REPAIRSCOPECOMPLETEDNAME" id="isoReportNotes_1">
+                    </ion-input>
+                    <ion-input maxlength="250" *ngIf="reportNotesObj.REPAIRSCOPECOMPLETEDNAME == 'Other'" class="project-box "
+                        [ngClass]="!reportNotesObj.REPAIRSCOPECOMPLETED_OT ? 'input-validation': '' "
+                        [(ngModel)]="reportNotesObj.REPAIRSCOPECOMPLETED_OT" id="isoReportNotes_2">
+                    </ion-input>
+                </div>
+            </ion-row>
+            <ion-row class="global-padding">
+                <div class="full-width">
+                    <span class="label inline-block"> {{'NOTES'|translate}}</span>
+                    <span class="validator inline-block"></span>
+                    <ion-textarea [(ngModel)]="reportNotesObj.NOTES" maxlength="1000"
+                        (focusout)="checkNotesLimit(reportNotesObj.NOTES)" placeholder="{{ placeHolder |translate}}"
+                        class="techNotes-box" rows="6" id="isoReportNotes_3"></ion-textarea>
+                </div>
+            </ion-row>
+            <ion-row class="footer-row">
+                <div class="inline-block footerLeft">
+                    <button ion-button class="save-btn footer-Button" (click)="redirect('back')"
+                        id="isoReportNotes_4">{{'Back' | translate }}</button>
+                </div>
+                <div class="footerRight">
+                    <button ion-button class="save-btn footer-Button" (click)="redirect('techNotes')"
+                        id="isoReportNotes_5">{{ bottomNavBtn | translate }}</button>
+                </div>
+            </ion-row>
+        </ion-card-content>
+    </ion-card>
+</ion-content>

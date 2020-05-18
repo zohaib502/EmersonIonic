@@ -1,0 +1,57 @@
+expandable {
+    background-color:#f8f8f8;
+    
+   
+    .days{
+        width:11.5%;
+        margin-right:1%;
+    }
+    .sq-box{
+        width: 50px;
+        height: 35px;
+        border: none;
+        background-color: white;
+        display: inline-block;
+        margin-top: 3px;
+        padding: 7px 0px 0px 0px;;
+        color:black;
+    }
+    .date-label{
+        display: block;
+    }
+    .day-col{
+        text-align: center;
+        color:rgba(155, 155, 155, 1);
+    }
+    .weekend-label{
+      color: red;
+    }
+   .submitted-sq-box{
+    width: 50px;
+    height: 35px;
+    border-bottom: 2px solid #60b2d5 !important;
+    background-color: white;
+    display: inline-block;
+    margin-top: 3px;
+    padding: 7px 0px 0px 0px;;
+    color:black; 
+   }
+   .disable-content {
+    pointer-events: none;
+    opacity: 0.7;    
+    color: rgba(0, 0, 0, 0.6);
+  }
+
+  .saved-sq-box{
+    width: 50px;
+    height: 35px;
+    border-bottom: 2px solid orange !important;
+    background-color: white;
+    display: inline-block;
+    margin-top: 3px;
+    padding: 7px 0px 0px 0px;;
+    color:black; 
+   }
+  
+   
+}

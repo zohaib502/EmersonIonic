@@ -1,0 +1,39 @@
+page-final-test {
+  .txt-left {
+    text-align: left;
+    font-size: 16px;
+  }
+  .chk-width {
+    width: 115%;
+  }
+ 
+  .cus-txt-area .text-input {
+    background-color: rgba(255, 255, 255, 1);
+    box-sizing: border-box;
+    border: 1px solid rgba(216, 213, 209, 1);
+    border-radius: 3px;
+    height: 100px;
+    color: rgba(128, 128, 128, 1);
+    width: 95%;
+  }
+  .item-md {
+    padding: 0px !important;
+  }
+  .post-test {
+    color: #318c41;
+  }
+ 
+  .checkboxLabel {
+    vertical-align: middle;
+    min-width: 100px;
+    vertical-align: top;
+  }
+  .textbox {
+    width: 70%;
+
+    .pre-test,
+    .post-test {
+      display: block;
+    }
+  }
+}

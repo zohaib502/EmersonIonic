@@ -1,0 +1,309 @@
+page-summary {
+
+  .onCompleted .scroll-content {
+    margin-top: 56px;
+  }
+
+  .taskoverflow-notes .stroke {
+    margin: 5px 0 !important;
+  }
+
+  .taskoverflow-notes {
+    margin: 5px;
+  }
+
+  .notes .stroke {
+    margin: 6px 0 !important;
+  }
+
+  .notes a:hover {
+    color: rgba(255, 64, 129, 1);
+  }
+
+  .validation {
+    border: 1px solid red !important;
+  }
+
+  .notes-date-type {
+    color: #4a4a4a;
+    font-family: "Helvetica Neue";
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 17px;
+    margin-bottom: 5px;
+    text-transform: capitalize;
+  }
+
+  .created-by {
+    color: rgba(74, 74, 74, 1);
+    font-family: "Helvetica Neue";
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 17px;
+    margin-bottom: 5px;
+  }
+
+  .center-align {
+    text-align: center;
+  }
+
+  .signature-UI {
+    color: rgba(74, 74, 74, 1) !important;
+    font-family: "Helvetica Neue";
+    font-size: 16px !important;
+    line-height: 18px !important;
+    margin-top: 2% !important;
+    text-align: center;
+  }
+
+  .verify-password-box {
+    width: 440px !important;
+    height: 180px !important;
+    border-radius: 3px !important;
+    background-color: #FFFFFF;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+    position: fixed;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    left: 50%;
+    z-index: 2;
+    border: 1px solid rgba(0, 0, 0, .2);
+    border-radius: 6px;
+  }
+
+  .password-box {
+    box-sizing: border-box;
+    height: 31px;
+    border: 1px solid rgba(216, 213, 209, 1);
+    border-radius: 2px;
+    background-color: rgba(247, 247, 246, 1);
+    margin: 0 15px 0 0;
+    width: 85%;
+  }
+
+  .verify-box-title {
+    color: black;
+    font-family: "Helvetica Neue";
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 22px;
+    vertical-align: middle;
+    height: 32px;
+    padding: 9px 9px 25px 7px;
+  }
+
+  .verify-btn {
+    background: rgba(142, 177, 95, 1);
+    border-radius: 5px !important;
+    text-transform: capitalize;
+  }
+
+  .verify-submit-btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  .summary-report-pdfbtn {
+    height: 28px;
+    width: 26px;
+    cursor: pointer;
+    vertical-align: middle;
+  }
+
+  .summary-report-printbtn {
+    height: 22px;
+    width: 28px;
+    cursor: pointer;
+    vertical-align: middle;
+  }
+
+  .summary-report-emailbtn {
+    height: 19px;
+    width: 28px;
+    cursor: pointer;
+    vertical-align: middle;
+  }
+
+  .summary-duration {
+    padding-left: 20px;
+  }
+
+  .summary-reviewBtn {
+    margin: 10px auto;
+  }
+
+  .summary-report-backbtn {
+    min-width: 60px;
+    height: 30px;
+    background-color: rgba(142, 177, 95, 1);
+    border-radius: 3px;
+    color: rgba(255, 255, 255, 1);
+    font-family: "Helvetica Neue";
+    font-size: 14px;
+    line-height: 16px;
+    text-align: center;
+    border: none !important;
+    vertical-align: middle;
+  }
+
+  .summary-report-SDRbtn {
+    min-width: 60px;
+    height: 30px;
+    background-color: rgba(224, 172, 7, 1) !important;
+    color: rgba(255, 255, 255, 1) !important;
+    border-radius: 3px;
+    font-family: "Helvetica Neue";
+    font-size: 14px;
+    line-height: 16px;
+    text-align: center;
+    border: none !important;
+    vertical-align: middle;
+  }
+
+  .completed-msg {
+    margin: 0 0 0 4px;
+    height: 18px;
+    width: 18px;
+    background-color: rgba(126, 211, 33, 1);
+    border-radius: 50%;
+    vertical-align: middle;
+  }
+
+  .summary-footer {
+    padding: 10px 10px 0 10px;
+  }
+
+  .summary-sign-label {
+    font-family: "Helvetica Neue";
+    font-weight: 700;
+    text-align: center;
+  }
+
+  .attachment-box {
+    text-align: center;
+  }
+
+  .summarySerialblock {
+    word-wrap: break-word;
+    word-break: break-all;
+    margin-bottom: 5px;
+  }
+
+  .summarySerialInblock,
+  .summarySerialOutblock {
+    word-wrap: break-word;
+    word-break: break-all;
+    margin-bottom: 5px;
+    width: 49%;
+  }
+
+  .summarySerialOutblock {
+    // margin: 0 1% 0 3%;
+    padding-left: 2%;
+  }
+
+  .timestamp {
+    margin-left: 10px;
+  }
+
+  .summary-companyName {
+    white-space: normal;
+    max-width: 100%;
+  }
+
+  .attachment-name-box {
+    background-color: #f7f7f6;
+    padding: 5px 3px;
+    border: 1px solid #8eb15f;
+    border-radius: 3px;
+    white-space: normal;
+    text-align: center;
+    color: #4e4c4c;
+    font-family: "Helvetica Neue";
+    font-size: 15px;
+    font-weight: 500;
+    width: 130px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .unsubmitted-summary-header {
+    width: 20%;
+    padding-right: 2%;
+    text-align: left;
+  }
+
+  .submitted-summary-header {
+    width: 27%;
+    padding-right: 2%;
+    text-align: left;
+  }
+
+  .summary-jd-table {
+    width: 22%;
+    padding: 5px;
+    text-align: left;
+  }
+
+  .sm-mth-cm,
+  .sm-mth-q,
+  .sm-mth-s,
+  .sm-mth-id,
+  .sm-mth-uom,
+  .sm-mth-in {
+    width: 13%;
+    text-align: left;
+    margin-right: 1%;
+  }
+
+  .sm-mth-si,
+  .sm-mth-so {
+    width: 13%;
+    text-align: left;
+    margin-right: 1%;
+  }
+
+  .sm-mth-si-so {
+    width: 27%;
+    text-align: left;
+    margin: 0 1% 10px 0;
+  }
+
+  .sm-mth-icon {
+    width: 12%;
+  }
+
+  .question_label {
+    padding: 10px 0;
+    font-family: "Helvetica Neue";
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 24px;
+    color: rgba(155, 155, 155, 1);
+  }
+
+  .start-Date-Style {
+    color: rgb(107, 142, 35);
+    font-size: 13px;
+  }
+
+  .end-Date-Style {
+    color: rgb(216, 21, 21);
+    font-size: 13px
+  }
+
+  .strippedBackground {
+    background-color: rgba(248, 248, 248, 1);
+    border-bottom: solid;
+    border-bottom-color: #d2d2d2;
+  }
+}
+
+.ios page-summary {
+
+  .summary-report-pdfbtn,
+  .summary-report-printbtn,
+  .summary-report-emailbtn {
+    cursor: default !important;
+  }
+}

@@ -1,0 +1,48 @@
+page-timesheet-dropdown {
+.LookupValues{
+    width: 100%;
+    text-align: center;
+    padding: 10px;
+}
+.search-modal,
+  ion-header,
+  .scroll-content {
+    background: #fff !important;
+  }
+
+  ion-navbar {
+    height: auto !important;
+  }
+  .toolbar {
+    border-bottom: 1px solid rgba(233, 232, 232, 1) !important;
+  }
+  
+  ion-searchbar {
+    padding: 0px !important;
+  }
+   .modal-wrapper .toolbar-title{
+     text-align: center;
+   }
+   .selectOpt{
+    width: 100%;
+    float: right;
+    text-align: right;
+    padding: 10px;
+   }
+   .select-btn{
+    background-color: rgb(107, 142, 35);
+    text-transform: capitalize;
+    height: 28px !important;
+    border-radius: 3px;
+    border: none;
+    font-size: 14px !important;
+    cursor: pointer;
+    font-family: "Helvetica Neue";
+    padding: 10px;
+   }
+   .scrollContent {
+    overflow-x: hidden;
+    overflow-y: auto;
+    height: 480px; 
+  }
+}

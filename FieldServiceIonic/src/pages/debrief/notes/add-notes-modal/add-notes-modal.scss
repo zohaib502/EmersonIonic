@@ -1,0 +1,187 @@
+
+page-add-notes-modal {
+
+  .label {
+    margin: 0px;
+  }
+
+  ion-footer {
+    text-align: center;
+    margin: 30px 0;
+  }
+
+  .commentBox1 .text-input {
+    width: 100%;
+    height: 200px;
+    padding: 10px !important;
+    background-color: rgba(216,216,216,0.2);
+    border: 1px solid rgba(216,216,216,0.2);
+  }
+
+  .noteAllignment {
+    margin-top: -2%;
+    height: 40%;
+  }
+
+  .clear-button {
+    border: none;
+    font-size: 14px;
+    color: #FFFFFF;
+    border-radius: 3px;
+    background-color: #8EB15F;
+  }
+
+  .date-box {
+    opacity: 0.7;
+    box-sizing: border-box;
+    height: 31px;
+    border: 1px solid rgba(216,213,209,1);
+    border-radius: 3px;
+    background-color: rgba(247,247,246,1);
+    vertical-align: middle;
+    width: 120px;
+    text-align: center;
+    color: rgba(74,74,74,0.7);
+    font-family: "Helvetica Neue";
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 17px;
+  }
+
+  .field-box {
+    box-sizing: border-box;
+    height: 31px;
+    border: 1px solid rgba(216,213,209,1);
+    border-radius: 3px;
+    background-color: rgba(247,247,246,1);
+    width: 148px;
+  }
+
+  .select-style {
+    max-width: 100% !important;
+  }
+
+  .select-text {
+    color: rgba(0,0,0,1) !important;
+    font-family: "Helvetica Neue";
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 17px;
+  }
+
+  .select {
+    padding: 6px !important;
+  }
+
+  .datetime {
+    padding: 0 5px;
+  }
+
+  .datetime-text {
+    line-height: 28px !important;
+    vertical-align: middle;
+    color: rgba(74,74,74,0.7);
+    font-family: "Helvetica Neue";
+    font-size: 14px;
+    font-weight: 300;
+  }
+
+  .radio .radio-icon {
+    left: 0;
+    top: 0;
+    margin: 0;
+    border-radius: 0%;
+    position: relative;
+    display: block;
+    width: 18px;
+    height: 18px;
+    border-width: 2px;
+    border-style: solid;
+    border-color: rgba(216,216,216,1);
+    background: white;
+  }
+
+  .radio .radio-inner {
+    position: absolute;
+    top: 0px!important;
+    left: 4px!important;
+    height: 8px;
+    width: 8px;
+    border-radius: 0px;
+    background-color: white;
+    transition: none;
+  }
+
+  .radio .radio-checked .radio-inner {
+    -ms-transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+    transform: rotate(45deg);
+    height: 12px;
+    display: inline-block;
+    width: 6px;
+    border: solid black;
+    border-width: 0 2px 2px 0;
+  }
+
+  [offset-5] {
+    margin-left: 45.66667%;
+  }
+
+  .list .item-block .item-inner {
+    vertical-align: middle;
+    display: inline-block;
+  }
+
+  .item-block {
+    width: unset;
+  }
+
+  .item .radio {
+    margin: 9px 9px 0 9px !important;
+  }
+
+  .serviceInstallBase {
+    padding-top: 12px;
+    margin: 0 20px;
+  }
+}
+
+.AddNotesModalPage {
+
+  .modal-wrapper {
+    height: 490px;
+    width: 850px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%) !important;
+    position: fixed;
+  }
+
+  .modal-wrapper .scroll-content {
+    background-color: rgba(255,255,255,1) !important;
+    color: rgba(74,74,74,1);
+    font-family: "Helvetica Neue";
+    font-size: 18px;
+    font-weight: 300;
+    line-height: 28px;
+    text-align: center;
+    overflow-y: auto;
+    padding: 0px!important;
+  }
+
+  .modal-wrapper .toolbar-title {
+    color: rgba(74,74,74,1);
+    font-family: "Helvetica Neue";
+    font-size: 22px;
+    font-weight: 300;
+    line-height: 27px;
+    text-align: left;
+  }
+
+  .toolbar {
+    height: 52px !important;
+    border-bottom: 1px solid rgba(233, 232, 232,1) !important;
+  }
+}

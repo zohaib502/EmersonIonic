@@ -1,0 +1,2218 @@
+<ion-content padding class="page-background sdr-pages">
+  <ion-card class="CardSection">
+    <ion-card-header>
+      <ion-row class="global-padding row">
+        <ion-col col-8>
+          <div class="header-left">{{'Solution' | translate}}</div>
+        </ion-col>
+        <ion-col class="txt-rgt">
+          <div name="goToFcrBtn" *ngIf="selectedProcess == Enums.Selected_Process.FCR_AND_SDR" class="txt-rgt">
+            <span class="ft-size">{{'Continue'|translate}}</span> <button (click)="goToFcr()" ion-button
+              class="frs-Btn no-margin" name="iso_as_found_1">{{'Field Completion Report'|translate}}</button>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-card-header>
+    <page-sdr-header></page-sdr-header>
+
+    <ion-card-content class="card-content">
+      <!--Solution Calibration Block-->
+
+      <div
+        *ngIf="deviceId == Enums.FlowIsolationProductId.ControlValve || deviceId == Enums.FlowIsolationProductId.Isolation || deviceId == Enums.FlowIsolationProductId.Instrument"
+        class="global-padding">
+        <ion-row>
+          <ion-col>
+            <span class="acc-label">{{'As Left Performance'|translate}}</span>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+
+          <ion-col col-6>
+            <span class="acc-label">{{'Calibration Technician'|translate}}</span>
+            <!-- <span
+              [ngClass]="calibrationSolObj.CAL_TRAVEL_UOM && calibrationSolObj.CAL_TRAVEL_UOM !=''? 'validator'  :''"
+              class="inline-block"></span> -->
+            <br>
+            <ion-input maxlength="250" id="cal_input_1" [(ngModel)]="calibrationSolObj.CAL_TECHNICIAN"
+              class="project-box  select-style">
+            </ion-input>
+          </ion-col>
+          <ion-col col-6>
+            <span class="acc-label">{{'Signal Open'|translate}}</span>
+            <span
+              [ngClass]="calibrationSolObj.CAL_SIGNALOPEN_UOM && calibrationSolObj.CAL_SIGNALOPEN_UOM !=''? 'validator'  :''"
+              class="inline-block"></span>
+            <br>
+            <ion-input maxlength="250"
+              [ngClass]="errorObj.CAL_SIGNALOPEN && errorObj.CAL_SIGNALOPEN !='' ? 'input-validation'  :''"
+              id="cal_input_2" [(ngModel)]="calibrationSolObj.CAL_SIGNALOPEN" class="project-box  select-style">
+            </ion-input>
+          </ion-col>
+
+        </ion-row>
+        <ion-row>
+          <ion-col col-6>
+            <span class="acc-label">{{'Travel'|translate}}</span>
+            <span
+              [ngClass]="calibrationSolObj.CAL_TRAVEL_UOM && calibrationSolObj.CAL_TRAVEL_UOM !=''? 'validator'  :''"
+              class="inline-block"></span>
+            <br>
+            <ion-input maxlength="250"
+              [ngClass]="errorObj.CAL_TRAVEL && errorObj.CAL_TRAVEL !='' ? 'input-validation'  :''" id="cal_input_3"
+              [(ngModel)]="calibrationSolObj.CAL_TRAVEL" class="project-box  select-style">
+            </ion-input>
+          </ion-col>
+
+          <ion-col col-6>
+            <span class="acc-label">{{'Signal Open Unit Of Mesurement'|translate}}</span>
+            <span [ngClass]="calibrationSolObj.CAL_SIGNALOPEN&&calibrationSolObj.CAL_SIGNALOPEN !=''? 'validator'  :''"
+              class="inline-block"></span>
+            <br>
+            <ion-input maxlength="250"
+              [ngClass]="errorObj.CAL_SIGNALOPEN_UOM && errorObj.CAL_SIGNALOPEN_UOM !='' ? 'input-validation'  :''"
+              [(ngModel)]="calibrationSolObj.CAL_SIGNALOPEN_UOM" id="cal_input_4" tappable
+              (click)="searchCalModal('CalibrationAsFoundAsLeftSignalOpenUnitOfMeasurementFlowIsolation','CAL_SIGNALOPEN_UOM')"
+              class="project-box searchNSelect select-style" [readonly]="true">
+            </ion-input>
+            <ion-input maxlength="250" *ngIf="calibrationSolObj.CAL_SIGNALOPEN_UOM == 'Other'" id="cal_input_5"
+              [(ngModel)]="calibrationSolObj.CAL_SIGNALOPEN_UOM_OT"
+              [ngClass]="!calibrationSolObj.CAL_SIGNALOPEN_UOM_OT ? 'input-validation' : ''"
+              class="project-box  select-style">
+            </ion-input>
+          </ion-col>
+        </ion-row>
+        <!-- <ion-row>
+          <ion-col col-6>
+  
+            <ion-input maxlength="250"  id="cal_input_5" class="project-box input-validation   select-style">
+            </ion-input>
+          </ion-col>
+          <ion-col col-6>
+  
+            <ion-input maxlength="250"  id="cal_input_6" class="project-box select-style">
+            </ion-input>
+          </ion-col>
+  
+        </ion-row> -->
+        <ion-row>
+          <ion-col col-6>
+            <span class="acc-label">{{'Travel UOM'|translate}}</span>
+            <span [ngClass]="calibrationSolObj.CAL_TRAVEL&&calibrationSolObj.CAL_TRAVEL !=''? 'validator'  :''"
+              class="inline-block"></span>
+            <br>
+            <ion-input maxlength="250"
+              [ngClass]="errorObj.CAL_TRAVEL_UOM && errorObj.CAL_TRAVEL_UOM !='' ? 'input-validation'  :''"
+              [(ngModel)]="calibrationSolObj.CAL_TRAVEL_UOM" id="cal_input_CAL_TRAVEL_UOM" tappable
+              (click)="searchCalModal('TravelUOMFlowIsolation','CAL_TRAVEL_UOM')"
+              class="project-box searchNSelect select-style" [readonly]="true">
+            </ion-input>
+            <ion-input maxlength="250" id="cal_input_6" *ngIf="calibrationSolObj.CAL_TRAVEL_UOM == 'Other'"
+              [(ngModel)]="calibrationSolObj.CAL_TRAVEL_UOM_OT"
+              [ngClass]="!calibrationSolObj.CAL_TRAVEL_UOM_OT ? 'input-validation' : ''"
+              class="project-box  select-style">
+            </ion-input>
+          </ion-col>
+
+          <ion-col col-6>
+            <span class="acc-label">{{'Signal Closed'|translate}}</span>
+            <span
+              [ngClass]="calibrationSolObj.CAL_SIGNALCLOSED_UOM&&calibrationSolObj.CAL_SIGNALCLOSED_UOM !=''? 'validator'  :''"
+              class="inline-block"></span>
+            <br>
+            <ion-input maxlength="250"
+              [ngClass]="errorObj.CAL_SIGNALCLOSED && errorObj.CAL_SIGNALCLOSED !='' ? 'input-validation'  :''"
+              id="cal_input_7" [(ngModel)]="calibrationSolObj.CAL_SIGNALCLOSED" class="project-box  select-style">
+            </ion-input>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col col-6>
+            <span class="acc-label">{{'Bench Set'|translate}}</span>
+            <span [ngClass]="calibrationSolObj.CAL_BENCH_UOM&&calibrationSolObj.CAL_BENCH_UOM !=''? 'validator'  :''"
+              class="inline-block"></span>
+            <br>
+            <ion-input maxlength="250"
+              [ngClass]="errorObj.CAL_BENCHSET && errorObj.CAL_BENCHSET !='' ? 'input-validation'  :''"
+              [(ngModel)]="calibrationSolObj.CAL_BENCHSET" id="cal_input_8" class="project-box  select-style">
+            </ion-input>
+          </ion-col>
+
+          <ion-col col-6>
+            <span class="acc-label">{{'Signal Closed UOM'|translate}}</span>
+            <span
+              [ngClass]="calibrationSolObj.CAL_SIGNALCLOSED&&calibrationSolObj.CAL_SIGNALCLOSED !=''? 'validator'  :''"
+              class="inline-block"></span>
+            <br>
+            <ion-input maxlength="250" id="cal_input_9" tappable
+              [ngClass]="errorObj.CAL_SIGNALCLOSED_UOM && errorObj.CAL_SIGNALCLOSED_UOM !='' ? 'input-validation'  :''"
+              [(ngModel)]="calibrationSolObj.CAL_SIGNALCLOSED_UOM"
+              (click)="searchCalModal('CalibrationAsFoundAsLeftSignalClosedUnitOfMeasurementFlowIsolation','CAL_SIGNALCLOSED_UOM')"
+              class="project-box searchNSelect select-style" [readonly]="true">
+            </ion-input>
+            <ion-input maxlength="250" *ngIf="calibrationSolObj.CAL_SIGNALCLOSED_UOM == 'Other'" id="cal_input_10"
+              [(ngModel)]="calibrationSolObj.CAL_SIGNALCLOSED_UOM_OT"
+              [ngClass]="!calibrationSolObj.CAL_BENCH_UOM_OT ? 'input-validation' : ''"
+              class="project-box  select-style">
+            </ion-input>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col col-6>
+            <span class="acc-label">{{'Bench Unit Of Mesurement'|translate}}</span>
+            <span [ngClass]="calibrationSolObj.CAL_BENCHSET&&calibrationSolObj.CAL_BENCHSET !=''? 'validator'  :''"
+              class="inline-block"></span>
+            <br>
+            <ion-input maxlength="250"
+              [ngClass]="errorObj.CAL_BENCH_UOM && errorObj.CAL_BENCH_UOM !='' ? 'input-validation'  :''"
+              [(ngModel)]="calibrationSolObj.CAL_BENCH_UOM" id="cal_input_11" tappable
+              (click)="searchCalModal('CalibrationAsFoundAsLeftSignalOpenUnitOfMeasurementFlowIsolation','CAL_BENCH_UOM')"
+              class="project-box searchNSelect select-style" [readonly]="true">
+            </ion-input>
+            <ion-input maxlength="250" *ngIf="calibrationSolObj.CAL_BENCH_UOM == 'Other'"
+              [(ngModel)]="calibrationSolObj.CAL_BENCH_UOM_OT" id="cal_input_ot_12"
+              [ngClass]="!calibrationSolObj.CAL_BENCH_UOM_OT ? 'input-validation' : ''"
+              class="project-box  select-style">
+            </ion-input>
+          </ion-col>
+          <ion-col col-6>
+            <span class="acc-label">{{'Supply'|translate}}</span>
+            <span [ngClass]="calibrationSolObj.CAL_SUPPLY_UOM&&calibrationSolObj.CAL_SUPPLY_UOM !=''? 'validator'  :''"
+              class="inline-block"></span>
+            <br>
+            <ion-input maxlength="250"
+              [ngClass]="errorObj.CAL_SUPPLY && errorObj.CAL_SUPPLY !='' ? 'input-validation'  :''" id="cal_input_13"
+              [(ngModel)]="calibrationSolObj.CAL_SUPPLY" class="project-box  select-style">
+            </ion-input>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col col-6>
+
+          </ion-col>
+          <ion-col col-6>
+            <span class="acc-label">{{'Supply UOM'|translate}}</span>
+            <span [ngClass]="calibrationSolObj.CAL_SUPPLY&&calibrationSolObj.CAL_SUPPLY !=''? 'validator'  :''"
+              class="inline-block"></span>
+            <br>
+            <ion-input maxlength="250" id="cal_input_14"
+              [ngClass]="errorObj.CAL_SUPPLY_UOM && errorObj.CAL_SUPPLY_UOM !='' ? 'input-validation'  :''"
+              [(ngModel)]="calibrationSolObj.CAL_SUPPLY_UOM" tappable
+              (click)="searchCalModal('SupplyUOM','CAL_SUPPLY_UOM')" class="project-box searchNSelect select-style"
+              [readonly]="true">
+            </ion-input>
+            <ion-input maxlength="250" id="cal_input_15"
+              [ngClass]="!calibrationSolObj.CAL_SUPPLY_UOM_OT ? 'input-validation' : ''"
+              *ngIf="calibrationSolObj.CAL_SUPPLY_UOM == 'Other'" [(ngModel)]="calibrationSolObj.CAL_SUPPLY_UOM_OT"
+              class="project-box  select-style">
+            </ion-input>
+          </ion-col>
+        </ion-row>
+        <!-- <ion-row>
+            <ion-col col-6>
+  
+            </ion-col>
+            <ion-col col-6>
+              <span class="acc-label">{{'Other'|translate}}</span><br>
+              <ion-input maxlength="250"  id="cal_input_8" tappable  [(ngModel)]="calibrationSolObj.CAL_SUPPLYUOM_OT"
+                class="project-box searchNSelect select-style" [readonly]="true">
+              </ion-input>
+            </ion-col>
+          </ion-row> -->
+        <ion-row>
+          <ion-col col-6>
+
+          </ion-col>
+          <ion-col col-6>
+            <span class="acc-label">{{'Fail Action'|translate}}</span>
+            <br>
+            <ion-input maxlength="250" id="cal_input_16" tappable [(ngModel)]="calibrationSolObj.CAL_FAILACTION"
+              (click)="searchCalModal('FailActionFlowIsolation','CAL_FAILACTION')"
+              class="project-box searchNSelect select-style" [readonly]="true">
+            </ion-input>
+            <ion-input maxlength="250" id="cal_input_17" *ngIf="calibrationSolObj.CAL_FAILACTION == 'Other'"
+              [ngClass]="!calibrationSolObj.CAL_FAILACTION_OT ? 'input-validation' : ''"
+              [(ngModel)]="calibrationSolObj.CAL_FAILACTION_OT" class="project-box  select-style">
+            </ion-input>
+          </ion-col>
+        </ion-row>
+      </div>
+
+      <!--Block End-->
+      <ion-row>
+        <div class="body-radio-box inline-block">
+          <span>{{'Construction Changed? ' | translate}}</span>
+          <span class="smart-search-radio inline-block">{{'Yes' | translate}}</span>
+          <input type="radio" value="Yes" [(ngModel)]="solutionObj.ISCONSTRUCTIONCHANGES"
+            [checked]="solutionObj.ISCONSTRUCTIONCHANGES == 'Yes'">
+        </div>
+        <div class="consRadio inline-block">
+          <span class="smart-search-radio  inline-block">{{'No' | translate}}</span>
+          <input type="radio" value="No" (click)="setConstructionChangeNo()"
+            [(ngModel)]="solutionObj.ISCONSTRUCTIONCHANGES" [checked]="solutionObj.ISCONSTRUCTIONCHANGES == 'No'">
+        </div>
+      </ion-row>
+      <div
+        [ngClass]="(solutionObj.ISCONSTRUCTIONCHANGES == 'NA' || solutionObj.ISCONSTRUCTIONCHANGES == 'No')? 'disable-content global-padding' : 'global-padding'">
+        <ion-row
+          *ngIf="deviceId != Enums.FlowIsolationProductId.Controller && deviceId != Enums.FlowIsolationProductId.TrimOnly">
+          <ion-item class="WF-toggle toggle-all-accordion">
+            <ion-label *ngIf="toggleAllaccordion == false" text-right>{{'Expand all' | translate}}</ion-label>
+            <ion-label *ngIf="toggleAllaccordion == true" text-right>{{'Collapse all' | translate}}</ion-label>
+            <ion-toggle [disabled]="toggleDisable" [(ngModel)]="toggleAllaccordion" (ionChange)="toggleAccordion()"
+              name="iso_as_found_2">
+            </ion-toggle>
+          </ion-item>
+        </ion-row>
+
+        <!-- CV start-->
+        <span *ngIf="deviceId == Enums.FlowIsolationProductId.ControlValve">
+          <!-- Body Accordion -->
+          <ion-row class="customRows">
+            <div class="full-width">
+              <span name="BodyCVBtn"
+                [ngClass]="solutionObj.CV_BODY_NA == 'true' || solutionObj.CV_BODY_NA == true ? 'disable-content' : ''"
+                (click)="expandOuter('BodyCV')">
+                <ion-icon *ngIf="!expandOuterAccordion.BodyCV" class="arrowIcon" role="img" aria-label="arrow dropdown"
+                  item-left name="arrow-dropright">
+                </ion-icon>
+                <ion-icon *ngIf="expandOuterAccordion.BodyCV" class="arrowIcon" role="img" aria-label="arrow dropdown"
+                  name="arrow-dropdown">
+                </ion-icon>
+                <span class="label pointer inline-block header">{{'Body' | translate}}</span>
+              </span>
+              <span class="inline-block pull-right marginRight25">
+                <span class="label">{{'N/A' | translate}}</span>
+                <ion-checkbox name="CV_BODY_NA" (click)="confirmAlert(solutionObj.CV_BODY_NA, 'BodyCV', 'CV_BODY_NA')"
+                  [(ngModel)]="solutionObj.CV_BODY_NA"
+                  [checked]="solutionObj.CV_BODY_NA == 'true' || solutionObj.CV_BODY_NA == true">
+                </ion-checkbox>
+              </span>
+              <div *ngIf="expandOuterAccordion.BodyCV" class="full-width">
+                <ion-row>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'Make' | translate}}</span>
+                    <!-- <span class="validator inline-block"></span> -->
+                    <ion-input maxlength="250" [readonly]="true" [(ngModel)]="solutionObj.CV_BODY_MAKE"
+                      name="solutionObj.CV_BODY_MAKE"
+                      (click)="searchModal(0,'MakeControlValveBody','CV_BODY_MAKE','MAKE')" tappable
+                      [ngClass]="(!solutionObj.CV_BODY_MAKE && isNotValidated) ? 'validation-error' : ''"
+                      class="project-box searchNSelect select-style">
+                    </ion-input>
+                    <ion-input maxlength="250" *ngIf="solutionObj.CV_BODY_MAKE == 'Other'"
+                      [(ngModel)]="solutionObj.CV_BODY_MAKE_OT" name="solutionObj.CV_BODY_MAKE_OT"
+                      [ngClass]="!solutionObj.CV_BODY_MAKE_OT ? 'validation-error' : ''"
+                      class="project-box select-style otherBox"> </ion-input>
+                  </div>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'Pressure Class' | translate}}</span>
+                    <ion-input maxlength="250" [readonly]="true" [(ngModel)]="solutionObj.CV_BODY_PRESSURECLASS"
+                      name="solutionObj.CV_BODY_PRESSURECLASS"
+                      (click)="searchModal(0,'PressureClassFlowIsolation','CV_BODY_PRESSURECLASS')" tappable
+                      class="project-box searchNSelect select-style">
+                    </ion-input>
+                    <ion-input maxlength="250" *ngIf="solutionObj.CV_BODY_PRESSURECLASS == 'Other'"
+                      [(ngModel)]="solutionObj.CV_BODY_PRESSURECLASS_OT" name="solutionObj.CV_BODY_PRESSURECLASS_OT"
+                      [ngClass]="!solutionObj.CV_BODY_PRESSURECLASS_OT ? 'validation-error' : ''"
+                      class="project-box select-style otherBox"> </ion-input>
+                  </div>
+                </ion-row>
+                <ion-row>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'Model' | translate}}</span>
+                    <ion-input maxlength="250" [readonly]="true" [(ngModel)]="solutionObj.CV_BODY_MODEL"
+                      name="solutionObj.CV_BODY_MODEL"
+                      (click)="searchModal(0,'ModelControlValveBody','CV_BODY_MODEL','MODEL')" tappable
+                      [ngClass]="isModelLOVsE['CV_BODY_MODEL'] ? 'searchNSelect' : ''"
+                      [disabled]="!isModelLOVsE['CV_BODY_MODEL']" class="project-box select-style">
+                    </ion-input>
+                    <ion-input maxlength="250" *ngIf="solutionObj.CV_BODY_MODEL == 'Other'"
+                      [(ngModel)]="solutionObj.CV_BODY_MODEL_OT" name="solutionObj.CV_BODY_MODEL_OT"
+                      [ngClass]="!solutionObj.CV_BODY_MODEL_OT ? 'validation-error' : ''"
+                      class="project-box select-style otherBox"> </ion-input>
+                  </div>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'End Connection' | translate}}</span>
+                    <ion-input maxlength="250" [readonly]="true" [(ngModel)]="solutionObj.CV_BODY_ENDCONNECTION"
+                      name="solutionObj.CV_BODY_ENDCONNECTION"
+                      (click)="searchModal(0,'EndConnectionFlowIsolation','CV_BODY_ENDCONNECTION')" tappable
+                      class="project-box searchNSelect select-style">
+                    </ion-input>
+                    <ion-input maxlength="250" *ngIf="solutionObj.CV_BODY_ENDCONNECTION == 'Other'"
+                      [(ngModel)]="solutionObj.CV_BODY_ENDCONNECTION_OT" name="solutionObj.CV_BODY_ENDCONNECTION_OT"
+                      [ngClass]="!solutionObj.CV_BODY_ENDCONNECTION_OT ? 'validation-error' : ''"
+                      class="project-box select-style otherBox"> </ion-input>
+                  </div>
+                </ion-row>
+                <ion-row>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'Trim Char' | translate}}</span>
+                    <ion-input maxlength="250" [readonly]="true" [(ngModel)]="solutionObj.CV_BODY_TRIMCHAR"
+                      name="solutionObj.CV_BODY_TRIMCHAR"
+                      (click)="searchModal(0,'TrimCharFlowIsolation','CV_BODY_TRIMCHAR')" tappable
+                      class="project-box searchNSelect select-style">
+                    </ion-input>
+                    <ion-input maxlength="250" *ngIf="solutionObj.CV_BODY_TRIMCHAR == 'Other'"
+                      [(ngModel)]="solutionObj.CV_BODY_TRIMCHAR_OT" name="solutionObj.CV_BODY_TRIMCHAR_OT"
+                      [ngClass]="!solutionObj.CV_BODY_TRIMCHAR_OT ? 'validation-error' : ''"
+                      class="project-box select-style otherBox"> </ion-input>
+                  </div>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'PKG Configuration' | translate}}</span>
+                    <ion-input maxlength="250" [readonly]="true" [(ngModel)]="solutionObj.CV_BODY_PKGCONFIGURATION"
+                      name="solutionObj.CV_BODY_PKGCONFIGURATION"
+                      (click)="searchModal(0,'PKGConfigurationFlowIsolation','CV_BODY_PKGCONFIGURATION')" tappable
+                      class="project-box searchNSelect select-style">
+                    </ion-input>
+                    <ion-input maxlength="250" *ngIf="solutionObj.CV_BODY_PKGCONFIGURATION == 'Other'"
+                      [(ngModel)]="solutionObj.CV_BODY_PKGCONFIGURATION_OT"
+                      name="solutionObj.CV_BODY_PKGCONFIGURATION_OT"
+                      [ngClass]="!solutionObj.CV_BODY_PKGCONFIGURATION_OT ? 'validation-error' : ''"
+                      class="project-box select-style otherBox"> </ion-input>
+                  </div>
+                </ion-row>
+                <ion-row>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'Size' | translate}}</span>
+                    <ion-input maxlength="250" [readonly]="true" [(ngModel)]="solutionObj.CV_BODY_SIZE"
+                      name="solutionObj.CV_BODY_SIZE" (click)="searchModal(0,'BodySizeFlowIsolation','CV_BODY_SIZE')"
+                      tappable class="project-box searchNSelect select-style">
+                    </ion-input>
+                    <ion-input maxlength="250" *ngIf="solutionObj.CV_BODY_SIZE == 'Other'"
+                      [(ngModel)]="solutionObj.CV_BODY_SIZE_OT" name="solutionObj.CV_BODY_SIZE_OT"
+                      [ngClass]="!solutionObj.CV_BODY_SIZE_OT ? 'validation-error' : ''"
+                      class="project-box select-style otherBox"> </ion-input>
+                  </div>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'Flow Direction' | translate}}</span>
+                    <ion-input maxlength="250" [readonly]="true" [(ngModel)]="solutionObj.CV_BODY_FLOWDIRECTION"
+                      name="solutionObj.CV_BODY_FLOWDIRECTION"
+                      (click)="searchModal(0,'BodyFlowDirectionFlowIsolation','CV_BODY_FLOWDIRECTION')" tappable
+                      class="project-box searchNSelect select-style">
+                    </ion-input>
+                    <ion-input maxlength="250" *ngIf="solutionObj.CV_BODY_FLOWDIRECTION == 'Other'"
+                      [(ngModel)]="solutionObj.CV_BODY_FLOWDIRECTION_OT" name="solutionObj.CV_BODY_FLOWDIRECTION_OT"
+                      [ngClass]="!solutionObj.CV_BODY_FLOWDIRECTION_OT ? 'validation-error' : ''"
+                      class="project-box select-style otherBox"> </ion-input>
+                  </div>
+                </ion-row>
+                <ion-row>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'Port' | translate}}</span>
+                    <ion-input maxlength="250" [readonly]="true" [(ngModel)]="solutionObj.CV_BODY_PORT"
+                      name="solutionObj.CV_BODY_PORT" (click)="searchModal(0,'PortFlowIsolation','CV_BODY_PORT')"
+                      tappable class="project-box searchNSelect select-style">
+                    </ion-input>
+                    <ion-input maxlength="250" *ngIf="solutionObj.CV_BODY_PORT == 'Other'"
+                      [(ngModel)]="solutionObj.CV_BODY_PORT_OT" name="solutionObj.CV_BODY_PORT_OT"
+                      [ngClass]="!solutionObj.CV_BODY_PORT_OT ? 'validation-error' : ''"
+                      class="project-box select-style otherBox"> </ion-input>
+                  </div>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'S/N' | translate}}</span>
+                    <ion-input maxlength="250" [(ngModel)]="solutionObj.CV_BODY_SN" name="solutionObj.CV_BODY_SN"
+                      class="project-box select-style">
+                    </ion-input>
+                  </div>
+                </ion-row>
+              </div>
+            </div>
+          </ion-row>
+
+          <!-- Actuator Accordion -->
+          <ion-row class="customRows">
+            <div class="full-width">
+              <span name="ActuatorCVBtn"
+                [ngClass]="solutionObj.CV_ACTUATOR_NA == 'true' || solutionObj.CV_ACTUATOR_NA == true ? 'disable-content' : ''"
+                (click)="expandOuter('ActuatorCV')">
+                <ion-icon class="arrowIcon" item-left role="img" aria-label="arrow dropdown" name="arrow-dropright"
+                  *ngIf="!expandOuterAccordion.ActuatorCV">
+                </ion-icon>
+                <ion-icon *ngIf="expandOuterAccordion.ActuatorCV" class="arrowIcon" role="img"
+                  aria-label="arrow dropdown" name="arrow-dropdown">
+                </ion-icon>
+                <span class="label pointer inline-block header">{{'Actuator' | translate}}</span>
+              </span>
+              <span class="inline-block pull-right marginRight25">
+                <span class="label">{{'N/A' | translate}}</span>
+                <ion-checkbox name="CV_ACTUATOR_NA"
+                  (click)="confirmAlert(solutionObj.CV_ACTUATOR_NA, 'ActuatorCV', 'CV_ACTUATOR_NA')"
+                  [(ngModel)]="solutionObj.CV_ACTUATOR_NA"
+                  [checked]="solutionObj.CV_ACTUATOR_NA == 'true' || solutionObj.CV_ACTUATOR_NA == true">
+                </ion-checkbox>
+              </span>
+              <div *ngIf="expandOuterAccordion.ActuatorCV" class="full-width">
+                <ion-row>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'Make' | translate}}</span>
+                    <!-- <span class="validator inline-block"></span> -->
+                    <ion-input maxlength="250" [readonly]="true" [(ngModel)]="solutionObj.CV_ACTUATOR_MAKE"
+                      name="solutionObj.CV_ACTUATOR_MAKE"
+                      (click)="searchModal(0,'MakeControlValveActuator','CV_ACTUATOR_MAKE','MAKE')" tappable
+                      [ngClass]="(!solutionObj.CV_ACTUATOR_MAKE && isNotValidated) ? 'validation-error' : ''"
+                      class="project-box searchNSelect select-style">
+                    </ion-input>
+                    <ion-input maxlength="250" *ngIf="solutionObj.CV_ACTUATOR_MAKE == 'Other'"
+                      [(ngModel)]="solutionObj.CV_ACTUATOR_MAKE_OT" name="solutionObj.CV_ACTUATOR_MAKE_OT"
+                      [ngClass]="!solutionObj.CV_ACTUATOR_MAKE_OT ? 'validation-error' : ''"
+                      class="project-box select-style otherBox"> </ion-input>
+                  </div>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'Position' | translate}}</span>
+                    <ion-input maxlength="250" [readonly]="true" [(ngModel)]="solutionObj.CV_ACTUATOR_POSITION"
+                      name="solutionObj.CV_ACTUATOR_POSITION"
+                      (click)="searchModal(0,'ActuatorPositionFlowIsolation','CV_ACTUATOR_POSITION')" tappable
+                      class="project-box searchNSelect select-style">
+                    </ion-input>
+                    <ion-input maxlength="250" *ngIf="solutionObj.CV_ACTUATOR_POSITION == 'Other'"
+                      [(ngModel)]="solutionObj.CV_ACTUATOR_POSITION_OT" name="solutionObj.CV_ACTUATOR_POSITION_OT"
+                      [ngClass]="!solutionObj.CV_ACTUATOR_POSITION_OT ? 'validation-error' : ''"
+                      class="project-box select-style otherBox"> </ion-input>
+                  </div>
+                </ion-row>
+                <ion-row>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'Model' | translate}}</span>
+                    <ion-input maxlength="250" [readonly]="true" [(ngModel)]="solutionObj.CV_ACTUATOR_MODEL"
+                      name="solutionObj.CV_ACTUATOR_MODEL"
+                      (click)="searchModal(0,'ModelControlValveActuator','CV_ACTUATOR_MODEL','MODEL')" tappable
+                      [disabled]="!isModelLOVsE['CV_ACTUATOR_MODEL']"
+                      [ngClass]="isModelLOVsE['CV_ACTUATOR_MODEL'] ? 'searchNSelect' : ''"
+                      class="project-box select-style">
+                    </ion-input>
+                    <ion-input maxlength="250" *ngIf="solutionObj.CV_ACTUATOR_MODEL == 'Other'"
+                      [(ngModel)]="solutionObj.CV_ACTUATOR_MODEL_OT" name="solutionObj.CV_ACTUATOR_MODEL_OT"
+                      [ngClass]="!solutionObj.CV_ACTUATOR_MODEL_OT ? 'validation-error' : ''"
+                      class="project-box select-style otherBox"> </ion-input>
+                  </div>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'Action' | translate}}</span>
+                    <ion-input maxlength="250" [readonly]="true" [(ngModel)]="solutionObj.CV_ACTUATOR_ACTION"
+                      name="solutionObj.CV_ACTUATOR_ACTION"
+                      (click)="searchModal(0,'ActuatorActionFlowIsolation','CV_ACTUATOR_ACTION')" tappable
+                      class="project-box searchNSelect select-style">
+                    </ion-input>
+                    <ion-input maxlength="250" *ngIf="solutionObj.CV_ACTUATOR_ACTION == 'Other'"
+                      [(ngModel)]="solutionObj.CV_ACTUATOR_ACTION_OT" name="solutionObj.CV_ACTUATOR_ACTION_OT"
+                      [ngClass]="!solutionObj.CV_ACTUATOR_ACTION_OT ? 'validation-error' : ''"
+                      class="project-box select-style otherBox"> </ion-input>
+                  </div>
+                </ion-row>
+                <ion-row>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'Size' | translate}}</span>
+                    <ion-input maxlength="250" [readonly]="true" [(ngModel)]="solutionObj.CV_ACTUATOR_SIZE"
+                      name="solutionObj.CV_ACTUATOR_SIZE"
+                      (click)="searchModal(0,'ActuatorSizeFlowIsolation','CV_ACTUATOR_SIZE')" tappable
+                      class="project-box searchNSelect select-style">
+                    </ion-input>
+                    <ion-input maxlength="250" *ngIf="solutionObj.CV_ACTUATOR_SIZE == 'Other'"
+                      [(ngModel)]="solutionObj.CV_ACTUATOR_SIZE_OT" name="solutionObj.CV_ACTUATOR_SIZE_OT"
+                      [ngClass]="!solutionObj.CV_ACTUATOR_SIZE_OT ? 'validation-error' : ''"
+                      class="project-box select-style otherBox"> </ion-input>
+                  </div>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'Handwheel' | translate}}</span>
+                    <ion-input maxlength="250" [readonly]="true" [(ngModel)]="solutionObj.CV_ACTUATOR_HANDWHEEL"
+                      name="solutionObj.CV_ACTUATOR_HANDWHEEL"
+                      (click)="searchModal(0,'ActuatorHandwheelFlowIsolation','CV_ACTUATOR_HANDWHEEL')" tappable
+                      class="project-box searchNSelect select-style">
+                    </ion-input>
+                    <ion-input maxlength="250" *ngIf="solutionObj.CV_ACTUATOR_HANDWHEEL == 'Other'"
+                      [(ngModel)]="solutionObj.CV_ACTUATOR_HANDWHEEL_OT" name="solutionObj.CV_ACTUATOR_HANDWHEEL_OT"
+                      [ngClass]="!solutionObj.CV_ACTUATOR_HANDWHEEL_OT ? 'validation-error' : ''"
+                      class="project-box select-style otherBox"> </ion-input>
+                  </div>
+                </ion-row>
+                <ion-row>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'Mounting' | translate}}</span>
+                    <ion-input maxlength="250" [readonly]="true" [(ngModel)]="solutionObj.CV_ACTUATOR_MOUNTING"
+                      name="solutionObj.CV_ACTUATOR_MOUNTING"
+                      (click)="searchModal(0,'ActuatorMountingFlowIsolation','CV_ACTUATOR_MOUNTING')" tappable
+                      class="project-box searchNSelect select-style">
+                    </ion-input>
+                    <ion-input maxlength="250" *ngIf="solutionObj.CV_ACTUATOR_MOUNTING == 'Other'"
+                      [(ngModel)]="solutionObj.CV_ACTUATOR_MOUNTING_OT" name="solutionObj.CV_ACTUATOR_MOUNTING_OT"
+                      [ngClass]="!solutionObj.CV_ACTUATOR_MOUNTING_OT ? 'validation-error' : ''"
+                      class="project-box select-style otherBox"> </ion-input>
+                  </div>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'S/N' | translate}}</span>
+                    <ion-input maxlength="250" [(ngModel)]="solutionObj.CV_ACTUATOR_SN"
+                      name="solutionObj.CV_ACTUATOR_SN" class="project-box select-style">
+                    </ion-input>
+                  </div>
+                </ion-row>
+                <ion-row>
+                  <div class="half-screen inline-block"></div>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'Copy S/N from Body' | translate}}</span>
+                    <ion-checkbox (click)="copyFromBody(solutionObj.CV_ACTUATOR_COPY_SN,'CV_BODY_SN','CV_ACTUATOR_SN')"
+                      [(ngModel)]="solutionObj.CV_ACTUATOR_COPY_SN"
+                      [checked]="solutionObj.CV_ACTUATOR_COPY_SN == 'true' || solutionObj.CV_ACTUATOR_COPY_SN == true">
+                    </ion-checkbox>
+                  </div>
+                </ion-row>
+              </div>
+            </div>
+          </ion-row>
+
+          <!-- Positioner Accordion -->
+          <ion-row class="customRows">
+            <div class="full-width">
+              <span name="PositionerCVBtn"
+                [ngClass]="solutionObj.CV_POSITIONER_NA == 'true' || solutionObj.CV_POSITIONER_NA == true ? 'disable-content' : ''"
+                (click)="expandOuter('PositionerCV')">
+                <ion-icon class="arrowIcon" item-left name="arrow-dropright" role="img" aria-label="arrow dropdown"
+                  *ngIf="!expandOuterAccordion.PositionerCV">
+                </ion-icon>
+                <ion-icon class="arrowIcon" *ngIf="expandOuterAccordion.PositionerCV" role="img"
+                  aria-label="arrow dropdown" name="arrow-dropdown">
+                </ion-icon>
+                <span class="label pointer inline-block header">{{'Positioner' | translate}}</span>
+              </span>
+              <span class="inline-block pull-right marginRight25">
+                <span class="label">{{'N/A' | translate}}</span>
+                <ion-checkbox name="CV_POSITIONER_NA"
+                  (click)="confirmAlert(solutionObj.CV_POSITIONER_NA, 'PositionerCV', 'CV_POSITIONER_NA')"
+                  [(ngModel)]="solutionObj.CV_POSITIONER_NA"
+                  [checked]="solutionObj.CV_POSITIONER_NA == 'true' || solutionObj.CV_POSITIONER_NA == true">
+                </ion-checkbox>
+              </span>
+              <div *ngIf="expandOuterAccordion.PositionerCV" class="full-width">
+                <ion-row>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'Make' | translate}}</span>
+                    <!-- <span class="validator inline-block"></span> -->
+                    <ion-input maxlength="250" [readonly]="true" [(ngModel)]="solutionObj.CV_POSITIONER_MAKE"
+                      name="solutionObj.CV_POSITIONER_MAKE"
+                      (click)="searchModal(0,'MakeControlValvePositioner','CV_POSITIONER_MAKE','MAKE')" tappable
+                      [ngClass]="(!solutionObj.CV_POSITIONER_MAKE && isNotValidated) ? 'validation-error' : ''"
+                      class="project-box searchNSelect select-style">
+                    </ion-input>
+                    <ion-input maxlength="250" *ngIf="solutionObj.CV_POSITIONER_MAKE == 'Other'"
+                      [(ngModel)]="solutionObj.CV_POSITIONER_MAKE_OT" name="solutionObj.CV_POSITIONER_MAKE_OT"
+                      [ngClass]="!solutionObj.CV_POSITIONER_MAKE_OT ? 'validation-error' : ''"
+                      class="project-box select-style otherBox"> </ion-input>
+                  </div>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'Wire(+) Color' | translate}}</span>
+                    <ion-input maxlength="250" [readonly]="true" [(ngModel)]="solutionObj.CV_POSITIONER_WIRE_POS_COLOR"
+                      name="solutionObj.CV_POSITIONER_WIRE_POS_COLOR"
+                      (click)="searchModal(0,'FlowIsolationAsFoundPositionerWirePositiveColor','CV_POSITIONER_WIRE_POS_COLOR')"
+                      tappable class="project-box searchNSelect select-style">
+                    </ion-input>
+                    <ion-input maxlength="250" *ngIf="solutionObj.CV_POSITIONER_WIRE_POS_COLOR == 'Other'"
+                      [(ngModel)]="solutionObj.CV_POSITIONER_WIRE_POS_COLOR_OT"
+                      name="solutionObj.CV_POSITIONER_WIRE_POS_COLOR_OT"
+                      [ngClass]="!solutionObj.CV_POSITIONER_WIRE_POS_COLOR_OT ? 'validation-error' : ''"
+                      class="project-box select-style otherBox"> </ion-input>
+                  </div>
+                </ion-row>
+                <ion-row>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'Model' | translate}}</span>
+                    <ion-input maxlength="250" [readonly]="true" [(ngModel)]="solutionObj.CV_POSITIONER_MODEL"
+                      name="solutionObj.CV_POSITIONER_MODEL"
+                      (click)="searchModal(0,'ModelControlValvePositioner','CV_POSITIONER_MODEL','MODEL')" tappable
+                      [ngClass]="isModelLOVsE['CV_POSITIONER_MODEL'] ? 'searchNSelect' : ''"
+                      [disabled]="!isModelLOVsE['CV_POSITIONER_MODEL']" class="project-box select-style">
+                    </ion-input>
+                    <ion-input maxlength="250" *ngIf="solutionObj.CV_POSITIONER_MODEL == 'Other'"
+                      [(ngModel)]="solutionObj.CV_POSITIONER_MODEL_OT" name="solutionObj.CV_POSITIONER_MODEL_OT"
+                      [ngClass]="!solutionObj.CV_POSITIONER_MODEL_OT ? 'validation-error' : ''"
+                      class="project-box select-style otherBox"> </ion-input>
+                  </div>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'Wire(-) Color' | translate}}</span>
+                    <ion-input maxlength="250" [readonly]="true" [(ngModel)]="solutionObj.CV_POSITIONER_WIRE_NEG_COLOR"
+                      name="solutionObj.CV_POSITIONER_WIRE_NEG_COLOR"
+                      (click)="searchModal(0,'FlowIsolationAsFoundPositionerWireNegativeColor','CV_POSITIONER_WIRE_NEG_COLOR')"
+                      tappable class="project-box searchNSelect select-style">
+                    </ion-input>
+                    <ion-input maxlength="250" *ngIf="solutionObj.CV_POSITIONER_WIRE_NEG_COLOR == 'Other'"
+                      [(ngModel)]="solutionObj.CV_POSITIONER_WIRE_NEG_COLOR_OT"
+                      name="solutionObj.CV_POSITIONER_WIRE_NEG_COLOR_OT"
+                      [ngClass]="!solutionObj.CV_POSITIONER_WIRE_NEG_COLOR_OT ? 'validation-error' : ''"
+                      class="project-box select-style otherBox"> </ion-input>
+                  </div>
+                </ion-row>
+                <ion-row>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'Action' | translate}}</span>
+                    <ion-input maxlength="250" [readonly]="true" [(ngModel)]="solutionObj.CV_POSITIONER_ACTION"
+                      name="solutionObj.CV_POSITIONER_ACTION"
+                      (click)="searchModal(0,'PositionerActionFlowIsolation','CV_POSITIONER_ACTION')" tappable
+                      class="project-box searchNSelect select-style">
+                    </ion-input>
+                    <ion-input maxlength="250" *ngIf="solutionObj.CV_POSITIONER_ACTION == 'Other'"
+                      [(ngModel)]="solutionObj.CV_POSITIONER_ACTION_OT" name="solutionObj.CV_POSITIONER_ACTION_OT"
+                      [ngClass]="!solutionObj.CV_POSITIONER_ACTION_OT ? 'validation-error' : ''"
+                      class="project-box select-style otherBox"> </ion-input>
+                  </div>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'S/N' | translate}}</span>
+                    <ion-input maxlength="250" [(ngModel)]="solutionObj.CV_POSITIONER_SN"
+                      name="solutionObj.CV_POSITIONER_SN" class="project-box select-style">
+                    </ion-input>
+                  </div>
+                </ion-row>
+                <ion-row>
+                  <div class="half-screen inline-block"></div>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'Copy S/N from Body' | translate}}</span>
+                    <ion-checkbox
+                      (click)="copyFromBody(solutionObj.CV_POSITIONER_COPY_SN,'CV_BODY_SN','CV_POSITIONER_SN')"
+                      [(ngModel)]="solutionObj.CV_POSITIONER_COPY_SN"
+                      [checked]="solutionObj.CV_POSITIONER_COPY_SN == 'true' || solutionObj.CV_POSITIONER_COPY_SN == true">
+                    </ion-checkbox>
+                  </div>
+                </ion-row>
+              </div>
+            </div>
+          </ion-row>
+
+          <!-- Accessories Accordion -->
+          <ion-row class="customRows">
+            <div class="full-width">
+              <span name="AccessoriesCVBtn"
+                [ngClass]="solutionObj.CV_ACCESSORIES_NA == 'true' || solutionObj.CV_ACCESSORIES_NA == true ? 'disable-content' : ''"
+                (click)="expandOuter('AccessoriesCV')">
+                <ion-icon class="arrowIcon" item-left name="arrow-dropright" role="img" aria-label="arrow dropdown"
+                  *ngIf="!expandOuterAccordion.AccessoriesCV">
+                </ion-icon>
+                <ion-icon class="arrowIcon" role="img" *ngIf="expandOuterAccordion.AccessoriesCV"
+                  aria-label="arrow dropdown" name="arrow-dropdown">
+                </ion-icon>
+                <span class="label pointer inline-block header">{{'Accessories' | translate}}</span>
+              </span>
+              <span class="inline-block pull-right marginRight25">
+                <span class="label">{{'N/A' | translate}}</span>
+                <ion-checkbox name="CV_ACCESSORIES_NA"
+                  (click)="confirmAlert(solutionObj.CV_ACCESSORIES_NA, 'AccessoriesCV', 'CV_ACCESSORIES_NA')"
+                  [(ngModel)]="solutionObj.CV_ACCESSORIES_NA"
+                  [checked]="solutionObj.CV_ACCESSORIES_NA == 'true' || solutionObj.CV_ACCESSORIES_NA == true">
+                </ion-checkbox>
+              </span>
+              <div *ngIf="expandOuterAccordion.AccessoriesCV" class="full-width">
+                <ion-row>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'Accessories' | translate}}</span>
+                    <span class="validator inline-block"></span>
+                    <ion-input maxlength="250" [readonly]="true" [(ngModel)]="solutionObj.ACCESSORIES"
+                      name="solutionObj.ACCESSORIES" (click)="searchModal(1,'SelectAccessories','ACCESSORIES')" tappable
+                      [ngClass]="isAccessories?'':'validation-error'" class="project-box searchNSelect select-style">
+                    </ion-input>
+                    <ion-input maxlength="250" *ngIf="solutionObj.ACCESSORIES == 'Other'"
+                      [(ngModel)]="solutionObj.ACCESSORIES_OT" name="solutionObj.ACCESSORIES_OT"
+                      [ngClass]="!solutionObj.ACCESSORIES_OT ? 'validation-error' : ''"
+                      class="project-box select-style otherBox"> </ion-input>
+                  </div>
+                  <div class="half-screen inline-block">
+                    <span class="label"></span>
+                    <button ion-button (click)="saveAccessories()"
+                      class="save-btn fullWidth">{{'Add Accessories' | translate}}</button>
+                  </div>
+                </ion-row>
+
+                <ion-list *ngIf="accessoriesObj.length">
+                  <ion-row class="global-padding bdr-btm">
+                    <ion-col class="align-lft" col-2>
+                      <ion-label>{{'Accessories'|translate}}</ion-label>
+                    </ion-col>
+                  </ion-row>
+                  <ion-row *ngFor="let accData of accessoriesObj" class="strippedClass full-width ">
+                    <ion-col class="align-lft" col-2>
+                      <span class="label">{{accData.VALUE_OT?accData.VALUE_OT:accData.VALUE |translate}}</span>
+                    </ion-col>
+                    <ion-col col-2> <span> <i button-right ion-button (click)="deleteAccessories(accData.AC_PK_ID)"
+                          class=" pointer fa fa-trash trash-icon pull-right"></i></span></ion-col>
+                  </ion-row>
+                </ion-list>
+
+              </div>
+            </div>
+          </ion-row>
+        </span>
+        <!-- CV End-->
+
+        <!-- ISO start-->
+        <span *ngIf="deviceId == Enums.FlowIsolationProductId.Isolation">
+          <!-- Body Accordion -->
+          <ion-row class="customRows">
+            <div class="full-width">
+              <span name="BodyISOBtn"
+                [ngClass]="solutionObj.ISO_BODY_NA == 'true' || solutionObj.ISO_BODY_NA == true ? 'disable-content' : ''"
+                (click)="expandOuter('BodyISO')">
+                <ion-icon *ngIf="!expandOuterAccordion.BodyISO" class="arrowIcon" role="img" aria-label="arrow dropdown"
+                  item-left name="arrow-dropright">
+                </ion-icon>
+                <ion-icon *ngIf="expandOuterAccordion.BodyISO" class="arrowIcon" role="img" aria-label="arrow dropdown"
+                  name="arrow-dropdown">
+                </ion-icon>
+                <span class="label pointer inline-block header">{{'Body' | translate}}</span>
+              </span>
+              <span class="inline-block pull-right marginRight25">
+                <span class="label">{{'N/A' | translate}}</span>
+                <ion-checkbox name="ISO_BODY_NA"
+                  (click)="confirmAlert(solutionObj.ISO_BODY_NA, 'BodyISO', 'ISO_BODY_NA')"
+                  [(ngModel)]="solutionObj.ISO_BODY_NA"
+                  [checked]="solutionObj.ISO_BODY_NA == 'true' || solutionObj.ISO_BODY_NA == true">
+                </ion-checkbox>
+              </span>
+              <div *ngIf="expandOuterAccordion.BodyISO" class="full-width">
+                <ion-row>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'Make' | translate}}</span>
+                    <!-- <span class="validator inline-block"></span> -->
+                    <ion-input maxlength="250" [readonly]="true" [(ngModel)]="solutionObj.ISO_BODY_MAKE"
+                      name="solutionObj.ISO_BODY_MAKE"
+                      (click)="searchModal(0,'MakeIsolationBody','ISO_BODY_MAKE','MAKE')" tappable
+                      [ngClass]="(!solutionObj.ISO_BODY_MAKE && isNotValidated) ? 'validation-error' : ''"
+                      class="project-box searchNSelect select-style">
+                    </ion-input>
+                    <ion-input maxlength="250" *ngIf="solutionObj.ISO_BODY_MAKE == 'Other'"
+                      [(ngModel)]="solutionObj.ISO_BODY_MAKE_OT" name="solutionObj.ISO_BODY_MAKE_OT"
+                      [ngClass]="!solutionObj.ISO_BODY_MAKE_OT ? 'validation-error' : ''"
+                      class="project-box select-style otherBox"> </ion-input>
+                  </div>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'Bonnet Style' | translate}}</span>
+                    <ion-input maxlength="250" [readonly]="true" [(ngModel)]="solutionObj.ISO_BODY_BONNETSTYLE"
+                      name="solutionObj.ISO_BODY_BONNETSTYLE"
+                      (click)="searchModal(0,'AsFoundBonnetStyleFlowIsolation','ISO_BODY_BONNETSTYLE')" tappable
+                      class="project-box searchNSelect select-style">
+                    </ion-input>
+                    <ion-input maxlength="250" *ngIf="solutionObj.ISO_BODY_BONNETSTYLE == 'Other'"
+                      [(ngModel)]="solutionObj.ISO_BODY_BONNETSTYLE_OT" name="solutionObj.ISO_BODY_BONNETSTYLE_OT"
+                      [ngClass]="!solutionObj.ISO_BODY_BONNETSTYLE_OT ? 'validation-error' : ''"
+                      class="project-box select-style otherBox"> </ion-input>
+                  </div>
+                </ion-row>
+                <ion-row>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'Model' | translate}}</span>
+                    <ion-input maxlength="250" [readonly]="true" [(ngModel)]="solutionObj.ISO_BODY_MODEL"
+                      name="solutionObj.ISO_BODY_MODEL"
+                      (click)="searchModal(0,'ModelIsolationBody','ISO_BODY_MODEL','MODEL')" tappable
+                      [ngClass]="isModelLOVsE['ISO_BODY_MODEL'] ? 'searchNSelect' : ''"
+                      [disabled]="!isModelLOVsE['ISO_BODY_MODEL']" class="project-box select-style">
+                    </ion-input>
+                    <ion-input maxlength="250" *ngIf="solutionObj.ISO_BODY_MODEL == 'Other'"
+                      [(ngModel)]="solutionObj.ISO_BODY_MODEL_OT" name="solutionObj.ISO_BODY_MODEL_OT"
+                      [ngClass]="!solutionObj.ISO_BODY_MODEL_OT ? 'validation-error' : ''"
+                      class="project-box select-style otherBox"> </ion-input>
+                  </div>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'PKG Configuration' | translate}}</span>
+                    <ion-input maxlength="250" [readonly]="true" [(ngModel)]="solutionObj.ISO_BODY_PKGCONFIGURATION"
+                      name="solutionObj.ISO_BODY_PKGCONFIGURATION"
+                      (click)="searchModal(0,'PKGConfigurationFlowIsolation','ISO_BODY_PKGCONFIGURATION')" tappable
+                      class="project-box searchNSelect select-style">
+                    </ion-input>
+                    <ion-input maxlength="250" *ngIf="solutionObj.ISO_BODY_PKGCONFIGURATION == 'Other'"
+                      [(ngModel)]="solutionObj.ISO_BODY_PKGCONFIGURATION_OT"
+                      name="solutionObj.ISO_BODY_PKGCONFIGURATION_OT"
+                      [ngClass]="!solutionObj.ISO_BODY_PKGCONFIGURATION_OT ? 'validation-error' : ''"
+                      class="project-box select-style otherBox"> </ion-input>
+                  </div>
+                </ion-row>
+                <ion-row>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'Size' | translate}}</span>
+                    <ion-input maxlength="250" [readonly]="true" [(ngModel)]="solutionObj.ISO_BODY_SIZE"
+                      name="solutionObj.ISO_BODY_SIZE" (click)="searchModal(0,'BodySizeFlowIsolation','ISO_BODY_SIZE')"
+                      tappable class="project-box searchNSelect select-style">
+                    </ion-input>
+                    <ion-input maxlength="250" *ngIf="solutionObj.ISO_BODY_SIZE == 'Other'"
+                      [(ngModel)]="solutionObj.ISO_BODY_SIZE_OT" name="solutionObj.ISO_BODY_SIZE_OT"
+                      [ngClass]="!solutionObj.ISO_BODY_SIZE_OT ? 'validation-error' : ''"
+                      class="project-box select-style otherBox"> </ion-input>
+                  </div>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'Live-Loaded' | translate}}</span>
+                    <ion-input maxlength="250" [readonly]="true" [(ngModel)]="solutionObj.ISO_BODY_LIVELOADED"
+                      name="solutionObj.ISO_BODY_LIVELOADED"
+                      (click)="searchModal(0,'AsFoundLiveLoadedFlowIsolation','ISO_BODY_LIVELOADED')" tappable
+                      class="project-box searchNSelect select-style">
+                    </ion-input>
+                    <ion-input maxlength="250" *ngIf="solutionObj.ISO_BODY_LIVELOADED == 'Other'"
+                      [(ngModel)]="solutionObj.ISO_BODY_LIVELOADED_OT" name="solutionObj.ISO_BODY_LIVELOADED_OT"
+                      [ngClass]="!solutionObj.ISO_BODY_LIVELOADED_OT ? 'validation-error' : ''"
+                      class="project-box select-style otherBox"> </ion-input>
+                  </div>
+                </ion-row>
+                <ion-row>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'Port' | translate}}</span>
+                    <ion-input maxlength="250" [readonly]="true" [(ngModel)]="solutionObj.ISO_BODY_PORT"
+                      name="solutionObj.ISO_BODY_PORT" (click)="searchModal(0,'PortFlowIsolation','ISO_BODY_PORT')"
+                      tappable class="project-box searchNSelect select-style">
+                    </ion-input>
+                    <ion-input maxlength="250" *ngIf="solutionObj.ISO_BODY_PORT == 'Other'"
+                      [(ngModel)]="solutionObj.ISO_BODY_PORT_OT" name="solutionObj.ISO_BODY_PORT_OT"
+                      [ngClass]="!solutionObj.ISO_BODY_PORT_OT ? 'validation-error' : ''"
+                      class="project-box select-style otherBox"> </ion-input>
+                  </div>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'Type' | translate}}</span>
+                    <ion-input maxlength="250" [readonly]="true" [(ngModel)]="solutionObj.ISO_BODY_TYPE"
+                      name="solutionObj.ISO_BODY_TYPE"
+                      (click)="searchModal(0,'AsFoundBodyTypeFlowIsolation','ISO_BODY_TYPE')" tappable
+                      class="project-box searchNSelect select-style">
+                    </ion-input>
+                    <ion-input maxlength="250" *ngIf="solutionObj.ISO_BODY_TYPE == 'Other'"
+                      [(ngModel)]="solutionObj.ISO_BODY_TYPE_OT" name="solutionObj.ISO_BODY_TYPE_OT"
+                      [ngClass]="!solutionObj.ISO_BODY_TYPE_OT ? 'validation-error' : ''"
+                      class="project-box select-style otherBox"> </ion-input>
+                  </div>
+                </ion-row>
+                <ion-row>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'Pressure Class' | translate}}</span>
+                    <ion-input maxlength="250" [readonly]="true" [(ngModel)]="solutionObj.ISO_BODY_PRESSURECLASS"
+                      name="solutionObj.ISO_BODY_PRESSURECLASS"
+                      (click)="searchModal(0,'PressureClassFlowIsolation','ISO_BODY_PRESSURECLASS')" tappable
+                      class="project-box searchNSelect select-style">
+                    </ion-input>
+                    <ion-input maxlength="250" *ngIf="solutionObj.ISO_BODY_PRESSURECLASS == 'Other'"
+                      [(ngModel)]="solutionObj.ISO_BODY_PRESSURECLASS_OT" name="solutionObj.ISO_BODY_PRESSURECLASS_OT"
+                      [ngClass]="!solutionObj.ISO_BODY_PRESSURECLASS_OT ? 'validation-error' : ''"
+                      class="project-box select-style otherBox"> </ion-input>
+                  </div>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'FIG #, S/N OR MODEL' | translate}}</span>
+                    <ion-input maxlength="250" [(ngModel)]="solutionObj.ISO_BODY_FIG_SNORMODEL"
+                      name="solutionObj.ISO_BODY_FIG_SNORMODEL" class="project-box select-style">
+                    </ion-input>
+                  </div>
+                </ion-row>
+
+                <ion-row>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'End Connection' | translate}}</span>
+                    <ion-input maxlength="250" [readonly]="true" [(ngModel)]="solutionObj.ISO_BODY_ENDCONNECTION"
+                      name="solutionObj.ISO_BODY_ENDCONNECTION"
+                      (click)="searchModal(0,'EndConnectionFlowIsolation','ISO_BODY_ENDCONNECTION')" tappable
+                      class="project-box searchNSelect select-style">
+                    </ion-input>
+                    <ion-input maxlength="250" *ngIf="solutionObj.ISO_BODY_ENDCONNECTION == 'Other'"
+                      [(ngModel)]="solutionObj.ISO_BODY_ENDCONNECTION_OT" name="solutionObj.ISO_BODY_ENDCONNECTION_OT"
+                      [ngClass]="!solutionObj.ISO_BODY_ENDCONNECTION_OT ? 'validation-error' : ''"
+                      class="project-box select-style otherBox"> </ion-input>
+                  </div>
+                </ion-row>
+
+                <ion-row>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'Body Material' | translate}}</span>
+                    <ion-input maxlength="250" [readonly]="true" [(ngModel)]="solutionObj.ISO_BODY_BODYMATERIAL"
+                      name="solutionObj.ISO_BODY_BODYMATERIAL"
+                      (click)="searchModal(0,'BodyAsFoundAsLeftConditionsFlowIsolation','ISO_BODY_BODYMATERIAL')"
+                      tappable class="project-box searchNSelect select-style">
+                    </ion-input>
+                    <ion-input maxlength="250" *ngIf="solutionObj.ISO_BODY_BODYMATERIAL == 'Other'"
+                      [(ngModel)]="solutionObj.ISO_BODY_BODYMATERIAL_OT" name="solutionObj.ISO_BODY_BODYMATERIAL_OT"
+                      [ngClass]="!solutionObj.ISO_BODY_BODYMATERIAL_OT ? 'validation-error' : ''"
+                      class="project-box select-style otherBox"> </ion-input>
+                  </div>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'Stem/Shaft Material' | translate}}</span>
+                    <ion-input maxlength="250" [readonly]="true" [(ngModel)]="solutionObj.ISO_BODY_STEM_SHAFTMATERIAL"
+                      name="solutionObj.ISO_BODY_STEM_SHAFTMATERIAL"
+                      (click)="searchModal(0,'StemShaftAsFoundAsLeftConditionsFlowIsolation','ISO_BODY_STEM_SHAFTMATERIAL')"
+                      tappable class="project-box searchNSelect select-style">
+                    </ion-input>
+                    <ion-input maxlength="250" *ngIf="solutionObj.ISO_BODY_STEM_SHAFTMATERIAL == 'Other'"
+                      [(ngModel)]="solutionObj.ISO_BODY_STEM_SHAFTMATERIAL_OT"
+                      name="solutionObj.ISO_BODY_STEM_SHAFTMATERIAL_OT"
+                      [ngClass]="!solutionObj.ISO_BODY_STEM_SHAFTMATERIAL_OT ? 'validation-error' : ''"
+                      class="project-box select-style otherBox"> </ion-input>
+                  </div>
+                </ion-row>
+
+                <ion-row>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'Plug/Disc/Ball/Material' | translate}}</span>
+                    <ion-input maxlength="250" [readonly]="true"
+                      [(ngModel)]="solutionObj.ISO_BODY_PLUG_DISC_BALLMATERIAL"
+                      name="solutionObj.ISO_BODY_PLUG_DISC_BALLMATERIAL"
+                      (click)="searchModal(0,'PlugDiscBallAsFoundAsLeftConditionsFlowIsolation','ISO_BODY_PLUG_DISC_BALLMATERIAL')"
+                      tappable class="project-box searchNSelect select-style">
+                    </ion-input>
+                    <ion-input maxlength="250" *ngIf="solutionObj.ISO_BODY_PLUG_DISC_BALLMATERIAL == 'Other'"
+                      [(ngModel)]="solutionObj.ISO_BODY_PLUG_DISC_BALLMATERIAL_OT"
+                      name="solutionObj.ISO_BODY_PLUG_DISC_BALLMATERIAL_OT"
+                      [ngClass]="!solutionObj.ISO_BODY_PLUG_DISC_BALLMATERIAL_OT ? 'validation-error' : ''"
+                      class="project-box select-style otherBox"> </ion-input>
+                  </div>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'Seat Material' | translate}}</span>
+                    <ion-input maxlength="250" [readonly]="true" [(ngModel)]="solutionObj.ISO_BODY_SEATMATERIAL"
+                      name="solutionObj.ISO_BODY_SEATMATERIAL"
+                      (click)="searchModal(0,'SeatAsFoundAsLeftConditionsFlowIsolation','ISO_BODY_SEATMATERIAL')"
+                      tappable class="project-box searchNSelect select-style">
+                    </ion-input>
+                    <ion-input maxlength="250" *ngIf="solutionObj.ISO_BODY_SEATMATERIAL == 'Other'"
+                      [(ngModel)]="solutionObj.ISO_BODY_SEATMATERIAL_OT" name="solutionObj.ISO_BODY_SEATMATERIAL_OT"
+                      [ngClass]="!solutionObj.ISO_BODY_SEATMATERIAL_OT ? 'validation-error' : ''"
+                      class="project-box select-style otherBox"> </ion-input>
+                  </div>
+                </ion-row>
+              </div>
+            </div>
+          </ion-row>
+
+          <!-- Actuator Accordion -->
+          <ion-row class="customRows">
+            <div class="full-width">
+              <span
+                [ngClass]="solutionObj.ISO_ACTUATOR_NA == 'true' || solutionObj.ISO_ACTUATOR_NA == true ? 'disable-content' : ''"
+                (click)="expandOuter('ActuatorISO')">
+                <ion-icon class="arrowIcon" item-left role="img" aria-label="arrow dropdown" name="arrow-dropright"
+                  *ngIf="!expandOuterAccordion.ActuatorISO">
+                </ion-icon>
+                <ion-icon *ngIf="expandOuterAccordion.ActuatorISO" class="arrowIcon" role="img"
+                  aria-label="arrow dropdown" name="arrow-dropdown">
+                </ion-icon>
+                <span class="label pointer inline-block header">{{'Actuator' | translate}}</span>
+              </span>
+              <span class="inline-block pull-right marginRight25">
+                <span class="label">{{'N/A' | translate}}</span>
+                <ion-checkbox (click)="confirmAlert(solutionObj.ISO_ACTUATOR_NA, 'ActuatorISO', 'ISO_ACTUATOR_NA')"
+                  [(ngModel)]="solutionObj.ISO_ACTUATOR_NA"
+                  [checked]="solutionObj.ISO_ACTUATOR_NA == 'true' || solutionObj.ISO_ACTUATOR_NA == true">
+                </ion-checkbox>
+              </span>
+              <div *ngIf="expandOuterAccordion.ActuatorISO" class="full-width">
+                <ion-row>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'Type' | translate}}</span>
+                    <ion-input maxlength="250" [readonly]="true" [(ngModel)]="solutionObj.ISO_ACTUATOR_TYPE"
+                      name="solutionObj.ISO_ACTUATOR_TYPE"
+                      (click)="searchModal(0,'AsFoundActuatorTypeFlowIsolation','ISO_ACTUATOR_TYPE')" tappable
+                      class="project-box searchNSelect select-style">
+                    </ion-input>
+                    <ion-input maxlength="250" *ngIf="solutionObj.ISO_ACTUATOR_TYPE == 'Other'"
+                      [(ngModel)]="solutionObj.ISO_ACTUATOR_TYPE_OT" name="solutionObj.ISO_ACTUATOR_TYPE_OT"
+                      [ngClass]="!solutionObj.ISO_ACTUATOR_TYPE_OT ? 'validation-error' : ''"
+                      class="project-box select-style otherBox"> </ion-input>
+                  </div>
+                </ion-row>
+              </div>
+            </div>
+          </ion-row>
+
+          <!-- Positioner Accordion -->
+          <ion-row class="customRows">
+            <div class="full-width">
+              <span name="PositionerISOBtn"
+                [ngClass]="solutionObj.ISO_POSITIONER_NA == 'true' || solutionObj.ISO_POSITIONER_NA == true ? 'disable-content' : ''"
+                (click)="expandOuter('PositionerISO')">
+                <ion-icon class="arrowIcon" item-left name="arrow-dropright" role="img" aria-label="arrow dropdown"
+                  *ngIf="!expandOuterAccordion.PositionerISO">
+                </ion-icon>
+                <ion-icon class="arrowIcon" *ngIf="expandOuterAccordion.PositionerISO" role="img"
+                  aria-label="arrow dropdown" name="arrow-dropdown">
+                </ion-icon>
+                <span class="label pointer inline-block header">{{'Positioner' | translate}}</span>
+              </span>
+              <span class="inline-block pull-right marginRight25">
+                <span class="label">{{'N/A' | translate}}</span>
+                <ion-checkbox name="ISO_POSITIONER_NA"
+                  (click)="confirmAlert(solutionObj.ISO_POSITIONER_NA, 'PositionerISO', 'ISO_POSITIONER_NA')"
+                  [(ngModel)]="solutionObj.ISO_POSITIONER_NA"
+                  [checked]="solutionObj.ISO_POSITIONER_NA == 'true' || solutionObj.ISO_POSITIONER_NA == true">
+                </ion-checkbox>
+              </span>
+              <div *ngIf="expandOuterAccordion.PositionerISO" class="full-width">
+                <ion-row>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'Make' | translate}}</span>
+                    <!-- <span class="validator inline-block"></span> -->
+                    <ion-input maxlength="250" [readonly]="true" [(ngModel)]="solutionObj.ISO_POSITIONER_MAKE"
+                      name="solutionObj.ISO_POSITIONER_MAKE"
+                      (click)="searchModal(0,'MakeIsolationPositioner','ISO_POSITIONER_MAKE','MAKE')" tappable
+                      [ngClass]="(!solutionObj.ISO_POSITIONER_MAKE && isNotValidated) ? 'validation-error' : ''"
+                      class="project-box searchNSelect select-style">
+                    </ion-input>
+                    <ion-input maxlength="250" *ngIf="solutionObj.ISO_POSITIONER_MAKE == 'Other'"
+                      [(ngModel)]="solutionObj.ISO_POSITIONER_MAKE_OT" name="solutionObj.ISO_POSITIONER_MAKE_OT"
+                      [ngClass]="!solutionObj.ISO_POSITIONER_MAKE_OT ? 'validation-error' : ''"
+                      class="project-box select-style otherBox"> </ion-input>
+                  </div>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'Wire(+) Color' | translate}}</span>
+                    <ion-input maxlength="250" [readonly]="true" [(ngModel)]="solutionObj.ISO_POSITIONER_WIRE_POS_COLOR"
+                      name="solutionObj.ISO_POSITIONER_WIRE_POS_COLOR"
+                      (click)="searchModal(0,'FlowIsolationAsFoundPositionerWirePositiveColor','ISO_POSITIONER_WIRE_POS_COLOR')"
+                      tappable class="project-box searchNSelect select-style">
+                    </ion-input>
+                    <ion-input maxlength="250" *ngIf="solutionObj.ISO_POSITIONER_WIRE_POS_COLOR == 'Other'"
+                      [(ngModel)]="solutionObj.ISO_POSITIONER_WIRE_POS_COLOR_OT"
+                      name="solutionObj.ISO_POSITIONER_WIRE_POS_COLOR_OT"
+                      [ngClass]="!solutionObj.ISO_POSITIONER_WIRE_POS_COLOR_OT ? 'validation-error' : ''"
+                      class="project-box select-style otherBox"> </ion-input>
+                  </div>
+                </ion-row>
+                <ion-row>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'Model' | translate}}</span>
+                    <ion-input maxlength="250" [readonly]="true" [(ngModel)]="solutionObj.ISO_POSITIONER_MODEL"
+                      name="solutionObj.ISO_POSITIONER_MODEL"
+                      (click)="searchModal(0,'ModelIsolationPositioner','ISO_POSITIONER_MODEL','MODEL')" tappable
+                      [ngClass]="isModelLOVsE['ISO_POSITIONER_MODEL'] ? 'searchNSelect' : ''"
+                      [disabled]="!isModelLOVsE['ISO_POSITIONER_MODEL']" class="project-box select-style">
+                    </ion-input>
+                    <ion-input maxlength="250" *ngIf="solutionObj.ISO_POSITIONER_MODEL == 'Other'"
+                      [(ngModel)]="solutionObj.ISO_POSITIONER_MODEL_OT" name="solutionObj.ISO_POSITIONER_MODEL_OT"
+                      [ngClass]="!solutionObj.ISO_POSITIONER_MODEL_OT ? 'validation-error' : ''"
+                      class="project-box select-style otherBox"> </ion-input>
+                  </div>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'Wire(-) Color' | translate}}</span>
+                    <ion-input maxlength="250" [readonly]="true" [(ngModel)]="solutionObj.ISO_POSITIONER_WIRE_NEG_COLOR"
+                      name="solutionObj.ISO_POSITIONER_WIRE_NEG_COLOR"
+                      (click)="searchModal(0,'FlowIsolationAsFoundPositionerWireNegativeColor','ISO_POSITIONER_WIRE_NEG_COLOR')"
+                      tappable class="project-box searchNSelect select-style">
+                    </ion-input>
+                    <ion-input maxlength="250" *ngIf="solutionObj.ISO_POSITIONER_WIRE_NEG_COLOR == 'Other'"
+                      [(ngModel)]="solutionObj.ISO_POSITIONER_WIRE_NEG_COLOR_OT"
+                      name="solutionObj.ISO_POSITIONER_WIRE_NEG_COLOR_OT"
+                      [ngClass]="!solutionObj.ISO_POSITIONER_WIRE_NEG_COLOR_OT ? 'validation-error' : ''"
+                      class="project-box select-style otherBox"> </ion-input>
+                  </div>
+                </ion-row>
+                <ion-row>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'Action' | translate}}</span>
+                    <ion-input maxlength="250" [readonly]="true" [(ngModel)]="solutionObj.ISO_POSITIONER_ACTION"
+                      name="solutionObj.ISO_POSITIONER_ACTION"
+                      (click)="searchModal(0,'PositionerActionFlowIsolation','ISO_POSITIONER_ACTION')" tappable
+                      class="project-box searchNSelect select-style">
+                    </ion-input>
+                  </div>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'FIG #, S/N OR MODEL' | translate}}</span>
+                    <ion-input maxlength="250" [(ngModel)]="solutionObj.ISO_POSITIONER_FIG_SNORMODEL"
+                      name="solutionObj.ISO_POSITIONER_FIG_SNORMODEL" class="project-box select-style">
+                    </ion-input>
+                  </div>
+                </ion-row>
+                <ion-row>
+                  <div class="half-screen inline-block"></div>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'Copy FIG #, S/N OR MODEL from Body' | translate}}</span>
+                    <ion-checkbox
+                      (click)="copyFromBody(solutionObj.ISO_POSITIONER_COPYFIG_SNORMODELFROMBODY,'ISO_BODY_FIG_SNORMODEL','ISO_POSITIONER_FIG_SNORMODEL')"
+                      [(ngModel)]="solutionObj.ISO_POSITIONER_COPYFIG_SNORMODELFROMBODY"
+                      [checked]="solutionObj.ISO_POSITIONER_COPYFIG_SNORMODELFROMBODY == 'true' || solutionObj.ISO_POSITIONER_COPYFIG_SNORMODELFROMBODY == true">
+                    </ion-checkbox>
+                  </div>
+                </ion-row>
+              </div>
+            </div>
+          </ion-row>
+
+          <!-- Accessories Accordion -->
+          <ion-row class="customRows">
+            <div class="full-width">
+              <span name="AccessoriesISOBtn"
+                [ngClass]="solutionObj.ISO_ACCESSORIES_NA == 'true' || solutionObj.ISO_ACCESSORIES_NA == true ? 'disable-content' : ''"
+                (click)="expandOuter('AccessoriesISO')">
+                <ion-icon class="arrowIcon" item-left name="arrow-dropright" role="img" aria-label="arrow dropdown"
+                  *ngIf="!expandOuterAccordion.AccessoriesISO">
+                </ion-icon>
+                <ion-icon class="arrowIcon" role="img" *ngIf="expandOuterAccordion.AccessoriesISO"
+                  aria-label="arrow dropdown" name="arrow-dropdown">
+                </ion-icon>
+                <span class="label pointer inline-block header">{{'Accessories' | translate}}</span>
+              </span>
+              <span class="inline-block pull-right marginRight25">
+                <span class="label">{{'N/A' | translate}}</span>
+                <ion-checkbox name="ISO_ACCESSORIES_NA"
+                  (click)="confirmAlert(solutionObj.ISO_ACCESSORIES_NA, 'AccessoriesISO', 'ISO_ACCESSORIES_NA')"
+                  [(ngModel)]="solutionObj.ISO_ACCESSORIES_NA"
+                  [checked]="solutionObj.ISO_ACCESSORIES_NA == 'true' || solutionObj.ISO_ACCESSORIES_NA == true">
+                </ion-checkbox>
+              </span>
+              <div *ngIf="expandOuterAccordion.AccessoriesISO" class="full-width">
+                <ion-row>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'Accessories' | translate}}</span>
+                    <span class="validator inline-block"></span>
+                    <ion-input maxlength="250" [readonly]="true" [(ngModel)]="solutionObj.ACCESSORIES"
+                      name="solutionObj.ACCESSORIES" (click)="searchModal(1,'SelectAccessories','ACCESSORIES')" tappable
+                      [ngClass]="isAccessories?'':'validation-error'" class="project-box searchNSelect select-style">
+                    </ion-input>
+                    <ion-input maxlength="250" *ngIf="solutionObj.ACCESSORIES == 'Other'"
+                      [(ngModel)]="solutionObj.ACCESSORIES_OT" name="solutionObj.ACCESSORIES_OT"
+                      [ngClass]="!solutionObj.ACCESSORIES_OT ? 'validation-error' : ''"
+                      class="project-box select-style otherBox"> </ion-input>
+                  </div>
+                  <div class="half-screen inline-block">
+                    <span class="label"></span>
+                    <button ion-button (click)="saveAccessories()"
+                      class="save-btn fullWidth">{{'Add Accessories' | translate}}</button>
+                  </div>
+                </ion-row>
+                <ion-list *ngIf="accessoriesObj.length">
+                  <ion-row class="global-padding bdr-btm">
+                    <ion-col class="align-lft" col-2>
+                      <ion-label>{{'Accessories'|translate}}</ion-label>
+                    </ion-col>
+                  </ion-row>
+                  <ion-row *ngFor="let accData of accessoriesObj" class="strippedClass full-width ">
+                    <ion-col class="align-lft" col-2>
+                      <span class="label">{{accData.VALUE_OT?accData.VALUE_OT:accData.VALUE |translate}}</span>
+                    </ion-col>
+                    <ion-col col-2> <span> <i button-right ion-button (click)="deleteAccessories(accData.AC_PK_ID)"
+                          class=" pointer fa fa-trash trash-icon pull-right"></i></span></ion-col>
+                  </ion-row>
+                </ion-list>
+              </div>
+            </div>
+          </ion-row>
+        </span>
+        <!-- ISO End-->
+
+        <!-- CTR Start-->
+        <span *ngIf="deviceId == Enums.FlowIsolationProductId.Controller">
+          <!-- Controller Accordion -->
+          <ion-row class="customRows">
+            <div class="full-width">
+              <span name="ControllerCTRBtn"
+                [ngClass]="solutionObj.CTR_CONTROLLER_NA == 'true' || solutionObj.CTR_CONTROLLER_NA == true ? 'disable-content' : ''"
+                (click)="expandOuter('ControllerCTR')">
+                <ion-icon *ngIf="!expandOuterAccordion.ControllerCTR" class="arrowIcon" role="img"
+                  aria-label="arrow dropdown" item-left name="arrow-dropright">
+                </ion-icon>
+                <ion-icon *ngIf="expandOuterAccordion.ControllerCTR" class="arrowIcon" role="img"
+                  aria-label="arrow dropdown" name="arrow-dropdown">
+                </ion-icon>
+                <span class="label pointer inline-block header">{{'Controller' | translate}}</span>
+              </span>
+              <span class="inline-block pull-right marginRight25">
+                <span class="label">{{'N/A' | translate}}</span>
+                <ion-checkbox name="CTR_CONTROLLER_NA"
+                  (click)="confirmAlert(solutionObj.CTR_CONTROLLER_NA, 'ControllerCTR', 'CTR_CONTROLLER_NA')"
+                  [(ngModel)]="solutionObj.CTR_CONTROLLER_NA"
+                  [checked]="solutionObj.CTR_CONTROLLER_NA == 'true' || solutionObj.CTR_CONTROLLER_NA == true">
+                </ion-checkbox>
+              </span>
+              <div *ngIf="expandOuterAccordion.ControllerCTR" class="full-width">
+                <ion-row>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'S/N' | translate}}</span>
+                    <ion-input maxlength="250" [(ngModel)]="solutionObj.CTR_CONTROLLER_SN"
+                      name="solutionObj.CTR_CONTROLLER_SN" class="project-box select-style">
+                    </ion-input>
+                  </div>
+                </ion-row>
+                <ion-row>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'Manufacturer' | translate}}</span>
+                    <ion-input maxlength="250" [readonly]="true" [(ngModel)]="solutionObj.CTR_CONTROLLER_MANUFACTURER"
+                      name="solutionObj.CTR_CONTROLLER_MANUFACTURER"
+                      (click)="searchModal(0,'Manufacturer','CTR_CONTROLLER_MANUFACTURER')" tappable
+                      class="project-box searchNSelect select-style">
+                    </ion-input>
+                    <ion-input maxlength="250" *ngIf="solutionObj.CTR_CONTROLLER_MANUFACTURER == 'Other'"
+                      [(ngModel)]="solutionObj.CTR_CONTROLLER_MANUFACTURER_OT"
+                      name="solutionObj.CTR_CONTROLLER_MANUFACTURER_OT"
+                      [ngClass]="!solutionObj.CTR_CONTROLLER_MANUFACTURER_OT ? 'validation-error' : ''"
+                      class="project-box select-style otherBox"> </ion-input>
+                  </div>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'Proportional' | translate}}</span>
+                    <ion-input maxlength="250" [readonly]="true" [(ngModel)]="solutionObj.CTR_CONTROLLER_PROPORTIONAL"
+                      name="solutionObj.CTR_CONTROLLER_PROPORTIONAL"
+                      (click)="searchModal(0,'Proportional','CTR_CONTROLLER_PROPORTIONAL')" tappable
+                      class="project-box searchNSelect select-style">
+                    </ion-input>
+                    <ion-input maxlength="250" *ngIf="solutionObj.CTR_CONTROLLER_PROPORTIONAL == 'Other'"
+                      [(ngModel)]="solutionObj.CTR_CONTROLLER_PROPORTIONAL_OT"
+                      name="solutionObj.CTR_CONTROLLER_PROPORTIONAL_OT"
+                      [ngClass]="!solutionObj.CTR_CONTROLLER_PROPORTIONAL_OT ? 'validation-error' : ''"
+                      class="project-box select-style otherBox"> </ion-input>
+                  </div>
+                </ion-row>
+                <ion-row>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'Type' | translate}}</span>
+                    <ion-input maxlength="250" [readonly]="true" [(ngModel)]="solutionObj.CTR_CONTROLLER_TYPE"
+                      name="solutionObj.CTR_CONTROLLER_TYPE"
+                      (click)="searchModal(0,'ControllerType','CTR_CONTROLLER_TYPE')" tappable
+                      class="project-box searchNSelect select-style">
+                    </ion-input>
+                    <ion-input maxlength="250" *ngIf="solutionObj.CTR_CONTROLLER_TYPE == 'Other'"
+                      [(ngModel)]="solutionObj.CTR_CONTROLLER_TYPE_OT" name="solutionObj.CTR_CONTROLLER_TYPE_OT"
+                      [ngClass]="!solutionObj.CTR_CONTROLLER_TYPE_OT ? 'validation-error' : ''"
+                      class="project-box select-style otherBox"> </ion-input>
+                  </div>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'Integral' | translate}}</span>
+                    <ion-input maxlength="250" [readonly]="true" [(ngModel)]="solutionObj.CTR_CONTROLLER_INTEGRAL"
+                      name="solutionObj.CTR_CONTROLLER_INTEGRAL"
+                      (click)="searchModal(0,'Integral','CTR_CONTROLLER_INTEGRAL')" tappable
+                      class="project-box searchNSelect select-style">
+                    </ion-input>
+                    <ion-input maxlength="250" *ngIf="solutionObj.CTR_CONTROLLER_INTEGRAL == 'Other'"
+                      [(ngModel)]="solutionObj.CTR_CONTROLLER_INTEGRAL_OT" name="solutionObj.CTR_CONTROLLER_INTEGRAL_OT"
+                      [ngClass]="!solutionObj.CTR_CONTROLLER_INTEGRAL_OT ? 'validation-error' : ''"
+                      class="project-box select-style otherBox"> </ion-input>
+                  </div>
+                </ion-row>
+                <ion-row>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'Direct/Reverse' | translate}}</span>
+                    <ion-input maxlength="250" [readonly]="true" [(ngModel)]="solutionObj.CTR_CONTROLLER_DIRECT_REVERSE"
+                      name="solutionObj.CTR_CONTROLLER_DIRECT_REVERSE"
+                      (click)="searchModal(0,'Direct/Reverse','CTR_CONTROLLER_DIRECT_REVERSE')" tappable
+                      class="project-box searchNSelect select-style">
+                    </ion-input>
+                    <ion-input maxlength="250" *ngIf="solutionObj.CTR_CONTROLLER_DIRECT_REVERSE == 'Other'"
+                      [(ngModel)]="solutionObj.CTR_CONTROLLER_DIRECT_REVERSE_OT"
+                      name="solutionObj.CTR_CONTROLLER_DIRECT_REVERSE_OT"
+                      [ngClass]="!solutionObj.CTR_CONTROLLER_DIRECT_REVERSE_OT ? 'validation-error' : ''"
+                      class="project-box select-style otherBox"> </ion-input>
+                  </div>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'Derivative' | translate}}</span>
+                    <ion-input maxlength="250" [readonly]="true" [(ngModel)]="solutionObj.CTR_CONTROLLER_DERIVATIVE"
+                      name="solutionObj.CTR_CONTROLLER_DERIVATIVE"
+                      (click)="searchModal(0,'Derivative','CTR_CONTROLLER_DERIVATIVE')" tappable
+                      class="project-box searchNSelect select-style">
+                    </ion-input>
+                    <ion-input maxlength="250" *ngIf="solutionObj.CTR_CONTROLLER_DERIVATIVE == 'Other'"
+                      [(ngModel)]="solutionObj.CTR_CONTROLLER_DERIVATIVE_OT"
+                      name="solutionObj.CTR_CONTROLLER_DERIVATIVE_OT"
+                      [ngClass]="!solutionObj.CTR_CONTROLLER_DERIVATIVE_OT ? 'validation-error' : ''"
+                      class="project-box select-style otherBox"> </ion-input>
+                  </div>
+                </ion-row>
+                <ion-row>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'Orientation' | translate}}</span>
+                    <ion-input maxlength="250" [(ngModel)]="solutionObj.CTR_CONTROLLER_ORIENTATION"
+                      name="solutionObj.CTR_CONTROLLER_ORIENTATION" class="project-box select-style">
+                    </ion-input>
+                  </div>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'Input Range' | translate}}</span>
+                    <ion-input maxlength="250" [(ngModel)]="solutionObj.CTR_CONTROLLER_INPUTRANGE"
+                      name="solutionObj.CTR_CONTROLLER_INPUTRANGE" class="project-box select-style">
+                    </ion-input>
+                  </div>
+                </ion-row>
+
+                <ion-row>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'Position' | translate}}</span>
+                    <ion-input maxlength="250" [(ngModel)]="solutionObj.CTR_CONTROLLER_POSITION"
+                      name="solutionObj.CTR_CONTROLLER_POSITION" class="project-box select-style">
+                    </ion-input>
+                  </div>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'Output Range' | translate}}</span>
+                    <ion-input maxlength="250" [(ngModel)]="solutionObj.CTR_CONTROLLER_OUTPUTRANGE"
+                      name="solutionObj.CTR_CONTROLLER_OUTPUTRANGE" class="project-box select-style">
+                    </ion-input>
+                  </div>
+                </ion-row>
+
+                <ion-row>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'Set Point' | translate}}</span>
+                    <ion-input maxlength="250" [(ngModel)]="solutionObj.CTR_CONTROLLER_SETPOINT"
+                      name="solutionObj.CTR_CONTROLLER_SETPOINT" class="project-box select-style">
+                    </ion-input>
+                  </div>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'Other' | translate}}</span>
+                    <ion-input maxlength="250" [(ngModel)]="solutionObj.CTR_CONTROLLER_OTHER"
+                      name="solutionObj.CTR_CONTROLLER_OTHER" class="project-box select-style">
+                    </ion-input>
+                  </div>
+                </ion-row>
+              </div>
+            </div>
+          </ion-row>
+        </span>
+        <!-- CTR End-->
+
+        <!-- INS Start-->
+        <span *ngIf="deviceId == Enums.FlowIsolationProductId.Instrument">
+          <!-- Positioner Accordion -->
+          <ion-row class="customRows">
+            <div class="full-width">
+              <span name="PositionerINSBtn"
+                [ngClass]="solutionObj.INS_POSITIONER_NA == 'true' || solutionObj.INS_POSITIONER_NA == true ? 'disable-content' : ''"
+                (click)="expandOuter('PositionerINS')">
+                <ion-icon class="arrowIcon" item-left name="arrow-dropright" role="img" aria-label="arrow dropdown"
+                  *ngIf="!expandOuterAccordion.PositionerINS">
+                </ion-icon>
+                <ion-icon class="arrowIcon" *ngIf="expandOuterAccordion.PositionerINS" role="img"
+                  aria-label="arrow dropdown" name="arrow-dropdown">
+                </ion-icon>
+                <span class="label pointer inline-block header">{{'Positioner' | translate}}</span>
+              </span>
+              <span class="inline-block pull-right marginRight25">
+                <span class="label">{{'N/A' | translate}}</span>
+                <ion-checkbox name="INS_POSITIONER_NA"
+                  (click)="confirmAlert(solutionObj.INS_POSITIONER_NA, 'PositionerINS', 'INS_POSITIONER_NA')"
+                  [(ngModel)]="solutionObj.INS_POSITIONER_NA"
+                  [checked]="solutionObj.INS_POSITIONER_NA == 'true' || solutionObj.INS_POSITIONER_NA == true">
+                </ion-checkbox>
+              </span>
+              <div *ngIf="expandOuterAccordion.PositionerINS" class="full-width">
+                <ion-row>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'Make' | translate}}</span>
+                    <!-- <span class="validator inline-block"></span> -->
+                    <ion-input maxlength="250" [readonly]="true" [(ngModel)]="solutionObj.INS_POSITIONER_MAKE"
+                      name="solutionObj.INS_POSITIONER_MAKE"
+                      [ngClass]="(!solutionObj.INS_POSITIONER_MAKE && isNotValidated) ? 'validation-error' : ''"
+                      (click)="searchModal(0,'MakeInstrumentPositioner','INS_POSITIONER_MAKE','MAKE')" tappable
+                      [ngClass]="(!solutionObj.INS_POSITIONER_MAKE && isNotValidated) ? 'validation-error' : ''"
+                      class="project-box searchNSelect select-style">
+                    </ion-input>
+                    <ion-input maxlength="250" *ngIf="solutionObj.INS_POSITIONER_MAKE == 'Other'"
+                      [(ngModel)]="solutionObj.INS_POSITIONER_MAKE_OT" name="solutionObj.INS_POSITIONER_MAKE_OT"
+                      [ngClass]="!solutionObj.INS_POSITIONER_MAKE_OT ? 'validation-error' : ''"
+                      class="project-box select-style otherBox"> </ion-input>
+                  </div>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'Wire(+) Color' | translate}}</span>
+                    <ion-input maxlength="250" [readonly]="true" [(ngModel)]="solutionObj.INS_POSITIONER_WIRE_POS_COLOR"
+                      name="solutionObj.INS_POSITIONER_WIRE_POS_COLOR"
+                      (click)="searchModal(0,'FlowIsolationAsFoundPositionerWirePositiveColor','INS_POSITIONER_WIRE_POS_COLOR')"
+                      tappable class="project-box searchNSelect select-style">
+                    </ion-input>
+                    <ion-input maxlength="250" *ngIf="solutionObj.INS_POSITIONER_WIRE_POS_COLOR == 'Other'"
+                      [(ngModel)]="solutionObj.INS_POSITIONER_WIRE_POS_COLOR_OT"
+                      name="solutionObj.INS_POSITIONER_WIRE_POS_COLOR_OT"
+                      [ngClass]="!solutionObj.INS_POSITIONER_WIRE_POS_COLOR_OT ? 'validation-error' : ''"
+                      class="project-box select-style otherBox"> </ion-input>
+                  </div>
+                </ion-row>
+                <ion-row>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'Model' | translate}}</span>
+                    <ion-input maxlength="250" [readonly]="true" [(ngModel)]="solutionObj.INS_POSITIONER_MODEL"
+                      name="solutionObj.INS_POSITIONER_MODEL"
+                      (click)="searchModal(0,'ModelInstrumentPositioner','INS_POSITIONER_MODEL','MODEL')" tappable
+                      [ngClass]="isModelLOVsE['INS_POSITIONER_MODEL'] ? 'searchNSelect' : ''"
+                      [disabled]="!isModelLOVsE['INS_POSITIONER_MODEL']" class="project-box select-style">
+                    </ion-input>
+                    <ion-input maxlength="250" *ngIf="solutionObj.INS_POSITIONER_MODEL == 'Other'"
+                      [(ngModel)]="solutionObj.INS_POSITIONER_MODEL_OT" name="solutionObj.INS_POSITIONER_MODEL_OT"
+                      [ngClass]="!solutionObj.INS_POSITIONER_MODEL_OT ? 'validation-error' : ''"
+                      class="project-box select-style otherBox"> </ion-input>
+                  </div>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'Wire(-) Color' | translate}}</span>
+                    <ion-input maxlength="250" [readonly]="true" [(ngModel)]="solutionObj.INS_POSITIONER_WIRE_NEG_COLOR"
+                      name="solutionObj.INS_POSITIONER_WIRE_NEG_COLOR"
+                      (click)="searchModal(0,'FlowIsolationAsFoundPositionerWireNegativeColor','INS_POSITIONER_WIRE_NEG_COLOR')"
+                      tappable class="project-box searchNSelect select-style">
+                    </ion-input>
+                    <ion-input maxlength="250" *ngIf="solutionObj.INS_POSITIONER_WIRE_NEG_COLOR == 'Other'"
+                      [(ngModel)]="solutionObj.INS_POSITIONER_WIRE_NEG_COLOR_OT"
+                      name="solutionObj.INS_POSITIONER_WIRE_NEG_COLOR_OT"
+                      [ngClass]="!solutionObj.INS_POSITIONER_WIRE_NEG_COLOR_OT ? 'validation-error' : ''"
+                      class="project-box select-style otherBox"> </ion-input>
+                  </div>
+                </ion-row>
+                <ion-row>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'Action' | translate}}</span>
+                    <ion-input maxlength="250" [readonly]="true" [(ngModel)]="solutionObj.INS_POSITIONER_ACTION"
+                      name="solutionObj.INS_POSITIONER_ACTION"
+                      (click)="searchModal(0,'PositionerActionFlowIsolation','INS_POSITIONER_ACTION')" tappable
+                      class="project-box searchNSelect select-style">
+                    </ion-input>
+                    <ion-input maxlength="250" *ngIf="solutionObj.INS_POSITIONER_ACTION == 'Other'"
+                      [(ngModel)]="solutionObj.INS_POSITIONER_ACTION_OT" name="solutionObj.INS_POSITIONER_ACTION_OT"
+                      [ngClass]="!solutionObj.INS_POSITIONER_ACTION_OT ? 'validation-error' : ''"
+                      class="project-box select-style otherBox"> </ion-input>
+                  </div>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'S/N' | translate}}</span>
+                    <ion-input maxlength="250" [(ngModel)]="solutionObj.INS_POSITIONER_SN"
+                      name="solutionObj.INS_POSITIONER_SN" class="project-box select-style">
+                    </ion-input>
+                  </div>
+                </ion-row>
+              </div>
+            </div>
+          </ion-row>
+
+          <!-- Accessories Accordion -->
+          <ion-row class="customRows">
+            <div class="full-width">
+              <span name="AccessoriesINSBtn"
+                [ngClass]="solutionObj.INS_ACCESSORIES_NA == 'true' || solutionObj.INS_ACCESSORIES_NA == true ? 'disable-content' : ''"
+                (click)="expandOuter('AccessoriesINS')">
+                <ion-icon class="arrowIcon" item-left name="arrow-dropright" role="img" aria-label="arrow dropdown"
+                  *ngIf="!expandOuterAccordion.AccessoriesINS">
+                </ion-icon>
+                <ion-icon class="arrowIcon" role="img" *ngIf="expandOuterAccordion.AccessoriesINS"
+                  aria-label="arrow dropdown" name="arrow-dropdown">
+                </ion-icon>
+                <span class="label pointer inline-block header">{{'Accessories' | translate}}</span>
+              </span>
+              <span class="inline-block pull-right marginRight25">
+                <span class="label">{{'N/A' | translate}}</span>
+                <ion-checkbox name="INS_ACCESSORIES_NA"
+                  (click)="confirmAlert(solutionObj.INS_ACCESSORIES_NA, 'AccessoriesINS', 'INS_ACCESSORIES_NA')"
+                  [(ngModel)]="solutionObj.INS_ACCESSORIES_NA"
+                  [checked]="solutionObj.INS_ACCESSORIES_NA == 'true' || solutionObj.INS_ACCESSORIES_NA == true">
+                </ion-checkbox>
+              </span>
+              <div *ngIf="expandOuterAccordion.AccessoriesINS" class="full-width">
+                <ion-row>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'Accessories' | translate}}</span>
+                    <span class="validator inline-block"></span>
+                    <ion-input maxlength="250" [readonly]="true" [(ngModel)]="solutionObj.ACCESSORIES"
+                      name="solutionObj.ACCESSORIES" (click)="searchModal(1,'SelectAccessories','ACCESSORIES')" tappable
+                      [ngClass]="isAccessories?'':'validation-error'" class="project-box searchNSelect select-style">
+                    </ion-input>
+                    <ion-input maxlength="250" *ngIf="solutionObj.ACCESSORIES == 'Other'"
+                      [(ngModel)]="solutionObj.ACCESSORIES_OT" name="solutionObj.ACCESSORIES_OT"
+                      [ngClass]="!solutionObj.ACCESSORIES_OT ? 'validation-error' : ''"
+                      class="project-box select-style otherBox"> </ion-input>
+                  </div>
+                  <div class="half-screen inline-block">
+                    <span class="label"></span>
+                    <button ion-button (click)="saveAccessories()"
+                      class="save-btn fullWidth">{{'Add Accessories' | translate}}</button>
+                  </div>
+                </ion-row>
+                <ion-list *ngIf="accessoriesObj.length">
+                  <ion-row class="global-padding bdr-btm">
+                    <ion-col class="align-lft" col-2>
+                      <ion-label>{{'Accessories'|translate}}</ion-label>
+                    </ion-col>
+                  </ion-row>
+                  <ion-row *ngFor="let accData of accessoriesObj" class="strippedClass full-width ">
+                    <ion-col class="align-lft" col-2>
+                      <span class="label">{{accData.VALUE_OT?accData.VALUE_OT:accData.VALUE |translate}}</span>
+                    </ion-col>
+                    <ion-col col-2> <span> <i button-right ion-button (click)="deleteAccessories(accData.AC_PK_ID)"
+                          class=" pointer fa fa-trash trash-icon pull-right"></i></span></ion-col>
+                  </ion-row>
+                </ion-list>
+              </div>
+            </div>
+          </ion-row>
+        </span>
+        <!-- INS End-->
+
+        <!-- LT Start-->
+        <span *ngIf="deviceId == Enums.FlowIsolationProductId.LevelTroll">
+          <!-- Level Accordion -->
+          <ion-row class="customRows">
+            <div class="full-width">
+              <span name="LevelLTBtn"
+                [ngClass]="solutionObj.LT_LEVEL_NA == 'true' || solutionObj.LT_LEVEL_NA == true ? 'disable-content' : ''"
+                (click)="expandOuter('LevelLT')">
+                <ion-icon *ngIf="!expandOuterAccordion.LevelLT" class="arrowIcon" role="img" aria-label="arrow dropdown"
+                  item-left name="arrow-dropright">
+                </ion-icon>
+                <ion-icon *ngIf="expandOuterAccordion.LevelLT" class="arrowIcon" role="img" aria-label="arrow dropdown"
+                  name="arrow-dropdown">
+                </ion-icon>
+                <span class="label pointer inline-block header">{{'Level' | translate}}</span>
+              </span>
+              <span class="inline-block pull-right marginRight25">
+                <span class="label">{{'N/A' | translate}}</span>
+                <ion-checkbox name="LT_LEVEL_NA"
+                  (click)="confirmAlert(solutionObj.LT_LEVEL_NA, 'LevelLT', 'LT_LEVEL_NA')"
+                  [(ngModel)]="solutionObj.LT_LEVEL_NA"
+                  [checked]="solutionObj.LT_LEVEL_NA == 'true' || solutionObj.LT_LEVEL_NA == true">
+                </ion-checkbox>
+              </span>
+              <div *ngIf="expandOuterAccordion.LevelLT" class="full-width">
+                <ion-row>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'Make' | translate}}</span>
+                    <!-- <span class="validator inline-block"></span> -->
+                    <ion-input maxlength="250" [readonly]="true" [(ngModel)]="solutionObj.LT_LEVEL_MAKE"
+                      name="solutionObj.LT_LEVEL_MAKE"
+                      (click)="searchModal(0,'MakeIsolationBody','LT_LEVEL_MAKE','MAKE')" tappable
+                      [ngClass]="(!solutionObj.LT_LEVEL_MAKE && isNotValidated) ? 'validation-error' : ''"
+                      class="project-box searchNSelect select-style">
+                    </ion-input>
+                    <ion-input maxlength="250" *ngIf="solutionObj.LT_LEVEL_MAKE == 'Other'"
+                      [(ngModel)]="solutionObj.LT_LEVEL_MAKE_OT" name="solutionObj.LT_LEVEL_MAKE_OT"
+                      [ngClass]="!solutionObj.LT_LEVEL_MAKE_OT ? 'validation-error' : ''"
+                      class="project-box select-style otherBox"> </ion-input>
+                  </div>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'Disp. Size' | translate}}</span>
+                    <ion-input maxlength="250" [(ngModel)]="solutionObj.LT_LEVEL_DISPSIZE"
+                      name="solutionObj.LT_LEVEL_DISPSIZE" class="project-box select-style">
+                    </ion-input>
+                  </div>
+                </ion-row>
+                <ion-row>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'Model' | translate}}</span>
+                    <ion-input maxlength="250" [readonly]="true" [(ngModel)]="solutionObj.LT_LEVEL_MODEL"
+                      name="solutionObj.LT_LEVEL_MODEL"
+                      (click)="searchModal(0,'ModelIsolationBody','LT_LEVEL_MODEL','MODEL')" tappable
+                      [ngClass]="isModelLOVsE['LT_LEVEL_MODEL'] ? 'searchNSelect' : ''"
+                      [disabled]="!isModelLOVsE['LT_LEVEL_MODEL']" class="project-box select-style">
+                    </ion-input>
+                    <ion-input maxlength="250" *ngIf="solutionObj.LT_LEVEL_MODEL == 'Other'"
+                      [(ngModel)]="solutionObj.LT_LEVEL_MODEL_OT" name="solutionObj.LT_LEVEL_MODEL_OT"
+                      [ngClass]="!solutionObj.LT_LEVEL_MODEL_OT ? 'validation-error' : ''"
+                      class="project-box select-style otherBox"> </ion-input>
+                  </div>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'Disp. Rating' | translate}}</span>
+                    <ion-input maxlength="250" [(ngModel)]="solutionObj.LT_LEVEL_DISPRATING"
+                      name="solutionObj.LT_LEVEL_DISPRATING" class="project-box select-style">
+                    </ion-input>
+                  </div>
+                </ion-row>
+                <ion-row>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'S/N' | translate}}</span>
+                    <ion-input maxlength="250" [(ngModel)]="solutionObj.LT_LEVEL_SN" name="solutionObj.LT_LEVEL_SN"
+                      class="project-box select-style">
+                    </ion-input>
+                  </div>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'Disp. Volume' | translate}}</span>
+                    <ion-input maxlength="250" [(ngModel)]="solutionObj.LT_LEVEL_DISPVOLUME"
+                      name="solutionObj.LT_LEVEL_DISPVOLUME" class="project-box select-style">
+                    </ion-input>
+                  </div>
+                </ion-row>
+
+                <ion-row>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'Rating' | translate}}</span>
+                    <ion-input maxlength="250" [(ngModel)]="solutionObj.LT_LEVEL_RATING"
+                      name="solutionObj.LT_LEVEL_RATING" class="project-box select-style">
+                    </ion-input>
+                  </div>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'Displacer Wt.' | translate}}</span>
+                    <ion-input maxlength="250" [(ngModel)]="solutionObj.LT_LEVEL_DISPLACERWT"
+                      name="solutionObj.LT_LEVEL_DISPLACERWT" class="project-box select-style">
+                    </ion-input>
+                  </div>
+                </ion-row>
+                <ion-row>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'Conn' | translate}}</span>
+                    <ion-input maxlength="250" [(ngModel)]="solutionObj.LT_LEVEL_CONN" name="solutionObj.LT_LEVEL_CONN"
+                      class="project-box select-style">
+                    </ion-input>
+                  </div>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'Level TT Wall' | translate}}</span>
+                    <ion-input maxlength="250" [(ngModel)]="solutionObj.LT_LEVEL_LEVELTTWALL"
+                      name="solutionObj.LT_LEVEL_LEVELTTWALL" class="project-box select-style">
+                    </ion-input>
+                  </div>
+                </ion-row>
+              </div>
+            </div>
+          </ion-row>
+
+          <!-- Instrument Accordion -->
+          <ion-row class="customRows">
+            <div class="full-width">
+              <span name="InstrumentLTBtn"
+                [ngClass]="solutionObj.LT_INSTRUMENT_NA == 'true' || solutionObj.LT_INSTRUMENT_NA == true ? 'disable-content' : ''"
+                (click)="expandOuter('InstrumentLT')">
+                <ion-icon *ngIf="!expandOuterAccordion.InstrumentLT" class="arrowIcon" role="img"
+                  aria-label="arrow dropdown" item-left name="arrow-dropright">
+                </ion-icon>
+                <ion-icon *ngIf="expandOuterAccordion.InstrumentLT" class="arrowIcon" role="img"
+                  aria-label="arrow dropdown" name="arrow-dropdown">
+                </ion-icon>
+                <span class="label pointer inline-block header">{{'Instrument' | translate}}</span>
+              </span>
+              <span class="inline-block pull-right marginRight25">
+                <span class="label">{{'N/A' | translate}}</span>
+                <ion-checkbox name="LT_INSTRUMENT_NA"
+                  (click)="confirmAlert(solutionObj.LT_INSTRUMENT_NA, 'InstrumentLT', 'LT_INSTRUMENT_NA')"
+                  [(ngModel)]="solutionObj.LT_INSTRUMENT_NA"
+                  [checked]="solutionObj.LT_INSTRUMENT_NA == 'true' || solutionObj.LT_INSTRUMENT_NA == true">
+                </ion-checkbox>
+              </span>
+              <div *ngIf="expandOuterAccordion.InstrumentLT" class="full-width">
+                <ion-row>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'Make' | translate}}</span>
+                    <!-- <span class="validator inline-block"></span> -->
+                    <ion-input maxlength="250" [readonly]="true" [(ngModel)]="solutionObj.LT_INSTRUMENT_MAKE"
+                      name="solutionObj.LT_INSTRUMENT_MAKE"
+                      (click)="searchModal(0,'MakeLevelTrolInstrument','LT_INSTRUMENT_MAKE','MAKE')" tappable
+                      [ngClass]="(!solutionObj.LT_INSTRUMENT_MAKE && isNotValidated) ? 'validation-error' : ''"
+                      class="project-box searchNSelect select-style">
+                    </ion-input>
+                    <ion-input maxlength="250" *ngIf="solutionObj.LT_INSTRUMENT_MAKE == 'Other'"
+                      [(ngModel)]="solutionObj.LT_INSTRUMENT_MAKE_OT" name="solutionObj.LT_INSTRUMENT_MAKE_OT"
+                      [ngClass]="!solutionObj.LT_INSTRUMENT_MAKE_OT ? 'validation-error' : ''"
+                      class="project-box select-style otherBox"> </ion-input>
+                  </div>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'Input' | translate}}</span>
+                    <ion-input maxlength="250" [(ngModel)]="solutionObj.LT_INSTRUMENT_INPUT"
+                      name="solutionObj.LT_INSTRUMENT_INPUT" class="project-box select-style">
+                    </ion-input>
+                  </div>
+                </ion-row>
+                <ion-row>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'Model' | translate}}</span>
+                    <ion-input maxlength="250" [readonly]="true" [(ngModel)]="solutionObj.LT_INSTRUMENT_MODEL"
+                      name="solutionObj.LT_INSTRUMENT_MODEL"
+                      (click)="searchModal(0,'ModelLevelTrolInstrument','LT_INSTRUMENT_MODEL','MODEL')" tappable
+                      [ngClass]="isModelLOVsE['LT_INSTRUMENT_MODEL'] ? 'searchNSelect' : ''"
+                      [disabled]="!isModelLOVsE['LT_INSTRUMENT_MODEL']" class="project-box select-style">
+                    </ion-input>
+                    <ion-input maxlength="250" *ngIf="solutionObj.LT_INSTRUMENT_MODEL == 'Other'"
+                      [(ngModel)]="solutionObj.LT_INSTRUMENT_MODEL_OT" name="solutionObj.LT_INSTRUMENT_MODEL_OT"
+                      [ngClass]="!solutionObj.LT_INSTRUMENT_MODEL_OT ? 'validation-error' : ''"
+                      class="project-box select-style otherBox"> </ion-input>
+                  </div>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'Output' | translate}}</span>
+                    <ion-input maxlength="250" [(ngModel)]="solutionObj.LT_INSTRUMENT_OUTPUT"
+                      name="solutionObj.LT_INSTRUMENT_OUTPUT" class="project-box select-style">
+                    </ion-input>
+                  </div>
+                </ion-row>
+                <ion-row>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'S/N' | translate}}</span>
+                    <ion-input maxlength="250" [(ngModel)]="solutionObj.LT_INSTRUMENT_SN"
+                      name="solutionObj.LT_INSTRUMENT_SN" class="project-box select-style">
+                    </ion-input>
+                  </div>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'Regulator' | translate}}</span>
+                    <ion-input maxlength="250" [(ngModel)]="solutionObj.LT_INSTRUMENT_REGULATOR"
+                      name="solutionObj.LT_INSTRUMENT_REGULATOR" class="project-box select-style">
+                    </ion-input>
+                  </div>
+                </ion-row>
+
+                <ion-row>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'Action' | translate}}</span>
+                    <ion-input maxlength="250" [readonly]="true" [(ngModel)]="solutionObj.LT_INSTRUMENT_ACTION"
+                      name="solutionObj.LT_INSTRUMENT_ACTION"
+                      (click)="searchModal(0,'ActuatorActionFlowIsolation','LT_INSTRUMENT_ACTION')" tappable
+                      class="project-box searchNSelect select-style">
+                    </ion-input>
+                    <ion-input maxlength="250" *ngIf="solutionObj.LT_INSTRUMENT_ACTION == 'Other'"
+                      [(ngModel)]="solutionObj.LT_INSTRUMENT_ACTION_OT" name="solutionObj.LT_INSTRUMENT_ACTION_OT"
+                      [ngClass]="!solutionObj.LT_INSTRUMENT_ACTION_OT ? 'validation-error' : ''"
+                      class="project-box select-style otherBox"> </ion-input>
+                  </div>
+                </ion-row>
+              </div>
+            </div>
+          </ion-row>
+
+          <!-- Accessories Accordion -->
+          <ion-row class="customRows">
+            <div class="full-width">
+              <span name="AccessoriesLTBtn"
+                [ngClass]="solutionObj.LT_ACCESSORIES_NA == 'true' || solutionObj.LT_ACCESSORIES_NA == true ? 'disable-content' : ''"
+                (click)="expandOuter('AccessoriesLT')">
+                <ion-icon *ngIf="!expandOuterAccordion.AccessoriesLT" class="arrowIcon" role="img"
+                  aria-label="arrow dropdown" item-left name="arrow-dropright">
+                </ion-icon>
+                <ion-icon *ngIf="expandOuterAccordion.AccessoriesLT" class="arrowIcon" role="img"
+                  aria-label="arrow dropdown" name="arrow-dropdown">
+                </ion-icon>
+                <span class="label pointer inline-block header">{{'Accessories' | translate}}</span>
+              </span>
+              <span class="inline-block pull-right marginRight25">
+                <span class="label">{{'N/A' | translate}}</span>
+                <ion-checkbox name="LT_ACCESSORIES_NA"
+                  (click)="confirmAlert(solutionObj.LT_ACCESSORIES_NA, 'AccessoriesLT', 'LT_ACCESSORIES_NA')"
+                  [(ngModel)]="solutionObj.LT_ACCESSORIES_NA"
+                  [checked]="solutionObj.LT_ACCESSORIES_NA == 'true' || solutionObj.LT_ACCESSORIES_NA == true">
+                </ion-checkbox>
+              </span>
+              <div *ngIf="expandOuterAccordion.AccessoriesLT" class="full-width">
+                <ion-row>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'P/I' | translate}}</span>
+                    <ion-input maxlength="250" [(ngModel)]="solutionObj.LT_ACCESSORIES_P_I"
+                      name="solutionObj.LT_ACCESSORIES_P_I" class="project-box select-style">
+                    </ion-input>
+                  </div>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'Signal' | translate}}</span>
+                    <ion-input maxlength="250" [(ngModel)]="solutionObj.LT_ACCESSORIES_SIGNAL"
+                      name="solutionObj.LT_ACCESSORIES_SIGNAL" class="project-box select-style">
+                    </ion-input>
+                  </div>
+                </ion-row>
+                <ion-row>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'Switch' | translate}}</span>
+                    <ion-input maxlength="250" [(ngModel)]="solutionObj.LT_ACCESSORIES_SWITCH"
+                      name="solutionObj.LT_ACCESSORIES_SWITCH" class="project-box select-style">
+                    </ion-input>
+                  </div>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'Other' | translate}}</span>
+                    <ion-input maxlength="250" [(ngModel)]="solutionObj.LT_ACCESSORIES_OTHER"
+                      name="solutionObj.LT_ACCESSORIES_OTHER" class="project-box select-style">
+                    </ion-input>
+                  </div>
+                </ion-row>
+              </div>
+            </div>
+          </ion-row>
+        </span>
+        <!-- LT End-->
+
+        <!-- REG Start-->
+        <span *ngIf="deviceId == Enums.FlowIsolationProductId.Regulator">
+          <!-- Body Accordion -->
+          <ion-row class="customRows">
+            <div class="full-width">
+              <span name="BodyREGBtn"
+                [ngClass]="solutionObj.REG_BODY_NA == 'true' || solutionObj.REG_BODY_NA == true ? 'disable-content' : ''"
+                (click)="expandOuter('BodyREG')">
+                <ion-icon *ngIf="!expandOuterAccordion.BodyREG" class="arrowIcon" role="img" aria-label="arrow dropdown"
+                  item-left name="arrow-dropright">
+                </ion-icon>
+                <ion-icon *ngIf="expandOuterAccordion.BodyREG" class="arrowIcon" role="img" aria-label="arrow dropdown"
+                  name="arrow-dropdown">
+                </ion-icon>
+                <span class="label pointer inline-block header">{{'Body' | translate}}</span>
+              </span>
+              <span class="inline-block pull-right marginRight25">
+                <span class="label">{{'N/A' | translate}}</span>
+                <ion-checkbox name="REG_BODY_NA"
+                  (click)="confirmAlert(solutionObj.REG_BODY_NA, 'BodyREG', 'REG_BODY_NA')"
+                  [(ngModel)]="solutionObj.REG_BODY_NA"
+                  [checked]="solutionObj.REG_BODY_NA == 'true' || solutionObj.REG_BODY_NA == true">
+                </ion-checkbox>
+              </span>
+              <div *ngIf="expandOuterAccordion.BodyREG" class="full-width">
+                <ion-row>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'Make' | translate}}</span>
+                    <!-- <span class="validator inline-block"></span> -->
+                    <ion-input maxlength="250" [readonly]="true" [(ngModel)]="solutionObj.REG_BODY_MAKE"
+                      name="solutionObj.REG_BODY_MAKE"
+                      (click)="searchModal(0,'MakeRegulatorBody','REG_BODY_MAKE','MAKE')" tappable
+                      [ngClass]="(!solutionObj.REG_BODY_MAKE && isNotValidated) ? 'validation-error' : ''"
+                      class="project-box searchNSelect select-style">
+                    </ion-input>
+                    <ion-input maxlength="250" *ngIf="solutionObj.REG_BODY_MAKE == 'Other'"
+                      [(ngModel)]="solutionObj.REG_BODY_MAKE_OT" name="solutionObj.REG_BODY_MAKE_OT"
+                      [ngClass]="!solutionObj.REG_BODY_MAKE_OT ? 'validation-error' : ''"
+                      class="project-box select-style otherBox"> </ion-input>
+                  </div>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'Rating' | translate}}</span>
+                    <ion-input maxlength="250" [(ngModel)]="solutionObj.REG_BODY_RATING"
+                      name="solutionObj.REG_BODY_RATING" class="project-box select-style">
+                    </ion-input>
+                  </div>
+                </ion-row>
+                <ion-row>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'Model' | translate}}</span>
+                    <ion-input maxlength="250" [readonly]="true" [(ngModel)]="solutionObj.REG_BODY_MODEL"
+                      name="solutionObj.REG_BODY_MODEL"
+                      (click)="searchModal(0,'ModelRegulatorBody','REG_BODY_MODEL','MODEL')" tappable
+                      [ngClass]="isModelLOVsE['REG_BODY_MODEL'] ? 'searchNSelect' : ''"
+                      [disabled]="!isModelLOVsE['REG_BODY_MODEL']" class="project-box select-style">
+                    </ion-input>
+                    <ion-input maxlength="250" *ngIf="solutionObj.REG_BODY_MODEL == 'Other'"
+                      [(ngModel)]="solutionObj.REG_BODY_MODEL_OT" name="solutionObj.REG_BODY_MODEL_OT"
+                      [ngClass]="!solutionObj.REG_BODY_MODEL_OT ? 'validation-error' : ''"
+                      class="project-box select-style otherBox"> </ion-input>
+                  </div>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'Conn' | translate}}</span>
+                    <ion-input maxlength="250" [(ngModel)]="solutionObj.REG_BODY_CONN" name="solutionObj.REG_BODY_CONN"
+                      class="project-box select-style">
+                    </ion-input>
+                  </div>
+                </ion-row>
+                <ion-row>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'S/N' | translate}}</span>
+                    <ion-input maxlength="250" [(ngModel)]="solutionObj.REG_BODY_SN" name="solutionObj.REG_BODY_SN"
+                      class="project-box select-style">
+                    </ion-input>
+                  </div>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'Orifice Size' | translate}}</span>
+                    <ion-input maxlength="250" [(ngModel)]="solutionObj.REG_BODY_ORIFICESIZE"
+                      name="solutionObj.REG_BODY_ORIFICESIZE" class="project-box select-style">
+                    </ion-input>
+                  </div>
+                </ion-row>
+
+                <ion-row>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'Size' | translate}}</span>
+                    <ion-input maxlength="250" [(ngModel)]="solutionObj.REG_BODY_SIZE" name="solutionObj.REG_BODY_SIZE"
+                      class="project-box select-style">
+                    </ion-input>
+                  </div>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'Spring Range' | translate}}</span>
+                    <ion-input maxlength="250" [(ngModel)]="solutionObj.REG_BODY_SPRINGRANGE"
+                      name="solutionObj.REG_BODY_SPRINGRANGE" class="project-box select-style">
+                    </ion-input>
+                  </div>
+                </ion-row>
+                <ion-row>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'Spring Color' | translate}}</span>
+                    <ion-input maxlength="250" [(ngModel)]="solutionObj.REG_BODY_SPRINGCOLOR"
+                      name="solutionObj.REG_BODY_SPRINGCOLOR" class="project-box select-style">
+                    </ion-input>
+                  </div>
+                </ion-row>
+              </div>
+            </div>
+          </ion-row>
+
+          <!-- Pilot Accordion -->
+          <ion-row class="customRows">
+            <div class="full-width">
+              <span name="PilotREGBtn"
+                [ngClass]="solutionObj.REG_PILOT_NA == 'true' || solutionObj.REG_PILOT_NA == true ? 'disable-content' : ''"
+                (click)="expandOuter('PilotREG')">
+                <ion-icon *ngIf="!expandOuterAccordion.PilotREG" class="arrowIcon" role="img"
+                  aria-label="arrow dropdown" item-left name="arrow-dropright">
+                </ion-icon>
+                <ion-icon *ngIf="expandOuterAccordion.PilotREG" class="arrowIcon" role="img" aria-label="arrow dropdown"
+                  name="arrow-dropdown">
+                </ion-icon>
+                <span class="label pointer inline-block header">{{'Pilot' | translate}}</span>
+              </span>
+              <span class="inline-block pull-right marginRight25">
+                <span class="label">{{'N/A' | translate}}</span>
+                <ion-checkbox name="REG_PILOT_NA"
+                  (click)="confirmAlert(solutionObj.REG_PILOT_NA, 'PilotREG', 'REG_PILOT_NA')"
+                  [(ngModel)]="solutionObj.REG_PILOT_NA"
+                  [checked]="solutionObj.REG_PILOT_NA == 'true' || solutionObj.REG_PILOT_NA == true">
+                </ion-checkbox>
+              </span>
+              <div *ngIf="expandOuterAccordion.PilotREG" class="full-width">
+                <ion-row>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'Make' | translate}}</span>
+                    <!-- <span class="validator inline-block"></span> -->
+                    <ion-input maxlength="250" [readonly]="true" [(ngModel)]="solutionObj.REG_PILOT_MAKE"
+                      name="solutionObj.REG_PILOT_MAKE"
+                      (click)="searchModal(0,'MakeRegulatorBody','REG_PILOT_MAKE','MAKE')" tappable
+                      [ngClass]="(!solutionObj.REG_PILOT_MAKE && isNotValidated) ? 'validation-error' : ''"
+                      class="project-box searchNSelect select-style">
+                    </ion-input>
+                    <ion-input maxlength="250" *ngIf="solutionObj.REG_PILOT_MAKE == 'Other'"
+                      [(ngModel)]="solutionObj.REG_PILOT_MAKE_OT" name="solutionObj.REG_PILOT_MAKE_OT"
+                      [ngClass]="!solutionObj.REG_PILOT_MAKE_OT ? 'validation-error' : ''"
+                      class="project-box select-style otherBox"> </ion-input>
+                  </div>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'Spring Range' | translate}}</span>
+                    <ion-input maxlength="250" [(ngModel)]="solutionObj.REG_PILOT_SPRINGRANGE"
+                      name="solutionObj.REG_PILOT_SPRINGRANGE" class="project-box select-style">
+                    </ion-input>
+                  </div>
+                </ion-row>
+                <ion-row>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'Model' | translate}}</span>
+                    <ion-input maxlength="250" [readonly]="true" [(ngModel)]="solutionObj.REG_PILOT_MODEL"
+                      name="solutionObj.REG_PILOT_MODEL"
+                      (click)="searchModal(0,'ModelRegulatorBody','REG_PILOT_MODEL','MODEL')"
+                      [ngClass]="isModelLOVsE['REG_PILOT_MODEL'] ? 'searchNSelect' : ''"
+                      [disabled]="!isModelLOVsE['REG_PILOT_MODEL']" tappable class="project-box select-style">
+                    </ion-input>
+                    <ion-input maxlength="250" *ngIf="solutionObj.REG_PILOT_MODEL == 'Other'"
+                      [(ngModel)]="solutionObj.REG_PILOT_MODEL_OT" name="solutionObj.REG_PILOT_MODEL_OT"
+                      [ngClass]="!solutionObj.REG_PILOT_MODEL_OT ? 'validation-error' : ''"
+                      class="project-box select-style otherBox"> </ion-input>
+                  </div>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'Spring Color' | translate}}</span>
+                    <ion-input maxlength="250" [(ngModel)]="solutionObj.REG_PILOT_SPRINGCOLOR"
+                      name="solutionObj.REG_PILOT_SPRINGCOLOR" class="project-box select-style">
+                    </ion-input>
+                  </div>
+                </ion-row>
+              </div>
+            </div>
+          </ion-row>
+
+          <!-- Material Verification Accordion -->
+          <ion-row class="customRows">
+            <div class="full-width">
+              <span name="MVREGBtn"
+                [ngClass]="solutionObj.REG_MV_NA == 'true' || solutionObj.REG_MV_NA == true ? 'disable-content' : ''"
+                (click)="expandOuter('MVREG')">
+                <ion-icon *ngIf="!expandOuterAccordion.MVREG" class="arrowIcon" role="img" aria-label="arrow dropdown"
+                  item-left name="arrow-dropright">
+                </ion-icon>
+                <ion-icon *ngIf="expandOuterAccordion.MVREG" class="arrowIcon" role="img" aria-label="arrow dropdown"
+                  name="arrow-dropdown">
+                </ion-icon>
+                <span class="label pointer inline-block header">{{'Materials Verification' | translate}}</span>
+              </span>
+              <span class="inline-block pull-right marginRight25">
+                <span class="label">{{'N/A' | translate}}</span>
+                <ion-checkbox name="REG_MV_NA" (click)="confirmAlert(solutionObj.REG_MV_NA, 'MVREG', 'REG_MV_NA')"
+                  [(ngModel)]="solutionObj.REG_MV_NA"
+                  [checked]="solutionObj.REG_MV_NA == 'true' || solutionObj.REG_MV_NA == true">
+                </ion-checkbox>
+              </span>
+              <div *ngIf="expandOuterAccordion.MVREG" class="full-width">
+                <ion-row class="strippedClass section">
+                  <div class="full-width">
+                    <span class="label inline-block subheader">{{'Body' | translate}}</span>
+                  </div>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'As Found' | translate}}</span>
+                    <ion-input maxlength="250" [(ngModel)]="solutionObj.REG_MV_BODY_ASFOUND"
+                      name="solutionObj.REG_MV_BODY_ASFOUND" class="project-box select-style">
+                    </ion-input>
+                  </div>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'As Left' | translate}}</span>
+                    <ion-input maxlength="250" [(ngModel)]="solutionObj.REG_MV_BODY_ASLEFT"
+                      name="solutionObj.REG_MV_BODY_ASLEFT" class="project-box select-style">
+                    </ion-input>
+                  </div>
+                </ion-row>
+                <ion-row class="strippedClass section">
+                  <div class="full-width">
+                    <span class="label inline-block subheader">{{'Seat' | translate}}</span>
+                  </div>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'As Found' | translate}}</span>
+                    <ion-input maxlength="250" [(ngModel)]="solutionObj.REG_MV_SEAT_ASFOUND"
+                      name="solutionObj.REG_MV_SEAT_ASFOUND" class="project-box select-style">
+                    </ion-input>
+                  </div>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'As Left' | translate}}</span>
+                    <ion-input maxlength="250" [(ngModel)]="solutionObj.REG_MV_SEAT_ASLEFT"
+                      name="solutionObj.REG_MV_SEAT_ASLEFT" class="project-box select-style">
+                    </ion-input>
+                  </div>
+                </ion-row>
+                <ion-row class="strippedClass section">
+                  <div class="full-width">
+                    <span class="label inline-block subheader">{{'Plug/Disc' | translate}}</span>
+                  </div>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'As Found' | translate}}</span>
+                    <ion-input maxlength="250" [(ngModel)]="solutionObj.REG_MV_PLUGDISK_ASFOUND"
+                      name="solutionObj.REG_MV_PLUGDISK_ASFOUND" class="project-box select-style">
+                    </ion-input>
+                  </div>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'As Left' | translate}}</span>
+                    <ion-input maxlength="250" [(ngModel)]="solutionObj.REG_MV_PLUGDISK_ASLEFT"
+                      name="solutionObj.REG_MV_PLUGDISK_ASLEFT" class="project-box select-style">
+                    </ion-input>
+                  </div>
+                </ion-row>
+                <div class="full-width">
+                  <span class="label">{{'Notes' | translate}}</span>
+                  <ion-textarea maxlength="2000" [(ngModel)]="solutionObj.REG_MV_NOTES" name="solutionObj.REG_MV_NOTES"
+                    (focusout)="solutionObj.REG_MV_NOTES = utilityProvider.sliceValueUptoLimit($event.target.value, $event.target.maxLength)"
+                    class="input  WF-textArea" rows="3">
+                  </ion-textarea>
+                </div>
+              </div>
+            </div>
+          </ion-row>
+        </span>
+        <!-- REG End-->
+
+        <!-- TO Start-->
+        <span *ngIf="deviceId == Enums.FlowIsolationProductId.TrimOnly">
+          <!-- Body Accordion -->
+          <ion-row class="customRows">
+            <div class="full-width">
+              <span name="BodyTOBtn"
+                [ngClass]="solutionObj.TO_BODY_NA == 'true' || solutionObj.TO_BODY_NA == true ? 'disable-content' : ''"
+                (click)="expandOuter('BodyTO')">
+                <ion-icon *ngIf="!expandOuterAccordion.BodyTO" class="arrowIcon" role="img" aria-label="arrow dropdown"
+                  item-left name="arrow-dropright">
+                </ion-icon>
+                <ion-icon *ngIf="expandOuterAccordion.BodyTO" class="arrowIcon" role="img" aria-label="arrow dropdown"
+                  name="arrow-dropdown">
+                </ion-icon>
+                <span class="label pointer inline-block header">{{'Body' | translate}}</span>
+              </span>
+              <span class="inline-block pull-right marginRight25">
+                <span class="label">{{'N/A' | translate}}</span>
+                <ion-checkbox name="TO_BODY_NA" (click)="confirmAlert(solutionObj.TO_BODY_NA, 'BodyTO', 'TO_BODY_NA')"
+                  [(ngModel)]="solutionObj.TO_BODY_NA"
+                  [checked]="solutionObj.TO_BODY_NA == 'true' || solutionObj.TO_BODY_NA == true">
+                </ion-checkbox>
+              </span>
+              <div *ngIf="expandOuterAccordion.BodyTO" class="full-width">
+                <ion-row>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'Make' | translate}}</span>
+                    <!-- <span class="validator inline-block"></span> -->
+                    <ion-input maxlength="250" [readonly]="true" [(ngModel)]="solutionObj.TO_BODY_MAKE"
+                      name="solutionObj.TO_BODY_MAKE" (click)="searchModal(0,'MakeTrimOnlyBody','TO_BODY_MAKE','MAKE')"
+                      tappable [ngClass]="(!solutionObj.TO_BODY_MAKE && isNotValidated) ? 'validation-error' : ''"
+                      class="project-box searchNSelect select-style">
+                    </ion-input>
+                    <ion-input maxlength="250" *ngIf="solutionObj.TO_BODY_MAKE == 'Other'"
+                      [(ngModel)]="solutionObj.TO_BODY_MAKE_OT" name="solutionObj.TO_BODY_MAKE_OT"
+                      [ngClass]="!solutionObj.TO_BODY_MAKE_OT ? 'validation-error' : ''"
+                      class="project-box select-style otherBox"> </ion-input>
+                  </div>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'Pressure Class' | translate}}</span>
+                    <ion-input maxlength="250" [readonly]="true" [(ngModel)]="solutionObj.TO_BODY_PRESSURECLASS"
+                      name="solutionObj.TO_BODY_PRESSURECLASS"
+                      (click)="searchModal(0,'PressureClassFlowIsolation','TO_BODY_PRESSURECLASS')" tappable
+                      class="project-box searchNSelect select-style">
+                    </ion-input>
+                    <ion-input maxlength="250" *ngIf="solutionObj.TO_BODY_PRESSURECLASS == 'Other'"
+                      [(ngModel)]="solutionObj.TO_BODY_PRESSURECLASS_OT" name="solutionObj.TO_BODY_PRESSURECLASS_OT"
+                      [ngClass]="!solutionObj.TO_BODY_PRESSURECLASS_OT ? 'validation-error' : ''"
+                      class="project-box select-style otherBox"> </ion-input>
+                  </div>
+                </ion-row>
+                <ion-row>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'Model' | translate}}</span>
+                    <ion-input maxlength="250" [readonly]="true" [(ngModel)]="solutionObj.TO_BODY_MODEL"
+                      name="solutionObj.TO_BODY_MODEL"
+                      (click)="searchModal(0,'ModelTrimOnlyBody','TO_BODY_MODEL','MODEL')" tappable
+                      [ngClass]="isModelLOVsE['TO_BODY_MODEL'] ? 'searchNSelect' : ''"
+                      [disabled]="!isModelLOVsE['TO_BODY_MODEL']" class="project-box select-style">
+                    </ion-input>
+                    <ion-input maxlength="250" *ngIf="solutionObj.TO_BODY_MODEL == 'Other'"
+                      [(ngModel)]="solutionObj.TO_BODY_MODEL_OT" name="solutionObj.TO_BODY_MODEL_OT"
+                      [ngClass]="!solutionObj.TO_BODY_MODEL_OT ? 'validation-error' : ''"
+                      class="project-box select-style otherBox"> </ion-input>
+                  </div>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'End Connection' | translate}}</span>
+                    <ion-input maxlength="250" [readonly]="true" [(ngModel)]="solutionObj.TO_BODY_ENDCONNECTION"
+                      name="solutionObj.TO_BODY_ENDCONNECTION"
+                      (click)="searchModal(0,'EndConnectionFlowIsolation','TO_BODY_ENDCONNECTION')" tappable
+                      class="project-box searchNSelect select-style">
+                    </ion-input>
+                    <ion-input maxlength="250" *ngIf="solutionObj.TO_BODY_ENDCONNECTION == 'Other'"
+                      [(ngModel)]="solutionObj.TO_BODY_ENDCONNECTION_OT" name="solutionObj.TO_BODY_ENDCONNECTION_OT"
+                      [ngClass]="!solutionObj.TO_BODY_ENDCONNECTION_OT ? 'validation-error' : ''"
+                      class="project-box select-style otherBox"> </ion-input>
+                  </div>
+                </ion-row>
+                <ion-row>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'Trim Char' | translate}}</span>
+                    <ion-input maxlength="250" [readonly]="true" [(ngModel)]="solutionObj.TO_BODY_TRIMCHAR"
+                      name="solutionObj.TO_BODY_TRIMCHAR"
+                      (click)="searchModal(0,'TrimCharFlowIsolation','TO_BODY_TRIMCHAR')" tappable
+                      class="project-box searchNSelect select-style">
+                    </ion-input>
+                    <ion-input maxlength="250" *ngIf="solutionObj.TO_BODY_TRIMCHAR == 'Other'"
+                      [(ngModel)]="solutionObj.TO_BODY_TRIMCHAR_OT" name="solutionObj.TO_BODY_TRIMCHAR_OT"
+                      [ngClass]="!solutionObj.TO_BODY_TRIMCHAR_OT ? 'validation-error' : ''"
+                      class="project-box select-style otherBox"> </ion-input>
+                  </div>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'PKG Configuration' | translate}}</span>
+                    <ion-input maxlength="250" [readonly]="true" [(ngModel)]="solutionObj.TO_BODY_PKGCONFIGURATION"
+                      name="solutionObj.TO_BODY_PKGCONFIGURATION"
+                      (click)="searchModal(0,'PKGConfigurationFlowIsolation','TO_BODY_PKGCONFIGURATION')" tappable
+                      class="project-box searchNSelect select-style">
+                    </ion-input>
+                    <ion-input maxlength="250" *ngIf="solutionObj.TO_BODY_PKGCONFIGURATION == 'Other'"
+                      [(ngModel)]="solutionObj.TO_BODY_PKGCONFIGURATION_OT"
+                      name="solutionObj.TO_BODY_PKGCONFIGURATION_OT"
+                      [ngClass]="!solutionObj.TO_BODY_PKGCONFIGURATION_OT ? 'validation-error' : ''"
+                      class="project-box select-style otherBox"> </ion-input>
+                  </div>
+                </ion-row>
+                <ion-row>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'Size' | translate}}</span>
+                    <ion-input maxlength="250" [readonly]="true" [(ngModel)]="solutionObj.TO_BODY_SIZE"
+                      name="solutionObj.TO_BODY_SIZE" (click)="searchModal(0,'BodySizeFlowIsolation','TO_BODY_SIZE')"
+                      tappable class="project-box searchNSelect select-style">
+                    </ion-input>
+                    <ion-input maxlength="250" *ngIf="solutionObj.TO_BODY_SIZE == 'Other'"
+                      [(ngModel)]="solutionObj.TO_BODY_SIZE_OT" name="solutionObj.TO_BODY_SIZE_OT"
+                      [ngClass]="!solutionObj.TO_BODY_SIZE_OT ? 'validation-error' : ''"
+                      class="project-box select-style otherBox"> </ion-input>
+                  </div>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'Flow Direction' | translate}}</span>
+                    <ion-input maxlength="250" [readonly]="true" [(ngModel)]="solutionObj.TO_BODY_FLOWDIRECTION"
+                      name="solutionObj.TO_BODY_FLOWDIRECTION"
+                      (click)="searchModal(0,'BodyFlowDirectionFlowIsolation','TO_BODY_FLOWDIRECTION')" tappable
+                      class="project-box searchNSelect select-style">
+                    </ion-input>
+                    <ion-input maxlength="250" *ngIf="solutionObj.TO_BODY_FLOWDIRECTION == 'Other'"
+                      [(ngModel)]="solutionObj.TO_BODY_FLOWDIRECTION_OT" name="solutionObj.TO_BODY_FLOWDIRECTION_OT"
+                      [ngClass]="!solutionObj.TO_BODY_FLOWDIRECTION_OT ? 'validation-error' : ''"
+                      class="project-box select-style otherBox"> </ion-input>
+                  </div>
+                </ion-row>
+                <ion-row>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'Port' | translate}}</span>
+                    <ion-input maxlength="250" [readonly]="true" [(ngModel)]="solutionObj.TO_BODY_PORT"
+                      name="solutionObj.TO_BODY_PORT" (click)="searchModal(0,'PortFlowIsolation','TO_BODY_PORT')"
+                      tappable class="project-box searchNSelect select-style">
+                    </ion-input>
+                    <ion-input maxlength="250" *ngIf="solutionObj.TO_BODY_PORT == 'Other'"
+                      [(ngModel)]="solutionObj.TO_BODY_PORT_OT" name="solutionObj.TO_BODY_PORT_OT"
+                      [ngClass]="!solutionObj.TO_BODY_PORT_OT ? 'validation-error' : ''"
+                      class="project-box select-style otherBox"> </ion-input>
+                  </div>
+                  <div class="half-screen inline-block">
+                    <span class="label">{{'S/N' | translate}}</span>
+                    <ion-input maxlength="250" [(ngModel)]="solutionObj.TO_BODY_SN" name="solutionObj.TO_BODY_SN"
+                      class="project-box select-style">
+                    </ion-input>
+                  </div>
+                </ion-row>
+              </div>
+            </div>
+          </ion-row>
+        </span>
+
+        <!-- TO End-->
+      </div>
+      <ion-row>
+        <ion-col text-left>
+          <button (click)="redirect('back')" id="afBackBtn" ion-button
+            class="footer-Button">{{'Back' | translate}}</button>
+        </ion-col>
+        <ion-col text-right>
+          <button (click)="redirect('')" ion-button id="afNextBtn"
+            class="footer-Button">{{ bottomNavBtn | translate}}</button>
+        </ion-col>
+      </ion-row>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

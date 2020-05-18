@@ -1,0 +1,102 @@
+<ion-header>
+  <page-custom-header [header]="header_data"></page-custom-header>
+</ion-header>
+<ion-content padding>
+  <ion-card class="languageCard">
+    <ion-card-header>
+      <ion-row class="global-padding bottom-border">
+        <div text-left class="langTransHeading">
+          <h1 class="heading-adjust">{{'Translate/Edit Labels' | translate}}</h1>
+        </div>
+        <div text-center class="selectLangLabel">
+          <!--10-18-18 Radheshyam kumar addedd tappable attribute on evey ion-select to resolve the double click issue -->
+          <ion-select interface="popover" tappable *ngIf="showSelects" class="country-box select-style" required [(ngModel)]="language_Id" placeholder="{{'Select Language' | translate}}" (ionChange)="addLanguagePopup($event)" name="countryCode" [disabled]="!utilityProvider.isConnected()">
+            <ion-option value="{{-1}}">{{'Select Language' | translate}}</ion-option>
+            <ion-option *ngFor="let item of LangList; let i = index" [value]="i">{{item.Lang_Name | translate}}</ion-option>
+          </ion-select>
+        </div>
+
+        <!-- 08/13/2018 Mayur Varshney -- Display pendingSync Icon-->
+
+         <div class="langBlankCol pull-left">
+           <span *ngIf="pendingSubmit.length > 0"><i class="fa fa-cloud-upload pendingIcon" aria-hidden="true"></i></span> 
+        </div> 
+        <div text-right class="searchKeyLabel">
+          <ion-searchbar placeholder="{{'Search Language Key' | translate}}" [(ngModel)]="myInput" (ionCancel)="onCancel($event)" [ngClass]="!LabelField.length > 0 ? 'disableSearchBar':''"></ion-searchbar>
+        </div>
+      </ion-row>
+      <ion-row class="global-padding">
+        <div  text-center no-padding class="importExportBox">
+           <label *ngIf="permissions.EditLanguage" class="import-language-button inline-block button button-default button-block" [ngClass]="!LabelField.length > 0 || !utilityProvider.isConnected() ? 'disableInput':''" >
+            <input #langupload type="file" accept=".csv" name="datasource_upload" class="import-button inline-block" fd-input (change)="importData($event.target.files)" />
+            <span class="import_text">{{'Import'|translate}}</span>
+          </label>
+          <div class="inline-block">
+            <button *ngIf="permissions.EditLanguage" ion-button block class="export-language-button inline-block" [disabled]="!LabelField.length > 0 || !utilityProvider.isConnected()" (click)="exportData()">{{'Export' | translate}}</button>
+          </div>
+        </div>
+        <div class="saveSubmitBox" no-padding>
+          <!-- <button ion-button block class="draft-language-button inline-block" (click)="saveDraft()" [disabled]="!LabelField.length > 0">{{'Save As Draft' | translate}}</button> -->
+          <button ion-button block class="pull-right save-language-button inline-block" (click)="saveLanguageMapping()" [disabled]="!LabelField.length > 0 || !utilityProvider.isConnected()">{{'Submit' | translate}}</button>
+        </div>
+        <div class="isActiveBoxEnabled">
+          <ion-item class="isActiveBox" *ngIf="LabelField.length > 0">
+            <ion-label>{{'Enabled' | translate}}</ion-label>
+            <ion-checkbox [(ngModel)]="activeLanguage.isEnabled" [disabled]="!utilityProvider.isConnected()" (ionChange)="activeLanguage.Sync_Status = false;"></ion-checkbox>
+          </ion-item>
+        </div>
+      </ion-row>
+    </ion-card-header>
+    <ion-card-content *ngIf="LabelField.length > 0">
+      <ion-row class="languagePadding">
+        <ion-col col-3 class="label-padding label-head">
+          <span class="startDate-head">{{'App Label' | translate}}</span>
+        </ion-col>
+        <ion-col col-6 class="label-head">
+          <span class="startDate-head">{{'Translation' | translate}}</span>
+        </ion-col>
+      </ion-row>
+      <ion-list>
+        <ion-row *ngFor="let label of LabelField | search: { Key_Name: myInput} | paginate: { itemsPerPage: 10, currentPage: pageNumber }" class="global-padding strippedClass languageRow">
+          <ion-col col-3 class="value-padding">
+            <span class="languageKey">{{label.Key_Name}}</span>
+          </ion-col>
+          <ion-col col-6>
+
+            <!--08/02/2018 Mayur Varshney
+             -Apply keyPress event and passing events, keyLength as params
+             -apply maxLength dynamically after getting it from MCS for particular keys by using attr.maxLength
+            -->
+            <!-- 08/13/2018 Mayur Varshney -- use onchange event to check old and new value entered by user-->
+
+            <ion-input placeholder="{{'Translation Here' | translate}}" [attr.maxlength]="label.Key_Length" [(ngModel)]="label.Value" (keypress)="validateLength($event,label.Key_Length)" [disabled]="!utilityProvider.isConnected()" name="Value" type="text" class="translation-box languageValue" (ionChange)="changeValue($event)" (focusout)="updateValue(label)"></ion-input>
+          </ion-col>
+
+          <!--08/02/2018 Mayur Varshney
+           Add column to show character count with respect to its keyLength dynamically
+          -->
+
+          <ion-col col-2 class="charLength">
+            <span class="value">{{label.Value ? label.Value.length: 0}}</span> / <span class="value">{{label.Key_Length}}</span>
+          </ion-col>
+
+          <!--08/13/2018 Mayur Varshney -- Add indicator icon to show there is a change in translation -->
+
+          <ion-col text-right>
+            <span *ngIf="label.isEdited == 'true'"><i class="fa fa-circle pending-indicator" aria-hidden="true"></i></span>
+          </ion-col>
+        </ion-row>
+      </ion-list>
+      <ion-row>
+        <ion-col col-6></ion-col>
+        <ion-col col-6 no-padding class="pagination" text-right>
+          <div *ngIf="LabelField.length > 0">
+            <pagination-controls (pageChange)="pageNumber = $event" maxSize="10" directionLinks="true" autoHide="true" previousLabel="{{'Previous' | translate}}"
+                                 nextLabel="{{'Next' | translate}}" screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page" screenReaderCurrentLabel="You're on page">
+            </pagination-controls>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

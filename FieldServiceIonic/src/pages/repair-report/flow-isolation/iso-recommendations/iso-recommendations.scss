@@ -1,0 +1,72 @@
+page-iso-recommendations {
+    .header-left{
+        width: 50%;
+        float: left;
+    }
+    .lft-align {
+        text-align: left;
+      }
+      .align-rgt {
+        text-align: right;
+      }
+      .footer-row{
+        width: 100%;
+    }
+    .footerLeft{
+        width: 50%;
+    }
+    .footerRight{
+        width: 50%;
+        text-align: right
+    }
+    .techNotes-box .text-input{
+        box-sizing: border-box;
+            border: 1px solid rgba(216,213,209,1);
+            border-radius: 3px;
+            width: 100%;
+            padding-top: 2px;
+            margin-top: 8px;
+            height: 100px;
+    }
+    .frec{
+        width: 50%;
+    }
+    .project-box .text-input{
+        box-sizing: border-box;
+        height: 31px;
+        border: 1px solid rgba(216,213,209,1);
+        border-radius: 3px;
+        background-color: #fff !important;
+        width: 95%;
+        margin-top: 8px;
+        color: rgba(74,74,74,0.7);
+        font-family: "Helvetica Neue";
+        font-size: 14px;
+        font-weight: 300;
+        line-height: 17px;
+    }
+    .searchNSelect::after {
+        position: absolute;
+        right: 35px;
+        top: 13px;
+        font-family: "FontAwesome";
+        content: "\f0d7";
+        color: #999;
+        font-size: 14px;
+      }
+    
+      .searchNSelect .text-input {
+        cursor: pointer;
+        padding: 0 25px 0 4px !important;
+      }
+    
+      .searchNSelect ::-ms-input-placeholder {
+        color: black !important;
+      }
+      ion-input.input-validation-green input.text-input {
+        border: 1px solid #8eb15f;
+      }
+      .footer-Button{
+        margin-top: 5%;
+      }
+}

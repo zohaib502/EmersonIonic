@@ -1,0 +1,79 @@
+page-time-report-modal {
+
+  ion-card-header {
+    font-weight: bold;
+  }
+
+  .date-box {
+    box-sizing: border-box;
+    height: 31px;
+    border: 1px solid rgba(216, 213, 209, 1);
+    border-radius: 3px;
+    background-color: rgba(247, 247, 246, 1);
+    vertical-align: middle;
+    width: 105px;
+    text-align: center;
+    color: rgba(74, 74, 74, 0.7);
+    font-family: "Helvetica Neue";
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 17px;
+  }
+
+  .select-style {
+    max-width: 100%;
+  }
+}
+
+.TimeReportModalPage {
+  .modal-wrapper {
+    height: 300px;
+    width: 600px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    position: fixed;
+  }
+
+  .modal-wrapper .scroll-content {
+    background-color: rgba(255, 255, 255, 1) !important;
+    color: rgba(74, 74, 74, 1);
+    font-family: "Helvetica Neue";
+    font-size: 18px;
+    font-weight: 300;
+    line-height: 28px;
+    text-align: left;
+    overflow-y: auto;
+  }
+
+  .modal-wrapper .toolbar-title {
+    color: rgba(74, 74, 74, 1);
+    font-family: "Helvetica Neue";
+    font-size: 22px;
+    font-weight: 300;
+    line-height: 27px;
+    text-align: left;
+  }
+
+  .toolbar {
+    height: 52px !important;
+    border-bottom: 1px solid rgba(233, 232, 232, 1) !important;
+  }
+
+  .padding-style {
+    padding: 0 10px 1px;
+  }
+
+  .contentBox {
+    position: fixed;
+    transform: translate(-15%, -40%);
+    top: 45%;
+    left: 20%;
+
+    .btnlabel {
+      height: 10px;
+    }
+  }
+}

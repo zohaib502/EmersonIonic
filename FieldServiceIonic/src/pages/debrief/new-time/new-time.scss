@@ -1,0 +1,523 @@
+page-new-time {
+
+    .icn {
+      margin-left: 20px;
+      height: 18px !important;
+      width: 20%;
+      display: inline-block;
+    }
+
+    .page-background {
+      .card {
+        min-height: 500px;
+      }
+    }
+
+    .comment-button {
+        color: rgba(255, 255, 255, 1);
+        font-family: "Helvetica Neue";
+        font-size: 14px;
+        line-height: 16px;
+        height: 31px;
+        width: 110px;
+        border-radius: 3px;
+        background-color: rgba(244, 200, 97, 1);
+        display: inline-block;
+        vertical-align: middle;
+        border: none;
+      }
+
+      .comment-button:before {
+        content: "\f016";
+        font-family: "FontAwesome";
+        margin-right: 5px;
+      }
+
+      .toolbar {
+        height: 52px !important;
+      }
+
+      textarea {
+        border: none !important;
+      }
+
+      .comment-box {
+        width: 100%;
+        text-align: center;
+        background-color: transparent;
+      }
+
+      .comment-img {
+        box-sizing: border-box;
+        height: 30px;
+        width: 23px;
+      }
+
+      .select-style {
+        max-width: 100%;
+      }
+
+      .date-box {
+        box-sizing: border-box;
+        height: 31px;
+        border: 1px solid rgba(216, 213, 209, 1);
+        border-radius: 3px;
+        background-color: rgba(247, 247, 246, 1);
+        vertical-align: middle;
+        width: 105px;
+        text-align: center;
+        color: rgba(74, 74, 74, 0.7);
+        font-family: "Helvetica Neue";
+        font-size: 14px;
+        font-weight: 300;
+        line-height: 17px;
+      }
+
+      .datetime {
+        padding: 0 5px;
+      }
+
+      .datetime-text {
+        line-height: 28px !important;
+        vertical-align: middle;
+        color: rgba(74, 74, 74, 0.7);
+        font-family: "Helvetica Neue";
+        font-size: 14px;
+        font-weight: 300;
+      }
+
+      .expense-box {
+        box-sizing: border-box;
+        height: 31px;
+        width: 94%;
+        border: 1px solid rgba(216, 213, 209, 1);
+        border-radius: 2px;
+        background-color: rgba(247, 247, 246, 1);
+        margin: 0 15px 0 0;
+      }
+
+      .chargeMethod-box {
+        box-sizing: border-box;
+        height: 31px;
+        border: 1px solid rgba(216, 213, 209, 1);
+        border-radius: 3px;
+        background-color: rgba(247, 247, 246, 1);
+        width: 170px;
+      }
+
+      .chargeType-box {
+        box-sizing: border-box;
+        height: 31px;
+        border: 1px solid rgba(216, 213, 209, 1);
+        border-radius: 3px;
+        background-color: rgba(247, 247, 246, 1);
+        width: 131px;
+      }
+
+      .timeCode-box {
+        box-sizing: border-box;
+        height: 31px;
+        border: 1px solid rgba(216, 213, 209, 1);
+        border-radius: 3px;
+        background-color: rgba(247, 247, 246, 1);
+        width: 140px;
+      }
+
+      .shiftCode-box {
+        box-sizing: border-box;
+        height: 31px;
+        border: 1px solid rgba(216, 213, 209, 1);
+        border-radius: 3px;
+        background-color: rgba(247, 247, 246, 1);
+        width: 155px;
+      }
+
+      .item-box {
+        box-sizing: border-box;
+        height: 31px;
+        border: 1px solid rgba(216, 213, 209, 1);
+        border-radius: 3px;
+        background-color: rgba(247, 247, 246, 1);
+        width: 170px;
+      }
+
+      .startTime-box,
+      .endTime-box,
+      .duration-box {
+        box-sizing: border-box;
+        height: 31px;
+        border: 1px solid rgba(216, 213, 209, 1);
+        border-radius: 3px;
+        background-color: rgba(247, 247, 246, 1);
+        width: 75px;
+      }
+
+      .startTime-box,
+      .endTime-box,
+      .select-validation {
+        border: 1px solid red;
+      }
+
+      .workType-box {
+        box-sizing: border-box;
+        height: 31px;
+        border: 1px solid rgba(216, 213, 209, 1);
+        border-radius: 3px;
+        background-color: rgba(247, 247, 246, 1);
+        width: 136px;
+      }
+
+      .clarity-task-name-box {
+        box-sizing: border-box;
+        height: 31px;
+        border: 1px solid rgba(216, 213, 209, 1);
+        border-radius: 3px;
+        background-color: rgba(247, 247, 246, 1);
+        width: 155px;
+      }
+
+      .select-text {
+        color: rgba(0, 0, 0, 1) !important;
+        font-family: "Helvetica Neue";
+        font-size: 14px;
+        font-weight: 300;
+        line-height: 17px;
+      }
+
+      .select {
+        padding: 6px !important;
+      }
+
+      .add-btn {
+        height: 33px;
+        width: 33px;
+        border-radius: 3px;
+        margin: 14px 0px 0px 1px;
+      }
+
+      .comment-btn {
+        height: 33px;
+        width: 100%;
+        border-radius: 3px;
+        margin: 14px 0px 0px 1px;
+      }
+
+      .text-input {
+        width: 100%;
+        color: rgba(74, 74, 74, 0.7);
+        font-family: "Helvetica Neue";
+        font-size: 14px;
+        font-weight: 300;
+        line-height: 17px;
+        margin: 0px !important;
+        padding: 0 5px 0 5px;
+      }
+
+      .text-input[disabled] {
+        opacity: 1.0 !important;
+      }
+
+      .comment-img {
+        height: 32px;
+        width: 23.7px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .c-ct,
+      .c-cm,
+      .c-tc,
+      .c-sc,
+      .c-i {
+        width: 9%;
+        text-align: left;
+        margin-right: 1%;
+      }
+
+      .c-d,
+      .c-c,
+      .c-wt {
+        width: 8%;
+        text-align: left;
+        margin-right: 1%;
+      }
+
+      .c-sdt_edt {
+        width: 12%;
+        text-align: left;
+        margin-right: 1%;
+      }
+
+      .c-icon {
+        width: 10%;
+        text-align: center;
+      }
+
+      .nc-cm,
+      .nc-wt,
+      .nc-d,
+      .nc-i,
+      .nc-c {
+        width: 12%;
+        text-align: left;
+        margin-right: 1%;
+      }
+
+      .nc-sdt_edt {
+        width: 16%;
+        text-align: left;
+        margin-right: 1%;
+      }
+
+      .nc-icon {
+        margin-top: 4px;
+        width: 16%;
+        text-align: center;
+      }
+
+      .sdt {
+        color: rgba(107, 142, 35, 1);
+      }
+
+      .edt {
+        color: rgba(216, 21, 21, 1);
+      }
+
+      .NC-img {
+        width: unset !important;
+      }
+
+      .NC-col {
+        margin-bottom: auto;
+        margin-top: auto;
+      }
+
+      .NC-spaceMargin {
+        margin-right: 30px;
+      }
+
+      .timepicker-box .bs-timepicker-field {
+        box-sizing: border-box;
+        height: 31px;
+        border: 1px solid rgba(216, 213, 209, 1);
+        border-radius: 3px;
+        background-color: rgba(247, 247, 246, 1);
+        text-align: center;
+        width: 35px;
+        font-family: "Helvetica Neue";
+        color: black !important;
+        font-size: 14px;
+        font-weight: 300;
+        line-height: 17px;
+      }
+
+      .timepicker-icon {
+        padding: 12px 7px 0 0;
+      }
+
+      .timepicker-box {
+        margin: 11px 10px 0 0;
+      }
+
+      .timepicker-box .bs-chevron-up,
+      .timepicker-box .bs-chevron-down {
+        margin: 0 auto;
+      }
+
+      .bs-chevron {
+        border-width: 3px 0 0 3px;
+        color: rgba(193, 189, 189, 1);
+        width: 15px;
+        height: 15px;
+        cursor: pointer;
+      }
+
+      .timepicker-box .bs-chevron-down {
+        top: 0px;
+      }
+
+      .timepicker-box .bs-chevron-up {
+        top: 10px;
+      }
+
+      .timepicker-box .btn-link {
+        height: 25px;
+        display: block;
+      }
+
+      .timepicker.clockIcon {
+        margin-left: 4px;
+      }
+
+      .timepicker-label {
+        margin-bottom: 12px;
+      }
+
+      .durationError {
+        position: absolute;
+        width: 150px;
+        margin-top: 5px;
+        line-height: 15px;
+      }
+
+      .commentBoxMargin {
+        margin-top: 15px;
+      }
+
+      .t-check {
+        width: 2%;
+        margin-right: 1%;
+        text-align: left;
+      }
+
+      .t-pro {
+        width: 15%;
+        margin-right: 1%;
+        text-align: left;
+      }
+
+      .t-tas {
+        width: 35%;
+        margin-right: 1%;
+        text-align: left;
+      }
+
+      .t-hou {
+        width: 10%;
+        margin-right: 1%;
+        text-align: left;
+      }
+
+      .t-otc {
+        width: 15%;
+        margin-right: 1%;
+        text-align: left;
+      }
+
+      .t-wkt {
+        width: 17%;
+        margin-right: 1%;
+        text-align: left;
+      }
+
+      .right-arrow {
+        font-size: 12px !important;
+        color: black !important;
+        margin-right: 30px;
+        stroke-width: 1px;
+      }
+      .tooltip {
+        position: relative;
+        display: inline-block;
+       // border-bottom: 1px dotted black;
+      }
+      .labelStyle{
+        margin-top: -4px;
+        display: flex;
+      }
+      .applyMargin{
+        margin-left: 23px;
+      }
+      .tooltip .tooltiptext {
+        visibility: hidden;
+        width: 85px;
+        background-color: #e39824;
+        color: black;
+        text-align: center;
+        border-radius: 6px;
+        padding: 5px 0;
+        position: absolute;
+        z-index: 1;
+        bottom: 125%;
+        //left: 50%;
+        margin-left: -10px;
+        opacity: 0;
+        transition: opacity 0.3s;
+        font-size: 10px;
+        margin-bottom: -7px;
+      }
+
+      .tooltip .tooltiptext::after {
+        content: "";
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        margin-left: -5px;
+        border-width: 5px;
+        border-style: solid;
+        border-color: #e39824 transparent transparent transparent;
+      }
+
+      .tooltip:hover .tooltiptext {
+        visibility: visible;
+        opacity: 1;
+      }
+      .info-icn{
+        margin: 0px 0px 0px 20px;
+        width: 20px;
+        height: 20px;
+      }
+      .tooltip-col{
+        max-width: 4.6% !important;
+      }
+      .ft-weight{
+        font-weight: bold;
+      }
+      .center-align {
+        text-align: center;
+      }
+      .txt-algn{
+        text-align: center;
+      }
+    }
+
+
+    .ios page-new-time {
+      .commentBoxMargin {
+        margin-top: 24px;
+      }
+
+      .add-btn {
+        margin: 20px 0px 0px 1px;
+      }
+
+      .timepicker-box {
+        margin: 12px 10px 0 0;
+      }
+
+      .bs-chevron {
+        cursor: default !important;
+      }
+      // .time-align{
+      //   text-align: right;
+      // }
+
+      .add-btn{
+        margin: 0px;
+      }
+      .sdt {
+        color: rgba(107,142,35,1);
+      }
+
+      .edt {
+        color: rgba(216, 21, 21,1);
+      }
+      .applyMargin {
+        margin-left: 0px!important;
+      }
+
+      .info-icn {
+        margin: 0px 0px 0px 10px !important;
+      }
+
+      .tooltip .tooltiptext {
+        margin-left: -16px!important;
+        margin-bottom: -15px!important;
+        }
+
+      .icn{
+        margin-left: unset;
+        width: 17px;
+        height: 18px !important;
+      }
+}

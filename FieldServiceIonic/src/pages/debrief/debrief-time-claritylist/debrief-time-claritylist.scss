@@ -1,0 +1,262 @@
+page-debrief-time-claritylist {
+  .page-background {
+    .card {
+      min-height: 500px;
+    }
+  }
+
+  .select-style {
+    max-width: 100%;
+  }
+
+  .select-text {
+    color: rgba(0, 0, 0, 1) !important;
+    font-family: "Helvetica Neue";
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 17px;
+  }
+
+  .select {
+    padding: 6px !important;
+  }
+
+  .add-btn {
+    height: 33px;
+    width: 33px;
+    border-radius: 3px;
+  }
+
+  .text-input {
+    width: 100%;
+    color: rgba(74, 74, 74, 0.7);
+    font-family: "Helvetica Neue";
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 17px;
+    margin: 0px !important;
+    padding: 0 5px 0 5px;
+  }
+
+  .text-input[disabled] {
+    opacity: 1.0 !important;
+  }
+
+  .sdt {
+    color: rgba(107, 142, 35, 1);
+  }
+
+  .edt {
+    color: rgba(216, 21, 21, 1);
+  }
+
+  .tooltip {
+    position: relative;
+    display: inline-block;
+  }
+
+  .labelStyle {
+    margin-top: -4px;
+    display: flex;
+  }
+
+  .applyMargin {
+    margin-left: 23px;
+  }
+
+  .tooltip .tooltiptext {
+    visibility: hidden;
+    width: 85px;
+    background-color: #e39824;
+    color: black;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    //left: 50%;
+    margin-left: -10px;
+    opacity: 0;
+    transition: opacity 0.3s;
+    font-size: 10px;
+    margin-bottom: -7px;
+  }
+
+  .tooltip .tooltiptext::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #e39824 transparent transparent transparent;
+  }
+
+  .tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  .info-icn {
+    margin: 0px 0px 0px 15px;
+    width: 20px;
+    height: 20px;
+  }
+
+  .txt-ctr {
+    text-align: center;
+  }
+
+  .tooltip-col {
+    max-width: 4.6% !important;
+    width: 4%;
+  }
+
+  .ft-weight {
+    font-weight: bold;
+  }
+
+  .icn {
+    height: 18px !important;
+    width: 18px;
+    margin: 0 10px;
+    display: inline-block;
+  }
+
+  // [col-1]{
+  //   max-width:7.33% !important;
+  //   width: 7.33% !important;
+  // }
+  // [col-2]{
+  //   max-width:11.66% !important;
+  //   width: 11.66% !important;
+  // }
+  .tl-w {
+    max-width: 4% !important;
+    width: 4% !important;
+  }
+
+  .cl-2 {
+    max-width: 11.66% !important;
+    width: 11.66% !important;
+  }
+
+  .cl-1 {
+    max-width: 7.33% !important;
+    width: 7.33% !important;
+  }
+
+  .sa-w {
+    max-width: 7.33% !important;
+    width: 7% !important;
+  }
+
+  .icn-wd {
+    max-width: 8% !important;
+    width: 8% !important;
+  }
+
+  .txt-algn {
+    text-align: center;
+  }
+
+  .project,
+  .task,
+  .cm,
+  .ct,
+  .otc,
+  .wt,
+  .item,
+  .dura,
+  .icon,
+  .cb {
+    width: 7%;
+    max-width: 7%;
+    margin-left: 1%;
+  }
+
+  .cb.disbleImg {
+    line-height: 24px;
+  }
+
+  .sd-ed {
+    width: 11%;
+    min-width: 120px;
+    margin-left: 1%;
+  }
+
+  .icon {
+    line-height: 40px;
+  }
+}
+
+
+.ios page-debrief-time-claritylist {
+  .icon{
+    min-width: 50px !important;
+    width: 6% !important;
+    max-width: unset !important;
+  }
+
+  .icn{
+    margin: unset;
+  }
+
+  .icn.edit-img{
+    float: left;
+  }
+  
+  .icn.delete-img{
+    float: right;
+  }
+
+
+  .cb{
+    min-width: 70px !important;
+    width: 6% !important;
+    max-width: unset !important;
+  }
+
+  // .commentBoxMargin {
+  //   margin-top: 24px;
+  // }
+
+  // .add-btn {
+  //   margin: 20px 0px 0px 1px;
+  // }
+
+  // .timepicker-box {
+  //   margin: 12px 10px 0 0;
+  // }
+
+  // .bs-chevron {
+  //   cursor: default !important;
+  // }
+
+  // .time-align{
+  //   text-align: right;
+  // }
+
+  // .add-btn {
+  //   margin: 0px;
+  // }
+
+  // .sdt {
+  //   color: rgba(107, 142, 35, 1);
+  // }
+
+  // .edt {
+  //   color: rgba(216, 21, 21, 1);
+  // }
+
+  // .applyMargin {
+  //   margin-left: 0px !important;
+  // }
+
+  // .info-icn {
+  //   margin: 0px 0px 0px 10px !important;
+  // }
+
+}

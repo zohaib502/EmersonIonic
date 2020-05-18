@@ -1,0 +1,51 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title class="padding-style" start >{{'Add New Contact' | translate}}</ion-title>
+    <ion-buttons end>
+      <button ion-button (click)="save()" [disabled]="firstName==undefined || firstName=='' || lastName==undefined || lastName=='' || contact_email==undefined || contact_email=='' || office_phone==undefined || office_phone=='' || !isCorrect" class="save-btn btn">{{ 'Save' | translate }}</button>
+      <button ion-button class="closebtn" (click)="closeModal()"><i class="fa fa-times fa-2x"></i></button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+<ion-content padding>
+  <ion-row class="global-padding full-width">
+    <div class="spacingMargin">
+      <ion-label class="label">{{'First Name' | translate}}<span class="validator"></span>
+      </ion-label>
+      <ion-input type="text" required [attr.maxlength]="80" placeholder="{{'First Name' | translate}}" [(ngModel)]="firstName" name="firstName" class="address-textbox">
+      </ion-input>
+    </div>
+    <div class="spacingMargin">
+      <ion-label class="label">{{'Last Name' | translate}}<span class="validator"></span></ion-label>
+      <ion-input type="text"  required [attr.maxlength]="80" placeholder="{{'Last Name' | translate}}" [(ngModel)]="lastName" name="lastName" class="address-textbox">
+      </ion-input>
+    </div>
+    <div class="spacingMargin">
+      <ion-label class="label label-style">{{'Email' | translate}}<span class="validator"></span></ion-label>
+      <ion-input type="text" required  [attr.maxlength]="80"  placeholder="{{'Email' | translate}}" [(ngModel)]="contact_email" name="contact_email" (ngModelChange)="validateEmail(contact_email)" class="address-textbox"></ion-input>
+      <div class="customerSign-validation-text" *ngIf="!isCorrect && contact_email">{{'Please Enter Valid Email' | translate}}</div>
+    </div>
+    <div class="spacingMargin">
+        <ion-label class="label label-style">{{'Office Phone' | translate}}<span class="validator"></span></ion-label>
+        <ion-input type="text" required [attr.maxlength]="15" placeholder="{{'Office Phone' | translate}}" [(ngModel)]="office_phone" name="office_phone" class="address-textbox">
+        </ion-input>
+      </div>
+  </ion-row>
+  <ion-row class="global-padding full-width">
+      
+
+  </ion-row>
+  <!--<ion-row class="global-padding">
+    <div class="spacingMargin">
+      <ion-label class="label">{{'Description' | translate}}</ion-label>
+      <ion-input type="text" required [attr.maxlength]="150" [(ngModel)]="installBaseObject.Description" name="installBaseObject.Description" class="address-textbox">
+      </ion-input>
+    </div>
+  </ion-row>-->
+
+  <!-- <ion-row class="global-padding">
+    <ion-label class="label">{{'Description' | translate}}</ion-label>
+    <textarea class="commentBox value" maxlength="255" [(ngModel)]="installBaseObject.Description"></textarea>
+  </ion-row> -->
+
+</ion-content>

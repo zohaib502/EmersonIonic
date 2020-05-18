@@ -1,0 +1,281 @@
+<ion-header>
+  <page-custom-header [header]="header_data"></page-custom-header>
+</ion-header>
+
+
+
+<ion-content padding>
+  <ion-card>
+
+    <ion-card-content>
+      <div>
+        <day-week-view (OutData)="recievedData($event)"></day-week-view>
+      </div>
+      <div *ngIf="advSearchBtnClicked" class="advSearch-div-timesheet">
+          <ion-row class="adv-first-row">
+              <div class="adv-project">
+                  <ion-col no-padding>
+                    <ion-label class="label">{{'Project' | translate}}</ion-label>
+                    <ion-select interface="popover" required placeholder="{{'Some Value' | translate}} "  class="project-box select-style" >
+                      <ion-option disabled value="{{''}}">{{'Some Value' | translate}} </ion-option>
+                    </ion-select>
+                  </ion-col>
+              </div>
+              <div class="adv-task">
+                  <ion-col no-padding>
+                    <ion-label class="label">{{'Task' | translate}}</ion-label>
+                    <ion-select interface="popover" required placeholder="{{'Some Value' | translate}} "  class="project-box select-style" >
+                      <ion-option disabled value="{{''}}">{{'Some Value' | translate}} </ion-option>
+                    </ion-select>
+                  </ion-col>
+              </div>
+              <div class="adv-otcode">
+                  <ion-col no-padding>
+                    <ion-label class="label">{{'OT Code' | translate}}</ion-label>
+                    <ion-select interface="popover" required placeholder="{{'Some Value' | translate}} "  class="project-box select-style" >
+                        <ion-option disabled value="{{''}}">{{'Some Value' | translate}} </ion-option>
+                      </ion-select>
+                  </ion-col>
+              </div>
+              <div class="adv-worktype">
+                  <ion-col no-padding>
+                    <ion-label class="label">{{'Work Type' | translate}}</ion-label>
+                    <ion-select interface="popover" required placeholder="{{'Some Value' | translate}} "  class="project-box select-style" >
+                        <ion-option disabled value="{{''}}">{{'Some Value' | translate}} </ion-option>
+                      </ion-select>
+                  </ion-col>
+              </div>
+          </ion-row>
+          <ion-row class="adv-second-row">
+              <div class="dateTo">
+                  <ion-col no-padding>
+                    <ion-label class="label">{{'Date To' | translate}}</ion-label>
+                    <input type="text" class="date-box-toFrom inline-block" [disabled]="!isEnabled"  bsDatepicker [(bsValue)]="date_to" #dps="bsDatepicker"
+                           [bsConfig]="{dateInputFormat: 'DD-MMM-YYYY'}" value="{{date_to | date:'dd-MMM-yyyy'}}" (onShown)="onShowPicker($event)" >
+                    <span><img (click)="dps.show()" [attr.aria-expanded]="dps.isOpen" src="assets/imgs/icons/ic_calendar-for-field.png" class="calIcon pointer" /></span>
+                  </ion-col>
+                </div>
+          
+                <div class="dateFrom">
+                  <ion-col no-padding>
+                    <ion-label class="label">{{'Date From' | translate}}</ion-label>
+                    <input type="text" class="date-box-toFrom inline-block" [disabled]="!isEnabled"  [(bsValue)]="date_from" #dp="bsDatepicker" (onHidden)="getDurationOnDate()" bsDatepicker [minDate]="date_to"
+                           [bsConfig]="{dateInputFormat: 'DD-MMM-YYYY'}" value="{{date_from | date:'dd-MMM-yyyy'}}" (onShown)="onShowPicker($event)">
+                    <span>
+                      <img (click)="dp.show()" [attr.aria-expanded]="dp.isOpen" src="assets/imgs/icons/ic_calendar-for-field.png" class="calIcon pointer" />
+                    </span>
+                  </ion-col>
+                </div>
+                <div class="jobId">
+                    <ion-col no-padding>
+                      <ion-label class="label">{{'Job ID' | translate}}</ion-label>
+                      <ion-input placeholder="{{'Enter Job ID' | translate }}" class="project-box select-style"></ion-input>
+                    </ion-col>
+                </div>
+                <div class="aply-clear">
+                    <button ion-button class="apply-btn"  >{{'Apply' | translate }}
+                    </button>
+                    <button ion-button  class="clear-btn" >{{'Clear' | translate }}
+                    </button>
+        
+                </div>
+          </ion-row>
+          
+      </div>
+      <div>
+
+        <ion-row class="projectList-head">
+          <div class="projectList-labels full-width global-padding">
+            <div class="label t-check pointer inline-block"></div>
+            <div *ngIf="dayBtnClicked" class="label t-pro inline-block">{{'Date' | translate }}</div>
+            <div *ngIf="weekBtnClicked" class="label tweek-pro inline-block">{{'Date' | translate }}</div>
+            <div *ngIf="dayBtnClicked" class="label t-pro inline-block">{{'Start Time' | translate }}</div>
+            <div *ngIf="dayBtnClicked" class="label t-pro inline-block">{{'End Time' | translate }}</div>
+            <div class="label t-pro inline-block">{{'Project' | translate }}</div>
+            <div *ngIf="dayBtnClicked" class="label t-tas inline-block">{{'Task' | translate }}</div>
+            <div *ngIf="weekBtnClicked" class="label t-weektas inline-block">{{'Task' | translate }}</div>
+            <div class="label t-hou inline-block">{{'Hours' | translate }}</div>
+            <div class="label t-otc inline-block">{{'OT Code' | translate }}</div>
+            <div class="label t-wkt inline-block">{{'Work Type' | translate }}</div>
+          </div>
+        </ion-row>
+
+        <ion-list>
+          <ion-row class="stroke full-width"></ion-row>
+          <ion-row class="projectList" *ngFor="let project of projectList">
+            <div class="projectDetail full-width global-padding">
+              <div (click)="expandItem(project)" class="value t-check pointer inline-block" *ngIf="project.expanded == false"><i
+                  class="fa fa-caret-right left-caret"></i></div>
+              <div (click)="expandItem(project)" class="value t-check pointer inline-block" *ngIf="project.expanded == true"><i
+                  class="fa fa-caret-down down-caret"></i></div>
+              <div *ngIf="weekBtnClicked" (click)="expandItem(project)" class="value tweek-pro inline-block">{{utilityProvider.WeekStart}}
+                - {{utilityProvider.weekEnd}}</div>
+              <div *ngIf="dayBtnClicked" (click)="expandItem(project)" class="value t-pro inline-block">{{project.EntryDate}}</div>
+              <div *ngIf="dayBtnClicked" (click)="expandItem(project)" class="value t-pro inline-block">{{project.Start_Time}}</div>
+              <div *ngIf="dayBtnClicked" (click)="expandItem(project)" class="value t-pro inline-block">{{project.End_Time}}</div>
+              <div (click)="expandItem(project)" class="value t-pro inline-block">{{project.projectn}}</div>
+              <div *ngIf="dayBtnClicked" class="value t-tas inline-block">{{project.task}}</div>
+              <div *ngIf="weekBtnClicked" class="value t-weektas inline-block">{{project.task}}</div>
+              <div class="value t-hou inline-block">{{valueProvider.TotalHours}}</div>
+              <div class="value t-otc inline-block">{{project.otCode}}</div>
+              <div class="value t-wkt inline-block">{{project.workType}}
+              </div>
+              <div class="pop-ui pointer value  inline-block" (click)="openEditDeletePopOver($event)">
+                <ion-icon name="more"></ion-icon>
+              </div>
+            </div>
+            <div class="accordion" *ngIf="project.expanded == true">
+              <ion-row class="full-width">
+                <div class="scode">
+                  <span class="headi">{{'Shift Code' | translate }}</span>
+                  <span class="data">{{project.shiftCode}}</span>
+                </div>
+                <div class="ctype">
+                  <span class="headi">{{'Charge Type' | translate }}</span>
+                  <span class="data">{{project.chargeType}}</span>
+                </div>
+                <div class="count">
+                  <span class="headi">{{'Country' | translate }}</span>
+                  <span class="data">{{project.country}}</span>
+                </div>
+                <div class="state">
+                  <span class="headi">{{'State' | translate }}</span>
+                  <span class="data">{{project.state}}</span>
+                </div>
+                <div class="city">
+                  <span class="headi">{{'City' | translate }}</span>
+                  <span class="data">{{project.city}}</span>
+                </div>
+                <div class="comment" *ngIf="weekBtnClicked">
+                  <button class="comment-btn" no-padding (click)="openCommentBox(project)"><img class=" pointer"
+                      src="assets/imgs/icons/ic_comment.png"></button>
+                </div>
+                <div class="duration-time" *ngIf="dayBtnClicked">
+                  <div class="duration-box">{{project.Duration}}</div>
+                </div>
+              </ion-row>
+              <ion-row>
+                <div class="daySchedule" *ngIf="weekBtnClicked && projectList.length > 0">
+                  <expandable [data]="project" (OutData)="recievedData($event)" style="width:100%;">
+                  </expandable>
+                </div>
+                <div class="notes" *ngIf="dayBtnClicked">
+                  <span class="headi">{{'Notes' | translate }}</span>
+                  <span class="data">{{project.Comment}}</span>
+                </div>
+                <div class="action-col">
+                  <span class="del-col">
+                    <button class="delete-btn" no-padding><img class="del-btn pointer" src="assets/imgs/icons/ic_delete.png"></button>
+                  </span>
+                  <!-- <span class="sav-col">
+                    <button class=" btn" no-padding><img class="save-btn pointer" src="assets/imgs/icons/save-icon-active.png"></button>
+                  </span> -->
+                </div>
+              </ion-row>
+            </div>
+          </ion-row>
+        </ion-list>
+        <ion-row *ngIf="importEntries" class="global-padding">
+          <div class="pointer implist" (click)="importList()">
+            <ion-icon name="document"></ion-icon>&nbsp;&nbsp;Import entries from last week's timesheet
+          </div>
+        </ion-row>
+        <!-- <ion-list *ngIf="dayBtnClicked">  
+             <ion-list *ngIf="weekBtnClicked">  
+                <ion-row class="stroke full-width"></ion-row>        
+                <ion-row class="projectList"  *ngFor="let project of projectList" >
+                    <div class="projectDetail full-width global-padding" (click)="expandItem(project)">
+                      <div class="value t-check pointer inline-block" *ngIf="project.expanded == false"><i class="fa fa-caret-right left-caret"></i></div>
+                      <div class="value t-check pointer inline-block" *ngIf="project.expanded == true"><i class="fa fa-caret-down down-caret"></i></div>
+                      <div class="value t-pro inline-block">{{project.projectn}}</div>
+                      <div class="value t-tas inline-block">{{project.task}}</div>
+                      <div class="value t-hou inline-block">{{TotalHours}}</div>
+                      <div class="value t-otc inline-block">{{project.otCode}}</div>
+                      <div class="value t-wkt inline-block">{{project.workType}} <span class="pull-right pointer" (click)="openEditDeletePopOver($event)"><ion-icon name="more"></ion-icon></span></div>
+                    </div> 
+                     <div class="accordion" *ngIf="project.expanded == true">  
+                        <ion-row class="full-width">
+                            <div class="scode">
+                                <span class="headi">Shift Code</span>
+                                <span class="data">{{project.shiftCode}}</span>
+                            </div>
+                            <div class="ctype">
+                                <span class="headi">Charge Type</span>
+                                <span class="data">{{project.chargeType}}</span>
+                            </div>
+                            <div class="count">
+                                <span class="headi">Country</span>
+                                <span class="data">{{project.country}}</span>
+                            </div>
+                            <div class="state">
+                                <span class="headi">State</span>
+                                <span class="data">{{project.state}}</span>
+                            </div>
+                            <div class="city">
+                                <span class="headi">City</span>
+                                <span class="data">{{project.city}}</span>    
+                            </div>
+                            <div class="comment" *ngIf="weekBtnClicked">
+                                    <button class=" btn" no-padding (click)="openCommentBox(project)"><img class="comment-btn pointer" src="assets/imgs/icons/add_note.png"></button>
+                            </div>
+                            <div class="duration-time" *ngIf="dayBtnClicked">
+                            <div class="duration-box" >8.25h</div>
+                            </div>
+                    </ion-row>   
+                    <ion-row>  
+                      <div class="daySchedule" *ngIf="weekBtnClicked">
+                  <expandable  [data]="days" (OutData)="recievedData($event)" style="width:100%;">                      
+                  </expandable>  
+                  </div>
+                  <div class="action-col">
+                      <span class="del-col">
+                      <button class=" btn" no-padding><img class="del-btn pointer" src="assets/imgs/icons/delete-icon.png"></button>
+                      </span>
+                      <span class="sav-col">
+                        <button class=" btn" no-padding><img class="save-btn pointer" src="assets/imgs/icons/save-icon-active.png"></button>
+                        </span>
+                  </div> 
+                  <div class="notes" *ngIf="dayBtnClicked">
+                      <span class="headi">Notes</span>
+                      <span class="data">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum.</span> 
+                 </div>
+                  </ion-row>
+                  </div>         
+                </ion-row>
+              </ion-list>
+              <ion-list *ngIf="dayBtnClicked">  
+                <ion-row class="stroke full-width"></ion-row>        
+                <ion-row class="projectList"  *ngFor="let project of projectList1" >
+                    <div class="projectDetail full-width global-padding" (click)="expandItem1(project)">
+                      <div class="value t-check pointer inline-block" *ngIf="project.expanded == false"><i class="fa fa-caret-right left-caret"></i></div>
+                      <div class="value t-check pointer inline-block" *ngIf="project.expanded == true"><i class="fa fa-caret-down down-caret"></i></div>
+                      <div class="value t-pro inline-block">{{project.projectn}}</div>
+                      <div class="value t-tas inline-block">{{project.task}}</div>
+                      <div class="value t-hou inline-block">{{project.hours}}</div>
+                      <div class="value t-otc inline-block">{{project.otcode}}</div>
+                      <div class="value t-wkt inline-block">{{project.worktype}} <span class="pull-right pointer" (click) ="editpage()"><img src="assets/imgs/icons/edit-icon.png"></span></div>
+                    </div>         
+                  <expandable *ngIf="project.expanded == true" [data]="project" style="width:100%;">                      
+                  </expandable>           
+                </ion-row>
+              </ion-list> -->
+      </div>
+      <!-- <ion-row *ngIf="projectList.length>0" class="bottom-row">
+          <div class="bottom-div">
+              <div class="label inline-block">{{'Total' | translate }}</div>
+              <div class="label inline-block">08:00</div>
+          </div>
+        </ion-row> -->
+      <ion-row *ngIf="projectList.length> 0" class="bottom-row">
+        <div class="bottom-div">
+          <button ion-button  class="btm-btn" (click)="newActivity()">{{'Export' | translate }} <img
+            src="assets/imgs/icons/ic_pf.png" class="pdf-icn">
+          </button>
+          <button ion-button disabled class="btm-btn">{{'Submit' | translate }}
+          </button>
+        </div>
+      </ion-row>
+
+    </ion-card-content>
+  </ion-card>
+</ion-content>

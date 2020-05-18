@@ -1,0 +1,31 @@
+<ion-card>
+  <ion-card-header>
+    <ion-navbar>
+      <ion-title>{{'Login permission' | translate}}</ion-title>
+      <ion-buttons end>
+        <button ion-button class="closebtn" (click)="closeModal()">
+          <i class="fa fa-times fa-2x"></i>
+        </button>
+      </ion-buttons>
+    </ion-navbar>
+  </ion-card-header>
+  <ion-card-content class="global-padding">
+    <form novalidate>
+      <ion-row>
+        <span class="value messageleft">{{'You are already logged in on another device, click yes to continue with this login. This will log you out from another device.' | translate}}</span></ion-row>
+      <ion-row class="block global-padding" text-center>
+        <ion-col col-4>
+          <button ion-button class="okBtn" type="submit" (click)="givepermission()">
+            <span translate="Yes"></span>
+          </button>
+        </ion-col>
+        <ion-col col-4></ion-col>
+        <ion-col col-4>
+          <button ion-button class="cancelBtn" type="submit" (click)="closeModal()">
+            <span translate="No"></span>
+          </button>
+        </ion-col>
+      </ion-row>
+    </form>
+  </ion-card-content>
+</ion-card>

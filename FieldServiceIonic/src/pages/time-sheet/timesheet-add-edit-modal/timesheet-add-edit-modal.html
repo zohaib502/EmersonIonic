@@ -1,0 +1,173 @@
+<ion-header>
+  <ion-navbar>
+    <ion-row class="full-width global-padding">
+    <ion-col no-padding col-3>
+      <ion-label class="label inline-block">{{'Start Date' | translate }}</ion-label>
+      <ion-label class="value inline-block">{{formatDate(displayEntryDate)}}</ion-label>
+    </ion-col>
+    <ion-col no-padding col-8>
+      <ion-label class="label inline-block">{{'End Date' | translate }}</ion-label>
+      <ion-label class="value inline-block">{{formatDate(displayEndDate)}}</ion-label>
+    </ion-col>
+    <ion-col no-padding col-1>
+    <ion-buttons end>
+      <button ion-button class="closebtn" (click)="closeModal()">
+        <i class="fa fa-times fa-2x"></i>
+      </button>
+    </ion-buttons>
+    </ion-col>
+    </ion-row>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content class="common-css">
+  <div class="sec1 full-width">
+    <ion-row class="global-padding full-width">
+      <div class="timeBlock">
+        <div class="comm-start inline-block">
+          <div class="inline-block timepicker-icon verticalMiddle">
+            <img src="assets/imgs/icons/ic_time-icon_24x24.png" class="clockIcon timepicker" />
+          </div>
+          <div class="inline-block verticalMiddle">
+            <timepicker class="timepicker-box inline-block" [(ngModel)]="startTime"
+              (ngModelChange)="getTimeOnChange($event, 'startTime')" [showMeridian]="false"
+              (click)="utilityProvider.selectAllContent($event)"></timepicker>
+          </div>
+        </div>
+        <div class="comm-end inline-block">
+          <div class="inline-block timepicker-icon verticalMiddle">
+            <img src="assets/imgs/icons/ic_end_time.png" class="clockIcon timepicker" />
+          </div>
+          <div class="inline-block verticalMiddle">
+            <timepicker class="timepicker-box inline-block" [(ngModel)]="endTime"
+              (ngModelChange)="getTimeOnChange($event, 'endTime')" [showMeridian]="false"
+              (click)="utilityProvider.selectAllContent($event)"></timepicker>
+          </div>
+        </div>
+        <div class="comm-duration inline-block">
+          <span class="label">{{'Duration' | translate }}</span>
+          <div>
+            <ion-input [disabled]="!isEnabled" [(ngModel)]="duration" class="duration-box"
+            [ngClass]="zeroDuration?'zeroDuration':'duration-box'"></ion-input>
+          </div>
+        </div>
+      </div>
+      <div class="notesBlock inline-block">
+        <div class="notes">
+          <ion-textarea (keydown.enter)="utilityProvider.preventEnter($event)" maxlength="255" class="notesBox value"
+            placeholder="{{'Notes' | translate}}" [(ngModel)]="notes"></ion-textarea>
+        </div>
+        <div class="comm-save">
+          <button ion-button type="submit" class="save-btn clear-btn"
+            [disabled]="isBtnClicked == true" (click)="clearDuration()">{{'Clear' | translate }}
+          </button>
+          <button ion-button type="submit" class="save-btn" [disabled]="duration == '00:00' || isBtnClicked == true || statusID == enums.Jobstatus.Completed_Awaiting_Review"
+            (tap)="saveDuration(weekEditPage)">{{'Save' | translate }}
+          </button>
+        </div>
+      </div>
+    </ion-row>
+  </div>
+  <!-- <div class="sec2 full-width" *ngIf="additionalEntries.length"> -->
+    <div class="sec2 full-width">
+    <ion-row class="sec2head">
+      <ion-col>
+        <!-- <span class="label">{{'Additional Entries'|translate}}</span> -->
+        <span class="label">{{'Previous Entries'|translate}}</span>
+      </ion-col>
+    </ion-row>
+    <ion-list class="strippedClass entryList" *ngFor="let item of additionalEntries">
+      <ion-row class=" sec2rows full-width value">
+        <ion-col col-2>
+          <span class="inline-block sdt">{{item.Start_Time}}</span> -
+          <span class="inline-block edt">{{item.End_Time}}</span>
+        </ion-col>
+        <ion-col col-2>
+          <span>{{weekEditPage ?((((item.IsAdditional == 'false'|| item.IsAdditional == false)) || (item.StatusID == enums.Jobstatus.Debrief_Started)) ? (item.Work_Type == 'Other' ? item.Work_Type : (item.Work_Type | translate)) :(dayData.newActivityType == 'No Value')?'':(dayData.newActivityType | translate)): (item.Work_Type == 'Other' ? item.Work_Type : (item.Work_Type | translate))}}</span>
+        </ion-col>
+        <ion-col col-4>
+          <span>{{item.Comments}}</span>
+        </ion-col>
+        <ion-col col-2 class="entryListDuration">
+          <span>{{item.Duration}}</span>
+        </ion-col>
+        <ion-col col-1>
+          <img tappable
+            [ngClass]="(item.StatusID == enums.Jobstatus.Debrief_In_Progress && item.IsAdditional == 'false') || item.StatusID == enums.Jobstatus.Completed_Awaiting_Review? 'inline-block edit-img disableImg' :'inline-block edit-img pointer'"
+            (click)="editTime(item)" src="assets/imgs/icons/edit-icon.png" class="icn pointer">
+        </ion-col>
+          <ion-col col-1>
+          <img tappable
+            [ngClass]="(item.StatusID == enums.Jobstatus.Debrief_In_Progress && item.IsAdditional == 'false') || (item.StatusID == enums.Jobstatus.Debrief_Declined && (item.Sync_Status == 'true' || item.Original)) || item.Sync_Status == 'true' ? 'inline-block delete-img pull-right disableImg' :'inline-block delete-img pointer pull-right'"
+            (click)="deleteTime(item)" src="assets/imgs/icons/delete-icon.png" class="icn pointer">
+        </ion-col>
+      </ion-row>
+    </ion-list>
+    <ion-list class="strippedClass entryList" *ngFor="let item of previousEntries">
+      <ion-row class=" sec2rows full-width value">
+        <ion-col col-2>
+          <span class="inline-block sdt">{{item.Start_Time}}</span> -
+          <span class="inline-block edt">{{item.End_Time}}</span>
+        </ion-col>
+        <ion-col col-2>
+          <span>{{weekEditPage?(((item.StatusID == enums.Jobstatus.Debrief_In_Progress && (item.IsAdditional == 'false'|| item.IsAdditional == false)) || (item.StatusID == enums.Jobstatus.Debrief_Started && (item.isSubmitted=='true' ||item.isSubmitted==true))) ? (item.Work_Type == 'Other' ? item.Work_Type : (item.Work_Type | translate)) :(dayData.newActivityType == 'No Value')?'':(dayData.newActivityType | translate)): (item.Work_Type == 'Other' ? item.Work_Type : (item.Work_Type | translate ))}}</span>
+        </ion-col>
+        <ion-col col-4>
+          <span>{{item.Comments}}</span>
+        </ion-col>
+        <ion-col col-2 class="entryListDuration">
+          <span>{{item.Duration}}</span>
+        </ion-col>
+
+
+        <ion-col col-1>
+          <img tappable
+            [ngClass]="(item.IsAdditional == 'false' && item.StatusID == enums.Jobstatus.Debrief_In_Progress) || item.StatusID == enums.Jobstatus.Completed_Awaiting_Review ? 'inline-block edit-img disableImg' :'inline-block edit-img pointer'"
+            (click)="editTime(item)" src="assets/imgs/icons/edit-icon.png" class="icn pointer">
+        </ion-col>
+        <ion-col col-1>
+          <img tappable
+            [ngClass]="(item.StatusID == enums.Jobstatus.Debrief_Declined && (item.Sync_Status == 'true' || item.Original)) || (item.StatusID == enums.Jobstatus.Debrief_In_Progress && item.IsAdditional == 'false') || item.Sync_Status == 'true' || item.StatusID == enums.Jobstatus.Completed_Awaiting_Review ? 'inline-block delete-img pull-right disableImg' :'inline-block delete-img pointer pull-right'"
+            (click)="deleteTime(item)" src="assets/imgs/icons/delete-icon.png" class="icn pointer">
+        </ion-col>
+      </ion-row>
+    </ion-list>
+  </div>
+  <!-- <div class="sec2 full-width" *ngIf="previousEntries.length">
+    <ion-row class="sec2head">
+      <ion-col>
+        <span class="label">{{'Previous Entries'|translate}}</span>
+      </ion-col>
+    </ion-row>
+    <ion-list class="strippedClass entryList" *ngFor="let item of previousEntries">
+      <ion-row class=" sec2rows full-width value">
+        <ion-col col-2>
+          <span class="inline-block sdt">{{item.Start_Time}}</span> -
+          <span class="inline-block edt">{{item.End_Time}}</span>
+        </ion-col>
+        <ion-col col-2>
+          <span>{{weekEditPage?(((item.StatusID == enums.Jobstatus.Debrief_In_Progress && (item.IsAdditional == 'false'|| item.IsAdditional == false)) || (item.StatusID == enums.Jobstatus.Debrief_Started && (item.isSubmitted=='true' ||item.isSubmitted==true))) ? (item.Work_Type == 'Other' ? item.Work_Type : (item.Work_Type | translate)) :(dayData.newActivityType == 'No Value')?'':(dayData.newActivityType | translate)): (item.Work_Type == 'Other' ? item.Work_Type : (item.Work_Type | translate ))}}</span>
+        </ion-col>
+        <ion-col col-4>
+          <span>{{item.Comments}}</span>
+        </ion-col>
+        <ion-col col-2 class="entryListDuration">
+          <span>{{item.Duration}}</span>
+        </ion-col>
+
+
+        <ion-col col-1>
+          <img tappable
+            [ngClass]="item.IsAdditional == 'false' && item.StatusID == enums.Jobstatus.Debrief_In_Progress  ? 'inline-block edit-img disableImg' :'inline-block edit-img pointer'"
+            (click)="editTime(item)" src="assets/imgs/icons/edit-icon.png" class="icn pointer">
+        </ion-col>
+        <ion-col col-1>
+          <img tappable
+            [ngClass]="(item.StatusID == enums.Jobstatus.Debrief_Declined && (item.Sync_Status == 'true' || item.Original)) || (item.StatusID == enums.Jobstatus.Debrief_In_Progress && item.IsAdditional == 'false') || item.Sync_Status == 'true' ? 'inline-block delete-img pull-right disableImg' :'inline-block delete-img pointer pull-right'"
+            (click)="deleteTime(item)" src="assets/imgs/icons/delete-icon.png" class="icn pointer">
+        </ion-col>
+      </ion-row>
+    </ion-list>
+  </div> -->
+</ion-content>

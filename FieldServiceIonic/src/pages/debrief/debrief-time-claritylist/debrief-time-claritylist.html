@@ -1,0 +1,101 @@
+<ion-content padding class="page-background">
+  <ion-card>
+    <ion-card-header>
+      <ion-row class="debriefPage-padding">
+        <ion-col col-2 no-padding>
+          <button (click)=addProject() class="addbtn-box btn" no-padding>
+            <img class="add-btn pointer" src="assets/imgs/icons/Add-button.png">
+          </button>
+        </ion-col>
+        <ion-col col-3>
+        </ion-col>
+        <ion-col col-7 text-right no-padding>
+          <span class="continue-navigation"
+            *ngIf="taskObj.Selected_Process == enums.Selected_Process.FCR_AND_SDR && taskObj.Business_Unit != enums.BusinessUnitNames.PWS">
+            <span class="continue-text"> {{'Continue' | translate}}</span>
+            <button ion-button class="sdr-btn" (click)="gotoSDR()">{{'Service Detail Report' | translate}}</button>
+          </span>
+          <span (click)="goToExpense()" class="pageNavigationBtn pointer"> {{'Expenses' | translate}} ></span>
+        </ion-col>
+      </ion-row>
+    </ion-card-header>
+
+    <ion-card-content>
+      <ion-row class="global-padding full-width">
+        <div class="tooltip-col label tooltip">
+          <div>
+            <img class="info-icn" src="assets/imgs/icons/info_Circle.png">
+            <span class="tooltiptext">{{'Include In Report' | translate}}</span>
+          </div>
+        </div>
+        <div class="label cb">
+          <span class="ft-weight col labelStyle">{{'Select All' | translate}}</span>
+          <ion-checkbox [disabled]="disableAllCheckbox" checked="false" class="checkbox-square applyMargin"
+            [(ngModel)]="combinedCheckBox" (click)="updateTimeEntry($event, '', 'true')"></ion-checkbox>
+        </div>
+        <div class="label ft-weight sd-ed">
+          <span>{{'Start Date Time' | translate}}</span> /
+          <span class="block">{{'End Date Time' | translate}}</span>
+        </div>
+        <div class="label ft-weight project">
+          <span>{{'Project'| translate}}</span>
+        </div>
+        <div class="label ft-weight task">
+          <span>{{'Task' | translate}}</span>
+        </div>
+        <div class="label ft-weight cm">
+          <span>{{'Charge Method' | translate }}</span>
+        </div>
+        <div class="label ft-weight txt-ctr ct">
+          <span>{{'Charge Type' | translate }}</span>
+        </div>
+        <div class="label ft-weight txt-ctr otc">
+          <span>{{'OT Code' | translate }}</span>
+        </div>
+        <div class="label ft-weight txt-ctr wt">
+          <span>{{'Work Type' | translate }}</span>
+        </div>
+        <div class="label ft-weight txt-ctr item">
+          <span>{{'Item' | translate }}</span>
+        </div>
+        <div class="label ft-weight txt-ctr dura">
+          <span>{{'Duration' | translate }}</span>
+        </div>
+        <div class="label ft-weight icon">
+        </div>
+      </ion-row>
+
+      <ion-list>
+        <ion-row *ngFor="let time of timeArraySummary; let i = index" class="strippedClass global-padding full-width">
+          <div class="tooltip-col"></div>
+          <div
+            [ngClass]="(time.isSubmitted == 'true' || time.Original)? 'inline-block cb disableImg' :'inline-block cb pointer'"
+            class="value">
+            <ion-checkbox class="checkbox-square applyMargin" [(ngModel)]="time.isPicked"
+              (ionChange)="updateTimeEntry($event, time)"></ion-checkbox>
+          </div>
+          <div class="value sd-ed">
+            <span class="sdt">{{time.displayDate | translate}} {{time.Start_Time | translate}}</span>
+            <span  class="block edt">{{time.displayEndDate | translate}} {{time.End_Time | translate}}</span>
+          </div>
+          <div class="value project" translate>{{time.Clarity_Project}}</div>
+          <div class="value task" translate>{{time.Field_Job_Name}}</div>
+          <div class="value cm" translate>{{time.Charge_Method}}</div>
+          <div class="value txt-ctr ct" translate>{{time.Charge_Type}}</div>
+          <div class="value txt-ctr otc" translate>{{time.Time_Code}}</div>
+          <div class="value txt-ctr wt" translate>{{time.Work_Type}}</div>
+          <div class="value txt-ctr item" translate>{{time.Item}}</div>
+          <div class="value txt-ctr dura" translate>{{time.Duration}}</div>
+          <div class="icn-wd txt-algn icon">
+            <img
+              [ngClass]="time.IsAdditional == 'false' && time.StatusID == enums.Jobstatus.Debrief_In_Progress ? 'inline-block edit-img disableImg' :'inline-block edit-img pointer'"
+              (click)="editTime(time,i)" src="assets/imgs/icons/edit-icon.png" class="icn pointer">
+            <img
+              [ngClass]="(time.StatusID == enums.Jobstatus.Debrief_Declined && (time.Sync_Status == 'true' || time.Original)) || (time.StatusID == enums.Jobstatus.Debrief_In_Progress && time.IsAdditional == 'false') || time.Sync_Status == 'true'  ? 'inline-block delete-img disableImg' :'inline-block delete-img pointer'"
+              (click)="deleteTime(time)" src="assets/imgs/icons/delete-icon.png" class="icn pointer">
+          </div>
+        </ion-row>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

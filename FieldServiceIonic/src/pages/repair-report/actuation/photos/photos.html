@@ -1,0 +1,1711 @@
+<ion-content padding class="page-background sdr-pages">
+  <ion-card class="CardSection Photos">
+    <ion-card-header>
+      <ion-row class="global-padding row">
+        <ion-col col-8>
+          <div class="header-left">{{'Photos' | translate}}</div>
+        </ion-col>
+        <ion-col class="txt-right">
+          <div *ngIf="selectedProcess==Enums.Selected_Process.FCR_AND_SDR" class="txt-rgt">
+            <span class="ft-size verticalMiddle">{{'Continue'|translate}}</span> <button (click)="gotofcr()" ion-button
+              id="photos_1" class="frs-Btn verticalMiddle">{{'Field Completion Report'|translate}}</button>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-card-header>
+    <page-sdr-header></page-sdr-header>
+
+    <!-- Actuation -->
+    <ion-card-content *ngIf="flowName == Enums.FlowName.Actuation">
+      <ion-row>
+        <ion-item class="WF-toggle toggle-all-accordion">
+          <ion-label *ngIf="toggleAllaccordion == false" text-right>{{'Expand all' | translate}}</ion-label>
+          <ion-label *ngIf="toggleAllaccordion == true" text-right>{{'Collapse all' | translate}}</ion-label>
+          <ion-toggle [(ngModel)]="toggleAllaccordion" (ionChange)="toggleAccordion($event)" id="photos_2"></ion-toggle>
+        </ion-item>
+      </ion-row>
+      <div class="full-width global-padding">
+        <ion-row class="customRows">
+          <div class="full-width">
+            <span (click)="expandOuter('AsFound')">
+              <ion-icon class="arrowIcon" item-left name="arrow-dropright" *ngIf="!expandOuterAccordion.AsFound">
+              </ion-icon>
+              <ion-icon class="arrowIcon" role="img" *ngIf="expandOuterAccordion.AsFound" aria-label="arrow dropdown"
+                name="arrow-dropdown">
+              </ion-icon>
+            </span>
+            <span (click)="expandOuter('AsFound')" class="label pointer acc-label">{{'As Found' | translate}}</span>
+            <div class="block full-width attachmentBox" *ngIf="expandOuterAccordion.AsFound">
+              <ion-row class="debriefPage-padding">
+                <ion-col col-3 no-padding>
+                  <h1 class="inline-block">{{'Attachments' | translate}}</h1>
+                  <label class="custom-file-upload inline-block btn">
+                    <input #attachment [(ngModel)]="filee" (click)="attachment.value = null" value=""
+                      (change)="addAttachment($event,Enums.PhotosAccordion.AsFound)" type="file" id="photos_3" />
+                    <img src="assets/imgs/icons/Add-button.png" />
+                  </label>
+                </ion-col>
+              </ion-row>
+              <ion-row class="debriefPage-padding" *ngIf="AsFoundArray && AsFoundArray.length>0">
+                <ion-col *ngFor="let file1 of AsFoundArray ; let i = index" col-2>
+                  <span class="block">
+                    <ion-checkbox [disabled]="file1.FILETYPE.indexOf('image')<0" [checked]="file1.SHOWINPDF == 'true' "
+                      [(ngModel)]="file1.SHOWINPDF" color="dark" (ionChange)="updateShowInPdf($event,file1.RA_PK_ID)"
+                      [attr.id]="'photos_4_' + i">
+                    </ion-checkbox>
+                    <span class="label inline-block checkboxlabel">{{'Include In Report' | translate }}</span>
+                  </span>
+                  <span class="block">
+                    <a class="pointer" (click)="openResource(file1)" [attr.id]="'photos_5_' + i">
+                      <span>
+                        <img *ngIf="file1.FILETYPE.indexOf('image')>-1" class="attachment-image"
+                          [src]="sanitizer.bypassSecurityTrustUrl(thumbFilePath + file1.FILENAME)">
+                        <img *ngIf="file1.FILETYPE.indexOf('image')<0" class="attachment-image"
+                          onerror="this.src='assets/imgs/unknown.png'"
+                          src="assets/imgs/{{utilityProvider.generateFileDiscNameAndTypeSDR(file1.FILENAME).Type}}.png">
+                      </span>
+                    </a>
+                  </span>
+                  <span class="block">
+                    <ion-textarea text-left maxlength="255" rows="3" (focusout)="renameAttachmentDescription(file1)"
+                      [(ngModel)]="file1.ATTACHMENTDESCRIPTION" value="{{file1.ATTACHMENTDESCRIPTION}}"
+                      class="attachment-description" [attr.id]="'photos_6_' + i">
+                    </ion-textarea>
+                  </span>
+                  <span class="block delete-attachment-button-block">
+                    <label text-center class="attachment-label pointer"
+                      (click)="deleteAttachmentObject(file1,i,Enums.PhotosAccordion.AsFound)" translate="Delete"
+                      [attr.id]="'photos_7_' + i"></label>
+                  </span>
+                </ion-col>
+              </ion-row>
+            </div>
+          </div>
+        </ion-row>
+        <ion-row class="customRows">
+          <div class="full-width">
+            <span (click)="expandOuter('CalibrationConfiguration')" id="photos_8">
+              <ion-icon class="arrowIcon" item-left name="arrow-dropright"
+                *ngIf="!expandOuterAccordion.CalibrationConfiguration">
+              </ion-icon>
+              <ion-icon class="arrowIcon" role="img" *ngIf="expandOuterAccordion.CalibrationConfiguration"
+                aria-label="arrow dropdown" name="arrow-dropdown">
+              </ion-icon>
+            </span>
+            <span (click)="expandOuter('CalibrationConfiguration')" class="label pointer acc-label"
+              id="photos_9">{{'Calibration/Configuration' | translate}}</span>
+            <div class="block full-width attachmentBox" *ngIf="expandOuterAccordion.CalibrationConfiguration">
+              <ion-row class="debriefPage-padding">
+                <ion-col col-3 no-padding>
+                  <h1 class="inline-block">{{'Attachments' | translate}}</h1>
+                  <label class="custom-file-upload inline-block btn">
+                    <input #attachment [(ngModel)]="filee" (click)="attachment.value = null" value=""
+                      (change)="addAttachment($event,Enums.PhotosAccordion.CalibrationConfiguration)" type="file"
+                      id="photos_10" />
+                    <img src="assets/imgs/icons/Add-button.png" />
+                  </label>
+                </ion-col>
+              </ion-row>
+              <ion-row class="debriefPage-padding"
+                *ngIf="CalibrationConfigurationArray && CalibrationConfigurationArray.length>0">
+                <ion-col *ngFor="let file1 of CalibrationConfigurationArray ; let i = index" col-2>
+                  <span class="block">
+                    <ion-checkbox [disabled]="file1.FILETYPE.indexOf('image')<0" [checked]="file1.SHOWINPDF == 'true' "
+                      [(ngModel)]="file1.SHOWINPDF" color="dark" (ionChange)="updateShowInPdf($event,file1.RA_PK_ID)"
+                      [attr.id]="'photos_11_' + i">
+                    </ion-checkbox>
+                    <span class="label inline-block checkboxlabel">{{'Include In Report' | translate }}</span>
+                  </span>
+                  <span class="block">
+                    <a class="pointer" (click)="openResource(file1)" [attr.id]="'photos_12_' + i">
+                      <span>
+                        <img *ngIf="file1.FILETYPE.indexOf('image')>-1" class="attachment-image"
+                          [src]="sanitizer.bypassSecurityTrustUrl(thumbFilePath + file1.FILENAME)">
+                        <img *ngIf="file1.FILETYPE.indexOf('image')<0" class="attachment-image"
+                          onerror="this.src='assets/imgs/unknown.png'"
+                          src="assets/imgs/{{utilityProvider.generateFileDiscNameAndTypeSDR(file1.FILENAME).Type}}.png">
+                      </span>
+                    </a>
+                  </span>
+                  <span class="block">
+                    <ion-textarea text-left maxlength="255" rows="3" (focusout)="renameAttachmentDescription(file1)"
+                      [(ngModel)]="file1.ATTACHMENTDESCRIPTION" value="{{file1.ATTACHMENTDESCRIPTION}}"
+                      class="attachment-description" [attr.id]="'photos_13_' + i">
+                    </ion-textarea>
+                  </span>
+                  <span class="block delete-attachment-button-block">
+                    <label text-center class="attachment-label pointer"
+                      (click)="deleteAttachmentObject(file1,i,Enums.PhotosAccordion.CalibrationConfiguration)"
+                      translate="Delete" [attr.id]="'photos_14_' + i"></label>
+                  </span>
+                </ion-col>
+              </ion-row>
+            </div>
+          </div>
+        </ion-row>
+        <ion-row class="customRows">
+          <div class="full-width">
+            <span (click)="expandOuter('Solution')" id="photos_15">
+              <ion-icon class="arrowIcon" item-left name="arrow-dropright" *ngIf="!expandOuterAccordion.Solution">
+              </ion-icon>
+              <ion-icon class="arrowIcon" role="img" *ngIf="expandOuterAccordion.Solution" aria-label="arrow dropdown"
+                name="arrow-dropdown">
+              </ion-icon>
+            </span>
+            <span (click)="expandOuter('Solution')" class="label pointer acc-label"
+              id="photos_16">{{'Solution' | translate}}</span>
+            <div class="block full-width attachmentBox" *ngIf="expandOuterAccordion.Solution">
+              <ion-row class="debriefPage-padding">
+                <ion-col col-3 no-padding>
+                  <h1 class="inline-block">{{'Attachments' | translate}}</h1>
+                  <label class="custom-file-upload inline-block btn">
+                    <input #attachment [(ngModel)]="filee" (click)="attachment.value = null" value=""
+                      (change)="addAttachment($event,Enums.PhotosAccordion.Solution)" type="file" id="photos_17" />
+                    <img src="assets/imgs/icons/Add-button.png" />
+                  </label>
+                </ion-col>
+              </ion-row>
+              <ion-row class="debriefPage-padding" *ngIf="SolutionArray && SolutionArray.length>0">
+                <ion-col *ngFor="let file1 of SolutionArray; let i = index " col-2>
+                  <span class="block">
+                    <ion-checkbox [disabled]="file1.FILETYPE.indexOf('image')<0" [checked]="file1.SHOWINPDF == 'true' "
+                      [(ngModel)]="file1.SHOWINPDF" color="dark" (ionChange)="updateShowInPdf($event,file1.RA_PK_ID)"
+                      [attr.id]="'photos_18_' + i">
+                    </ion-checkbox>
+                    <span class="label inline-block checkboxlabel">{{'Include In Report' | translate }}</span>
+                  </span>
+                  <span class="block">
+                    <a class="pointer" (click)="openResource(file1)" [attr.id]="'photos_19_' + i">
+                      <span>
+                        <img *ngIf="file1.FILETYPE.indexOf('image')>-1" class="attachment-image"
+                          [src]="sanitizer.bypassSecurityTrustUrl(thumbFilePath + file1.FILENAME)">
+                        <img *ngIf="file1.FILETYPE.indexOf('image')<0" class="attachment-image"
+                          onerror="this.src='assets/imgs/unknown.png'"
+                          src="assets/imgs/{{utilityProvider.generateFileDiscNameAndTypeSDR(file1.FILENAME).Type}}.png">
+                      </span>
+                    </a>
+                  </span>
+                  <span class="block">
+                    <ion-textarea text-left maxlength="255" rows="3" (focusout)="renameAttachmentDescription(file1)"
+                      [(ngModel)]="file1.ATTACHMENTDESCRIPTION" value="{{file1.ATTACHMENTDESCRIPTION}}"
+                      class="attachment-description" [attr.id]="'photos_20_' + i">
+                    </ion-textarea>
+                  </span>
+                  <span class="block delete-attachment-button-block">
+                    <label text-center class="attachment-label pointer"
+                      (click)="deleteAttachmentObject(file1,i,Enums.PhotosAccordion.Solution)" translate="Delete"
+                      [attr.id]="'photos_21_' + i"></label>
+                  </span>
+                </ion-col>
+              </ion-row>
+            </div>
+          </div>
+        </ion-row>
+        <ion-row class="customRows">
+          <div class="full-width">
+            <span (click)="expandOuter('FinalTests')" id="photos_22">
+              <ion-icon class="arrowIcon" item-left name="arrow-dropright" *ngIf="!expandOuterAccordion.FinalTests">
+              </ion-icon>
+              <ion-icon class="arrowIcon" role="img" *ngIf="expandOuterAccordion.FinalTests" aria-label="arrow dropdown"
+                name="arrow-dropdown">
+              </ion-icon>
+            </span>
+            <span class="label pointer acc-label" (click)="expandOuter('FinalTests')"
+              id="photos_23">{{'Final Tests' | translate}}</span>
+            <div class="block full-width attachmentBox" *ngIf="expandOuterAccordion.FinalTests">
+              <ion-row class="debriefPage-padding">
+                <ion-col col-3 no-padding>
+                  <h1 class="inline-block">{{'Attachments' | translate}}</h1>
+                  <label class="custom-file-upload inline-block btn">
+                    <input #attachment [(ngModel)]="filee" (click)="attachment.value = null" value=""
+                      (change)="addAttachment($event,Enums.PhotosAccordion.FinalTests)" type="file" id="photos_24" />
+                    <img src="assets/imgs/icons/Add-button.png" />
+                  </label>
+                </ion-col>
+              </ion-row>
+              <ion-row class="debriefPage-padding" *ngIf="FinalTestsArray && FinalTestsArray.length>0">
+                <ion-col *ngFor="let file1 of FinalTestsArray ; let i = index" col-2>
+                  <span class="block">
+                    <ion-checkbox [disabled]="file1.FILETYPE.indexOf('image')<0" [checked]="file1.SHOWINPDF == 'true' "
+                      [(ngModel)]="file1.SHOWINPDF" color="dark" (ionChange)="updateShowInPdf($event,file1.RA_PK_ID)"
+                      [attr.id]="'photos_25_' + i">
+                    </ion-checkbox>
+                    <span class="label inline-block checkboxlabel">{{'Include In Report' | translate }}</span>
+                  </span>
+                  <span class="block">
+                    <a class="pointer" (click)="openResource(file1)" [attr.id]="'photos_26_' + i">
+                      <span>
+                        <img *ngIf="file1.FILETYPE.indexOf('image')>-1" class="attachment-image"
+                          [src]="sanitizer.bypassSecurityTrustUrl(thumbFilePath + file1.FILENAME)">
+                        <img *ngIf="file1.FILETYPE.indexOf('image')<0" class="attachment-image"
+                          onerror="this.src='assets/imgs/unknown.png'"
+                          src="assets/imgs/{{utilityProvider.generateFileDiscNameAndTypeSDR(file1.FILENAME).Type}}.png">
+                      </span>
+                    </a>
+                  </span>
+                  <span class="block">
+                    <ion-textarea text-left maxlength="255" rows="3" (focusout)="renameAttachmentDescription(file1)"
+                      [(ngModel)]="file1.ATTACHMENTDESCRIPTION" value="{{file1.ATTACHMENTDESCRIPTION}}"
+                      class="attachment-description" [attr.id]="'photos_27_' + i">
+                    </ion-textarea>
+                  </span>
+                  <span class="block delete-attachment-button-block">
+                    <label text-center class="attachment-label pointer"
+                      (click)="deleteAttachmentObject(file1,i,Enums.PhotosAccordion.FinalTests)" translate="Delete"
+                      [attr.id]="'photos_28_' + i"></label>
+                  </span>
+                </ion-col>
+              </ion-row>
+            </div>
+          </div>
+        </ion-row>
+      </div>
+      <ion-row>
+        <ion-col text-left>
+          <button (click)="redirect('back')" ion-button class="footer-Button"
+            id="photos_29">{{'Back' | translate}}</button>
+        </ion-col>
+        <ion-col text-right>
+          <button (click)="redirect('technotes')" ion-button class="footer-Button"
+            id="photos_30">{{ bottomNavBtn | translate}}</button>
+        </ion-col>
+      </ion-row>
+    </ion-card-content>
+
+    <!-- Flow Isolation  -->
+    <ion-card-content *ngIf="flowName == Enums.FlowName.FlowIsolation">
+      <ion-row>
+        <ion-item class="WF-toggle toggle-all-accordion">
+          <ion-label *ngIf="toggleAllaccordion == false" text-right>{{'Expand all' | translate}}</ion-label>
+          <ion-label *ngIf="toggleAllaccordion == true" text-right>{{'Collapse all' | translate}}</ion-label>
+          <ion-toggle [(ngModel)]="toggleAllaccordion" (ionChange)="toggleAccordion($event)" id="photos_89">
+          </ion-toggle>
+        </ion-item>
+      </ion-row>
+      <!-- Accordian for Control Valve, Controller, Isolation, Level Troll, Regulator -->
+      <div class="full-width global-padding"
+        *ngIf="deviceID != Enums.FlowIsolationProductId.TrimOnly && deviceID != Enums.FlowIsolationProductId.Instrument">
+        <ion-row class="customRows">
+          <div class="full-width">
+            <span (click)="expandOuter('AsFoundAssembly')" id="photos_31">
+              <ion-icon class="arrowIcon" item-left name="arrow-dropright"
+                *ngIf="!expandOuterAccordion.AsFoundAssembly">
+              </ion-icon>
+              <ion-icon class="arrowIcon" role="img" *ngIf="expandOuterAccordion.AsFoundAssembly"
+                aria-label="arrow dropdown" name="arrow-dropdown">
+              </ion-icon>
+            </span>
+            <span (click)="expandOuter('AsFoundAssembly')" class="label pointer acc-label"
+              id="photos_32">{{'As Found Assembly' | translate}}</span>
+            <div class="block full-width attachmentBox" *ngIf="expandOuterAccordion.AsFoundAssembly">
+              <ion-row class="debriefPage-padding">
+                <ion-col col-3 no-padding>
+                  <h1 class="inline-block">{{'Attachments' | translate}}</h1>
+                  <label class="custom-file-upload inline-block btn">
+                    <input #attachment [(ngModel)]="filee" (click)="attachment.value = null" value=""
+                      (change)="addAttachment($event,Enums.PhotosAccordion.AsFoundAssembly)" type="file"
+                      id="photos_33" />
+                    <img src="assets/imgs/icons/Add-button.png" />
+                  </label>
+                </ion-col>
+              </ion-row>
+              <ion-row class="debriefPage-padding" *ngIf="AsFoundAssemblyArray && AsFoundAssemblyArray.length>0">
+                <ion-col *ngFor="let file1 of AsFoundAssemblyArray ; let i = index" col-2>
+                  <span class="block">
+                    <ion-checkbox [disabled]="file1.FILETYPE.indexOf('image')<0" [checked]="file1.SHOWINPDF == 'true' "
+                      [(ngModel)]="file1.SHOWINPDF" color="dark" (ionChange)="updateShowInPdf($event,file1.RA_PK_ID)"
+                      [attr.id]="'photos_34_' + i">
+                    </ion-checkbox>
+                    <span class="label inline-block checkboxlabel">{{'Include In Report' | translate }}</span>
+                  </span>
+                  <span class="block">
+                    <a class="pointer" (click)="openResource(file1)" [attr.id]="'photos_35_' + i">
+                      <span>
+                        <img *ngIf="file1.FILETYPE.indexOf('image')>-1" class="attachment-image"
+                          [src]="sanitizer.bypassSecurityTrustUrl(thumbFilePath + file1.FILENAME)">
+                        <img *ngIf="file1.FILETYPE.indexOf('image')<0" class="attachment-image"
+                          onerror="this.src='assets/imgs/unknown.png'"
+                          src="assets/imgs/{{utilityProvider.generateFileDiscNameAndTypeSDR(file1.FILENAME).Type}}.png">
+                      </span>
+                    </a>
+                  </span>
+                  <span class="block">
+                    <ion-textarea text-left maxlength="255" rows="3" (focusout)="renameAttachmentDescription(file1)"
+                      [(ngModel)]="file1.ATTACHMENTDESCRIPTION" value="{{file1.ATTACHMENTDESCRIPTION}}"
+                      class="attachment-description" [attr.id]="'photos_36_' + i">
+                    </ion-textarea>
+                  </span>
+                  <span class="block delete-attachment-button-block">
+                    <label text-center class="attachment-label pointer"
+                      (click)="deleteAttachmentObject(file1,i,Enums.PhotosAccordion.AsFoundAssembly)" translate="Delete"
+                      [attr.id]="'photos_37_' + i"></label>
+                  </span>
+                </ion-col>
+              </ion-row>
+            </div>
+          </div>
+        </ion-row>
+        <ion-row class="customRows">
+          <div class="full-width">
+            <span (click)="expandOuter('AsFoundTrim')" id="photos_38">
+              <ion-icon class="arrowIcon" item-left name="arrow-dropright" *ngIf="!expandOuterAccordion.AsFoundTrim">
+              </ion-icon>
+              <ion-icon class="arrowIcon" role="img" *ngIf="expandOuterAccordion.AsFoundTrim"
+                aria-label="arrow dropdown" name="arrow-dropdown">
+              </ion-icon>
+            </span>
+            <span (click)="expandOuter('AsFoundTrim')" class="label pointer acc-label"
+              id="photos_39">{{'As Found Trim' | translate}}</span>
+            <div class="block full-width attachmentBox" *ngIf="expandOuterAccordion.AsFoundTrim">
+              <ion-row class="debriefPage-padding">
+                <ion-col col-3 no-padding>
+                  <h1 class="inline-block">{{'Attachments' | translate}}</h1>
+                  <label class="custom-file-upload inline-block btn">
+                    <input #attachment [(ngModel)]="filee" (click)="attachment.value = null" value=""
+                      (change)="addAttachment($event,Enums.PhotosAccordion.AsFoundTrim)" type="file" id="photos_40" />
+                    <img src="assets/imgs/icons/Add-button.png" />
+                  </label>
+                </ion-col>
+              </ion-row>
+              <ion-row class="debriefPage-padding" *ngIf="AsFoundTrimArray && AsFoundTrimArray.length>0">
+                <ion-col *ngFor="let file1 of AsFoundTrimArray ; let i = index" col-2>
+                  <span class="block">
+                    <ion-checkbox [disabled]="file1.FILETYPE.indexOf('image')<0" [checked]="file1.SHOWINPDF == 'true' "
+                      [(ngModel)]="file1.SHOWINPDF" color="dark" (ionChange)="updateShowInPdf($event,file1.RA_PK_ID)"
+                      [attr.id]="'photos_41_' + i">
+                    </ion-checkbox>
+                    <span class="label inline-block checkboxlabel">{{'Include In Report' | translate }}</span>
+                  </span>
+                  <span class="block">
+                    <a class="pointer" (click)="openResource(file1)" [attr.id]="'photos_42_' + i">
+                      <span>
+                        <img *ngIf="file1.FILETYPE.indexOf('image')>-1" class="attachment-image"
+                          [src]="sanitizer.bypassSecurityTrustUrl(thumbFilePath + file1.FILENAME)">
+                        <img *ngIf="file1.FILETYPE.indexOf('image')<0" class="attachment-image"
+                          onerror="this.src='assets/imgs/unknown.png'"
+                          src="assets/imgs/{{utilityProvider.generateFileDiscNameAndTypeSDR(file1.FILENAME).Type}}.png">
+                      </span>
+                    </a>
+                  </span>
+                  <span class="block">
+                    <ion-textarea text-left maxlength="255" rows="3" (focusout)="renameAttachmentDescription(file1)"
+                      [(ngModel)]="file1.ATTACHMENTDESCRIPTION" value="{{file1.ATTACHMENTDESCRIPTION}}"
+                      class="attachment-description" [attr.id]="'photos_43_' + i">
+                    </ion-textarea>
+                  </span>
+                  <span class="block delete-attachment-button-block">
+                    <label text-center class="attachment-label pointer"
+                      (click)="deleteAttachmentObject(file1,i,Enums.PhotosAccordion.AsFoundTrim)" translate="Delete"
+                      [attr.id]="'photos_44_' + i"></label>
+                  </span>
+                </ion-col>
+              </ion-row>
+            </div>
+          </div>
+        </ion-row>
+        <ion-row class="customRows">
+          <div class="full-width">
+            <span (click)="expandOuter('AsLeftTrim')" id="photos_45">
+              <ion-icon class="arrowIcon" item-left name="arrow-dropright" *ngIf="!expandOuterAccordion.AsLeftTrim">
+              </ion-icon>
+              <ion-icon class="arrowIcon" role="img" *ngIf="expandOuterAccordion.AsLeftTrim" aria-label="arrow dropdown"
+                name="arrow-dropdown">
+              </ion-icon>
+            </span>
+            <span (click)="expandOuter('AsLeftTrim')" class="label pointer acc-label"
+              id="photos_46">{{'As Left Trim' | translate}}</span>
+            <div class="block full-width attachmentBox" *ngIf="expandOuterAccordion.AsLeftTrim">
+              <ion-row class="debriefPage-padding">
+                <ion-col col-3 no-padding>
+                  <h1 class="inline-block">{{'Attachments' | translate}}</h1>
+                  <label class="custom-file-upload inline-block btn">
+                    <input #attachment [(ngModel)]="filee" (click)="attachment.value = null" value=""
+                      (change)="addAttachment($event,Enums.PhotosAccordion.AsLeftTrim)" type="file" id="photos_47" />
+                    <img src="assets/imgs/icons/Add-button.png" />
+                  </label>
+                </ion-col>
+              </ion-row>
+              <ion-row class="debriefPage-padding" *ngIf="AsLeftTrimArray && AsLeftTrimArray.length>0">
+                <ion-col *ngFor="let file1 of AsLeftTrimArray; let i = index " col-2>
+                  <span class="block">
+                    <ion-checkbox [disabled]="file1.FILETYPE.indexOf('image')<0" [checked]="file1.SHOWINPDF == 'true' "
+                      [(ngModel)]="file1.SHOWINPDF" color="dark" (ionChange)="updateShowInPdf($event,file1.RA_PK_ID)"
+                      [attr.id]="'photos_48_' + i">
+                    </ion-checkbox>
+                    <span class="label inline-block checkboxlabel">{{'Include In Report' | translate }}</span>
+                  </span>
+                  <span class="block">
+                    <a class="pointer" (click)="openResource(file1)" [attr.id]="'photos_49_' + i">
+                      <span>
+                        <img *ngIf="file1.FILETYPE.indexOf('image')>-1" class="attachment-image"
+                          [src]="sanitizer.bypassSecurityTrustUrl(thumbFilePath + file1.FILENAME)">
+                        <img *ngIf="file1.FILETYPE.indexOf('image')<0" class="attachment-image"
+                          onerror="this.src='assets/imgs/unknown.png'"
+                          src="assets/imgs/{{utilityProvider.generateFileDiscNameAndTypeSDR(file1.FILENAME).Type}}.png">
+                      </span>
+                    </a>
+                  </span>
+                  <span class="block">
+                    <ion-textarea text-left maxlength="255" rows="3" (focusout)="renameAttachmentDescription(file1)"
+                      [(ngModel)]="file1.ATTACHMENTDESCRIPTION" value="{{file1.ATTACHMENTDESCRIPTION}}"
+                      class="attachment-description" [attr.id]="'photos_50_' + i">
+                    </ion-textarea>
+                  </span>
+                  <span class="block delete-attachment-button-block">
+                    <label text-center class="attachment-label pointer"
+                      (click)="deleteAttachmentObject(file1,i,Enums.PhotosAccordion.AsLeftTrim)" translate="Delete"
+                      [attr.id]="'photos_51_' + i"></label>
+                  </span>
+                </ion-col>
+              </ion-row>
+            </div>
+          </div>
+        </ion-row>
+        <ion-row class="customRows">
+          <div class="full-width">
+            <span (click)="expandOuter('AsLeftAssembly')" id="photos_52">
+              <ion-icon class="arrowIcon" item-left name="arrow-dropright" *ngIf="!expandOuterAccordion.AsLeftAssembly">
+              </ion-icon>
+              <ion-icon class="arrowIcon" role="img" *ngIf="expandOuterAccordion.AsLeftAssembly"
+                aria-label="arrow dropdown" name="arrow-dropdown">
+              </ion-icon>
+            </span>
+            <span class="label pointer acc-label" (click)="expandOuter('AsLeftAssembly')"
+              id="photos_53">{{'As Left Assembly' | translate}}</span>
+            <div class="block full-width attachmentBox" *ngIf="expandOuterAccordion.AsLeftAssembly">
+              <ion-row class="debriefPage-padding">
+                <ion-col col-3 no-padding>
+                  <h1 class="inline-block">{{'Attachments' | translate}}</h1>
+                  <label class="custom-file-upload inline-block btn">
+                    <input #attachment [(ngModel)]="filee" (click)="attachment.value = null" value=""
+                      (change)="addAttachment($event,Enums.PhotosAccordion.AsLeftAssembly)" type="file"
+                      id="photos_54" />
+                    <img src="assets/imgs/icons/Add-button.png" />
+                  </label>
+                </ion-col>
+              </ion-row>
+              <ion-row class="debriefPage-padding" *ngIf="AsLeftAssemblyArray && AsLeftAssemblyArray.length>0">
+                <ion-col *ngFor="let file1 of AsLeftAssemblyArray ; let i = index" col-2>
+                  <span class="block">
+                    <ion-checkbox [disabled]="file1.FILETYPE.indexOf('image')<0" [checked]="file1.SHOWINPDF == 'true' "
+                      [(ngModel)]="file1.SHOWINPDF" color="dark" (ionChange)="updateShowInPdf($event,file1.RA_PK_ID)"
+                      [attr.id]="'photos_55_' + i">
+                    </ion-checkbox>
+                    <span class="label inline-block checkboxlabel">{{'Include In Report' | translate }}</span>
+                  </span>
+                  <span class="block">
+                    <a class="pointer" (click)="openResource(file1)" [attr.id]="'photos_56_' + i">
+                      <span>
+                        <img *ngIf="file1.FILETYPE.indexOf('image')>-1" class="attachment-image"
+                          [src]="sanitizer.bypassSecurityTrustUrl(thumbFilePath + file1.FILENAME)">
+                        <img *ngIf="file1.FILETYPE.indexOf('image')<0" class="attachment-image"
+                          onerror="this.src='assets/imgs/unknown.png'"
+                          src="assets/imgs/{{utilityProvider.generateFileDiscNameAndTypeSDR(file1.FILENAME).Type}}.png">
+                      </span>
+                    </a>
+                  </span>
+                  <span class="block">
+                    <ion-textarea text-left maxlength="255" rows="3" (focusout)="renameAttachmentDescription(file1)"
+                      [(ngModel)]="file1.ATTACHMENTDESCRIPTION" value="{{file1.ATTACHMENTDESCRIPTION}}"
+                      class="attachment-description" [attr.id]="'photos_57_' + i">
+                    </ion-textarea>
+                  </span>
+                  <span class="block delete-attachment-button-block">
+                    <label text-center class="attachment-label pointer"
+                      (click)="deleteAttachmentObject(file1,i,Enums.PhotosAccordion.AsLeftAssembly)" translate="Delete"
+                      [attr.id]="'photos_58_' + i"></label>
+                  </span>
+                </ion-col>
+              </ion-row>
+            </div>
+          </div>
+        </ion-row>
+      </div>
+      <!-- Accordian for Instrument -->
+      <div class="full-width global-padding" *ngIf="deviceID == Enums.FlowIsolationProductId.Instrument">
+        <ion-row class="customRows">
+          <div class="full-width">
+            <span (click)="expandOuter('AsFoundAssembly')" id="photos_59">
+              <ion-icon class="arrowIcon" item-left name="arrow-dropright"
+                *ngIf="!expandOuterAccordion.AsFoundAssembly">
+              </ion-icon>
+              <ion-icon class="arrowIcon" role="img" *ngIf="expandOuterAccordion.AsFoundAssembly"
+                aria-label="arrow dropdown" name="arrow-dropdown">
+              </ion-icon>
+            </span>
+            <span (click)="expandOuter('AsFoundAssembly')" class="label pointer acc-label"
+              id="photos_60">{{'As Found Assembly' | translate}}</span>
+            <div class="block full-width attachmentBox" *ngIf="expandOuterAccordion.AsFoundAssembly">
+              <ion-row class="debriefPage-padding">
+                <ion-col col-3 no-padding>
+                  <h1 class="inline-block">{{'Attachments' | translate}}</h1>
+                  <label class="custom-file-upload inline-block btn">
+                    <input #attachment [(ngModel)]="filee" (click)="attachment.value = null" value=""
+                      (change)="addAttachment($event,Enums.PhotosAccordion.AsFoundAssembly)" type="file"
+                      id="photos_61" />
+                    <img src="assets/imgs/icons/Add-button.png" />
+                  </label>
+                </ion-col>
+              </ion-row>
+              <ion-row class="debriefPage-padding" *ngIf="AsFoundAssemblyArray && AsFoundAssemblyArray.length>0">
+                <ion-col *ngFor="let file1 of AsFoundAssemblyArray ; let i = index" col-2>
+                  <span class="block">
+                    <ion-checkbox [disabled]="file1.FILETYPE.indexOf('image')<0" [checked]="file1.SHOWINPDF == 'true' "
+                      [(ngModel)]="file1.SHOWINPDF" color="dark" (ionChange)="updateShowInPdf($event,file1.RA_PK_ID)"
+                      [attr.id]="'photos_62_' + i">
+                    </ion-checkbox>
+                    <span class="label inline-block checkboxlabel acc-label">{{'Include In Report' | translate }}</span>
+                  </span>
+                  <span class="block">
+                    <a class="pointer" (click)="openResource(file1)" [attr.id]="'photos_63_' + i">
+                      <span>
+                        <img *ngIf="file1.FILETYPE.indexOf('image')>-1" class="attachment-image"
+                          [src]="sanitizer.bypassSecurityTrustUrl(thumbFilePath + file1.FILENAME)">
+                        <img *ngIf="file1.FILETYPE.indexOf('image')<0" class="attachment-image"
+                          onerror="this.src='assets/imgs/unknown.png'"
+                          src="assets/imgs/{{utilityProvider.generateFileDiscNameAndTypeSDR(file1.FILENAME).Type}}.png">
+                      </span>
+                    </a>
+                  </span>
+                  <span class="block">
+                    <ion-textarea text-left maxlength="255" rows="3" (focusout)="renameAttachmentDescription(file1)"
+                      [(ngModel)]="file1.ATTACHMENTDESCRIPTION" value="{{file1.ATTACHMENTDESCRIPTION}}"
+                      class="attachment-description" [attr.id]="'photos_64_' + i">
+                    </ion-textarea>
+                  </span>
+                  <span class="block delete-attachment-button-block">
+                    <label text-center class="attachment-label pointer"
+                      (click)="deleteAttachmentObject(file1,i,Enums.PhotosAccordion.AsFoundAssembly)" translate="Delete"
+                      [attr.id]="'photos_65_' + i"></label>
+                  </span>
+                </ion-col>
+              </ion-row>
+            </div>
+          </div>
+        </ion-row>
+        <ion-row class="customRows">
+          <div class="full-width">
+            <span (click)="expandOuter('AsLeftAssembly')" id="photos_66">
+              <ion-icon class="arrowIcon" item-left name="arrow-dropright" *ngIf="!expandOuterAccordion.AsLeftAssembly">
+              </ion-icon>
+              <ion-icon class="arrowIcon" role="img" *ngIf="expandOuterAccordion.AsLeftAssembly"
+                aria-label="arrow dropdown" name="arrow-dropdown">
+              </ion-icon>
+            </span>
+            <span class="label pointer acc-label" (click)="expandOuter('AsLeftAssembly')"
+              id="photos_67">{{'As Left Assembly' | translate}}</span>
+            <div class="block full-width attachmentBox" *ngIf="expandOuterAccordion.AsLeftAssembly">
+              <ion-row class="debriefPage-padding">
+                <ion-col col-3 no-padding>
+                  <h1 class="inline-block">{{'Attachments' | translate}}</h1>
+                  <label class="custom-file-upload inline-block btn">
+                    <input #attachment [(ngModel)]="filee" (click)="attachment.value = null" value=""
+                      (change)="addAttachment($event,Enums.PhotosAccordion.AsLeftAssembly)" type="file"
+                      id="photos_68" />
+                    <img src="assets/imgs/icons/Add-button.png" />
+                  </label>
+                </ion-col>
+              </ion-row>
+              <ion-row class="debriefPage-padding" *ngIf="AsLeftAssemblyArray && AsLeftAssemblyArray.length>0">
+                <ion-col *ngFor="let file1 of AsLeftAssemblyArray ; let i = index" col-2>
+                  <span class="block">
+                    <ion-checkbox [disabled]="file1.FILETYPE.indexOf('image')<0" [checked]="file1.SHOWINPDF == 'true' "
+                      [(ngModel)]="file1.SHOWINPDF" color="dark" (ionChange)="updateShowInPdf($event,file1.RA_PK_ID)"
+                      [attr.id]="'photos_69_' + i">
+                    </ion-checkbox>
+                    <span class="label inline-block checkboxlabel">{{'Include In Report' | translate }}</span>
+                  </span>
+                  <span class="block">
+                    <a class="pointer" (click)="openResource(file1)" [attr.id]="'photos_70_' + i">
+                      <span>
+                        <img *ngIf="file1.FILETYPE.indexOf('image')>-1" class="attachment-image"
+                          [src]="sanitizer.bypassSecurityTrustUrl(thumbFilePath + file1.FILENAME)">
+                        <img *ngIf="file1.FILETYPE.indexOf('image')<0" class="attachment-image"
+                          onerror="this.src='assets/imgs/unknown.png'"
+                          src="assets/imgs/{{utilityProvider.generateFileDiscNameAndTypeSDR(file1.FILENAME).Type}}.png">
+                      </span>
+                    </a>
+                  </span>
+                  <span class="block">
+                    <ion-textarea text-left maxlength="255" rows="3" (focusout)="renameAttachmentDescription(file1)"
+                      [(ngModel)]="file1.ATTACHMENTDESCRIPTION" value="{{file1.ATTACHMENTDESCRIPTION}}"
+                      class="attachment-description" [attr.id]="'photos_71_' + i">
+                    </ion-textarea>
+                  </span>
+                  <span class="block delete-attachment-button-block">
+                    <label text-center class="attachment-label pointer"
+                      (click)="deleteAttachmentObject(file1,i,Enums.PhotosAccordion.AsLeftAssembly)" translate="Delete"
+                      [attr.id]="'photos_72_' + i"></label>
+                  </span>
+                </ion-col>
+              </ion-row>
+            </div>
+          </div>
+        </ion-row>
+      </div>
+      <!-- Accordian for Trim Only -->
+      <div class="full-width global-padding" *ngIf="deviceID == Enums.FlowIsolationProductId.TrimOnly">
+        <ion-row class="customRows">
+          <div class="full-width">
+            <span (click)="expandOuter('AsFoundTrim')" id="photos_73">
+              <ion-icon class="arrowIcon" item-left name="arrow-dropright" *ngIf="!expandOuterAccordion.AsFoundTrim">
+              </ion-icon>
+              <ion-icon class="arrowIcon" role="img" *ngIf="expandOuterAccordion.AsFoundTrim"
+                aria-label="arrow dropdown" name="arrow-dropdown">
+              </ion-icon>
+            </span>
+            <span (click)="expandOuter('AsFoundTrim')" class="label pointer acc-label"
+              id="photos_74">{{'As Found Trim' | translate}}</span>
+            <div class="block full-width attachmentBox" *ngIf="expandOuterAccordion.AsFoundTrim">
+              <ion-row class="debriefPage-padding">
+                <ion-col col-3 no-padding>
+                  <h1 class="inline-block">{{'Attachments' | translate}}</h1>
+                  <label class="custom-file-upload inline-block btn">
+                    <input #attachment [(ngModel)]="filee" (click)="attachment.value = null" value=""
+                      (change)="addAttachment($event,Enums.PhotosAccordion.AsFoundTrim)" type="file" id="photos_75" />
+                    <img src="assets/imgs/icons/Add-button.png" />
+                  </label>
+                </ion-col>
+              </ion-row>
+              <ion-row class="debriefPage-padding" *ngIf="AsFoundTrimArray && AsFoundTrimArray.length>0">
+                <ion-col *ngFor="let file1 of AsFoundTrimArray ; let i = index" col-2>
+                  <span class="block">
+                    <ion-checkbox [disabled]="file1.FILETYPE.indexOf('image')<0" [checked]="file1.SHOWINPDF == 'true' "
+                      [(ngModel)]="file1.SHOWINPDF" color="dark" (ionChange)="updateShowInPdf($event,file1.RA_PK_ID)"
+                      [attr.id]="'photos_76_' + i">
+                    </ion-checkbox>
+                    <span class="label inline-block checkboxlabel">{{'Include In Report' | translate }}</span>
+                  </span>
+                  <span class="block">
+                    <a class="pointer" (click)="openResource(file1)" [attr.id]="'photos_77_' + i">
+                      <span>
+                        <img *ngIf="file1.FILETYPE.indexOf('image')>-1" class="attachment-image"
+                          [src]="sanitizer.bypassSecurityTrustUrl(thumbFilePath + file1.FILENAME)">
+                        <img *ngIf="file1.FILETYPE.indexOf('image')<0" class="attachment-image"
+                          onerror="this.src='assets/imgs/unknown.png'"
+                          src="assets/imgs/{{utilityProvider.generateFileDiscNameAndTypeSDR(file1.FILENAME).Type}}.png">
+                      </span>
+                    </a>
+                  </span>
+                  <span class="block">
+                    <ion-textarea text-left maxlength="255" rows="3" (focusout)="renameAttachmentDescription(file1)"
+                      [(ngModel)]="file1.ATTACHMENTDESCRIPTION" value="{{file1.ATTACHMENTDESCRIPTION}}"
+                      class="attachment-description" [attr.id]="'photos_78_' + i">
+                    </ion-textarea>
+                  </span>
+                  <span class="block delete-attachment-button-block">
+                    <label text-center class="attachment-label pointer"
+                      (click)="deleteAttachmentObject(file1,i,Enums.PhotosAccordion.AsFoundTrim)" translate="Delete"
+                      [attr.id]="'photos_79_' + i"></label>
+                  </span>
+                </ion-col>
+              </ion-row>
+            </div>
+          </div>
+        </ion-row>
+        <ion-row class="customRows">
+          <div class="full-width">
+            <span (click)="expandOuter('AsLeftTrim')" id="photos_80">
+              <ion-icon class="arrowIcon" item-left name="arrow-dropright" *ngIf="!expandOuterAccordion.AsLeftTrim">
+              </ion-icon>
+              <ion-icon class="arrowIcon" role="img" *ngIf="expandOuterAccordion.AsLeftTrim" aria-label="arrow dropdown"
+                name="arrow-dropdown">
+              </ion-icon>
+            </span>
+            <span (click)="expandOuter('AsLeftTrim')" class="label pointer acc-label"
+              id="photos_81">{{'As Left Trim' | translate}}</span>
+            <div class="block full-width attachmentBox" *ngIf="expandOuterAccordion.AsLeftTrim">
+              <ion-row class="debriefPage-padding">
+                <ion-col col-3 no-padding>
+                  <h1 class="inline-block">{{'Attachments' | translate}}</h1>
+                  <label class="custom-file-upload inline-block btn">
+                    <input #attachment [(ngModel)]="filee" (click)="attachment.value = null" value=""
+                      (change)="addAttachment($event,Enums.PhotosAccordion.AsLeftTrim)" type="file" id="photos_82" />
+                    <img src="assets/imgs/icons/Add-button.png" />
+                  </label>
+                </ion-col>
+              </ion-row>
+              <ion-row class="debriefPage-padding" *ngIf="AsLeftTrimArray && AsLeftTrimArray.length>0">
+                <ion-col *ngFor="let file1 of AsLeftTrimArray; let i = index " col-2>
+                  <span class="block">
+                    <ion-checkbox [disabled]="file1.FILETYPE.indexOf('image')<0" [checked]="file1.SHOWINPDF == 'true' "
+                      [(ngModel)]="file1.SHOWINPDF" color="dark" (ionChange)="updateShowInPdf($event,file1.RA_PK_ID)"
+                      [attr.id]="'photos_83_' + i">
+                    </ion-checkbox>
+                    <span class="label inline-block checkboxlabel">{{'Include In Report' | translate }}</span>
+                  </span>
+                  <span class="block">
+                    <a class="pointer" (click)="openResource(file1)" [attr.id]="'photos_84_' + i">
+                      <span>
+                        <img *ngIf="file1.FILETYPE.indexOf('image')>-1" class="attachment-image"
+                          [src]="sanitizer.bypassSecurityTrustUrl(thumbFilePath + file1.FILENAME)">
+                        <img *ngIf="file1.FILETYPE.indexOf('image')<0" class="attachment-image"
+                          onerror="this.src='assets/imgs/unknown.png'"
+                          src="assets/imgs/{{utilityProvider.generateFileDiscNameAndTypeSDR(file1.FILENAME).Type}}.png">
+                      </span>
+                    </a>
+                  </span>
+                  <span class="block">
+                    <ion-textarea text-left maxlength="255" rows="3" (focusout)="renameAttachmentDescription(file1)"
+                      [(ngModel)]="file1.ATTACHMENTDESCRIPTION" value="{{file1.ATTACHMENTDESCRIPTION}}"
+                      class="attachment-description" [attr.id]="'photos_85_' + i">
+                    </ion-textarea>
+                  </span>
+                  <span class="block delete-attachment-button-block">
+                    <label text-center class="attachment-label pointer"
+                      (click)="deleteAttachmentObject(file1,i,Enums.PhotosAccordion.AsLeftTrim)" translate="Delete"
+                      [attr.id]="'photos_86_' + i"></label>
+                  </span>
+                </ion-col>
+              </ion-row>
+            </div>
+          </div>
+        </ion-row>
+      </div>
+      <ion-row>
+        <ion-col text-left>
+          <button (click)="redirect('back')" ion-button class="footer-Button"
+            id="photos_87">{{'Back' | translate}}</button>
+        </ion-col>
+        <ion-col text-right>
+          <button (click)="redirect('findings')" ion-button class="footer-Button"
+            id="photos_88">{{ bottomNavBtn | translate}}</button>
+        </ion-col>
+      </ion-row>
+    </ion-card-content>
+
+    <!-- Pressure -->
+    <ion-card-content *ngIf="flowName == Enums.FlowName.Pressure">
+      <ion-row>
+        <ion-item class="WF-toggle toggle-all-accordion">
+          <ion-label *ngIf="toggleAllaccordion == false" text-right>{{'Expand all' | translate}}</ion-label>
+          <ion-label *ngIf="toggleAllaccordion == true" text-right>{{'Collapse all' | translate}}</ion-label>
+          <ion-toggle [(ngModel)]="toggleAllaccordion" (ionChange)="toggleAccordion($event)" id="photos_90">
+          </ion-toggle>
+        </ion-item>
+      </ion-row>
+      <!-- Pilot Operated, Direct Spring-->
+      <div class="full-width global-padding"
+        *ngIf="deviceID == Enums.PressureProductId.DirectSpring || deviceID == Enums.PressureProductId.PilotOperated">
+        <!-- AsFoundAssembly -->
+        <ion-row class="customRows">
+          <div class="full-width">
+            <span (click)="expandOuter('AsFoundAssembly')" id="photos_91">
+              <ion-icon class="arrowIcon" item-left name="arrow-dropright"
+                *ngIf="!expandOuterAccordion.AsFoundAssembly">
+              </ion-icon>
+              <ion-icon class="arrowIcon" role="img" *ngIf="expandOuterAccordion.AsFoundAssembly"
+                aria-label="arrow dropdown" name="arrow-dropdown">
+              </ion-icon>
+            </span>
+            <span (click)="expandOuter('AsFoundAssembly')" class="label pointer acc-label"
+              id="photos_92">{{'As Found Assembly' | translate}}</span>
+            <div class="block full-width attachmentBox" *ngIf="expandOuterAccordion.AsFoundAssembly">
+              <ion-row class="debriefPage-padding">
+                <ion-col col-3 no-padding>
+                  <h1 class="inline-block">{{'Attachments' | translate}}</h1>
+                  <label class="custom-file-upload inline-block btn">
+                    <input #attachment [(ngModel)]="filee" (click)="attachment.value = null" value=""
+                      (change)="addAttachment($event,Enums.PhotosAccordion.AsFoundAssembly)" type="file"
+                      id="photos_93" />
+                    <img src="assets/imgs/icons/Add-button.png" />
+                  </label>
+                </ion-col>
+              </ion-row>
+              <ion-row class="debriefPage-padding" *ngIf="AsFoundAssemblyArray && AsFoundAssemblyArray.length>0">
+                <ion-col *ngFor="let file1 of AsFoundAssemblyArray ; let i = index" col-2>
+                  <span class="block">
+                    <ion-checkbox [disabled]="file1.FILETYPE.indexOf('image')<0" [checked]="file1.SHOWINPDF == 'true' "
+                      [(ngModel)]="file1.SHOWINPDF" color="dark" (ionChange)="updateShowInPdf($event,file1.RA_PK_ID)"
+                      [attr.id]="'photos_94_' + i">
+                    </ion-checkbox>
+                    <span class="label inline-block checkboxlabel">{{'Include In Report' | translate }}</span>
+                  </span>
+                  <span class="block">
+                    <a class="pointer" (click)="openResource(file1)" [attr.id]="'photos_95_' + i">
+                      <span>
+                        <img *ngIf="file1.FILETYPE.indexOf('image')>-1" class="attachment-image"
+                          [src]="sanitizer.bypassSecurityTrustUrl(thumbFilePath + file1.FILENAME)">
+                        <img *ngIf="file1.FILETYPE.indexOf('image')<0" class="attachment-image"
+                          onerror="this.src='assets/imgs/unknown.png'"
+                          src="assets/imgs/{{utilityProvider.generateFileDiscNameAndTypeSDR(file1.FILENAME).Type}}.png">
+                      </span>
+                    </a>
+                  </span>
+                  <span class="block">
+                    <ion-textarea text-left maxlength="255" rows="3" (focusout)="renameAttachmentDescription(file1)"
+                      [(ngModel)]="file1.ATTACHMENTDESCRIPTION" value="{{file1.ATTACHMENTDESCRIPTION}}"
+                      class="attachment-description" [attr.id]="'photos_96_' + i">
+                    </ion-textarea>
+                  </span>
+                  <span class="block delete-attachment-button-block">
+                    <label text-center class="attachment-label pointer"
+                      (click)="deleteAttachmentObject(file1,i,Enums.PhotosAccordion.AsFoundAssembly)" translate="Delete"
+                      [attr.id]="'photos_97_' + i"></label>
+                  </span>
+                </ion-col>
+              </ion-row>
+            </div>
+          </div>
+        </ion-row>
+        <!-- AsFoundTrim -->
+        <ion-row class="customRows">
+          <div class="full-width">
+            <span (click)="expandOuter('AsFoundTrim')" id="photos_98">
+              <ion-icon class="arrowIcon" item-left name="arrow-dropright" *ngIf="!expandOuterAccordion.AsFoundTrim">
+              </ion-icon>
+              <ion-icon class="arrowIcon" role="img" *ngIf="expandOuterAccordion.AsFoundTrim"
+                aria-label="arrow dropdown" name="arrow-dropdown">
+              </ion-icon>
+            </span>
+            <span (click)="expandOuter('AsFoundTrim')" class="label pointer acc-label"
+              id="photos_99">{{'As Found Trim' | translate}}</span>
+            <div class="block full-width attachmentBox" *ngIf="expandOuterAccordion.AsFoundTrim">
+              <ion-row class="debriefPage-padding">
+                <ion-col col-3 no-padding>
+                  <h1 class="inline-block">{{'Attachments' | translate}}</h1>
+                  <label class="custom-file-upload inline-block btn">
+                    <input #attachment [(ngModel)]="filee" (click)="attachment.value = null" value=""
+                      (change)="addAttachment($event,Enums.PhotosAccordion.AsFoundTrim)" type="file" id="photos_100" />
+                    <img src="assets/imgs/icons/Add-button.png" />
+                  </label>
+                </ion-col>
+              </ion-row>
+              <ion-row class="debriefPage-padding" *ngIf="AsFoundTrimArray && AsFoundTrimArray.length>0">
+                <ion-col *ngFor="let file1 of AsFoundTrimArray ; let i = index" col-2>
+                  <span class="block">
+                    <ion-checkbox [disabled]="file1.FILETYPE.indexOf('image')<0" [checked]="file1.SHOWINPDF == 'true' "
+                      [(ngModel)]="file1.SHOWINPDF" color="dark" (ionChange)="updateShowInPdf($event,file1.RA_PK_ID)"
+                      [attr.id]="'photos_101_' + i">
+                    </ion-checkbox>
+                    <span class="label inline-block checkboxlabel">{{'Include In Report' | translate }}</span>
+                  </span>
+                  <span class="block">
+                    <a class="pointer" (click)="openResource(file1)" [attr.id]="'photos_102_' + i">
+                      <span>
+                        <img *ngIf="file1.FILETYPE.indexOf('image')>-1" class="attachment-image"
+                          [src]="sanitizer.bypassSecurityTrustUrl(thumbFilePath + file1.FILENAME)">
+                        <img *ngIf="file1.FILETYPE.indexOf('image')<0" class="attachment-image"
+                          onerror="this.src='assets/imgs/unknown.png'"
+                          src="assets/imgs/{{utilityProvider.generateFileDiscNameAndTypeSDR(file1.FILENAME).Type}}.png">
+                      </span>
+                    </a>
+                  </span>
+                  <span class="block">
+                    <ion-textarea text-left maxlength="255" rows="3" (focusout)="renameAttachmentDescription(file1)"
+                      [(ngModel)]="file1.ATTACHMENTDESCRIPTION" value="{{file1.ATTACHMENTDESCRIPTION}}"
+                      class="attachment-description" [attr.id]="'photos_103_' + i">
+                    </ion-textarea>
+                  </span>
+                  <span class="block delete-attachment-button-block">
+                    <label text-center class="attachment-label pointer"
+                      (click)="deleteAttachmentObject(file1,i,Enums.PhotosAccordion.AsFoundTrim)" translate="Delete"
+                      [attr.id]="'photos_104_' + i"></label>
+                  </span>
+                </ion-col>
+              </ion-row>
+            </div>
+          </div>
+        </ion-row>
+        <!-- AsLeftTrim -->
+        <ion-row class="customRows">
+          <div class="full-width">
+            <span (click)="expandOuter('AsLeftTrim')" id="photos_105">
+              <ion-icon class="arrowIcon" item-left name="arrow-dropright" *ngIf="!expandOuterAccordion.AsLeftTrim">
+              </ion-icon>
+              <ion-icon class="arrowIcon" role="img" *ngIf="expandOuterAccordion.AsLeftTrim" aria-label="arrow dropdown"
+                name="arrow-dropdown">
+              </ion-icon>
+            </span>
+            <span (click)="expandOuter('AsLeftTrim')" class="label pointer acc-label"
+              id="photos_106">{{'As Left Trim' | translate}}</span>
+            <div class="block full-width attachmentBox" *ngIf="expandOuterAccordion.AsLeftTrim">
+              <ion-row class="debriefPage-padding">
+                <ion-col col-3 no-padding>
+                  <h1 class="inline-block">{{'Attachments' | translate}}</h1>
+                  <label class="custom-file-upload inline-block btn">
+                    <input #attachment [(ngModel)]="filee" (click)="attachment.value = null" value=""
+                      (change)="addAttachment($event,Enums.PhotosAccordion.AsLeftTrim)" type="file" id="photos_107" />
+                    <img src="assets/imgs/icons/Add-button.png" />
+                  </label>
+                </ion-col>
+              </ion-row>
+              <ion-row class="debriefPage-padding" *ngIf="AsLeftTrimArray && AsLeftTrimArray.length>0">
+                <ion-col *ngFor="let file1 of AsLeftTrimArray; let i = index " col-2>
+                  <span class="block">
+                    <ion-checkbox [disabled]="file1.FILETYPE.indexOf('image')<0" [checked]="file1.SHOWINPDF == 'true' "
+                      [(ngModel)]="file1.SHOWINPDF" color="dark" (ionChange)="updateShowInPdf($event,file1.RA_PK_ID)"
+                      [attr.id]="'photos_108_' + i">
+                    </ion-checkbox>
+                    <span class="label inline-block checkboxlabel">{{'Include In Report' | translate }}</span>
+                  </span>
+                  <span class="block">
+                    <a class="pointer" (click)="openResource(file1)" [attr.id]="'photos_109_' + i">
+                      <span>
+                        <img *ngIf="file1.FILETYPE.indexOf('image')>-1" class="attachment-image"
+                          [src]="sanitizer.bypassSecurityTrustUrl(thumbFilePath + file1.FILENAME)">
+                        <img *ngIf="file1.FILETYPE.indexOf('image')<0" class="attachment-image"
+                          onerror="this.src='assets/imgs/unknown.png'"
+                          src="assets/imgs/{{utilityProvider.generateFileDiscNameAndTypeSDR(file1.FILENAME).Type}}.png">
+                      </span>
+                    </a>
+                  </span>
+                  <span class="block">
+                    <ion-textarea text-left maxlength="255" rows="3" (focusout)="renameAttachmentDescription(file1)"
+                      [(ngModel)]="file1.ATTACHMENTDESCRIPTION" value="{{file1.ATTACHMENTDESCRIPTION}}"
+                      class="attachment-description" [attr.id]="'photos_110_' + i">
+                    </ion-textarea>
+                  </span>
+                  <span class="block delete-attachment-button-block">
+                    <label text-center class="attachment-label pointer"
+                      (click)="deleteAttachmentObject(file1,i,Enums.PhotosAccordion.AsLeftTrim)" translate="Delete"
+                      [attr.id]="'photos_111_' + i"></label>
+                  </span>
+                </ion-col>
+              </ion-row>
+            </div>
+          </div>
+        </ion-row>
+        <!-- AsLeftAssembly -->
+        <ion-row class="customRows">
+          <div class="full-width">
+            <span (click)="expandOuter('AsLeftAssembly')" id="photos_112">
+              <ion-icon class="arrowIcon" item-left name="arrow-dropright" *ngIf="!expandOuterAccordion.AsLeftAssembly">
+              </ion-icon>
+              <ion-icon class="arrowIcon" role="img" *ngIf="expandOuterAccordion.AsLeftAssembly"
+                aria-label="arrow dropdown" name="arrow-dropdown">
+              </ion-icon>
+            </span>
+            <span class="label pointer acc-label" (click)="expandOuter('AsLeftAssembly')"
+              id="photos_113">{{'As Left Assembly' | translate}}</span>
+            <div class="block full-width attachmentBox" *ngIf="expandOuterAccordion.AsLeftAssembly">
+              <ion-row class="debriefPage-padding">
+                <ion-col col-3 no-padding>
+                  <h1 class="inline-block">{{'Attachments' | translate}}</h1>
+                  <label class="custom-file-upload inline-block btn">
+                    <input #attachment [(ngModel)]="filee" (click)="attachment.value = null" value=""
+                      (change)="addAttachment($event,Enums.PhotosAccordion.AsLeftAssembly)" type="file"
+                      id="photos_114" />
+                    <img src="assets/imgs/icons/Add-button.png" />
+                  </label>
+                </ion-col>
+              </ion-row>
+              <ion-row class="debriefPage-padding" *ngIf="AsLeftAssemblyArray && AsLeftAssemblyArray.length>0">
+                <ion-col *ngFor="let file1 of AsLeftAssemblyArray ; let i = index" col-2>
+                  <span class="block">
+                    <ion-checkbox [disabled]="file1.FILETYPE.indexOf('image')<0" [checked]="file1.SHOWINPDF == 'true' "
+                      [(ngModel)]="file1.SHOWINPDF" color="dark" (ionChange)="updateShowInPdf($event,file1.RA_PK_ID)"
+                      [attr.id]="'photos_115_' + i">
+                    </ion-checkbox>
+                    <span class="label inline-block checkboxlabel">{{'Include In Report' | translate }}</span>
+                  </span>
+                  <span class="block">
+                    <a class="pointer" (click)="openResource(file1)" [attr.id]="'photos_116_' + i">
+                      <span>
+                        <img *ngIf="file1.FILETYPE.indexOf('image')>-1" class="attachment-image"
+                          [src]="sanitizer.bypassSecurityTrustUrl(thumbFilePath + file1.FILENAME)">
+                        <img *ngIf="file1.FILETYPE.indexOf('image')<0" class="attachment-image"
+                          onerror="this.src='assets/imgs/unknown.png'"
+                          src="assets/imgs/{{utilityProvider.generateFileDiscNameAndTypeSDR(file1.FILENAME).Type}}.png">
+                      </span>
+                    </a>
+                  </span>
+                  <span class="block">
+                    <ion-textarea text-left maxlength="255" rows="3" (focusout)="renameAttachmentDescription(file1)"
+                      [(ngModel)]="file1.ATTACHMENTDESCRIPTION" value="{{file1.ATTACHMENTDESCRIPTION}}"
+                      class="attachment-description" [attr.id]="'photos_117_' + i">
+                    </ion-textarea>
+                  </span>
+                  <span class="block delete-attachment-button-block">
+                    <label text-center class="attachment-label pointer"
+                      (click)="deleteAttachmentObject(file1,i,Enums.PhotosAccordion.AsLeftAssembly)" translate="Delete"
+                      [attr.id]="'photos_118_' + i"></label>
+                  </span>
+                </ion-col>
+              </ion-row>
+            </div>
+          </div>
+        </ion-row>
+        <!-- AsFoundPerformance -->
+        <ion-row class="customRows">
+          <div class="full-width">
+            <span (click)="expandOuter('AsFound')" id="photos_125">
+              <ion-icon class="arrowIcon" item-left name="arrow-dropright"
+                *ngIf="!expandOuterAccordion.AsFoundPerformance">
+              </ion-icon>
+              <ion-icon class="arrowIcon" role="img" *ngIf="expandOuterAccordion.AsFoundPerformance"
+                aria-label="arrow dropdown" name="arrow-dropdown">
+              </ion-icon>
+            </span>
+            <span class="label pointer acc-label" (click)="expandOuter('AsFoundPerformance')"
+              id="photos_126">{{'As Found Performance' | translate}}</span>
+            <div class="block full-width attachmentBox" *ngIf="expandOuterAccordion.AsFoundPerformance">
+              <ion-row class="debriefPage-padding">
+                <ion-col col-3 no-padding>
+                  <h1 class="inline-block">{{'Attachments' | translate}}</h1>
+                  <label class="custom-file-upload inline-block btn">
+                    <input #attachment [(ngModel)]="filee" (click)="attachment.value = null" value=""
+                      (change)="addAttachment($event,Enums.PhotosAccordion.AsFoundPerformance)" type="file"
+                      id="photos_127" />
+                    <img src="assets/imgs/icons/Add-button.png" />
+                  </label>
+                </ion-col>
+              </ion-row>
+              <ion-row class="debriefPage-padding" *ngIf="AsFoundPerformanceArray && AsFoundPerformanceArray.length>0">
+                <ion-col *ngFor="let file1 of AsFoundPerformanceArray ; let i = index" col-2>
+                  <span class="block">
+                    <ion-checkbox [disabled]="file1.FILETYPE.indexOf('image')<0" [checked]="file1.SHOWINPDF == 'true' "
+                      [(ngModel)]="file1.SHOWINPDF" color="dark" (ionChange)="updateShowInPdf($event,file1.RA_PK_ID)"
+                      [attr.id]="'photos_128_' + i">
+                    </ion-checkbox>
+                    <span class="label inline-block checkboxlabel">{{'Include In Report' | translate }}</span>
+                  </span>
+                  <span class="block">
+                    <a class="pointer" (click)="openResource(file1)" [attr.id]="'photos_129_' + i">
+                      <span>
+                        <img *ngIf="file1.FILETYPE.indexOf('image')>-1" class="attachment-image"
+                          [src]="sanitizer.bypassSecurityTrustUrl(thumbFilePath + file1.FILENAME)">
+                        <img *ngIf="file1.FILETYPE.indexOf('image')<0" class="attachment-image"
+                          onerror="this.src='assets/imgs/unknown.png'"
+                          src="assets/imgs/{{utilityProvider.generateFileDiscNameAndTypeSDR(file1.FILENAME).Type}}.png">
+                      </span>
+                    </a>
+                  </span>
+                  <span class="block">
+                    <ion-textarea text-left maxlength="255" rows="3" (focusout)="renameAttachmentDescription(file1)"
+                      [(ngModel)]="file1.ATTACHMENTDESCRIPTION" value="{{file1.ATTACHMENTDESCRIPTION}}"
+                      class="attachment-description" [attr.id]="'photos_130_' + i">
+                    </ion-textarea>
+                  </span>
+                  <span class="block delete-attachment-button-block">
+                    <label text-center class="attachment-label pointer"
+                      (click)="deleteAttachmentObject(file1,i,Enums.PhotosAccordion.AsFoundPerformance)"
+                      translate="Delete" [attr.id]="'photos_131_' + i"></label>
+                  </span>
+                </ion-col>
+              </ion-row>
+            </div>
+          </div>
+        </ion-row>
+        <!-- Findings -->
+        <ion-row class="customRows">
+          <div class="full-width">
+            <span (click)="expandOuter('Findings')" id="photos_132">
+              <ion-icon class="arrowIcon" item-left name="arrow-dropright" *ngIf="!expandOuterAccordion.Findings">
+              </ion-icon>
+              <ion-icon class="arrowIcon" role="img" *ngIf="expandOuterAccordion.Findings" aria-label="arrow dropdown"
+                name="arrow-dropdown">
+              </ion-icon>
+            </span>
+            <span class="label pointer acc-label" (click)="expandOuter('Findings')"
+              id="photos_133">{{'Findings' | translate}}</span>
+            <div class="block full-width attachmentBox" *ngIf="expandOuterAccordion.Findings">
+              <ion-row class="debriefPage-padding">
+                <ion-col col-3 no-padding>
+                  <h1 class="inline-block">{{'Attachments' | translate}}</h1>
+                  <label class="custom-file-upload inline-block btn">
+                    <input #attachment [(ngModel)]="filee" (click)="attachment.value = null" value=""
+                      (change)="addAttachment($event,Enums.PhotosAccordion.Findings)" type="file" id="photos_134" />
+                    <img src="assets/imgs/icons/Add-button.png" />
+                  </label>
+                </ion-col>
+              </ion-row>
+              <ion-row class="debriefPage-padding" *ngIf="FindingsArray && FindingsArray.length>0">
+                <ion-col *ngFor="let file1 of FindingsArray ; let i = index" col-2>
+                  <span class="block">
+                    <ion-checkbox [disabled]="file1.FILETYPE.indexOf('image')<0" [checked]="file1.SHOWINPDF == 'true' "
+                      [(ngModel)]="file1.SHOWINPDF" color="dark" (ionChange)="updateShowInPdf($event,file1.RA_PK_ID)"
+                      [attr.id]="'photos_135_' + i">
+                    </ion-checkbox>
+                    <span class="label inline-block checkboxlabel">{{'Include In Report' | translate }}</span>
+                  </span>
+                  <span class="block">
+                    <a class="pointer" (click)="openResource(file1)" [attr.id]="'photos_136_' + i">
+                      <span>
+                        <img *ngIf="file1.FILETYPE.indexOf('image')>-1" class="attachment-image"
+                          [src]="sanitizer.bypassSecurityTrustUrl(thumbFilePath + file1.FILENAME)">
+                        <img *ngIf="file1.FILETYPE.indexOf('image')<0" class="attachment-image"
+                          onerror="this.src='assets/imgs/unknown.png'"
+                          src="assets/imgs/{{utilityProvider.generateFileDiscNameAndTypeSDR(file1.FILENAME).Type}}.png">
+                      </span>
+                    </a>
+                  </span>
+                  <span class="block">
+                    <ion-textarea text-left maxlength="255" rows="3" (focusout)="renameAttachmentDescription(file1)"
+                      [(ngModel)]="file1.ATTACHMENTDESCRIPTION" value="{{file1.ATTACHMENTDESCRIPTION}}"
+                      class="attachment-description" [attr.id]="'photos_137_' + i">
+                    </ion-textarea>
+                  </span>
+                  <span class="block delete-attachment-button-block">
+                    <label text-center class="attachment-label pointer"
+                      (click)="deleteAttachmentObject(file1,i,Enums.PhotosAccordion.Findings)" translate="Delete"
+                      [attr.id]="'photos_138_' + i"></label>
+                  </span>
+                </ion-col>
+              </ion-row>
+            </div>
+          </div>
+        </ion-row>
+        <!-- InspectionMeasurement -->
+        <ion-row class="customRows">
+          <div class="full-width">
+            <span (click)="expandOuter('InspectionMeasurement')" id="photos_139">
+              <ion-icon class="arrowIcon" item-left name="arrow-dropright"
+                *ngIf="!expandOuterAccordion.InspectionMeasurement">
+              </ion-icon>
+              <ion-icon class="arrowIcon" role="img" *ngIf="expandOuterAccordion.InspectionMeasurement"
+                aria-label="arrow dropdown" name="arrow-dropdown">
+              </ion-icon>
+            </span>
+            <span class="label pointer acc-label" (click)="expandOuter('InspectionMeasurement')"
+              id="photos_140">{{'Inspection Measurement' | translate}}</span>
+            <div class="block full-width attachmentBox" *ngIf="expandOuterAccordion.InspectionMeasurement">
+              <ion-row class="debriefPage-padding">
+                <ion-col col-3 no-padding>
+                  <h1 class="inline-block">{{'Attachments' | translate}}</h1>
+                  <label class="custom-file-upload inline-block btn">
+                    <input #attachment [(ngModel)]="filee" (click)="attachment.value = null" value=""
+                      (change)="addAttachment($event,Enums.PhotosAccordion.InspectionMeasurement)" type="file"
+                      id="photos_141" />
+                    <img src="assets/imgs/icons/Add-button.png" />
+                  </label>
+                </ion-col>
+              </ion-row>
+              <ion-row class="debriefPage-padding"
+                *ngIf="InspectionMeasurementArray && InspectionMeasurementArray.length>0">
+                <ion-col *ngFor="let file1 of InspectionMeasurementArray ; let i = index" col-2>
+                  <span class="block">
+                    <ion-checkbox [disabled]="file1.FILETYPE.indexOf('image')<0" [checked]="file1.SHOWINPDF == 'true'"
+                      [(ngModel)]="file1.SHOWINPDF" color="dark" (ionChange)="updateShowInPdf($event,file1.RA_PK_ID)"
+                      [attr.id]="'photos_142_' + i">
+                    </ion-checkbox>
+                    <span class="label inline-block checkboxlabel">{{'Include In Report' | translate }}</span>
+                  </span>
+                  <span class="block">
+                    <a class="pointer" (click)="openResource(file1)" [attr.id]="'photos_143_' + i">
+                      <span>
+                        <img *ngIf="file1.FILETYPE.indexOf('image')>-1" class="attachment-image"
+                          [src]="sanitizer.bypassSecurityTrustUrl(thumbFilePath + file1.FILENAME)">
+                        <img *ngIf="file1.FILETYPE.indexOf('image')<0" class="attachment-image"
+                          onerror="this.src='assets/imgs/unknown.png'"
+                          src="assets/imgs/{{utilityProvider.generateFileDiscNameAndTypeSDR(file1.FILENAME).Type}}.png">
+                      </span>
+                    </a>
+                  </span>
+                  <span class="block">
+                    <ion-textarea text-left maxlength="255" rows="3" (focusout)="renameAttachmentDescription(file1)"
+                      [(ngModel)]="file1.ATTACHMENTDESCRIPTION" value="{{file1.ATTACHMENTDESCRIPTION}}"
+                      class="attachment-description" [attr.id]="'photos_144_' + i">
+                    </ion-textarea>
+                  </span>
+                  <span class="block delete-attachment-button-block">
+                    <label text-center class="attachment-label pointer"
+                      (click)="deleteAttachmentObject(file1,i,Enums.PhotosAccordion.InspectionMeasurement)"
+                      translate="Delete" [attr.id]="'photos_145_' + i"></label>
+                  </span>
+                </ion-col>
+              </ion-row>
+            </div>
+          </div>
+        </ion-row>
+        <!-- TestData -->
+        <ion-row class="customRows">
+          <div class="full-width">
+            <span (click)="expandOuter('TestData')" id="photos_146">
+              <ion-icon class="arrowIcon" item-left name="arrow-dropright" *ngIf="!expandOuterAccordion.TestData">
+              </ion-icon>
+              <ion-icon class="arrowIcon" role="img" *ngIf="expandOuterAccordion.TestData" aria-label="arrow dropdown"
+                name="arrow-dropdown">
+              </ion-icon>
+            </span>
+            <span class="label pointer acc-label" (click)="expandOuter('TestData')"
+              id="photos_147">{{'Test Data' | translate}}</span>
+            <div class="block full-width attachmentBox" *ngIf="expandOuterAccordion.TestData">
+              <ion-row class="debriefPage-padding">
+                <ion-col col-3 no-padding>
+                  <h1 class="inline-block">{{'Attachments' | translate}}</h1>
+                  <label class="custom-file-upload inline-block btn">
+                    <input #attachment [(ngModel)]="filee" (click)="attachment.value = null" value=""
+                      (change)="addAttachment($event,Enums.PhotosAccordion.TestData)" type="file" id="photos_148" />
+                    <img src="assets/imgs/icons/Add-button.png" />
+                  </label>
+                </ion-col>
+              </ion-row>
+              <ion-row class="debriefPage-padding" *ngIf="TestDataArray && TestDataArray.length>0">
+                <ion-col *ngFor="let file1 of TestDataArray ; let i = index" col-2>
+                  <span class="block">
+                    <ion-checkbox [disabled]="file1.FILETYPE.indexOf('image')<0" [checked]="file1.SHOWINPDF == 'true' "
+                      [(ngModel)]="file1.SHOWINPDF" color="dark" (ionChange)="updateShowInPdf($event,file1.RA_PK_ID)"
+                      [attr.id]="'photos_149_' + i">
+                    </ion-checkbox>
+                    <span class="label inline-block checkboxlabel">{{'Include In Report' | translate }}</span>
+                  </span>
+                  <span class="block">
+                    <a class="pointer" (click)="openResource(file1)" [attr.id]="'photos_150_' + i">
+                      <span>
+                        <img *ngIf="file1.FILETYPE.indexOf('image')>-1" class="attachment-image"
+                          [src]="sanitizer.bypassSecurityTrustUrl(thumbFilePath + file1.FILENAME)">
+                        <img *ngIf="file1.FILETYPE.indexOf('image')<0" class="attachment-image"
+                          onerror="this.src='assets/imgs/unknown.png'"
+                          src="assets/imgs/{{utilityProvider.generateFileDiscNameAndTypeSDR(file1.FILENAME).Type}}.png">
+                      </span>
+                    </a>
+                  </span>
+                  <span class="block">
+                    <ion-textarea text-left maxlength="255" rows="3" (focusout)="renameAttachmentDescription(file1)"
+                      [(ngModel)]="file1.ATTACHMENTDESCRIPTION" value="{{file1.ATTACHMENTDESCRIPTION}}"
+                      class="attachment-description" [attr.id]="'photos_151_' + i">
+                    </ion-textarea>
+                  </span>
+                  <span class="block delete-attachment-button-block">
+                    <label text-center class="attachment-label pointer"
+                      (click)="deleteAttachmentObject(file1,i,Enums.PhotosAccordion.TestData)" translate="Delete"
+                      [attr.id]="'photos_152_' + i"></label>
+                  </span>
+                </ion-col>
+              </ion-row>
+            </div>
+          </div>
+        </ion-row>
+        <!-- FinalInspection -->
+        <ion-row class="customRows">
+          <div class="full-width">
+            <span (click)="expandOuter('FinalInspection')" id="photos_153">
+              <ion-icon class="arrowIcon" item-left name="arrow-dropright"
+                *ngIf="!expandOuterAccordion.FinalInspection">
+              </ion-icon>
+              <ion-icon class="arrowIcon" role="img" *ngIf="expandOuterAccordion.FinalInspection"
+                aria-label="arrow dropdown" name="arrow-dropdown">
+              </ion-icon>
+            </span>
+            <span class="label pointer acc-label" (click)="expandOuter('FinalInspection')"
+              id="photos_154">{{'Final Inspection' | translate}}</span>
+            <div class="block full-width attachmentBox" *ngIf="expandOuterAccordion.FinalInspection">
+              <ion-row class="debriefPage-padding">
+                <ion-col col-3 no-padding>
+                  <h1 class="inline-block">{{'Attachments' | translate}}</h1>
+                  <label class="custom-file-upload inline-block btn">
+                    <input #attachment [(ngModel)]="filee" (click)="attachment.value = null" value=""
+                      (change)="addAttachment($event,Enums.PhotosAccordion.FinalInspection)" type="file"
+                      id="photos_155" />
+                    <img src="assets/imgs/icons/Add-button.png" />
+                  </label>
+                </ion-col>
+              </ion-row>
+              <ion-row class="debriefPage-padding" *ngIf="FinalInspectionArray && FinalInspectionArray.length>0">
+                <ion-col *ngFor="let file1 of FinalInspectionArray ; let i = index" col-2>
+                  <span class="block">
+                    <ion-checkbox [disabled]="file1.FILETYPE.indexOf('image')<0" [checked]="file1.SHOWINPDF == 'true' "
+                      [(ngModel)]="file1.SHOWINPDF" color="dark" (ionChange)="updateShowInPdf($event,file1.RA_PK_ID)"
+                      [attr.id]="'photos_156_' + i">
+                    </ion-checkbox>
+                    <span class="label inline-block checkboxlabel">{{'Include In Report' | translate }}</span>
+                  </span>
+                  <span class="block">
+                    <a class="pointer" (click)="openResource(file1)" [attr.id]="'photos_157_' + i">
+                      <span>
+                        <img *ngIf="file1.FILETYPE.indexOf('image')>-1" class="attachment-image"
+                          [src]="sanitizer.bypassSecurityTrustUrl(thumbFilePath + file1.FILENAME)">
+                        <img *ngIf="file1.FILETYPE.indexOf('image')<0" class="attachment-image"
+                          onerror="this.src='assets/imgs/unknown.png'"
+                          src="assets/imgs/{{utilityProvider.generateFileDiscNameAndTypeSDR(file1.FILENAME).Type}}.png">
+                      </span>
+                    </a>
+                  </span>
+                  <span class="block">
+                    <ion-textarea text-left maxlength="255" rows="3" (focusout)="renameAttachmentDescription(file1)"
+                      [(ngModel)]="file1.ATTACHMENTDESCRIPTION" value="{{file1.ATTACHMENTDESCRIPTION}}"
+                      class="attachment-description" [attr.id]="'photos_158_' + i">
+                    </ion-textarea>
+                  </span>
+                  <span class="block delete-attachment-button-block">
+                    <label text-center class="attachment-label pointer"
+                      (click)="deleteAttachmentObject(file1,i,Enums.PhotosAccordion.FinalInspection)" translate="Delete"
+                      [attr.id]="'photos_159_' + i"></label>
+                  </span>
+                </ion-col>
+              </ion-row>
+            </div>
+          </div>
+        </ion-row>
+      </div>
+
+      <!-- Vent Pressure Only, Vent Vaccuum Only, Vent Vaccuum/Pressure -->
+      <div class="full-width global-padding"
+        *ngIf="deviceID == Enums.PressureProductId.VentVacuumOnly || deviceID == Enums.PressureProductId.VentPressureOnly || deviceID == Enums.PressureProductId.VentVacuumPressure">
+        <!-- AsFound -->
+        <ion-row class="customRows">
+          <div class="full-width">
+            <span (click)="expandOuter('AsFound')" id="photos_119">
+              <ion-icon class="arrowIcon" item-left name="arrow-dropright" *ngIf="!expandOuterAccordion.AsFound">
+              </ion-icon>
+              <ion-icon class="arrowIcon" role="img" *ngIf="expandOuterAccordion.AsFound" aria-label="arrow dropdown"
+                name="arrow-dropdown">
+              </ion-icon>
+            </span>
+            <span class="label pointer acc-label" (click)="expandOuter('AsFound')"
+              id="photos_132">{{'As Found' | translate}}</span>
+            <div class="block full-width attachmentBox" *ngIf="expandOuterAccordion.AsFound">
+              <ion-row class="debriefPage-padding">
+                <ion-col col-3 no-padding>
+                  <h1 class="inline-block">{{'Attachments' | translate}}</h1>
+                  <label class="custom-file-upload inline-block btn">
+                    <input #attachment [(ngModel)]="filee" (click)="attachment.value = null" value=""
+                      (change)="addAttachment($event,Enums.PhotosAccordion.AsFound)" type="file" id="photos_120" />
+                    <img src="assets/imgs/icons/Add-button.png" />
+                  </label>
+                </ion-col>
+              </ion-row>
+              <ion-row class="debriefPage-padding" *ngIf="AsFoundArray && AsFoundArray.length>0">
+                <ion-col *ngFor="let file1 of AsFoundArray ; let i = index" col-2>
+                  <span class="block">
+                    <ion-checkbox [disabled]="file1.FILETYPE.indexOf('image')<0" [checked]="file1.SHOWINPDF == 'true' "
+                      [(ngModel)]="file1.SHOWINPDF" color="dark" (ionChange)="updateShowInPdf($event,file1.RA_PK_ID)"
+                      [attr.id]="'photos_121_' + i">
+                    </ion-checkbox>
+                    <span class="label inline-block checkboxlabel">{{'Include In Report' | translate }}</span>
+                  </span>
+                  <span class="block">
+                    <a class="pointer" (click)="openResource(file1)" [attr.id]="'photos_122_' + i">
+                      <span>
+                        <img *ngIf="file1.FILETYPE.indexOf('image')>-1" class="attachment-image"
+                          [src]="sanitizer.bypassSecurityTrustUrl(thumbFilePath + file1.FILENAME)">
+                        <img *ngIf="file1.FILETYPE.indexOf('image')<0" class="attachment-image"
+                          onerror="this.src='assets/imgs/unknown.png'"
+                          src="assets/imgs/{{utilityProvider.generateFileDiscNameAndTypeSDR(file1.FILENAME).Type}}.png">
+                      </span>
+                    </a>
+                  </span>
+                  <span class="block">
+                    <ion-textarea text-left maxlength="255" rows="3" (focusout)="renameAttachmentDescription(file1)"
+                      [(ngModel)]="file1.ATTACHMENTDESCRIPTION" value="{{file1.ATTACHMENTDESCRIPTION}}"
+                      class="attachment-description" [attr.id]="'photos_123_' + i">
+                    </ion-textarea>
+                  </span>
+                  <span class="block delete-attachment-button-block">
+                    <label text-center class="attachment-label pointer"
+                      (click)="deleteAttachmentObject(file1,i,Enums.PhotosAccordion.AsFound)" translate="Delete"
+                      [attr.id]="'photos_124_' + i"></label>
+                  </span>
+                </ion-col>
+              </ion-row>
+            </div>
+          </div>
+        </ion-row>
+        <!-- AsFoundPerformance -->
+        <ion-row class="customRows">
+          <div class="full-width">
+            <span (click)="expandOuter('AsFound')" id="photos_125">
+              <ion-icon class="arrowIcon" item-left name="arrow-dropright"
+                *ngIf="!expandOuterAccordion.AsFoundPerformance">
+              </ion-icon>
+              <ion-icon class="arrowIcon" role="img" *ngIf="expandOuterAccordion.AsFoundPerformance"
+                aria-label="arrow dropdown" name="arrow-dropdown">
+              </ion-icon>
+            </span>
+            <span class="label pointer acc-label" (click)="expandOuter('AsFoundPerformance')"
+              id="photos_126">{{'As Found Performance' | translate}}</span>
+            <div class="block full-width attachmentBox" *ngIf="expandOuterAccordion.AsFoundPerformance">
+              <ion-row class="debriefPage-padding">
+                <ion-col col-3 no-padding>
+                  <h1 class="inline-block">{{'Attachments' | translate}}</h1>
+                  <label class="custom-file-upload inline-block btn">
+                    <input #attachment [(ngModel)]="filee" (click)="attachment.value = null" value=""
+                      (change)="addAttachment($event,Enums.PhotosAccordion.AsFoundPerformance)" type="file"
+                      id="photos_127" />
+                    <img src="assets/imgs/icons/Add-button.png" />
+                  </label>
+                </ion-col>
+              </ion-row>
+              <ion-row class="debriefPage-padding" *ngIf="AsFoundPerformanceArray && AsFoundPerformanceArray.length>0">
+                <ion-col *ngFor="let file1 of AsFoundPerformanceArray ; let i = index" col-2>
+                  <span class="block">
+                    <ion-checkbox [disabled]="file1.FILETYPE.indexOf('image')<0" [checked]="file1.SHOWINPDF == 'true' "
+                      [(ngModel)]="file1.SHOWINPDF" color="dark" (ionChange)="updateShowInPdf($event,file1.RA_PK_ID)"
+                      [attr.id]="'photos_128_' + i">
+                    </ion-checkbox>
+                    <span class="label inline-block checkboxlabel">{{'Include In Report' | translate }}</span>
+                  </span>
+                  <span class="block">
+                    <a class="pointer" (click)="openResource(file1)" [attr.id]="'photos_129_' + i">
+                      <span>
+                        <img *ngIf="file1.FILETYPE.indexOf('image')>-1" class="attachment-image"
+                          [src]="sanitizer.bypassSecurityTrustUrl(thumbFilePath + file1.FILENAME)">
+                        <img *ngIf="file1.FILETYPE.indexOf('image')<0" class="attachment-image"
+                          onerror="this.src='assets/imgs/unknown.png'"
+                          src="assets/imgs/{{utilityProvider.generateFileDiscNameAndTypeSDR(file1.FILENAME).Type}}.png">
+                      </span>
+                    </a>
+                  </span>
+                  <span class="block">
+                    <ion-textarea text-left maxlength="255" rows="3" (focusout)="renameAttachmentDescription(file1)"
+                      [(ngModel)]="file1.ATTACHMENTDESCRIPTION" value="{{file1.ATTACHMENTDESCRIPTION}}"
+                      class="attachment-description" [attr.id]="'photos_130_' + i">
+                    </ion-textarea>
+                  </span>
+                  <span class="block delete-attachment-button-block">
+                    <label text-center class="attachment-label pointer"
+                      (click)="deleteAttachmentObject(file1,i,Enums.PhotosAccordion.AsFoundPerformance)"
+                      translate="Delete" [attr.id]="'photos_131_' + i"></label>
+                  </span>
+                </ion-col>
+              </ion-row>
+            </div>
+          </div>
+        </ion-row>
+        <!-- Findings -->
+        <ion-row class="customRows">
+          <div class="full-width">
+            <span (click)="expandOuter('Findings')" id="photos_132">
+              <ion-icon class="arrowIcon" item-left name="arrow-dropright" *ngIf="!expandOuterAccordion.Findings">
+              </ion-icon>
+              <ion-icon class="arrowIcon" role="img" *ngIf="expandOuterAccordion.Findings" aria-label="arrow dropdown"
+                name="arrow-dropdown">
+              </ion-icon>
+            </span>
+            <span class="label pointer acc-label" (click)="expandOuter('Findings')"
+              id="photos_133">{{'Findings' | translate}}</span>
+            <div class="block full-width attachmentBox" *ngIf="expandOuterAccordion.Findings">
+              <ion-row class="debriefPage-padding">
+                <ion-col col-3 no-padding>
+                  <h1 class="inline-block">{{'Attachments' | translate}}</h1>
+                  <label class="custom-file-upload inline-block btn">
+                    <input #attachment [(ngModel)]="filee" (click)="attachment.value = null" value=""
+                      (change)="addAttachment($event,Enums.PhotosAccordion.Findings)" type="file" id="photos_134" />
+                    <img src="assets/imgs/icons/Add-button.png" />
+                  </label>
+                </ion-col>
+              </ion-row>
+              <ion-row class="debriefPage-padding" *ngIf="FindingsArray && FindingsArray.length>0">
+                <ion-col *ngFor="let file1 of FindingsArray ; let i = index" col-2>
+                  <span class="block">
+                    <ion-checkbox [disabled]="file1.FILETYPE.indexOf('image')<0" [checked]="file1.SHOWINPDF == 'true' "
+                      [(ngModel)]="file1.SHOWINPDF" color="dark" (ionChange)="updateShowInPdf($event,file1.RA_PK_ID)"
+                      [attr.id]="'photos_135_' + i">
+                    </ion-checkbox>
+                    <span class="label inline-block checkboxlabel">{{'Include In Report' | translate }}</span>
+                  </span>
+                  <span class="block">
+                    <a class="pointer" (click)="openResource(file1)" [attr.id]="'photos_136_' + i">
+                      <span>
+                        <img *ngIf="file1.FILETYPE.indexOf('image')>-1" class="attachment-image"
+                          [src]="sanitizer.bypassSecurityTrustUrl(thumbFilePath + file1.FILENAME)">
+                        <img *ngIf="file1.FILETYPE.indexOf('image')<0" class="attachment-image"
+                          onerror="this.src='assets/imgs/unknown.png'"
+                          src="assets/imgs/{{utilityProvider.generateFileDiscNameAndTypeSDR(file1.FILENAME).Type}}.png">
+                      </span>
+                    </a>
+                  </span>
+                  <span class="block">
+                    <ion-textarea text-left maxlength="255" rows="3" (focusout)="renameAttachmentDescription(file1)"
+                      [(ngModel)]="file1.ATTACHMENTDESCRIPTION" value="{{file1.ATTACHMENTDESCRIPTION}}"
+                      class="attachment-description" [attr.id]="'photos_137_' + i">
+                    </ion-textarea>
+                  </span>
+                  <span class="block delete-attachment-button-block">
+                    <label text-center class="attachment-label pointer"
+                      (click)="deleteAttachmentObject(file1,i,Enums.PhotosAccordion.Findings)" translate="Delete"
+                      [attr.id]="'photos_138_' + i"></label>
+                  </span>
+                </ion-col>
+              </ion-row>
+            </div>
+          </div>
+        </ion-row>
+        <!-- InspectionMeasurement -->
+        <ion-row class="customRows">
+          <div class="full-width">
+            <span (click)="expandOuter('InspectionMeasurement')" id="photos_139">
+              <ion-icon class="arrowIcon" item-left name="arrow-dropright"
+                *ngIf="!expandOuterAccordion.InspectionMeasurement">
+              </ion-icon>
+              <ion-icon class="arrowIcon" role="img" *ngIf="expandOuterAccordion.InspectionMeasurement"
+                aria-label="arrow dropdown" name="arrow-dropdown">
+              </ion-icon>
+            </span>
+            <span class="label pointer acc-label" (click)="expandOuter('InspectionMeasurement')"
+              id="photos_140">{{'Inspection Measurement' | translate}}</span>
+            <div class="block full-width attachmentBox" *ngIf="expandOuterAccordion.InspectionMeasurement">
+              <ion-row class="debriefPage-padding">
+                <ion-col col-3 no-padding>
+                  <h1 class="inline-block">{{'Attachments' | translate}}</h1>
+                  <label class="custom-file-upload inline-block btn">
+                    <input #attachment [(ngModel)]="filee" (click)="attachment.value = null" value=""
+                      (change)="addAttachment($event,Enums.PhotosAccordion.InspectionMeasurement)" type="file"
+                      id="photos_141" />
+                    <img src="assets/imgs/icons/Add-button.png" />
+                  </label>
+                </ion-col>
+              </ion-row>
+              <ion-row class="debriefPage-padding"
+                *ngIf="InspectionMeasurementArray && InspectionMeasurementArray.length>0">
+                <ion-col *ngFor="let file1 of InspectionMeasurementArray ; let i = index" col-2>
+                  <span class="block">
+                    <ion-checkbox [disabled]="file1.FILETYPE.indexOf('image')<0" [checked]="file1.SHOWINPDF == 'true'"
+                      [(ngModel)]="file1.SHOWINPDF" color="dark" (ionChange)="updateShowInPdf($event,file1.RA_PK_ID)"
+                      [attr.id]="'photos_142_' + i">
+                    </ion-checkbox>
+                    <span class="label inline-block checkboxlabel">{{'Include In Report' | translate }}</span>
+                  </span>
+                  <span class="block">
+                    <a class="pointer" (click)="openResource(file1)" [attr.id]="'photos_143_' + i">
+                      <span>
+                        <img *ngIf="file1.FILETYPE.indexOf('image')>-1" class="attachment-image"
+                          [src]="sanitizer.bypassSecurityTrustUrl(thumbFilePath + file1.FILENAME)">
+                        <img *ngIf="file1.FILETYPE.indexOf('image')<0" class="attachment-image"
+                          onerror="this.src='assets/imgs/unknown.png'"
+                          src="assets/imgs/{{utilityProvider.generateFileDiscNameAndTypeSDR(file1.FILENAME).Type}}.png">
+                      </span>
+                    </a>
+                  </span>
+                  <span class="block">
+                    <ion-textarea text-left maxlength="255" rows="3" (focusout)="renameAttachmentDescription(file1)"
+                      [(ngModel)]="file1.ATTACHMENTDESCRIPTION" value="{{file1.ATTACHMENTDESCRIPTION}}"
+                      class="attachment-description" [attr.id]="'photos_144_' + i">
+                    </ion-textarea>
+                  </span>
+                  <span class="block delete-attachment-button-block">
+                    <label text-center class="attachment-label pointer"
+                      (click)="deleteAttachmentObject(file1,i,Enums.PhotosAccordion.InspectionMeasurement)"
+                      translate="Delete" [attr.id]="'photos_145_' + i"></label>
+                  </span>
+                </ion-col>
+              </ion-row>
+            </div>
+          </div>
+        </ion-row>
+        <!-- TestData -->
+        <ion-row class="customRows">
+          <div class="full-width">
+            <span (click)="expandOuter('TestData')" id="photos_146">
+              <ion-icon class="arrowIcon" item-left name="arrow-dropright" *ngIf="!expandOuterAccordion.TestData">
+              </ion-icon>
+              <ion-icon class="arrowIcon" role="img" *ngIf="expandOuterAccordion.TestData" aria-label="arrow dropdown"
+                name="arrow-dropdown">
+              </ion-icon>
+            </span>
+            <span class="label pointer acc-label" (click)="expandOuter('TestData')"
+              id="photos_147">{{'Test Data' | translate}}</span>
+            <div class="block full-width attachmentBox" *ngIf="expandOuterAccordion.TestData">
+              <ion-row class="debriefPage-padding">
+                <ion-col col-3 no-padding>
+                  <h1 class="inline-block">{{'Attachments' | translate}}</h1>
+                  <label class="custom-file-upload inline-block btn">
+                    <input #attachment [(ngModel)]="filee" (click)="attachment.value = null" value=""
+                      (change)="addAttachment($event,Enums.PhotosAccordion.TestData)" type="file" id="photos_148" />
+                    <img src="assets/imgs/icons/Add-button.png" />
+                  </label>
+                </ion-col>
+              </ion-row>
+              <ion-row class="debriefPage-padding" *ngIf="TestDataArray && TestDataArray.length>0">
+                <ion-col *ngFor="let file1 of TestDataArray ; let i = index" col-2>
+                  <span class="block">
+                    <ion-checkbox [disabled]="file1.FILETYPE.indexOf('image')<0" [checked]="file1.SHOWINPDF == 'true' "
+                      [(ngModel)]="file1.SHOWINPDF" color="dark" (ionChange)="updateShowInPdf($event,file1.RA_PK_ID)"
+                      [attr.id]="'photos_149_' + i">
+                    </ion-checkbox>
+                    <span class="label inline-block checkboxlabel">{{'Include In Report' | translate }}</span>
+                  </span>
+                  <span class="block">
+                    <a class="pointer" (click)="openResource(file1)" [attr.id]="'photos_150_' + i">
+                      <span>
+                        <img *ngIf="file1.FILETYPE.indexOf('image')>-1" class="attachment-image"
+                          [src]="sanitizer.bypassSecurityTrustUrl(thumbFilePath + file1.FILENAME)">
+                        <img *ngIf="file1.FILETYPE.indexOf('image')<0" class="attachment-image"
+                          onerror="this.src='assets/imgs/unknown.png'"
+                          src="assets/imgs/{{utilityProvider.generateFileDiscNameAndTypeSDR(file1.FILENAME).Type}}.png">
+                      </span>
+                    </a>
+                  </span>
+                  <span class="block">
+                    <ion-textarea text-left maxlength="255" rows="3" (focusout)="renameAttachmentDescription(file1)"
+                      [(ngModel)]="file1.ATTACHMENTDESCRIPTION" value="{{file1.ATTACHMENTDESCRIPTION}}"
+                      class="attachment-description" [attr.id]="'photos_151_' + i">
+                    </ion-textarea>
+                  </span>
+                  <span class="block delete-attachment-button-block">
+                    <label text-center class="attachment-label pointer"
+                      (click)="deleteAttachmentObject(file1,i,Enums.PhotosAccordion.TestData)" translate="Delete"
+                      [attr.id]="'photos_152_' + i"></label>
+                  </span>
+                </ion-col>
+              </ion-row>
+            </div>
+          </div>
+        </ion-row>
+        <!-- FinalInspection -->
+        <ion-row class="customRows">
+          <div class="full-width">
+            <span (click)="expandOuter('FinalInspection')" id="photos_153">
+              <ion-icon class="arrowIcon" item-left name="arrow-dropright"
+                *ngIf="!expandOuterAccordion.FinalInspection">
+              </ion-icon>
+              <ion-icon class="arrowIcon" role="img" *ngIf="expandOuterAccordion.FinalInspection"
+                aria-label="arrow dropdown" name="arrow-dropdown">
+              </ion-icon>
+            </span>
+            <span class="label pointer acc-label" (click)="expandOuter('FinalInspection')"
+              id="photos_154">{{'Final Inspection' | translate}}</span>
+            <div class="block full-width attachmentBox" *ngIf="expandOuterAccordion.FinalInspection">
+              <ion-row class="debriefPage-padding">
+                <ion-col col-3 no-padding>
+                  <h1 class="inline-block">{{'Attachments' | translate}}</h1>
+                  <label class="custom-file-upload inline-block btn">
+                    <input #attachment [(ngModel)]="filee" (click)="attachment.value = null" value=""
+                      (change)="addAttachment($event,Enums.PhotosAccordion.FinalInspection)" type="file"
+                      id="photos_155" />
+                    <img src="assets/imgs/icons/Add-button.png" />
+                  </label>
+                </ion-col>
+              </ion-row>
+              <ion-row class="debriefPage-padding" *ngIf="FinalInspectionArray && FinalInspectionArray.length>0">
+                <ion-col *ngFor="let file1 of FinalInspectionArray ; let i = index" col-2>
+                  <span class="block">
+                    <ion-checkbox [disabled]="file1.FILETYPE.indexOf('image')<0" [checked]="file1.SHOWINPDF == 'true' "
+                      [(ngModel)]="file1.SHOWINPDF" color="dark" (ionChange)="updateShowInPdf($event,file1.RA_PK_ID)"
+                      [attr.id]="'photos_156_' + i">
+                    </ion-checkbox>
+                    <span class="label inline-block checkboxlabel">{{'Include In Report' | translate }}</span>
+                  </span>
+                  <span class="block">
+                    <a class="pointer" (click)="openResource(file1)" [attr.id]="'photos_157_' + i">
+                      <span>
+                        <img *ngIf="file1.FILETYPE.indexOf('image')>-1" class="attachment-image"
+                          [src]="sanitizer.bypassSecurityTrustUrl(thumbFilePath + file1.FILENAME)">
+                        <img *ngIf="file1.FILETYPE.indexOf('image')<0" class="attachment-image"
+                          onerror="this.src='assets/imgs/unknown.png'"
+                          src="assets/imgs/{{utilityProvider.generateFileDiscNameAndTypeSDR(file1.FILENAME).Type}}.png">
+                      </span>
+                    </a>
+                  </span>
+                  <span class="block">
+                    <ion-textarea text-left maxlength="255" rows="3" (focusout)="renameAttachmentDescription(file1)"
+                      [(ngModel)]="file1.ATTACHMENTDESCRIPTION" value="{{file1.ATTACHMENTDESCRIPTION}}"
+                      class="attachment-description" [attr.id]="'photos_158_' + i">
+                    </ion-textarea>
+                  </span>
+                  <span class="block delete-attachment-button-block">
+                    <label text-center class="attachment-label pointer"
+                      (click)="deleteAttachmentObject(file1,i,Enums.PhotosAccordion.FinalInspection)" translate="Delete"
+                      [attr.id]="'photos_159_' + i"></label>
+                  </span>
+                </ion-col>
+              </ion-row>
+            </div>
+          </div>
+        </ion-row>
+      </div>
+
+      <ion-row>
+        <ion-col text-left>
+          <button (click)="redirect('back')" ion-button class="footer-Button"
+            id="photos_87">{{'Back' | translate}}</button>
+        </ion-col>
+        <ion-col text-right>
+          <button (click)="redirect('findings')" ion-button class="footer-Button"
+            id="photos_88">{{ bottomNavBtn | translate}}</button>
+        </ion-col>
+      </ion-row>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

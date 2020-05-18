@@ -1,0 +1,248 @@
+page-new-repair-report {
+  .header-left {
+    width: 50%;
+    float: left;
+  }
+
+  .disable-content {
+    pointer-events: none;
+    opacity: 0.5px;
+  }
+
+  .header-right {
+    text-align: right;
+    width: 50%;
+  }
+
+  .select-style {
+    max-width: 100% !important;
+  }
+
+  ion-input.validation-error input.text-input {
+    border: 1px solid red;
+  }
+
+  .header-right .select-box {
+    box-sizing: border-box;
+    height: 31px;
+    border: 1px solid #d8d5d1;
+    border-radius: 3px;
+    color: gray;
+    vertical-align: middle;
+    line-height: 20px;
+    font-size: 14px;
+    text-align: left;
+    float: right;
+    width: 40%;
+    margin-right: 20px;
+    margin-left: 10px;
+    padding: 5px;
+    color: rgba(74, 74, 74, 0.7);
+    font-family: "Helvetica Neue";
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 17px;
+  }
+
+  .bgcolor {
+    background-color: #f7f7f6;
+  }
+
+  .select-md .select-icon .select-icon-inner {
+    left: 2px !important;
+  }
+
+  .project-box .text-input {
+    box-sizing: border-box;
+    height: 31px;
+    border: 1px solid rgba(216, 213, 209, 1);
+    border-radius: 3px;
+    background-color: #fff !important;
+    width: 95%;
+    margin-top: 8px;
+    color: rgba(74, 74, 74, 0.7);
+    font-family: "Helvetica Neue";
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 17px;
+  }
+
+  .toggle-md.toggle-checked .toggle-inner {
+    background-color: #fff;
+  }
+
+  .toggle-md {
+    vertical-align: middle;
+  }
+
+  .rd .calIcon {
+    margin-top: 10px;
+  }
+
+  .date-box {
+    box-sizing: border-box;
+    height: 31px;
+    border: 1px solid rgba(216, 213, 209, 1);
+    border-radius: 3px;
+    background-color: #fff !important;
+    vertical-align: middle;
+    width: 150px;
+    text-align: center;
+    color: rgba(74, 74, 74, 0.7);
+    font-family: "Helvetica Neue";
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 17px;
+    margin-top: 8px;
+  }
+
+  .footer-row {
+    width: 100%;
+  }
+
+  .footerLeft {
+    width: 50%;
+  }
+
+  .footerRight {
+    width: 50%;
+    text-align: right;
+  }
+
+  .save-btn {
+    background-color: rgb(107, 142, 35);
+    text-transform: capitalize;
+    height: 31px !important;
+    border-radius: 3px;
+    border: none;
+    font-size: 14px !important;
+    cursor: pointer;
+    font-family: "Helvetica Neue";
+    padding: 10px;
+    margin-right: 5%;
+  }
+
+  .css {
+    width: 34%;
+  }
+
+  .cpo,
+  .spo,
+  .ess,
+  .pno {
+    width: 33%
+  }
+
+  .ji,
+  .wa {
+    width: 17%;
+    padding-right: 1%
+  }
+
+  .searchNSelect::after {
+    position: absolute;
+    right: 28px;
+    top: 13px;
+    font-family: "FontAwesome";
+    content: "\f0d7";
+    color: #999;
+    font-size: 14px;
+  }
+
+  .searchNSelect .text-input {
+    cursor: pointer;
+    padding: 0 25px 0 4px !important;
+  }
+
+  .searchNSelect ::-ms-input-placeholder {
+    color: black !important;
+  }
+
+  .checkbox .checkbox-icon {
+    border-radius: 1px;
+    height: 20px;
+    width: 20px;
+    border-width: 1px;
+  }
+
+  .checkbox-checked {
+    background-color: transparent !important;
+  }
+
+  .checkbox .checkbox-checked .checkbox-inner {
+    left: 6px;
+    top: 4px;
+    border-color: black;
+  }
+
+  .checkbox {
+    vertical-align: middle;
+  }
+
+  .rd,
+  .cb,
+  .fdo {
+    width: 23%;
+    min-width: 180px;
+    margin-right: 1%;
+  }
+
+  .frdr {
+    width: 27%;
+    min-width: 225px;
+    padding-top: 3px;
+    margin-right: 1%;
+  }
+
+  .dr {
+    margin-left: 25px;
+  }
+
+  .chk-box {
+    vertical-align: middle;
+    width: 20px;
+    height: 20px;
+    background-color: #fff !important;
+  }
+
+  .scope-box .text-input {
+    box-sizing: border-box;
+    border: 1px solid rgba(216, 213, 209, 1);
+    border-radius: 3px;
+    width: 98%;
+    padding-top: 2px;
+    margin-top: 8px;
+    height: 100px;
+  }
+
+  .wa .searchNSelect::after {
+    right: 16px !important;
+  }
+}
+
+.ios page-new-repair-report {
+  .fdo .toggle {
+    vertical-align: middle;
+  }
+
+  .frdr {
+
+    .fdr .checkbox,
+    .dr .checkbox {
+      vertical-align: middle
+    }
+  }
+
+  input:disabled.date-box {
+    opacity: 1 !important;
+  }
+
+  .date-box {
+    color: rgba(74, 74, 74, 1);
+  }
+
+  .searchNSelect::after {
+    top: 15px;
+    right: 23px;
+  }
+}

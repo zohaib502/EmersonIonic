@@ -1,0 +1,143 @@
+<ion-content padding class="page-background">
+  <ion-card>
+    <ion-card-header>
+      <ion-row class="debriefPage-padding">
+        <ion-col col-5 no-padding>
+          <button class="notes_btn" (click)="addNoteClicked('')" icon-end>
+            <ion-label>{{'Add Note' | translate}} <ion-icon name="add"></ion-icon>
+            </ion-label>
+          </button>
+          <!-- 02-08-2019 -- Mansi Arora -- Disable if a detailed note has been created -->
+          <!--03-07-2019 Radheshyam kumar removed this check to show this always if there is PWS : && taskObj.Selected_Process == enums.Selected_Process.FCR_AND_SDR -->
+          <!-- <button *ngIf="taskObj.Business_Unit == enums.BusinessUnitNames.PWS && taskObj.Selected_Process == enums.Selected_Process.FCR_AND_SDR" class="notes_btn" (click)="goToDetailNotes()" [disabled]="detailedNoteCreated" icon-end>
+            <ion-label> {{'Detailed Notes' | translate}} <ion-icon name="ios-arrow-forward-outline"></ion-icon>
+            </ion-label>
+          </button> -->
+          <button *ngIf="taskObj.Business_Unit == enums.BusinessUnitNames.PWS"
+            class="notes_btn" (click)="goToDetailNotes()" [disabled]="detailedNoteCreated" icon-end>
+            <ion-label> {{'Detailed Notes' | translate}} <ion-icon name="ios-arrow-forward-outline"></ion-icon>
+            </ion-label>
+          </button>
+          <!-- 01-02-2019 -- Mansi Arora -- show generate pdf button along with detailed notes -->
+          <!-- 01-31-2019 Radheshyam kumar commented this pdf button code becacuse of html tags are showing in the pdf data -->
+          <!-- 02-05-2019 -- Mansi Arora -- show generate pdf button along with detailed notes -->
+          <!-- 02-11-2019 -- Mansi Arora -- commenting pdf button as asked by Puneet sir -->
+          <!-- <span *ngIf="taskObj.Business_Unit == enums.BusinessUnitNames.PWS && taskObj.Selected_Process == enums.Selected_Process.FCR_AND_SDR">
+            <img (click)="generateDetailedNotesPdf()" src="assets/imgs/icons/ic_pdf.png" id="emailbtn" class="detailed-notes-pdfbtn">
+          </span> -->
+        </ion-col>
+        <ion-col col-7 text-right no-padding>
+          <span class="continue-navigation" *ngIf="taskObj.Selected_Process == enums.Selected_Process.FCR_AND_SDR && taskObj.Business_Unit != enums.BusinessUnitNames.PWS">
+              <span class="continue-text"> {{'Continue' | translate}}</span>
+              <button ion-button class="sdr-btn" (click)="gotoSDR()">{{'Service Detail Report' | translate}}</button>
+            </span>
+          <!-- 10/24/2018 -- Zohaib Khan: Updated condition for notes navigation for debrief in progress and debrief declined -->
+          <span class="pageNavigationBtn">
+            <span *ngIf="!(taskObj.Selected_Process == enums.Selected_Process.FCR_AND_SDR && taskObj.Business_Unit != enums.BusinessUnitNames.PWS)" class="pointer" (click)="gotoMaterial()" style="margin-right: 70px">&lt;
+            {{'Material' | translate}}</span>
+            <span *ngIf="taskObj.Selected_Process == enums.Selected_Process.FCR_AND_SDR && taskObj.Business_Unit != enums.BusinessUnitNames.PWS" class="pointer" (click)="gotoMaterial()" style="margin-right: 20px">&lt;
+                {{'Material' | translate}}</span>
+            <span *ngIf="valueService.getTaskObject().StatusID == enums.Jobstatus.Debrief_Started || valueService.getTaskObject().StatusID == enums.Jobstatus.Accepted"
+              class="pointer" (click)="gotoEmersonSignature()">{{'Emerson Signature' | translate}} &gt;</span>
+            <span *ngIf="valueService.getTaskObject().StatusID == enums.Jobstatus.Debrief_In_Progress || valueService.getTaskObject().StatusID == enums.Jobstatus.Debrief_Declined"
+              class="pointer" (click)="gotoSummary()">{{'Summary' | translate}} &gt;</span></span>
+        </ion-col>
+      </ion-row>
+    </ion-card-header>
+    <ion-card-content>
+      <div *ngIf="noteArraySummary!=undefined && noteArraySummary.length>0">
+        <ion-row class="debriefPage-padding">
+          <ion-col col-2></ion-col>
+          <ion-col col-2 class="label">{{'Date' | translate}}</ion-col>
+          <ion-col col-2 class="label">{{'Note Type' | translate}}</ion-col>
+          <ion-col col-4 class="label">{{'Name' | translate}}</ion-col>
+          <ion-col col-2>
+          </ion-col>
+        </ion-row>
+        <ion-list>
+          <ion-row class="strippedClass debriefPage-padding" *ngFor="let notes of noteArraySummary; let i = index">
+            <ion-col col-2 no-padding class="value">
+              <img class="comment-img note-list-icon" src="assets/imgs/icons/notes-list-item.png">
+            </ion-col>
+            <ion-col col-2 class="value">{{notes.Date| customDate | translate}}</ion-col>
+            <ion-col col-2 class="value">{{notes.Note_Type ? notes.Note_Type : "Detailed Notes" | translate}}</ion-col>
+            <ion-col col-4 class="value" *ngIf="!notes.awsAccess">
+              <span *ngIf="!notes.System_ID">{{(notes.Item_Number || notes.Serial_Number ? notes.Item_Number + " " + notes.Serial_Number + " : " : '') + notes.Notes | slice:0:40}}
+              </span>
+              <span *ngIf="notes.System_ID">{{(notes.System_ID ? notes.System_ID + " : " : '') + notes.Notes | slice:0:40}}
+                </span>
+            </ion-col>
+            <ion-col col-4 class="value" *ngIf="notes.awsAccess">{{notes?.Report_No | translate}}</ion-col>
+            <ion-col col-2>
+              <div class="full-width" text-center>
+                <!-- 02-08-2019 -- Mansi Arora -- remove copy button for detailed notes -->
+                <span class="label pull-left pointer"><img *ngIf="notes.Note_Type" (click)="copyClicked(notes,i,'Copy')" class="copy-img"
+                    [ngClass]="{'disabled' : notes.awsAccess == true}" src="assets/imgs/icons/ic_duplicate.png"></span>
+                <span [ngClass]="(notes.Note_Type && ((valueService.getTask().StatusID == enums.Jobstatus.Debrief_In_Progress || valueService.getTask().StatusID == enums.Jobstatus.Debrief_Declined) && notes.Sync_Status == 'true') ? 'label disableImg' :'label pointer')"><img
+                    (click)="editClicked(notes,i,'Edit')" class="edit-img" src="assets/imgs/icons/edit-icon.png"></span>
+                <span [ngClass]="(!notes.Note_Type && (valueService.getTask().StatusID == enums.Jobstatus.Debrief_In_Progress || valueService.getTask().StatusID == enums.Jobstatus.Debrief_Declined)) || (notes.Note_Type && (valueService.getTask().StatusID == enums.Jobstatus.Debrief_In_Progress || valueService.getTask().StatusID == enums.Jobstatus.Debrief_Declined) && notes.Sync_Status == 'true') || notes.Sync_Status == 'true' ? 'label pointer pull-right disableImg' :'label pointer pull-right'"><img
+                    (click)=deleteObject(notes,i) class="delete-img" src="assets/imgs/icons/delete-icon.png"></span>
+              </div>
+            </ion-col>
+          </ion-row>
+        </ion-list>
+      </div>
+    </ion-card-content>
+  </ion-card>
+  <ion-card>
+    <ion-card-header>
+      <ion-row class="debriefPage-padding">
+        <ion-col col-3 no-padding>
+          <h1 class="inline-block">{{'Attachments' | translate}}</h1>
+          <label class="custom-file-upload inline-block btn">
+            <!-- 26-7-18, Suraj Gorai, Remove  "accept=".csv,..." for all platform,  Start -->
+            <input #attachment [(ngModel)]="filee" (click)="attachment.value = null" value="" (change)="addAttachment($event)" type="file" />
+            <!-- 26-7-18, Suraj Gorai,  End -->
+            <img src="assets/imgs/icons/add attachment.png" />
+          </label>
+        </ion-col>
+      </ion-row>
+    </ion-card-header>
+    <ion-card-content>
+      <div *ngIf="attachmentArray!=undefined && attachmentArray.length>0">
+        <ion-row class="debriefPage-padding">
+          <ion-col *ngFor="let file1 of attachmentArray; let i = index" col-2>
+            <span class="block">
+              <a class="pointer" (click)="openResource(file1)">
+                <span *ngIf="file1.contentType.indexOf('image')>-1">
+                  <img *ngIf="file1.isThumbnailCreated" class="attachment-image" [src]="sanitizer.bypassSecurityTrustUrl(filePath + 'thumb_'+file1.filename)">
+                  <img *ngIf="!file1.isThumbnailCreated" class="attachment-image" [src]="sanitizer.bypassSecurityTrustUrl(mainFilePath + file1.filename)">
+                </span>
+                <span *ngIf="file1.contentType.indexOf('pdf')>-1">
+                  <img style="width: 135px!important" class="attachment-icon-pdf" src="assets/imgs/pdf.png">
+                </span>
+                <span *ngIf="file1.filetype.indexOf('doc') > -1 || file1.filetype.indexOf('docx') > -1">
+                  <img class="attachment-icon" src="assets/imgs/doc.png">
+                </span>
+                <span *ngIf="file1.filetype.indexOf('xlsx') > -1 || file1.filetype.indexOf('xls') > -1">
+                  <img class="attachment-icon" src="assets/imgs/xls.png">
+                </span>
+                <span *ngIf="file1.filetype.indexOf('pptx') > -1 || file1.filetype.indexOf('ppt') > -1">
+                  <img class="attachment-icon" src="assets/imgs/ppt.png">
+                </span>
+                <span *ngIf="file1.filetype.indexOf('txt') > -1 ">
+                  <img class="attachment-icon" src="assets/imgs/txt.png">
+                </span>
+                <span *ngIf="file1.contentType.indexOf('image') < 0 && file1.filetype.indexOf('pdf') < 0 && file1.filetype.indexOf('doc') < 0 && file1.filetype.indexOf('docx') < 0 && file1.filetype.indexOf('xlsx') < 0 && file1.filetype.indexOf('xls') < 0&& file1.filetype.indexOf('ppt') < 0 && file1.filetype.indexOf('pptx') < 0 && file1.filetype.indexOf('txt') < 0">
+                  <img class="attachment-icon" src="assets/imgs/unknown.png">
+                </span>
+              </a>
+            </span>
+            <span class="block">
+              <ion-input maxlength="50" (focusout)="renameAttachment(file1, i)" [(ngModel)]="file1.fileDisc" (focus)="focusFunction($event)"
+                value="{{file1.fileDisc}}" class="attachment-name "></ion-input>
+            </span>
+            <span class="block delete-attachment-button-block">
+              <label text-center class="attachment-label pointer" (click)=deleteAttachmentObject(file1,i) translate="Delete"></label>
+            </span>
+          </ion-col>
+        </ion-row>
+      </div>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

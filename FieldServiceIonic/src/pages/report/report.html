@@ -1,0 +1,192 @@
+<ion-header>
+  <page-custom-header [header]="header_data"></page-custom-header>
+</ion-header>
+
+<ion-content padding #content>
+  <ion-card>
+    <!-- <ion-card-header class="global-padding">
+        <ion-row radio-group>
+            <ion-col class="border-right" col-4>
+              <ion-item>
+                <ion-label class="font-size">{{'Mobile App Usage' | translate}} ({{'Online' | translate}} / {{'Offline' | translate}})</ion-label>
+                <ion-radio checked (ionSelect)="generateReport($event)" item-left value="usageReport"></ion-radio>
+              </ion-item>
+            </ion-col>
+            <ion-col col-4>
+              <ion-item>
+                <ion-label class="font-size">{{'Workforce Optimization Report' | translate}}</ion-label>
+                <ion-radio (ionSelect)="generateReport($event)" item-left value="optimizationReport"></ion-radio>
+              </ion-item>
+            </ion-col>
+         </ion-row>
+    </ion-card-header> -->
+    <ion-card-header class="global-padding">
+      <div class="inline-block">
+        <span>{{'Mobile App Usage' | translate}}</span> (<span>{{'Online' | translate}}</span> / <span>{{'Offline' |
+          translate}})</span>
+      </div>
+    </ion-card-header>
+    <ion-card-content>
+      <div *ngIf="loadOptimizationReport" class="analyticFilter">
+          <ion-row>
+              <div class="spacingMargin inline-block">
+                <ion-col no-padding>
+                  <ion-label class="label">{{'From Date' | translate}}<span class="validator"></span></ion-label>
+                  <input type="text" class="date-box inline-block" [disabled]="!isEnabled" bsDatepicker [(bsValue)]="optimizationReportPayload.From_Date"
+                    #dpf="bsDatepicker" (onHidden)="checkDateWindow(false,true)" [bsConfig]="{dateInputFormat: 'YYYY-MM-DD'}" value="{{date | date:'YYYY-MM-DD'}}"
+                   (onShown)="onShowPicker($event)">
+                  <span><img (click)="dpf.show()" [attr.aria-expanded]="dpf.isOpen" src="assets/imgs/icons/ic_calendar-for-field.png"
+                      class="calIcon pointer" /></span>
+                </ion-col>
+              </div>
+              <div class="spacingMargin inline-block">
+                <ion-col no-padding>
+                  <ion-label class="label">{{'To Date' | translate}}<span class="validator"></span></ion-label>
+                  <input type="text" class="date-box inline-block" [disabled]="!isEnabled" bsDatepicker [(bsValue)]="optimizationReportPayload.To_Date"
+                    #dpt="bsDatepicker" [bsConfig]="{dateInputFormat: 'YYYY-MM-DD'}" value="{{date | date:'YYYY-MM-DD'}}"
+                    [minDate]="optimizationReportPayload.From_Date"  (onShown)="onShowPicker($event)">
+                  <span><img (click)="dpt.show();" [attr.aria-expanded]="dpt.isOpen" src="assets/imgs/icons/ic_calendar-for-field.png"
+                      class="calIcon pointer" /></span>
+                </ion-col>
+              </div>
+              </ion-row>
+              <ion-row>
+                  <div class="spacingMargin inline-block">
+                    <ion-col no-padding>
+                      <ion-label class="label">{{'World Area' | translate}}</ion-label>
+                      <!--10-18-18 Radheshyam kumar addedd tappable attribute on every ion-select to resolve the double click issue -->
+                      <ion-select *ngIf="showSelects" tappable (click)="hideCalenderInOptimization($event)" interface="popover" [(ngModel)]="optimizationReportPayload.World_Area"
+                        name="worldArea" class="groupBy-box select-style" placeholder="{{'Select World Area' | translate}}">
+                        <ion-option *ngFor="let item of worldarea" [value]="item.LookupID">{{item.LookupValue | translate}}</ion-option>
+                      </ion-select>
+                    </ion-col>
+                  </div>
+                  <div class="spacingMargin inline-block">
+                      <ion-col no-padding>
+                        <ion-label class="label">{{'Country' | translate}}</ion-label>
+                        <!--10-18-18 Radheshyam kumar addedd tappable attribute on every ion-select to resolve the double click issue -->
+                        <ion-select *ngIf="showSelects" tappable (click)="hideCalenderInOptimization($event)" interface="popover" [(ngModel)]="optimizationReportPayload.Country"
+                          name="country" class="groupBy-box select-style" placeholder="{{'Select Country' | translate}}">
+                          <ion-option *ngFor="let item of countries" [value]="item.Country_Code">{{item.Country_Name | translate}}</ion-option>
+                        </ion-select>
+                      </ion-col>
+                    </div>
+                   <div class="spacingMargin inline-block">
+                        <ion-col no-padding>
+                          <ion-label class="label">{{'Business Unit' | translate}}</ion-label>
+                          <ion-select *ngIf="showSelects" tappable (click)="hideCalenderInOptimization($event)" interface="popover" [(ngModel)]="optimizationReportPayload.Business_Unit"
+                            name="businessUnit" class="businessUnit-box select-style" placeholder="{{'Select Business Unit' | translate}}">
+                            <ion-option *ngFor="let item of businessunits" [value]="item.LookupID">{{item.LookupValue | translate}}</ion-option>
+                          </ion-select>
+                        </ion-col>
+                   </div>
+                   <div class="inline-block">
+                     <ion-label class="label"></ion-label>
+                     <button ion-button (click)="exportOptimizationReport(optimizationReportPayload)" [disabled]="!optimizationReportPayload.To_Date || !optimizationReportPayload.From_Date"  class="save-btn btn inline-block filterBtn verticalMiddle">{{'Export Report' | translate}}</button>
+                   </div>
+                </ion-row>
+      </div>
+      <div *ngIf="loadUsageReport" class="bottom-border analyticFilter">
+        <ion-row>
+          <div class="spacingMargin inline-block">
+            <ion-col no-padding>
+              <ion-label class="label">{{'Start Date' | translate}}</ion-label>
+              <input type="text" class="date-box inline-block" [disabled]="!isEnabled" bsDatepicker [(bsValue)]="start_date"
+                #dps="bsDatepicker" [bsConfig]="{dateInputFormat: 'YYYY-MM-DD'}" value="{{date | date:'YYYY-MM-DD'}}"
+                (onHidden)="checkDateWindow(true)" [minDate]="minDate" [maxDate]="maxDate" (onShown)="onShowPicker($event)">
+              <span><img (click)="dps.show()" [attr.aria-expanded]="dps.isOpen" src="assets/imgs/icons/ic_calendar-for-field.png"
+                  class="calIcon pointer" /></span>
+            </ion-col>
+          </div>
+          <div class="spacingMargin inline-block">
+            <ion-col no-padding>
+              <ion-label class="label">{{'End Date' | translate}}</ion-label>
+              <input type="text" class="date-box inline-block" [disabled]="!isEnabled" bsDatepicker [(bsValue)]="end_date"
+                #dp="bsDatepicker" [bsConfig]="{dateInputFormat: 'YYYY-MM-DD'}" value="{{date | date:'YYYY-MM-DD'}}"
+                (onHidden)="checkDateWindow(false)" [minDate]="minDate" [maxDate]="maxDate" (onShown)="onShowPicker($event)">
+              <span><img (click)="dp.show();" [attr.aria-expanded]="dp.isOpen" src="assets/imgs/icons/ic_calendar-for-field.png"
+                  class="calIcon pointer" /></span>
+            </ion-col>
+          </div>
+          <div class="inline-block">
+            <ion-label class="label"></ion-label>
+            <button ion-button (click)="getAnalyticReport(false)" class="save-btn btn inline-block filterBtn verticalMiddle">{{'GO'
+              | translate}}</button>
+          </div>
+        </ion-row>
+        <ion-row>
+          <div class="spacingMargin inline-block">
+            <ion-col no-padding>
+              <ion-label class="label">{{'Group By' | translate}}</ion-label>
+              <!--10-18-18 Radheshyam kumar addedd tappable attribute on every ion-select to resolve the double click issue -->
+              <ion-select *ngIf="showSelects" tappable (click)="hideCalendar($event)" interface="popover" [(ngModel)]="groupBy"
+                name="groupBy" class="groupBy-box select-style" (ionChange)="applyFilters()" placeholder="{{'Select GroupBy' | translate}}">
+                <ion-option *ngFor="let item of groupByArr" [value]="item">{{item | translate}}</ion-option>
+              </ion-select>
+            </ion-col>
+          </div>
+          <div class="spacingMargin inline-block">
+            <ion-col no-padding>
+              <ion-label class="label">{{'Filters' | translate}}</ion-label>
+              <!--10-18-18 Radheshyam kumar addedd tappable attribute on every ion-select to resolve the double click issue -->
+              <ion-select *ngIf="showSelects" tappable (click)="hideCalendar($event)" interface="popover" placeholder="{{'Select Country' | translate}}"
+                [(ngModel)]="country" name="country" class="country-box select-style" (ionChange)="applyFilters()"
+                [disabled]="countryName.length==0">
+                <ion-option value="{{''}}">{{'Select Country' | translate}}</ion-option>
+                <ion-option *ngFor="let item of countryName" [value]="item.Country_Code">{{item.Country_Name |
+                  translate}}</ion-option>
+              </ion-select>
+            </ion-col>
+          </div>
+          <div class="spacingMargin inline-block">
+            <ion-col no-padding>
+              <ion-label class="label"></ion-label>
+              <!--10-18-18 Radheshyam kumar addedd tappable attribute on every ion-select to resolve the double click issue -->
+              <ion-select *ngIf="showSelects" tappable (click)="hideCalendar($event)" interface="popover" placeholder="{{'Select OS' | translate}}"
+                [(ngModel)]="operatingSys" name="operatingSys" class="os-box select-style" (ionChange)="applyFilters()"
+                [disabled]="OSName.length==0">
+                <ion-option value="{{''}}">{{'Select OS' | translate}}</ion-option>
+                <ion-option *ngFor="let item of OSName" [value]="item">{{item | translate}}</ion-option>
+              </ion-select>
+            </ion-col>
+          </div>
+          <div class="inline-block">
+            <ion-col no-padding>
+              <ion-label class="label"></ion-label>
+              <!--10-18-18 Radheshyam kumar addedd tappable attribute on every ion-select to resolve the double click issue -->
+              <ion-select *ngIf="showSelects" tappable (click)="hideCalendar($event)" interface="popover" placeholder="{{'Select User' | translate}}"
+                [(ngModel)]="userID" name="userID" class="userID-box select-style" (ionChange)="applyFilters()"
+                [disabled]="users.length==0">
+                <ion-option value="{{''}}">{{'Select UserID' | translate}}</ion-option>
+                <ion-option *ngFor="let item of users" [value]="item.userId">{{item.userName | translate}}</ion-option>
+              </ion-select>
+            </ion-col>
+          </div>
+        </ion-row>
+      </div>
+      <div class="full-width global-padding" *ngIf="showLoadMoreBtn && loadUsageReport">
+        <span class="label">{{enums.Analytics.LoadMore | translate}}</span>
+        <span>
+          <button (click)="getAnalyticReport(true)" class="loadMore-btn">{{'Load More'| translate}}</button>
+        </span>
+      </div>
+      <ion-row *ngIf="loadUsageReport" class="global-padding">
+        <div [ngClass]="groupBy== 'Users' && labelValue.length>0 ? 'small-chart-container inline-block full-width ' : 'chart-container inline-block full-width '">
+          <div class="full-height full-width">
+            <canvas #barCanvas></canvas>
+          </div>
+        </div>
+        <div *ngIf="groupBy == 'Users' && labelValue.length>0" class="inline-block">
+          <h3 text-center>{{'Users' | translate}}</h3>
+          <br />
+          <div class="legendList">
+            <ion-row *ngFor="let item of labelValue">
+              <div class="inline-block label index">{{item.LabelIndex}}:</div>
+              <div class="inline-block value userId">{{item.LabelIndexValue}}</div>
+            </ion-row>
+          </div>
+        </div>
+      </ion-row>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

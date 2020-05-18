@@ -1,0 +1,489 @@
+<ion-header *ngIf="currentReport && currentReport.REPORTSTATUS == Enums.ReportStatus.Completed && header_data">
+  <page-custom-header [header]="header_data"></page-custom-header>
+</ion-header>
+<ion-content padding
+  [ngClass]="currentReport && currentReport.REPORTSTATUS == Enums.ReportStatus.Completed ? 'onCompleted':''">
+  <ion-card>
+    <ion-card-header>
+      <ion-row class="global-padding">
+        <ion-col col-6 no-padding>
+          <h1>{{'Review' | translate}}</h1>
+        </ion-col>
+        <ion-col col-6 class="alignRight">
+            <span *ngIf="selectedProcess==Enums.Selected_Process.FCR_AND_SDR" class="ft-size">Continue</span> 
+            <button (click)="gotofcr()" ion-button
+            class="frs-Btn mrg-top verticalMiddle" *ngIf="selectedProcess==Enums.Selected_Process.FCR_AND_SDR">{{'Field Completion Report'|translate}}</button>
+          <span class="comSpan">
+            <img src="assets/imgs/icons/ic_pdf.png" id="pdfbtn" (click)="GeneratePdf()" class="pdfbtn">
+          </span>
+          <span class="comSpan">
+            <img src="assets/imgs/icons/ic_print.png" id="printbtn" (click)="GeneratePdf()" class="printbtn">
+          </span>
+          <span>
+            <img src="assets/imgs/icons/ic_email_to.png" id="emailbtn" (click)="sendMail()" class="emailbtn">
+          </span>
+        </ion-col>
+      </ion-row>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <page-sdr-header></page-sdr-header>
+        <ion-row class="global-padding">
+          <ion-col col-6 no-padding>
+            <button ion-button id="backBtn" [disabled]="cardToDisplay=='1' && (currentReport && currentReport.REPORTSTATUS == Enums.ReportStatus.Completed)" (click)="backBtnClick()"
+              class="back-next-button inline-block">{{ 'Back' | translate }}</button>
+            <button [disabled]="cardToDisplay=='5'" (click)="nextBtnClick()" ion-button id="nextBtn"
+              class="back-next-button inline-block">{{ 'Next' | translate }}</button>
+          </ion-col>
+          <ion-col class="alignRight" col-6 no-padding>
+            <!-- 07/10/2019 Gurkirat Singh : Added a common submitReport function from sdrUtility -->
+            <button *ngIf="currentReport && currentReport.REPORTSTATUS != Enums.ReportStatus.Completed" ion-button
+              id="submitBtn" (click)="sdrUtility.submitReport(currentReport, navCtrl, appCtrl,'ReviewSubmitPage')"
+              class="back-next-button submit-button inline-block">{{ 'Submit' | translate }}</button>
+            <ion-select id="selectPageOption" [(ngModel)]=" cardToDisplay" (ionChange)="selectPage($event)"
+              class="select-box select-style" tappable interface="popover">
+              <ion-option disabled value="0">{{'Select Page' | translate }}</ion-option>
+              <ion-option selected value="1">{{'As Found' | translate}}</ion-option>
+              <ion-option value="2">{{'Calibration/Configuration' | translate}}</ion-option>
+              <ion-option value="3">{{'Solution' | translate}}</ion-option>
+              <ion-option value="4">{{'Final Tests' | translate}}</ion-option>
+              <ion-option value="5">{{'Photos' | translate}}</ion-option>
+            </ion-select>
+          </ion-col>
+        </ion-row>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+  <!--As Found Card-->
+  <ion-card class="card-min-height" *ngIf="cardToDisplay=='1'">
+    <ion-card-header>
+      <ion-row class="global-padding">
+        <ion-col col-8 no-padding>
+          <h1>{{'As Found' | translate}}</h1>
+        </ion-col>
+      </ion-row>
+    </ion-card-header>
+
+    <span *ngFor="let FTK of finalTestKeys">
+      <span *ngIf="finalTest[FTK][0]">
+        <ion-label class="global-left-padding sub-header label">
+          <span> {{FTK | translate}} </span>
+        </ion-label>
+        <ion-row class="global-padding content-row row">
+          <ion-col class="col {{!finalTest[FTK][0]?'hide-content':''}}" col-5 no-padding="">
+            <ion-label class="label ionLabel reviewLabel1">
+              <span>
+                {{'Pre-Test Result' | translate}} </span>
+            </ion-label>
+            <ion-label class="label ionLabel valueLabel WF-ionlabel  innerLabel">
+              <span>{{finalTest[FTK][0] | translate}}</span>
+            </ion-label>
+          </ion-col>
+        </ion-row>
+      </span>
+    </span>
+
+    <ion-row *ngFor="let title of asFound.completeObjKeys" class="global-padding content-row row">
+      <ion-col class="col" no-padding="">
+        <ion-label class="label ionLabel reviewLabel">
+          <span>{{title | translate}} {{getHeadOfComponent(title)}}</span>
+        </ion-label>
+        <span>
+
+          <ion-row *ngIf="asFound.headNT || asFound.headP || asFound.headLT" class="global-padding content-row row">
+            <ion-col class="col {{!asFound.headNT?'hide-content':''}}" col-4 no-padding="">
+              <ion-label class="label ionLabel innerLabel">
+                <span> {{'Network Type' | translate}} </span>
+              </ion-label>
+              <ion-label class="label ionLabel valueLabel WF-ionlabel  innerLabel">
+                <span>{{asFound.headNT | translate}}</span>
+              </ion-label>
+            </ion-col>
+            <ion-col class="col {{!asFound.headP?'hide-content':''}}" col-4 no-padding="">
+              <ion-label class="label ionLabel innerLabel">
+                <span> {{'Protocols' | translate}} </span>
+              </ion-label>
+              <ion-label class="label ionLabel valueLabel WF-ionlabel  innerLabel">
+                <span>{{asFound.headP | translate}}</span>
+              </ion-label>
+            </ion-col>
+            <ion-col class="col {{!asFound.headLT?'hide-content':''}}" col-4 no-padding="">
+              <ion-label class="label ionLabel innerLabel">
+                <span> {{'Loop Type' | translate}} </span>
+              </ion-label>
+              <ion-label class="label ionLabel valueLabel WF-ionlabel  innerLabel">
+                <span>{{asFound.headLT | translate}}</span>
+              </ion-label>
+            </ion-col>
+          </ion-row>
+
+          <ion-row
+            class="global-padding content-row row {{((!asFound.head) && (!asFound.headComment)) ?'no-content':''}}">
+            <ion-col class="col {{!asFound.head?'hide-content':''}}" col-4 no-padding="">
+              <ion-label class="label ionLabel innerLabel">
+                <span>{{' As Found' | translate}} </span>
+              </ion-label>
+              <ion-label class="label ionLabel valueLabel WF-ionlabel  innerLabel">
+                <span>{{asFound.head | translate}}</span>
+              </ion-label>
+            </ion-col>
+            <ion-col class="col {{!asFound.headComment?'hide-content':''}}" col-8 no-padding="">
+              <ion-label class="label ionLabel innerLabel">
+                <span> {{'Comment' | translate}} </span>
+              </ion-label>
+              <ion-label class="label ionLabel valueLabel WF-ionlabel  innerLabel">
+                <span>{{asFound.headComment | translate}}</span>
+              </ion-label>
+            </ion-col>
+          </ion-row>
+        </span>
+        <span *ngFor="let subTitle of getSubKeysOfAsFound(title);let odd=odd;">
+          <ion-row
+            *ngIf="subTitle!='As Found' && subTitle!='Comment' && subTitle!='Netwok Type' && subTitle!='Protocols' && subTitle!='Loop Type'"
+            class="global-padding content-row row {{odd?'strippedClass':''}}">
+            <ion-col class="col" no-padding="">
+              <ion-label class="accordion-label">
+                <span>{{subTitle | translate}} </span>
+              </ion-label>
+              <ion-label class="label ionLabel innerLabel">
+                <span>{{'As Found' | translate}} </span>
+              </ion-label>
+              <ion-label class="label ionLabel valueLabel WF-ionlabel  innerLabel">
+                <span>{{asFound.completeObj[title][subTitle] |translate}}</span>
+              </ion-label>
+            </ion-col>
+          </ion-row>
+        </span>
+      </ion-col>
+    </ion-row>
+  </ion-card>
+
+  <!--calibration/Configuration Card-->
+  <ion-card class="card-min-height" *ngIf="cardToDisplay=='2'">
+    <ion-card-header>
+      <ion-row class="global-padding">
+        <ion-col col-8 no-padding>
+          <h1>{{'Calibration/Configuration' | translate}}</h1>
+        </ion-col>
+      </ion-row>
+    </ion-card-header>
+    <span *ngIf="calibrationTest.length">
+      <ion-label class="global-left-padding sub-header label">
+        <span> {{'As Found Calibration' | translate}} </span>
+      </ion-label>
+      <ion-row class="global-padding bdr-btm">
+        <ion-col class="alignLeft" col-2>
+          <ion-label>{{'Element'|translate}}</ion-label>
+        </ion-col>
+        <ion-col class="alignLeft" col-2>
+          <ion-label>{{'Option'|translate}}</ion-label>
+        </ion-col>
+        <ion-col class="alignLeft" col-2>
+          <ion-label>{{'Direction'|translate}}</ion-label>
+        </ion-col>
+        <ion-col class="alignLeft" col-2>
+          <ion-label>{{'Condition'|translate}}</ion-label>
+        </ion-col>
+      </ion-row>
+      <ion-list>
+        <ion-row *ngFor="let calRow of calibrationTest" class="strippedClass global-padding full-width">
+          <ion-col class="align-lft field-value" col-2>
+            {{calRow['Element']!='No Value'?calRow['Element']:'' | translate}}
+          </ion-col>
+          <ion-col class="align-lft field-value" col-2>
+            {{calRow['Option']!='No Value'?calRow['Option']:'' | translate}}
+          </ion-col>
+          <ion-col class="align-lft field-value" col-2>
+            {{calRow['Direction']!='No Value'?calRow['Direction']:'' | translate}}
+          </ion-col>
+          <ion-col class="align-lft field-value" col-2>
+            {{calRow['Condition']!='No Value'?calRow['Condition']:'' | translate}} </ion-col>
+        </ion-row>
+      </ion-list>
+    </span>
+  </ion-card>
+
+  <!--Solution Card-->
+  <ion-card class="card-min-height" *ngIf="cardToDisplay=='3'">
+    <ion-card-header>
+      <ion-row class="global-padding">
+        <ion-col col-8 no-padding>
+          <h1>{{'Solution' | translate}}</h1>
+        </ion-col>
+      </ion-row>
+    </ion-card-header>
+    <ion-row *ngFor="let title of asLeftRA.allInnerObjKeys" class="global-padding content-row row">
+      <ion-col class="col" no-padding="">
+        <ion-label class="label ionLabel reviewLabel">
+          <span>{{title | translate}} {{getHeadOfSolutionComponent(title)}}</span>
+        </ion-label>
+        <span>
+
+          <ion-row *ngIf="asFound.headNT || asLeftRA.headP || asLeftRA.headLT" class="global-padding content-row row">
+            <ion-col class="col {{!asFound.headNT?'hide-content':''}}" col-4 no-padding="">
+              <ion-label class="label ionLabel innerLabel">
+                <span> {{'Network Type' | translate}} </span>
+              </ion-label>
+              <ion-label class="label ionLabel valueLabel WF-ionlabel  innerLabel">
+                <span>{{asFound.headNT | translate}}</span>
+              </ion-label>
+            </ion-col>
+            <ion-col class="col {{!asLeftRA.headP?'hide-content':''}}" col-4 no-padding="">
+              <ion-label class="label ionLabel innerLabel">
+                <span> {{'Protocols' | translate}} </span>
+              </ion-label>
+              <ion-label class="label ionLabel valueLabel WF-ionlabel  innerLabel">
+                <span>{{asLeftRA.headP | translate}}</span>
+              </ion-label>
+            </ion-col>
+            <ion-col class="col {{!asLeftRA.headLT?'hide-content':''}}" col-4 no-padding="">
+              <ion-label class="label ionLabel innerLabel">
+                <span>{{' Loop Type' | translate}} </span>
+              </ion-label>
+              <ion-label class="label ionLabel valueLabel WF-ionlabel  innerLabel">
+                <span>{{asLeftRA.headLT | translate}}</span>
+              </ion-label>
+            </ion-col>
+          </ion-row>
+
+          <ion-row
+            class="global-padding content-row row {{((!asLeftRA.headAF) && (!asLeftRA.headAL) && (!asLeftRA.headRA)) ?'no-content':''}}">
+            <ion-col class="col {{!asLeftRA.headAF?'hide-content':''}}" col-4 no-padding="">
+              <ion-label class="label ionLabel innerLabel">
+                <span> {{'As Found' | translate}} </span>
+              </ion-label>
+              <ion-label class="label ionLabel valueLabel WF-ionlabel  innerLabel">
+                <span>{{asLeftRA.headAF | translate}}</span>
+              </ion-label>
+            </ion-col>
+            <ion-col class="col {{!asLeftRA.headRA?'hide-content':''}}" col-4 no-padding="">
+              <ion-label class="label ionLabel innerLabel">
+                <span> {{'Recommended Action' | translate}} </span>
+              </ion-label>
+              <ion-label class="label ionLabel valueLabel WF-ionlabel  innerLabel">
+                <span>{{asLeftRA.headRA | translate}}</span>
+              </ion-label>
+            </ion-col>
+            <ion-col class="col {{!asLeftRA.headAL?'hide-content':''}}" col-4 no-padding="">
+              <ion-label class="label ionLabel innerLabel">
+                <span> {{'As Left' | translate}} </span>
+              </ion-label>
+              <ion-label class="label ionLabel valueLabel WF-ionlabel  innerLabel">
+                <span>{{asLeftRA.headAL | translate}}</span>
+              </ion-label>
+            </ion-col>
+          </ion-row>
+          <ion-row class="global-padding content-row row {{(!asLeftRA.headComment) ?'no-content':''}}">
+            <ion-col class="col {{!asLeftRA.headComment?'hide-content':''}}" col-4 no-padding="">
+              <ion-label class="label ionLabel innerLabel">
+                <span> {{'Comment' | translate}} </span>
+              </ion-label>
+              <ion-label class="label ionLabel valueLabel WF-ionlabel  innerLabel">
+                <span>{{asLeftRA.headComment | translate}}</span>
+              </ion-label>
+            </ion-col>
+          </ion-row>
+        </span>
+        <span *ngFor="let subTitle of asLeftRA.allInnerObj[title];let odd=odd;">
+          <ion-row
+            *ngIf="(subTitle!='As Found' && subTitle!='As Left' && subTitle!='Recommended Action' && subTitle!='Comment'  && subTitle!='Netwok Type' && subTitle!='Protocols' && subTitle!='Loop Type') && (asFound.completeObj[title] || asLeftRA.completeObj[title] || asLeft.completeObj[title])"
+            class="global-padding content-row row {{odd?'strippedClass':''}}">
+
+            <ion-col
+              *ngIf="((asFound.completeObj[title]) && (asFound.completeObj[title][subTitle])) || ((asLeftRA.completeObj[title]) && (asLeftRA.completeObj[title][subTitle])) || ((asLeft.completeObj[title]) && (asLeft.completeObj[title][subTitle]))"
+              class="col" col-4 no-padding="">
+              <ion-label class="accordion-label">
+                <span>{{subTitle | translate}} </span>
+              </ion-label>
+              <ion-label *ngIf="((asFound.completeObj[title]) && (asFound.completeObj[title][subTitle]))"
+                class="label ionLabel innerLabel">
+                <span> {{'As Found' | translate}} </span>
+              </ion-label>
+              <ion-label class="label ionLabel valueLabel WF-ionlabel  innerLabel">
+                <span>{{(asFound.completeObj[title] && asFound.completeObj[title][subTitle])?asFound.completeObj[title][subTitle]:'' |translate}}</span>
+              </ion-label>
+            </ion-col>
+
+            <ion-col class="col" col-4 no-padding="">
+              <ion-label class="accordion-label hide-content">
+                <span>{{subTitle | translate}} </span>
+              </ion-label>
+              <ion-label *ngIf="((asLeftRA.completeObj[title]) && (asLeftRA.completeObj[title][subTitle]))"
+                class="label ionLabel innerLabel">
+                <span> {{'Recommended' | translate}} </span>
+              </ion-label>
+              <ion-label class="label ionLabel valueLabel WF-ionlabel  innerLabel">
+                <span>{{(asLeftRA.completeObj[title] && asLeftRA.completeObj[title][subTitle])?asLeftRA.completeObj[title][subTitle]:'' |translate}}</span>
+              </ion-label>
+            </ion-col>
+
+            <ion-col class="col" col-4 no-padding="">
+              <ion-label class="accordion-label hide-content">
+                <span>{{subTitle | translate}} </span>
+              </ion-label>
+              <ion-label *ngIf="((asLeft.completeObj[title]) && (asLeft.completeObj[title][subTitle]))"
+                class="label ionLabel innerLabel">
+                <span> {{'As Left' | translate}} </span>
+              </ion-label>
+              <ion-label class="label ionLabel valueLabel WF-ionlabel  innerLabel">
+                <span>{{(asLeft.completeObj[title] && asLeft.completeObj[title][subTitle])?asLeft.completeObj[title][subTitle]:'' |translate}}</span>
+              </ion-label>
+            </ion-col>
+          </ion-row>
+        </span>
+      </ion-col>
+    </ion-row>
+
+    <span *ngIf="calibrationTest.length">
+      <ion-label class="global-left-padding label">
+        <span> {{'As Left Calibration' | translate}} </span>
+      </ion-label>
+      <ion-row class="global-padding bdr-btm">
+        <ion-col class="alignLeft" col-2>
+          <ion-label>{{'Element'|translate}}</ion-label>
+        </ion-col>
+        <ion-col class="alignLeft" col-2>
+          <ion-label>{{'Option'|translate}}</ion-label>
+        </ion-col>
+        <ion-col class="alignLeft" col-2>
+          <ion-label>{{'Direction'|translate}}</ion-label>
+        </ion-col>
+        <ion-col class="alignLeft" col-2>
+          <ion-label>{{'Condition'|translate}}</ion-label>
+        </ion-col>
+        <ion-col class="alignLeft" col-2>
+          <ion-label>{{'Recommended Action'|translate}}</ion-label>
+        </ion-col>
+        <ion-col class="alignLeft" col-2>
+          <ion-label>{{'Result'|translate}}</ion-label>
+        </ion-col>
+      </ion-row>
+      <ion-list>
+        <ion-row *ngFor="let calRow of calibrationTest" class="strippedClass global-padding full-width">
+          <ion-col class="align-lft field-value" col-2>
+            {{calRow['Element']!='No Value'?calRow['Element']:'' | translate}}
+          </ion-col>
+          <ion-col class="align-lft field-value" col-2>
+            {{calRow['Option']!='No Value'?calRow['Option']:'' | translate}}
+          </ion-col>
+          <ion-col class="align-lft field-value" col-2>
+            {{calRow['Direction']!='No Value'?calRow['Direction']:'' | translate}}
+          </ion-col>
+          <ion-col class="align-lft field-value" col-2>
+            {{calRow['Condition']!='No Value'?calRow['Condition']:'' | translate}} </ion-col>
+          <ion-col class="align-lft field-value" col-2>
+            {{calRow['RA'] | translate}} </ion-col>
+          <ion-col class="align-lft field-value" col-2>
+            {{calRow['Result'] | translate}} </ion-col>
+        </ion-row>
+      </ion-list>
+    </span>
+
+  </ion-card>
+
+  <!--Final Test Card-->
+  <ion-card class="card-min-height" class="card-min-height" *ngIf="cardToDisplay=='4'">
+    <ion-card-header>
+      <ion-row class="global-padding">
+        <ion-col col-8 no-padding>
+          <h1>{{'Final Tests' | translate}}</h1>
+        </ion-col>
+      </ion-row>
+    </ion-card-header>
+    <span *ngFor="let FTK of finalTestKeys">
+      <span *ngIf="finalTest[FTK][0] || finalTest[FTK][1]">
+        <ion-label class="global-left-padding sub-header label">
+          <span> {{FTK | translate}} </span>
+        </ion-label>
+        <ion-row class="global-padding content-row row">
+          <ion-col class="col {{!finalTest[FTK][0]?'hide-content':''}}" col-5 no-padding="">
+            <ion-label class="label ionLabel reviewLabel1">
+              <span>
+                {{'Pre-Test Result' | translate}} </span>
+            </ion-label>
+            <ion-label class="label ionLabel valueLabel WF-ionlabel  innerLabel">
+              <span>{{finalTest[FTK][0] | translate}}</span>
+            </ion-label>
+          </ion-col>
+          <ion-col class="col {{!finalTest[FTK][1]?'hide-content':''}}" col-5 no-padding="">
+            <ion-label class="label ionLabel reviewLabel2">
+              <span>
+                {{'Post-Test Result' | translate}} </span>
+            </ion-label>
+            <ion-label class="label ionLabel valueLabel WF-ionlabel  innerLabel">
+              <span>{{finalTest[FTK][1] | translate}}</span>
+            </ion-label>
+          </ion-col>
+        </ion-row>
+      </span>
+    </span>
+  </ion-card>
+
+  <!--Photos Card-->
+  <ion-card class="card-min-height" *ngIf="cardToDisplay=='5'">
+    <ion-card-header>
+      <ion-row class="global-padding">
+        <ion-col col-8 no-padding>
+          <h1>{{'Photos' | translate}}</h1>
+        </ion-col>
+      </ion-row>
+    </ion-card-header>
+    <span *ngFor="let photos of allPhotos">
+      <div class="section">
+        <div class="inline-block">
+          <!-- <span class="accordion-label">ÀS Found </span> -->
+          <span
+            class="accordion-label">{{photos[0]?Enums.PhotosAccordionTitle[Enums.PhotosAccordion[photos[0].ATTACHMENTTYPE]]:'' | translate}}
+          </span>
+        </div>
+      </div>
+      <ion-row *ngIf="photos.length" class="global-padding headerBorderBottom">
+        <div class="full-width">
+          <label class="inline-block btn WF-class">
+            <span class="inline-block WF-heading headingLabel">Attachments</span>
+          </label>
+        </div>
+        <ion-col *ngFor="let PK of photos" class="marginLeft" col-2>
+          <span>
+            <!-- <input [checked]="PK.SHOWINPDF=='true'?true:false" disabled class="showinpdf-check" type="checkbox"
+              item-left=""> -->
+              <ion-checkbox disabled [checked]="PK.SHOWINPDF=='true'?true:false" color="dark"></ion-checkbox>
+            <span class="showinpdf-label">Include in Report</span>
+            <span class="block">
+              <a (click)="openResource(PK)" class="pointer">
+                <span>
+                  <img *ngIf="PK.FILETYPE.indexOf('image')>-1" class="attachment-image"
+                    [src]="sanitizer.bypassSecurityTrustUrl(path + 'reportfiles/'+PK.REPORTID+'/Photos/thumbnails/'+PK.FILENAME)">
+                  <img *ngIf="PK.FILETYPE.indexOf('image')<0" class="attachment-image"
+                    onerror="this.src='assets/imgs/unknown.png'"
+                    src="assets/imgs/{{utilityProvider.generateFileDiscNameAndTypeSDR(PK.FILENAME).Type}}.png">
+                </span>
+              </a>
+            </span>
+            <span class="block">
+              <div class="attachment-caption">
+                <span class="value">
+                  {{PK.ATTACHMENTDESCRIPTION | translate}}
+                </span>
+              </div>
+            </span>
+          </span>
+        </ion-col>
+      </ion-row>
+    </span>
+  </ion-card>
+
+  <ion-card>
+    <ion-row class="global-padding">
+      <ion-col col-6 no-padding>
+        <button id="footerBackBtn" [disabled]="cardToDisplay=='1' && (currentReport && currentReport.REPORTSTATUS == Enums.ReportStatus.Completed)" (click)="backBtnClick()" ion-button
+          class="back-next-button inline-block">{{ 'Back' | translate }}</button>
+      </ion-col>
+      <ion-col  class="alignRight" col-6 no-padding>
+        <button [disabled]="cardToDisplay=='5'" id="footerNextBtn" (click)="nextBtnClick()" ion-button
+          class="back-next-button inline-block">{{ 'Next' | translate }}</button>
+      </ion-col>
+    </ion-row>
+  </ion-card>
+</ion-content>

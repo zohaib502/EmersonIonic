@@ -1,0 +1,578 @@
+<ion-header>
+  <page-custom-header [header]="header_data"></page-custom-header>
+</ion-header>
+
+<ion-content padding class="common-css">
+  <ion-card>
+    <ion-card-content>
+      <div>
+        <day-week-view (OutData)="recievedData($event)"></day-week-view>
+      </div>
+      <div *ngIf="advSearchBtnClicked" class="advSearch-div-timesheet">
+        <ion-row class="adv-first-row">
+          <div class="dateTo">
+            <ion-col no-padding>
+              <ion-label class="label">{{'Date From' | translate}}</ion-label>
+              <input type="text" tappable class="date-box-toFrom inline-block" bsDatepicker [disabled]="!isEnabled"
+                (onHidden)="getDurationOnDate()" (onShown)="onShowPicker($event)" [(bsValue)]="date_from"
+                #dps="bsDatepicker" [minDate]="minDate" [bsConfig]="datepickerConfig" value="{{displayDateFrom}}"
+                (bsValueChange)="onDateFromChange($event)">
+              <span><img (click)="dps.show()" tappable [attr.aria-expanded]="dps.isOpen"
+                  src="assets/imgs/icons/ic_calendar-for-field.png" class="calIcon pointer" /></span>
+            </ion-col>
+          </div>
+          <div class="dateFrom">
+            <ion-col no-padding>
+              <ion-label class="label">{{'Date To' | translate}}</ion-label>
+              <input type="text" tappable class="date-box-toFrom inline-block" [disabled]="!isEnabled"
+                [(bsValue)]="date_to" #dp="bsDatepicker" bsDatepicker [minDate]="date_from"
+                [bsConfig]="datepickerConfig" (onShown)="onShowPicker($event)" (onHidden)="getDurationOnDate()"
+                value="{{displayDateTo}}" (bsValueChange)="onDateToChange($event)">
+              <span>
+                <img (click)="dp.show()" tappable [attr.aria-expanded]="dp.isOpen"
+                  src="assets/imgs/icons/ic_calendar-for-field.png" class="calIcon pointer" />
+              </span>
+            </ion-col>
+          </div>
+          <div class="row1col3">
+            <ion-col no-padding>
+              <ion-label class="label">{{'Job ID' | translate}}</ion-label>
+              <ion-input [readonly]="true" tappable *ngIf="advSearchObj.Job_Number!='Not Applicable'" [(ngModel)]="advSearchObj.Job_Number" name="jobNumber"
+                class="project-box searchNSelect select-style" (click)="searchModal('Job_Number','Task_Number')">
+              </ion-input>
+              <ion-input [readonly]="true" *ngIf="advSearchObj.Job_Number=='Not Applicable'" tappable [ngModel]="advSearchObj.Job_Number | translate" name="jobNumber"
+              class="project-box searchNSelect select-style" (click)="searchModal('Job_Number','Task_Number')">
+            </ion-input>
+            </ion-col>
+          </div>
+          <div class="row1col4">
+            <ion-col no-padding>
+              <ion-label class="label">{{'Project' | translate}}</ion-label>
+              <ion-input [readonly]="true" tappable [(ngModel)]="advSearchObj.Clarity_Project" name="clarityProject"
+                (ionChange)="clearFields(['Job_Number', 'Clarity_Project','Work_Type', 'Charge_Method'])"
+                class="project-box searchNSelect select-style" (click)="searchModal('Clarity_Project','P_PROJECTNUMBER')">
+              </ion-input>
+            </ion-col>
+          </div>
+
+        </ion-row>
+        <ion-row class="adv-second-row">
+          <div class="row2col1">
+            <ion-col no-padding>
+              <ion-label class="label">{{'Task' | translate}}</ion-label>
+              <ion-input [readonly]="true" tappable [(ngModel)]="advSearchObj.Field_Job_Name" name="item"
+                class="project-box searchNSelect select-style" (click)="searchModal('Field_Job_Name','TASK_NAME')">
+              </ion-input>
+            </ion-col>
+          </div>
+          <div class="row2col2">
+            <ion-col no-padding>
+              <ion-label class="label">{{'Overtime Code' | translate}}</ion-label>
+              <ion-input [readonly]="true" tappable [(ngModel)]="advSearchObj.Time_Code" name="item"
+                class="project-box searchNSelect select-style" (click)="searchModal('Time_Code','OVERTIMECODE')">
+              </ion-input>
+            </ion-col>
+          </div>
+          <div class="row2col3">
+            <ion-col no-padding>
+              <ion-label class="label">{{'Shift Code' | translate}}</ion-label>
+              <ion-input [readonly]="true" tappable [(ngModel)]="advSearchObj.Shift_Code" name="item"
+                class="project-box searchNSelect select-style" (click)="searchModal('Shift_Code','SHIFTCODE')">
+              </ion-input>
+            </ion-col>
+          </div>
+          <div class="row2col4">
+            <ion-col no-padding>
+              <ion-label class="label">{{'Work Type' | translate}}</ion-label>
+              <ion-input [readonly]="true" tappable [ngModel]="advSearchObj.Work_Type | translate" name="item"
+                class="project-box searchNSelect select-style" (click)="searchModal('Work_Type','Value')">
+              </ion-input>
+            </ion-col>
+          </div>
+
+        </ion-row>
+        <ion-row class="adv-third-row">
+          <div class="row3col1">
+            <ion-col no-padding>
+              <ion-label class="label">{{'Charge Method' | translate}}</ion-label>
+              <ion-input [readonly]="true" tappable [ngModel]="advSearchObj.Charge_Method | translate" name="item"
+                class="project-box searchNSelect select-style" (click)="searchModal('Charge_Method','Value')">
+              </ion-input>
+            </ion-col>
+          </div>
+          <div class="aply-clear">
+            <button ion-button class="apply-btn" (click)="advanceSearchApply('false')">{{'Apply' | translate }}
+            </button>
+            <button ion-button class="clear-btn" (click)="clearAllFields()">{{'Clear' | translate }}
+            </button>
+
+          </div>
+        </ion-row>
+      </div>
+<!-- Expand/Collapse Toggle -->
+      <ion-row *ngIf="projectList.length>0">
+        <ion-col class="col-10-1">
+          <ion-item  class="WF-toggle toggle-all-accordion">
+            <ion-label *ngIf="toggleAllaccordion == false">{{'Expand all' | translate}}</ion-label>
+            <ion-label *ngIf="toggleAllaccordion == true">{{'Collapse all' | translate}}</ion-label>
+            <ion-toggle [(ngModel)]="toggleAllaccordion" (ngModelChange)="expandAll($event)"></ion-toggle>
+          </ion-item>
+        </ion-col>
+        <ion-col float-right class="col-1-1">
+          <div>
+            <div class="tooltip-col label tooltip">
+              <img class="info-icn" src="assets/imgs/icons/info_Circle.png">
+              <span class="tooltiptext">{{'The cells underlined in orange have been Saved.' | translate}}</span>
+            </div>
+            <ion-label class="saved-lbl inline-block mrgn-lt label label-md">{{'Saved'| translate}}
+            </ion-label>
+          </div>
+        </ion-col>
+        <ion-col float-right class="col-1-1">
+          <div>
+            <div class="tooltip-col label tooltip">
+              <img class="info-icn" src="assets/imgs/icons/info_Circle.png">
+              <span class="tooltiptext">{{'The cells underlined in blue have been Submitted.' | translate}}</span>
+            </div>
+            <ion-label class="submitted-lbl inline-block mrgn-lt label label-md">{{'Submitted'| translate}}
+            </ion-label>
+          </div>
+        </ion-col>
+      </ion-row>
+
+      <div>
+        <ion-row class="projectList-head bottom-border">
+          <div class="projectList-labels full-width global-padding">
+            <div class="label t-check pointer inline-block"></div>
+            <div class="label tweek-pro inline-block">{{'Date' | translate }}</div>
+            <div class="label t-pro inline-block">{{'Project' | translate }}</div>
+            <div class="label t-weektas inline-block">{{'Job ID' | translate }}</div>
+            <div class="label t-otc inline-block">{{'Hours' | translate }}</div>
+            <div class="label t-wkt inline-block"></div>
+            <div class="label t-wkt inline-block"></div>
+          </div>
+        </ion-row>
+        <div *ngIf="weekBtnClicked && !advSearchBtnClicked">
+          <div *ngFor="let job of projectList">
+            <div class="bdr-btm" *ngFor="let project of job.ClarityData | search:{Job_Number:searchInput}">
+              <ion-row class="acc-pd ">
+                <ion-col col-3 (click)="expandOuterAcc(project, job.ClarityData, 'Task')" class="cursorPointer">
+                  <span>
+                    <ion-icon *ngIf="!project.isOpen" class="arrowIcon" item-left name="arrow-dropright">
+                    </ion-icon>
+                    <ion-icon *ngIf="project.isOpen" class="arrowIcon" role="img" aria-label="arrow dropdown"
+                      name="arrow-dropdown">
+                    </ion-icon>
+                  </span>
+                  <span class="week-project-display"> {{formatDate(weekStart)}}
+                    - {{formatDate(weekEnd)}}</span>
+                </ion-col>
+                <ion-col col-2 class="mr-tp">
+                  <span
+                    *ngIf="project.ProjectNumber !=null || project.ProjectNumber != 'null'">{{project.ProjectNumber}}</span>
+                </ion-col>
+                <ion-col col-3 class="mr-tp">{{job.Job_Number=='Not Applicable'?(job.Job_Number | translate):(job.Job_Number)}}</ion-col>
+                <ion-col class="pd-tp tl-hr-clr" col-1>
+                  {{project.totalHours}}
+                </ion-col>
+                <ion-col class="mr-tp " col-1><img (click)="deleteTime(project,true)"
+                    [ngClass]="project.DisableDelete ? 'icn pull-right mrg-rgt disableImg' :'icn pull-right mrg-rgt pointer'"
+                    src="assets/imgs/icons/delete-icon.png"></ion-col>
+                <!-- <ion-col col-1>
+                  <div [ngClass]="dayBtnClicked? 'dsubmitted-status':'submitted-status'"
+                    *ngIf="(project.DB_Syncstatus == 'true' && dayBtnClicked) || weekBtnClicked">
+                    <img src="assets/imgs/icons/info_Circle.png" class="info-icn inline-block" />
+                    <ion-label no-margin class="submitted-lbl inline-block">{{'Submitted'| translate}}</ion-label>
+                  </div>
+                </ion-col> -->
+                <!-- <ion-col col-1 class="tooltip-col label tooltip">
+                  <div><img class="info-icn" src="assets/imgs/icons/info_Circle.png">
+                    <span class="tooltiptext">{{'The cells underlined in blue have been Submitted.'|translate}}</span>
+                    <ion-label no-margin class="submitted-lbl inline-block mrgn-tp ">{{'Submitted'| translate}}</ion-label>
+                  </div>
+                </ion-col> -->
+                <!-- <ion-col col-2>
+                  <div>
+                    <div class="tooltip-col label tooltip">
+                      <img class="info-icn" src="assets/imgs/icons/info_Circle.png">
+                      <span
+                        class="tooltiptext">{{'The cells underlined in blue have been Submitted.' | translate}}</span>
+                    </div>
+                    <ion-label class="submitted-lbl inline-block mrgn-lt label label-md">{{'Submitted'| translate}}
+                    </ion-label>
+                  </div>
+                </ion-col> -->
+              </ion-row>
+              <div *ngIf="project.isOpen">
+                <div *ngFor="let task of project.Task">
+                  <ion-row class="global-padding inr-acc-clr bdr-btm-tsk">
+                    <ion-col col-8 (click)="expandInnerAcc(task)" class="cursorPointer ">
+                      <span class="mrg-left">
+                        <ion-icon *ngIf="!task.isOpen" class="arrowIcon" item-left name="arrow-dropright">
+                        </ion-icon>
+                        <ion-icon *ngIf="task.isOpen" class="arrowIcon" role="img" aria-label="arrow dropdown"
+                          name="arrow-dropdown">
+                        </ion-icon>
+                      </span>
+                      <span class="week-project-display"><b>{{task.Field_Job_Name}}</b></span>
+                    </ion-col>
+                    <ion-col col-1>
+                      <div class="hr-circle2">
+                        <span class="label tl-hr-clr">{{task.totalHours}}</span>
+                      </div>
+                    </ion-col>
+                    <ion-col col-2 class="txt-rgt">
+                      <div class="mr-tp">
+                        <!-- <span><img src="assets/imgs/icons/comment.png" class="c-icn"></span> -->
+                        <span><img
+                            [ngClass]="((task.StatusID == enums.Jobstatus.Debrief_In_Progress) && (task.IsAdditional == 'false')) || (task.StatusID == enums.Jobstatus.Completed_Awaiting_Review)  ? 'icn inline-block edit-img disableImg' :'icn inline-block edit-img pointer'"
+                            (click)="editTime(task[0], '')" src="assets/imgs/icons/edit-icon.png"></span>
+                        <span><img
+                            [ngClass]="task.DisableDelete ? 'icn inline-block delete-img pull-right disableImg' :'icn inline-block delete-img pointer pull-right'"
+                            (click)="deleteTime(task)" src="assets/imgs/icons/delete-icon.png"></span>
+                      </div>
+                    </ion-col>
+                  </ion-row>
+                  <ion-row *ngIf="task.isOpen" class="inr-sec-bg-clr">
+                    <div class="scode">
+                      <span class="headi">{{'OT Code' | translate }}</span>
+                      <span class="data">{{task.Time_Code}}</span>
+                    </div>
+                    <div class="ctype">
+                      <span class="headi">{{'Work Type' | translate }}</span>
+                      <span class="data">{{task.Work_Type | translate}}</span>
+                    </div>
+                    <div class="count">
+                      <span class="headi">{{'Shift Code' | translate }}</span>
+                      <span class="data">{{task.Shift_Code}}</span>
+                    </div>
+                    <div class="state">
+                      <span class="headi">{{'Charge Method' | translate }}</span>
+                      <span class="data">{{task.Charge_Method | translate}}</span>
+                    </div>
+                    <div class="cg-type">
+                      <span class="headi">{{'Charge Type' | translate }}</span>
+                      <span class="data">{{task.Charge_Type | translate}}</span>
+                    </div>
+                    <div class="item-c">
+                      <span class="headi">{{'Item' | translate }}</span>
+                      <span class="data">{{task.Item | translate}}</span>
+                    </div>
+                    <div class="city">
+                      <span class="headi">{{'Country' | translate }}</span>
+                      <span class="data">{{task.Country_Code}}</span>
+                    </div>
+                    <div class="city">
+                      <span class="headi">{{'State' | translate }}</span>
+                      <span class="data">{{task.State}}</span>
+                    </div>
+                    <div class="city">
+                      <span class="headi">{{'City' | translate }}</span>
+                      <span class="data">{{task.City}}</span>
+                    </div>
+                    <div class="daySchedule">
+                      <expandable [data]="task" [listPage]="listPage" (OutData)="recievedData($event)"
+                        style="width:100%;">
+                      </expandable>
+                    </div>
+                  </ion-row>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--DAY VIEW-->
+
+        <div *ngIf="dayBtnClicked && !advSearchBtnClicked">
+          <div *ngFor="let job of projectList">
+            <div class="bdr-btm" *ngFor="let project of job.ClarityData | search:{Job_Number:searchInput} ">
+              <ion-row class="acc-pd">
+                <ion-col col-3 (click)="expandOuterAcc(project,job.ClarityData)" class="cursorPointer">
+                  <span>
+                    <ion-icon *ngIf="!project.isOpen" class="arrowIcon" item-left name="arrow-dropright">
+                    </ion-icon>
+                    <ion-icon *ngIf="project.isOpen" class="arrowIcon" role="img" aria-label="arrow dropdown"
+                      name="arrow-dropdown">
+                    </ion-icon>
+                  </span>
+                  <span class="week-project-display"> {{formatDate(selectedDay)}}</span>
+                </ion-col>
+                <ion-col col-2 class="mr-tp">
+                  <span
+                    *ngIf="project.ProjectNumber !=null || project.ProjectNumber != 'null'">{{project.ProjectNumber}}</span>
+                </ion-col>
+                <ion-col col-3 class="mr-tp">
+                  {{job.Job_Number=='Not Applicable'?(job.Job_Number | translate):(job.Job_Number)}}
+                </ion-col>
+                <ion-col class="pd-tp tl-hr-clr" col-1>
+                  {{project.totalHours}}
+                </ion-col>
+                <ion-col class="mr-tp" col-1><img (click)="deleteTime(project,selectedDay)"
+                    [ngClass]="project.DisableDelete ? 'icn pull-right mrg-rgt disableImg' :'icn pull-right mrg-rgt pointer'"
+                    src="assets/imgs/icons/delete-icon.png">
+                </ion-col>
+                <!-- <ion-col col-2>
+                  <div>
+                    <div class="tooltip-col label tooltip">
+                      <img class="info-icn" src="assets/imgs/icons/info_Circle.png">
+                      <span
+                        class="tooltiptext">{{'The cells underlined in blue have been Submitted.' | translate}}</span>
+                    </div>
+                    <ion-label class="submitted-lbl inline-block mrgn-lt label label-md">{{'Submitted'| translate}}
+                    </ion-label>
+                  </div>
+                </ion-col> -->
+              </ion-row>
+              <div *ngIf="project.isOpen">
+                <div *ngFor="let task of project.Task">
+                  <ion-row class="global-padding inr-acc-clr bdr-btm-tsk">
+                    <ion-col col-8 (click)="expandInnerAcc(task)" class="cursorPointer  ">
+                      <span class="mrg-left">
+                        <ion-icon *ngIf="!task.isOpen" class="arrowIcon" item-left name="arrow-dropright">
+                        </ion-icon>
+                        <ion-icon *ngIf="task.isOpen" class="arrowIcon" role="img" aria-label="arrow dropdown"
+                          name="arrow-dropdown">
+                        </ion-icon>
+                      </span>
+                      <span class="week-project-display"><b>{{task[0].Field_Job_Name}}</b></span>
+                    </ion-col>
+                    <ion-col col-1>
+                      <span>
+                        <!-- [ngClass]="(task[0].StatusID ==  enums.Jobstatus.Completed_Awaiting_Review)?'disable-content':''" -->
+                        <div *ngIf="task.Import_Level == enums.clarityStatus.Submitted" [ngClass]="(task.isSubmitted == 'true' || task.isSubmitted == true)?'submitted-sq-box':'sq-box'" class="hr-circle2">
+                          <span class="label pointer tl-hr-clr" (click)="openTimeDurationPopOver(task[0],$event)"
+                            tappable>{{task[0].TotalDuration}}</span>
+                        </div>
+                        <div *ngIf="task.Import_Level != enums.clarityStatus.Submitted" [ngClass]="(task.isSubmitted == 'true' || task.isSubmitted == true) && task.Import_Level != enums.clarityStatus.Submitted ?'saved-sq-box':'sq-box'" class="hr-circle2">
+                          <span class="label pointer tl-hr-clr" (click)="openTimeDurationPopOver(task[0],$event)"
+                            tappable>{{task[0].TotalDuration}}</span>
+                        </div>
+                      </span>
+                    </ion-col>
+                    <ion-col col-2 class="txt-rgt">
+                      <div class="mr-tp">
+                        <!-- <span><img src="assets/imgs/icons/comment.png" class="c-icn"></span> -->
+                        <!-- <span><img
+                            [ngClass]="(task[0].StatusID == enums.Jobstatus.Debrief_In_Progress && ((task.IsAdditional == 'false'|| task.IsAdditional == false)|| (task.DB_Syncstatus == 'true'|| task.DB_Syncstatus == true))) || (task[0].StatusID == enums.Jobstatus.Debrief_Started && (task.isSubmitted=='true'||task.isSubmitted==true)) || (task[0].StatusID == enums.Jobstatus.Completed_Awaiting_Review) ? 'icn inline-block edit-img disableImg' :'icn inline-block edit-img pointer'"
+                            (click)="editTime(task[0], selectedDay)" src="assets/imgs/icons/edit-icon.png"
+                            class="icn pointer"></span> -->
+                        <span><img
+                            [ngClass]="task.DisableEdit ? 'icn inline-block edit-img disableImg' :'icn inline-block edit-img pointer '"
+                            (click)="editTime(task[0], selectedDay)" src="assets/imgs/icons/edit-icon.png"
+                            class="icn pointer"></span>
+                        <span><img
+                            [ngClass]="task.DisableDelete  ? 'icn inline-block delete-img pull-right disableImg' :'icn inline-block delete-img pointer pull-right'"
+                            (click)="deleteTime(task)" src="assets/imgs/icons/delete-icon.png"
+                            class="icn pointer"></span>
+
+                      </div>
+                    </ion-col>
+                  </ion-row>
+                  <ion-row *ngIf="task.isOpen" class="inr-sec-bg-clr">
+                    <div class="scode">
+                      <span class="headi">{{'OT Code' | translate }}</span>
+                      <span class="data">{{task[0].Time_Code}}</span>
+                    </div>
+                    <div class="ctype">
+                      <span class="headi">{{'Work Type' | translate }}</span>
+                      <span class="data">{{task[0].Work_Type | translate}}</span>
+                    </div>
+                    <div class="count">
+                      <span class="headi">{{'Shift Code' | translate }}</span>
+                      <span class="data">{{task[0].Shift_Code}}</span>
+                    </div>
+                    <div class="state">
+                      <span class="headi">{{'Charge Method' | translate }}</span>
+                      <span class="data">{{task[0].Charge_Method | translate}}</span>
+                    </div>
+                    <div class="cg-type">
+                      <span class="headi">{{'Charge Type' | translate }}</span>
+                      <span class="data">{{task[0].Charge_Type | translate}}</span>
+                    </div>
+                    <div class="item-c">
+                      <span class="headi">{{'Item' | translate }}</span>
+                      <span class="data">{{task[0].Item | translate}}</span>
+                    </div>
+                    <div class="city">
+                      <span class="headi">{{'Country' | translate }}</span>
+                      <span class="data">{{task[0].Country_Code}}</span>
+                    </div>
+                    <div class="city">
+                      <span class="headi">{{'State' | translate }}</span>
+                      <span class="data">{{task[0].State}}</span>
+                    </div>
+                    <div class="city">
+                      <span class="headi">{{'City' | translate }}</span>
+                      <span class="data">{{task[0].City}}</span>
+                    </div>
+                  </ion-row>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--Advance search LIST VIEW-->
+        <div *ngIf="advSearchBtnClicked">
+          <div *ngFor="let dateObj of projectList">
+            <div *ngFor="let job of dateObj.EntryDateTask">
+              <div class="bdr-btm" *ngFor="let project of job.ClarityData | search:{Job_Number:searchInput}">
+                <ion-row class="acc-pd">
+                  <ion-col col-3 (click)="expandOuterAcc(project,job.ClarityData)" class="cursorPointer">
+                    <span>
+                      <ion-icon *ngIf="!project.isOpen" class="arrowIcon" item-left name="arrow-dropright">
+                      </ion-icon>
+                      <ion-icon *ngIf="project.isOpen" class="arrowIcon" role="img" aria-label="arrow dropdown"
+                        name="arrow-dropdown">
+                      </ion-icon>
+                    </span>
+                    <span class="week-project-display"> {{formatDate(project.EntryDate)}}</span>
+                  </ion-col>
+                  <ion-col col-2 class="mr-tp">
+                    <span
+                      *ngIf="project.ProjectNumber !=null || project.ProjectNumber != 'null'">{{project.ProjectNumber}}</span>
+                  </ion-col>
+                  <ion-col col-3 class="mr-tp">
+                    {{job.Job_Number=='Not Applicable'?(job.Job_Number | translate):(job.Job_Number)}}
+                  </ion-col>
+                  <ion-col class="pd-tp tl-hr-clr" col-1>
+                    {{project.totalHours}}
+                  </ion-col>
+                  <ion-col class="mr-tp" col-1><img (click)="deleteTime(project,project.EntryDate)"
+                      [ngClass]="project.DisableDelete ? 'icn pull-right mrg-rgt disableImg' :'icn pull-right mrg-rgt pointer'"
+                      src="assets/imgs/icons/delete-icon.png">
+                  </ion-col>
+                  <ion-col col-2>
+                    <!-- <div>
+                      <div class="tooltip-col label tooltip">
+                        <img class="info-icn" src="assets/imgs/icons/info_Circle.png">
+                        <span class="tooltiptext">{{'The cells underlined in blue have been Submitted.' | translate}}</span>
+                      </div>
+                      <ion-label class="submitted-lbl inline-block mrgn-lt label label-md">{{'Submitted'| translate}}
+                      </ion-label>
+                    </div> -->
+                  </ion-col>
+                </ion-row>
+                <div *ngIf="project.isOpen">
+                  <div *ngFor="let task of project.Task">
+                    <ion-row class="global-padding inr-acc-clr bdr-btm-tsk">
+                      <ion-col col-8 (click)="expandInnerAcc(task)" class="cursorPointer  ">
+                        <span class="mrg-left">
+                          <ion-icon *ngIf="!task.isOpen" class="arrowIcon" item-left name="arrow-dropright">
+                          </ion-icon>
+                          <ion-icon *ngIf="task.isOpen" class="arrowIcon" role="img" aria-label="arrow dropdown"
+                            name="arrow-dropdown">
+                          </ion-icon>
+                        </span>
+                        <span class="week-project-display"><b>{{task[0].Field_Job_Name}}</b></span>
+                      </ion-col>
+                      <ion-col col-1>
+                        <span >
+                        <!-- [ngClass]="(task[0].StatusID ==  enums.Jobstatus.Completed_Awaiting_Review)?'disable-content':''"> -->
+                          <div *ngIf="task.Import_Level == enums.clarityStatus.Submitted" [ngClass]="(project.isSubmitted == 'true' || project.isSubmitted == true) ?'submitted-sq-box':'sq-box'" class="hr-circle2">
+                            <span class="label pointer tl-hr-clr" (click)="openTimeDurationPopOver(task[0],$event)"
+                              tappable>{{task[0].TotalDuration}}</span>
+                          </div>
+                          <div *ngIf="task.Import_Level != enums.clarityStatus.Submitted" [ngClass]="(project.isSubmitted == 'true' || project.isSubmitted == true) && task.Import_Level != enums.clarityStatus.Submitted ?'saved-sq-box':'sq-box'" class="hr-circle2">
+                            <span class="label pointer tl-hr-clr" (click)="openTimeDurationPopOver(task[0],$event)"
+                              tappable>{{task[0].TotalDuration}}</span>
+                          </div>
+                        </span>
+                      </ion-col>
+                      <ion-col col-2 class="txt-rgt">
+                        <div class="mr-tp">
+                          <!-- <span><img src="assets/imgs/icons/comment.png" class="c-icn"></span> -->
+                          <span><img
+                              [ngClass]="task.DisableEdit? 'icn inline-block edit-img disableImg' :'icn inline-block edit-img pointer'"
+                              (click)="editTime(task[0], project.EntryDate)" src="assets/imgs/icons/edit-icon.png"
+                              class="icn pointer"></span>
+                          <span><img
+                              [ngClass]="task.DisableDelete ? 'icn inline-block delete-img pull-right disableImg' :'icn inline-block delete-img pointer pull-right'"
+                              (click)="deleteTime(task)" src="assets/imgs/icons/delete-icon.png"
+                              class="icn pointer"></span>
+                        </div>
+                      </ion-col>
+                    </ion-row>
+                    <ion-row *ngIf="task.isOpen" class="inr-sec-bg-clr">
+                      <div class="scode">
+                        <span class="headi">{{'OT Code' | translate }}</span>
+                        <span class="data">{{task[0].Time_Code}}</span>
+                      </div>
+                      <div class="ctype">
+                        <span class="headi">{{'Work Type' | translate }}</span>
+                        <span class="data">{{task[0].Work_Type | translate}}</span>
+                      </div>
+                      <div class="count">
+                        <span class="headi">{{'Shift Code' | translate }}</span>
+                        <span class="data">{{task[0].Shift_Code}}</span>
+                      </div>
+                      <div class="state">
+                        <span class="headi">{{'Charge Method' | translate }}</span>
+                        <span class="data">{{task[0].Charge_Method | translate}}</span>
+                      </div>
+                      <div class="cg-type">
+                        <span class="headi">{{'Charge Type' | translate }}</span>
+                        <span class="data">{{task[0].Charge_Type | translate}}</span>
+                      </div>
+                      <div class="item-c">
+                        <span class="headi">{{'Item' | translate }}</span>
+                        <span class="data">{{task[0].Item | translate}}</span>
+                      </div>
+                      <div class="city">
+                        <span class="headi">{{'Country' | translate }}</span>
+                        <span class="data">{{task[0].Country_Code}}</span>
+                      </div>
+                      <div class="city">
+                        <span class="headi">{{'State' | translate }}</span>
+                        <span class="data">{{task[0].State}}</span>
+                      </div>
+                      <div class="city">
+                        <span class="headi">{{'City' | translate }}</span>
+                        <span class="data">{{task[0].City}}</span>
+                      </div>
+                    </ion-row>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div style="text-align: center" *ngIf="noRecordFound">{{'No Record Found' | translate}}</div>
+        </div>
+        <ion-row class="global-padding" *ngIf="projectList==0 && !advSearchBtnClicked">
+          <div class="pointer implist" (click)="importList()" *ngIf="weekBtnClicked">
+            <ion-icon name="document"></ion-icon>&nbsp;&nbsp;{{'Import entries from last week timesheet' | translate}}
+          </div>
+          <div class="pointer implist" (click)="importList()" *ngIf="dayBtnClicked">
+            <ion-icon name="document"></ion-icon>&nbsp;&nbsp;{{'Import entries from last day timesheet' | translate}}
+          </div>
+        </ion-row>
+
+      </div>
+      <ion-row *ngIf="projectList.length > 0" class="bottom-row">
+        <ion-col col-6></ion-col>
+        <ion-col col-2>
+          <span class="label totalHours inline-block tl-hr-clr pull-right">{{'Total' | translate }}</span>
+        </ion-col>
+        <ion-col col-2>
+          <span class="tl-hr-clr inline-block label pull-left"
+            [ngClass]="dayBtnClicked? ' dtotalHours-val ':'totalHours-val'">
+            {{valueProvider.getTotalHours()}}</span>
+        </ion-col>
+        <ion-col col-2></ion-col>
+      </ion-row>
+      <ion-row *ngIf="projectList.length> 0">
+        <div class="report-ui">
+        </div>
+        <div class="bottom-right-div">
+          <button ion-button class="btm-btn" (click)="newActivity()">{{'Export' | translate }}
+            <ion-icon class="pdf-icn" ios="ios-paper-outline" md="ios-paper-outline"></ion-icon>
+            <!-- <img src="assets/imgs/icons/ic_pf.png" class="pdf-icn"> -->
+          </button>
+          <button *ngIf="weekBtnClicked" ion-button (click)="submitAlert()" [disabled]="!enableSubmit || searchInput"
+            class="btm-btn">{{'Submit To Clarity' | translate }}
+          </button>
+        </div>
+      </ion-row>
+
+    </ion-card-content>
+  </ion-card>
+</ion-content>

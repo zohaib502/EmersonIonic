@@ -1,0 +1,577 @@
+<ion-content padding class="sdr-pages page-background">
+
+    <ion-card id="Section_515" class="CardSection SelectDevice">
+
+        <ion-card-header>
+            <ion-row class="global-padding">
+                <!-- Header Left -->
+                <ion-col col-3 no-padding>
+                    <div class="header-left">{{'Select Device' | translate}}</div>
+                </ion-col>
+                <!-- Header Right -->
+                <ion-col col-9 no-padding>
+                </ion-col>
+            </ion-row>
+        </ion-card-header>
+
+        <ion-card-content>
+            <!-- First Section -->
+            <div id="Section_516" class="Section ChooseDevice-Section global-padding">
+
+                <form class="form-content">
+
+                    <!-- Content Row -->
+                    <ion-row class="content-row">
+
+                        <div class="width-thirty">
+                            <div class="spacingMargin Element BusinessGroupLabel-Element"
+                                id="BusinessGroupLabel_130110">
+                                <ion-col no-padding>
+                                    <ion-label class="label ionLabel">
+                                        <span>{{'Business Group' | translate}}</span>
+                                    </ion-label>
+                                    <ion-label class="label ionLabel btn-header-label WF-ionlabel">
+                                        <span>{{'Final Control' | translate}}</span>
+                                    </ion-label>
+                                </ion-col>
+                            </div>
+                        </div>
+
+                        <div class="width-twenty">
+
+                            <div class="spacingMargin Element Device-Element" id="Device_130111">
+                                <ion-col no-padding>
+                                    <ion-label class="label ionLabel">
+                                        <span>{{'Device' | translate}}</span>
+                                        <span class="validator"></span>
+                                    </ion-label>
+                                    <div>
+                                        <ion-input *ngIf="isIOS" tappable
+                                            [ngClass]="errorObj.indexOf('Device') != -1 ? 'validation-error' : ''"
+                                            [readonly]="true" required="true"
+                                            value="{{selectDeviceObj['Device'] ? selectDeviceObj['Device'].LookupValue : '' | translate}}"
+                                            class="input-box WF-input searchNSelect" debounce="100"
+                                            (tap)="searchModal('Device')">
+                                        </ion-input>
+                                        <ion-input *ngIf="!isIOS"
+                                            [ngClass]="errorObj.indexOf('Device') != -1 ? 'validation-error' : ''"
+                                            [readonly]="true" required="true"
+                                            value="{{selectDeviceObj['Device'] ? selectDeviceObj['Device'].LookupValue : '' | translate}}"
+                                            class="input-box WF-input searchNSelect" debounce="100"
+                                            tappable (click)="searchModal('Device')">
+                                        </ion-input>
+                                    </div>
+                                </ion-col>
+                            </div>
+
+                        </div>
+
+                        <div class="width-twenty"
+                            *ngIf="selectDeviceObj['Device'] && selectDeviceObj['Device'].ID == '34'">
+                            <div class="spacingMargin Element ActuatorDevices-Element" id="ActuatorDevices_130268">
+                                <ion-col no-padding>
+                                    <ion-label class="label ionLabel">
+                                        <span>{{'Type' | translate}}</span>
+                                        <span class="validator"></span>
+                                    </ion-label>
+                                    <div>
+                                        <ion-input *ngIf="isIOS" tappable
+                                            [ngClass]="errorObj.indexOf('ActuatorDevices') != -1 ? 'validation-error' : ''"
+                                            [readonly]="true" required="true"
+                                            value="{{selectDeviceObj['ActuatorDevices'] ? selectDeviceObj['ActuatorDevices'].LookupValue : '' | translate}}"
+                                            class="input-box WF-input searchNSelect" debounce="100"
+                                            (tap)="searchModal('ActuatorDevices')">
+                                        </ion-input>
+                                        <ion-input *ngIf="!isIOS"
+                                            [ngClass]="errorObj.indexOf('ActuatorDevices') != -1 ? 'validation-error' : ''"
+                                            [readonly]="true" required="true"
+                                            value="{{selectDeviceObj['ActuatorDevices'] ? selectDeviceObj['ActuatorDevices'].LookupValue : '' | translate}}"
+                                            class="input-box WF-input searchNSelect" debounce="100"
+                                            tappable (click)="searchModal('ActuatorDevices')">
+                                        </ion-input>
+                                    </div>
+                                </ion-col>
+                            </div>
+                        </div>
+
+                    </ion-row>
+
+                </form>
+            </div>
+
+            <!-- Second Section -->
+            <div id="Section_2" class="global-padding customerDetailsBgColor"
+                *ngIf="selectDeviceObj['ActuatorDevices'] && (selectDeviceObj['ActuatorDevices'].ID == '1' || selectDeviceObj['ActuatorDevices'].ID == '2' || selectDeviceObj['ActuatorDevices'].ID == '4')">
+
+                <form class="form-content">
+
+                    <!-- Content Row -->
+                    <ion-row class="content-row">
+
+                        <div class="marginTop width-fifty">
+                            <div class="spacingMargin Element ProductFamily-Element" id="ProductFamily_5">
+                                <ion-col no-padding>
+                                    <ion-label class="label ionLabel marginTop">
+                                        <span>{{'Product Family' | translate}}</span>
+                                        <span class="validator"></span>
+                                    </ion-label>
+                                    <div>
+                                        <ion-input *ngIf="isIOS" tappable
+                                            [ngClass]="errorObj.indexOf('ProductFamily') != -1 ? 'validation-error' : ''"
+                                            [readonly]="true" required="true"
+                                            value="{{selectDeviceObj['ProductFamily'] ? selectDeviceObj['ProductFamily'].LookupValue : '' | translate}}"
+                                            class="input-box marginTop WF-input searchNSelect" debounce="100"
+                                            (tap)="searchModal('ProductFamily')">
+                                        </ion-input>
+                                        <ion-input *ngIf="!isIOS"
+                                            [ngClass]="errorObj.indexOf('ProductFamily') != -1 ? 'validation-error' : ''"
+                                            [readonly]="true" required="true"
+                                            value="{{selectDeviceObj['ProductFamily'] ? selectDeviceObj['ProductFamily'].LookupValue : '' | translate}}"
+                                            class="input-box marginTop WF-input searchNSelect" debounce="100"
+                                            tappable (click)="searchModal('ProductFamily')">
+                                        </ion-input>
+                                        <ion-input maxlength="20" [(ngModel)]="selectDeviceObj.OtherProductFamily"
+                                            name="OtherProductFamily"
+                                            *ngIf="selectDeviceObj['ProductFamily'] && selectDeviceObj['ProductFamily'].ID == '-1'"
+                                            [ngClass]="selectDeviceObj['ProductFamily'] && selectDeviceObj['ProductFamily'].ID == '-1' && !selectDeviceObj.OtherProductFamily ? 'validation-error' : ''"
+                                            required="false" class="input-box marginTop WF-input">
+                                        </ion-input>
+                                    </div>
+                                </ion-col>
+                            </div>
+                        </div>
+
+                        <div class="marginTop width-fifty" *ngIf="Lookups['Type'] && Lookups['Type'].length > 1">
+                            <div class="spacingMargin Element Type-Element" id="Type_6">
+                                <ion-col no-padding>
+                                    <ion-label class="label ionLabel marginTop">
+                                        <span>{{'Product Type' | translate}}</span>
+                                        <span class="validator"></span>
+                                    </ion-label>
+                                    <div>
+                                        <ion-input *ngIf="isIOS" tappable
+                                            [ngClass]="errorObj.indexOf('Type') != -1 ? 'validation-error' : ''"
+                                            [readonly]="true" required="true"
+                                            value="{{selectDeviceObj['Type'] ? selectDeviceObj['Type'].LookupValue : '' | translate}}"
+                                            class="input-box marginTop WF-input searchNSelect" debounce="100"
+                                            (tap)="searchModal('Type')">
+                                        </ion-input>
+                                        <ion-input *ngIf="!isIOS"
+                                            [ngClass]="errorObj.indexOf('Type') != -1 ? 'validation-error' : ''"
+                                            [readonly]="true" required="true"
+                                            value="{{selectDeviceObj['Type'] ? selectDeviceObj['Type'].LookupValue : '' | translate}}"
+                                            class="input-box marginTop WF-input searchNSelect" debounce="100"
+                                            tappable (click)="searchModal('Type')">
+                                        </ion-input>
+                                        <ion-input maxlength="20" [(ngModel)]="selectDeviceObj.OtherType"
+                                            name="OtherType"
+                                            *ngIf="selectDeviceObj['Type'] && selectDeviceObj['Type'].ID == '-1'"
+                                            [ngClass]="selectDeviceObj['Type'] && selectDeviceObj['Type'].ID == '-1' && !selectDeviceObj.OtherType ? 'validation-error' : ''"
+                                            required="false" class="input-box marginTop WF-input">
+                                        </ion-input>
+                                    </div>
+                                </ion-col>
+                            </div>
+                        </div>
+
+                        <div class="marginTop width-fifty"
+                            *ngIf="Lookups['ModelSize'] && Lookups['ModelSize'].length > 1">
+                            <div class="spacingMargin Element ModelSize-Element" id="ModelSize_7">
+                                <ion-col no-padding>
+                                    <ion-label class="label ionLabel marginTop">
+                                        <span>{{'Model/Size/Type' | translate}}</span>
+                                        <span class="validator"></span>
+                                    </ion-label>
+                                    <div>
+                                        <ion-input *ngIf="isIOS" tappable
+                                            [ngClass]="errorObj.indexOf('ModelSize') != -1 ? 'validation-error' : ''"
+                                            [readonly]="true" required="true"
+                                            value="{{selectDeviceObj['ModelSize'] ? selectDeviceObj['ModelSize'].LookupValue : '' | translate}}"
+                                            class="input-box marginTop WF-input searchNSelect" debounce="100"
+                                            (tap)="searchModal('ModelSize')">
+                                        </ion-input>
+                                        <ion-input *ngIf="!isIOS"
+                                            [ngClass]="errorObj.indexOf('ModelSize') != -1 ? 'validation-error' : ''"
+                                            [readonly]="true" required="true"
+                                            value="{{selectDeviceObj['ModelSize'] ? selectDeviceObj['ModelSize'].LookupValue : '' | translate}}"
+                                            class="input-box marginTop WF-input searchNSelect" debounce="100"
+                                            tappable (click)="searchModal('ModelSize')">
+                                        </ion-input>
+                                        <ion-input maxlength="20" [(ngModel)]="selectDeviceObj.OtherModelSize"
+                                            name="OtherModelSize"
+                                            *ngIf="selectDeviceObj['ModelSize'] && selectDeviceObj['ModelSize'].ID == '-1'"
+                                            [ngClass]="selectDeviceObj['ModelSize'] && selectDeviceObj['ModelSize'].ID == '-1' && !selectDeviceObj.OtherModelSize ? 'validation-error' : ''"
+                                            required="false" class="input-box marginTop WF-input">
+                                        </ion-input>
+                                    </div>
+                                </ion-col>
+                            </div>
+                        </div>
+
+                        <div class="marginTop width-fifty">
+                            <div class="spacingMargin Element SerialNo-Element" id="SerialNo_8">
+                                <ion-col no-padding>
+                                    <ion-label class="label ionLabel marginTop">
+                                        <span>{{'Serial #' | translate}}</span>
+                                    </ion-label>
+                                    <ion-input maxlength="20" [(ngModel)]="selectDeviceObj.SerialNo" name="SerialNo"
+                                        [ngClass]="errorObj && errorObj['SerialNo'] ? 'validation-error' : ''"
+                                        required="false" class="input-box marginTop WF-input">
+                                    </ion-input>
+                                </ion-col>
+                            </div>
+                        </div>
+
+                    </ion-row>
+
+                </form>
+            </div>
+
+            <!-- Third Section -->
+            <div id="Section_62" class="global-padding customerDetailsBgColor"
+                *ngIf="selectDeviceObj['ActuatorDevices'] && selectDeviceObj['ActuatorDevices'].ID == '3'">
+
+                <!-- ChildSection Header -->
+                <ion-label class="no-padding sub-header">
+                    <span> {{'Devices In Network Loop' | translate}} </span>
+                </ion-label>
+                <form class="form-content">
+                    <!-- Content Row -->
+                    <ion-row class="content-row">
+                        <div class="marginTop width-fifty">
+                            <div class="spacingMargin Element ProductFamily-Element" id="ProductFamily_360">
+                                <ion-col no-padding>
+                                    <ion-label class="label ionLabel marginTop">
+                                        <span>{{'Product Family' | translate}}</span>
+                                    </ion-label>
+                                    <div>
+                                        <ion-input *ngIf="isIOS" tappable [readonly]="true" required="true"
+                                            value="{{selectDeviceObj['ProductFamily'] ? selectDeviceObj['ProductFamily'].LookupValue : '' | translate}}"
+                                            class="input-box marginTop WF-input searchNSelect" debounce="100"
+                                            (tap)="searchModal('ProductFamily')">
+                                        </ion-input>
+                                        <ion-input *ngIf="!isIOS" [readonly]="true" required="true"
+                                            value="{{selectDeviceObj['ProductFamily'] ? selectDeviceObj['ProductFamily'].LookupValue : '' | translate}}"
+                                            class="input-box marginTop WF-input searchNSelect" debounce="100"
+                                            tappable (click)="searchModal('ProductFamily')">
+                                        </ion-input>
+                                        <ion-input maxlength="20" [(ngModel)]="selectDeviceObj.OtherProductFamily"
+                                            name="OtherProductFamily"
+                                            *ngIf="selectDeviceObj['ProductFamily'] && selectDeviceObj['ProductFamily'].ID == '-1'"
+                                            [ngClass]="selectDeviceObj['ProductFamily'] && selectDeviceObj['ProductFamily'].ID == '-1' && !selectDeviceObj.OtherProductFamily ? 'validation-error' : ''"
+                                            required="false" class="input-box marginTop WF-input">
+                                        </ion-input>
+                                    </div>
+                                </ion-col>
+                            </div>
+                        </div>
+
+                        <div class="marginTop width-fifty" *ngIf="Lookups['Type'] && Lookups['Type'].length > 1">
+                            <div class="spacingMargin Element Type-Element" id="Type_361">
+                                <ion-col no-padding>
+                                    <ion-label class="label ionLabel marginTop">
+                                        <span>{{'Product Type' | translate}}</span>
+                                    </ion-label>
+                                    <div>
+                                        <ion-input *ngIf="isIOS" tappable [readonly]="true" required="true"
+                                            value="{{selectDeviceObj['Type'] ? selectDeviceObj['Type'].LookupValue : '' | translate}}"
+                                            class="input-box marginTop WF-input searchNSelect" debounce="100"
+                                            (tap)="searchModal('Type')">
+                                        </ion-input>
+                                        <ion-input *ngIf="!isIOS" [readonly]="true" required="true"
+                                            value="{{selectDeviceObj['Type'] ? selectDeviceObj['Type'].LookupValue : '' | translate}}"
+                                            class="input-box marginTop WF-input searchNSelect" debounce="100"
+                                            tappable (click)="searchModal('Type')">
+                                        </ion-input>
+                                        <ion-input maxlength="20" [(ngModel)]="selectDeviceObj.OtherType"
+                                            name="OtherType"
+                                            *ngIf="selectDeviceObj['Type'] && selectDeviceObj['Type'].ID == '-1'"
+                                            [ngClass]="selectDeviceObj['Type'] && selectDeviceObj['Type'].ID == '-1' && !selectDeviceObj.OtherType ? 'validation-error' : ''"
+                                            required="false" class="input-box marginTop WF-input">
+                                        </ion-input>
+                                    </div>
+                                </ion-col>
+                            </div>
+                        </div>
+
+                        <div class="marginTop width-fifty"
+                            *ngIf="Lookups['ModelSize'] && Lookups['ModelSize'].length > 1">
+                            <div class="spacingMargin Element ModelSize-Element" id="ModelSize_140192">
+                                <ion-col no-padding>
+                                    <ion-label class="label ionLabel marginTop">
+                                        <span>{{'Model/Size/Type' | translate}}</span>
+                                    </ion-label>
+                                    <div>
+                                        <ion-input *ngIf="isIOS" tappable [readonly]="true" required="true"
+                                            value="{{selectDeviceObj['ModelSize'] ? selectDeviceObj['ModelSize'].LookupValue : '' | translate}}"
+                                            class="input-box marginTop WF-input searchNSelect" debounce="100"
+                                            (tap)="searchModal('ModelSize')">
+                                        </ion-input>
+                                        <ion-input *ngIf="!isIOS" [readonly]="true" required="true"
+                                            value="{{selectDeviceObj['ModelSize'] ? selectDeviceObj['ModelSize'].LookupValue : '' | translate}}"
+                                            class="input-box marginTop WF-input searchNSelect" debounce="100"
+                                            tappable (click)="searchModal('ModelSize')">
+                                        </ion-input>
+                                        <ion-input maxlength="20" [(ngModel)]="selectDeviceObj.OtherModelSize"
+                                            name="OtherModelSize"
+                                            *ngIf="selectDeviceObj['ModelSize'] && selectDeviceObj['ModelSize'].ID == '-1'"
+                                            [ngClass]="selectDeviceObj['ModelSize'] && selectDeviceObj['ModelSize'].ID == '-1' && !selectDeviceObj.OtherModelSize ? 'validation-error' : ''"
+                                            required="false" class="input-box marginTop WF-input">
+                                        </ion-input>
+                                    </div>
+                                </ion-col>
+                            </div>
+                        </div>
+
+                        <div class="marginTop width-fifty">
+                            <div class="spacingMargin Element SerialNo-Element" id="SerialNo_364">
+                                <ion-col no-padding>
+                                    <ion-label class="label ionLabel marginTop">
+                                        <span>{{'Serial #' | translate}}</span>
+                                    </ion-label>
+                                    <ion-input maxlength="20" [(ngModel)]="selectDeviceObj.SerialNo" name="SerialNo"
+                                        [ngClass]="errorObj && errorObj['SerialNo'] ? 'validation-error' : ''"
+                                        required="false" class="input-box marginTop WF-input">
+                                    </ion-input>
+                                </ion-col>
+                            </div>
+                        </div>
+
+                        <div class="marginTop width-fifty">
+                            <div class="spacingMargin Element AddDevices-Element" id="AddDevices_365">
+                                <ion-col no-padding>
+                                    <ion-label class="label ionLabel btn-header-label">
+                                    </ion-label>
+                                    <button style="width: 50%" button-right ion-button [disabled]="disableButtons"
+                                        (click)="addNetworkDevice()" class="WF-button btn-save">
+                                        {{'Add Devices' | translate}}
+                                    </button>
+                                </ion-col>
+                            </div>
+                        </div>
+
+                    </ion-row>
+                </form>
+            </div>
+
+            <!-- Fourth Section -->
+            <div id="Section_69" class="global-padding"
+                *ngIf="selectDeviceObj.networkDevices && selectDeviceObj.networkDevices.length > 0">
+
+                <form class="form-content">
+
+                    <!-- Content Row -->
+                    <ion-row class="content-row">
+
+                        <div class="global-padding width-hundered">
+                            <div class="spacingMargin Element DeviceList-Element" id="DeviceList_387">
+                                <ion-col no-padding>
+                                    <div>
+                                        <ion-row class="global-padding bottom-border table-header full-width row">
+                                            <div class="label pointer fieldLabel">
+                                                <span class="head">Product Family</span>
+                                                <span>
+                                                    <i class="fa"></i>
+                                                </span>
+                                            </div>
+                                            <div class="label pointer fieldLabel">
+                                                <span class="head">Product Type</span>
+                                                <span>
+                                                    <i class="fa"></i>
+                                                </span>
+                                            </div>
+                                            <div class="label pointer fieldLabel">
+                                                <span class="head">Model/Size/Type</span>
+                                                <span>
+                                                    <i class="fa"></i>
+                                                </span>
+                                            </div>
+                                            <div class="label pointer fieldLabel">
+                                                <span class="head">Serial #</span>
+                                                <span>
+                                                    <i class="fa"></i>
+                                                </span>
+                                            </div>
+                                        </ion-row>
+                                        <ion-list class="list list-md">
+                                            <ion-row class="global-padding jobListItem strippedClass row"
+                                                *ngFor="let device of selectDeviceObj.networkDevices; let i = index">
+                                                <div class="fieldLabel">
+                                                    <span class="field-value">
+                                                        <span>{{device.PRODUCTFAMILY != -1 ? LookupsNameMap[device.PRODUCTFAMILY] : device.PRODUCTFAMILY_OTHER}}</span>
+                                                    </span>
+                                                </div>
+                                                <div class="fieldLabel">
+                                                    <span class="field-value">
+                                                        <span>{{device.PRODUCTTYPE != -1 ? LookupsNameMap[device.PRODUCTTYPE] : device.PRODUCTTYPE_OTHER}}</span>
+                                                    </span>
+                                                </div>
+                                                <div class="fieldLabel">
+                                                    <span class="field-value">
+                                                        <span>{{device.MODELTYPE != -1 ? LookupsNameMap[device.MODELTYPE] : device.MODELTYPE_OTHER}}</span>
+                                                    </span>
+                                                </div>
+                                                <div class="fieldLabel">
+                                                    <span class="field-value">
+                                                        <span>{{device.SERIALNO}}</span>
+                                                    </span>
+                                                </div>
+                                                <div style="width: 10%">
+                                                    <span>
+                                                        <i button-right ion-button (click)="deleteNetworkDevice(i)"
+                                                            class="WF-button pointer fa fa-trash trash-icon pull-right"></i>
+                                                    </span>
+                                                </div>
+                                            </ion-row>
+                                        </ion-list>
+                                    </div>
+                                </ion-col>
+                            </div>
+                        </div>
+
+                    </ion-row>
+                </form>
+            </div>
+
+
+            <!-- Sixth Section for Flow Isolation -->
+            <div id="Section_3" class="global-padding customerDetailsBgColor"
+                *ngIf="selectDeviceObj['Device'] && selectDeviceObj['Device'].ID && DevicesBUIDMap[selectDeviceObj['Device'].ID] == '3'">
+
+                <form class="form-content">
+
+                    <!-- Content Row -->
+                    <ion-row class="content-row">
+
+                        <div class="marginTop width-fifty">
+                            <div class="spacingMargin Element SerialNo-Element" id="SerialNo_38">
+                                <ion-col no-padding>
+                                    <ion-label class="label ionLabel marginTop">
+                                        <span>{{'Tag' | translate}}</span>
+                                    </ion-label>
+                                    <ion-input maxlength="20" [(ngModel)]="selectDeviceObj.TAG" name="TAG"
+                                        [ngClass]="errorObj && errorObj['TAG'] ? 'validation-error' : ''"
+                                        required="false" class="input-box marginTop WF-input">
+                                    </ion-input>
+                                </ion-col>
+                            </div>
+                        </div>
+
+                        <div class="marginTop width-fifty"
+                            *ngIf="Lookups['ProcessFlowIsolation'] && Lookups['ProcessFlowIsolation'].length > 1 && selectDeviceObj['Device'] && selectDeviceObj['Device'].ID != '29'">
+                            <div class="spacingMargin Element ModelSize-Element" id="ModelSize_27">
+                                <ion-col no-padding>
+                                    <ion-label class="label ionLabel marginTop">
+                                        <span>{{'Process' | translate}}</span>
+                                        <span class="validator"></span>
+                                    </ion-label>
+                                    <div>
+                                        <ion-input *ngIf="isIOS" tappable
+                                            [ngClass]="errorObj.indexOf('PROCESS') != -1 ? 'validation-error' : ''"
+                                            [readonly]="true" required="true"
+                                            value="{{selectDeviceObj['PROCESS'] ? selectDeviceObj['PROCESS'].LookupValue : '' | translate}}"
+                                            class="input-box marginTop WF-input searchNSelect" debounce="100"
+                                            (tap)="searchModal('PROCESS')">
+                                        </ion-input>
+                                        <ion-input *ngIf="!isIOS"
+                                            [ngClass]="errorObj.indexOf('PROCESS') != -1 ? 'validation-error' : ''"
+                                            [readonly]="true" required="true"
+                                            value="{{selectDeviceObj['PROCESS'] ? selectDeviceObj['PROCESS'].LookupValue : '' | translate}}"
+                                            class="input-box marginTop WF-input searchNSelect" debounce="100"
+                                            tappable (click)="searchModal('PROCESS')">
+                                        </ion-input>
+                                        <ion-input maxlength="20" [(ngModel)]="selectDeviceObj.PROCESS_OT"
+                                            name="PROCESS_OT"
+                                            *ngIf="selectDeviceObj['PROCESS'] && selectDeviceObj['PROCESS'].ID == '-1'"
+                                            [ngClass]="selectDeviceObj['PROCESS'] && selectDeviceObj['PROCESS'].ID == '-1' && !selectDeviceObj.PROCESS_OT ? 'validation-error' : ''"
+                                            required="false" class="input-box marginTop WF-input">
+                                        </ion-input>
+                                    </div>
+                                </ion-col>
+                            </div>
+                        </div>
+
+                    </ion-row>
+
+                </form>
+            </div>
+
+            <!-- Section for Pressure -->
+            <div class="global-padding"
+                *ngIf="selectDeviceObj['Device'] && selectDeviceObj['Device'].ID && DevicesBUIDMap[selectDeviceObj['Device'].ID] == '2'">
+
+                <form class="form-content">
+
+                    <!-- Content Row -->
+                    <ion-row class="content-row">
+
+                        <div class="marginTop width-fifty">
+                            <div class="spacingMargin Element ModelSize-Element" id="Pressure_Type">
+                                <ion-col no-padding>
+                                    <ion-label class="label ionLabel marginTop">
+                                        <span>{{'Type' | translate}}</span>
+                                        <span class="validator"></span>
+                                    </ion-label>
+                                    <div>
+                                        <ion-input *ngIf="isIOS" tappable
+                                            [ngClass]="errorObj.indexOf('PRESSURE_TYPE') != -1 ? 'validation-error' : ''"
+                                            [readonly]="true" required="true"
+                                            value="{{selectDeviceObj['PRESSURE_TYPE'] ? selectDeviceObj['PRESSURE_TYPE'] : '' | translate}}"
+                                            class="input-box marginTop WF-input searchNSelect" debounce="100"
+                                            (tap)="searchModal('PRESSURE_TYPE')">
+                                        </ion-input>
+                                        <ion-input *ngIf="!isIOS"
+                                            [ngClass]="errorObj.indexOf('PRESSURE_TYPE') != -1 ? 'validation-error' : ''"
+                                            [readonly]="true" required="true"
+                                            value="{{selectDeviceObj['PRESSURE_TYPE'] ? selectDeviceObj['PRESSURE_TYPE'] : '' | translate}}"
+                                            class="input-box marginTop WF-input searchNSelect" debounce="100"
+                                            tappable (click)="searchModal('PRESSURE_TYPE')">
+                                        </ion-input>
+                                    </div>
+                                </ion-col>
+                            </div>
+                        </div>
+
+                    </ion-row>
+
+                </form>
+            </div>
+
+
+            <!-- Seventh Section -->
+            <div id="Section_517" class="Section FooterButtons-Section global-padding">
+
+                <form class="form-content">
+
+                    <!-- Footer Row -->
+                    <ion-row class="footer-row">
+
+                        <!-- Footer Left -->
+                        <div class="inline-block footerLeft">
+                        </div>
+
+                        <!-- Footer Right -->
+                        <div class="footerRight">
+                            <div class="inline-block">
+                                <div class="spacingMargin " id="Next_130112">
+                                    <ion-col no-padding>
+                                        <ion-label class="label ionLabel btn-header-label label-md">
+                                        </ion-label>
+                                        <button button-right ion-button [disabled]="disableButtons"
+                                            (click)="insertDevice(true)" class="WF-button btn-save">
+                                            {{'Next' | translate}}
+                                        </button>
+                                    </ion-col>
+                                </div>
+                            </div>
+                        </div>
+
+                    </ion-row>
+
+                </form>
+            </div>
+
+        </ion-card-content>
+
+    </ion-card>
+</ion-content>

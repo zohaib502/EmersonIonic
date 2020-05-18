@@ -1,0 +1,30 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title class="padding-style">{{'Search' | translate}}</ion-title>
+    <ion-buttons end>
+      <button ion-button class="closebtn" (click)="closeModal()">
+        <i class="fa fa-times fa-2x"></i>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+  <ion-toolbar>
+    <!-- <ion-searchbar [(ngModel)]="taskInput" #searchBar (ionChange)="checkforspace($event)"></ion-searchbar> -->
+    <ion-searchbar [(ngModel)]="taskInput" #searchBar ></ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content>
+  <ion-list>
+    <div class=" scrollContent full-width">
+      <ion-row class="strippedClass searchResultRow pointer"
+        *ngFor="let data of showData | search:{LookupValue:taskInput} | filterUnique" (click)="selectItem(data)" tappable>
+        <div class="LookupValues">{{data.LookupValue }}</div>
+      </ion-row>
+      <ion-row *ngIf="hasOther" class="strippedClass searchResultRow pointer" (click)="selectItem('Other')" tappable>
+        <div class="LookupValues">{{'Other'|translate}}</div>
+      </ion-row>
+
+    </div>
+  </ion-list>
+</ion-content>

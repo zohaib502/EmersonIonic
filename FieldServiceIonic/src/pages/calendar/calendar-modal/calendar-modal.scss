@@ -1,0 +1,79 @@
+page-calendar-modal {
+
+  .customer-name-block {
+    border-bottom: 1px solid rgba(231,231,231,1) !important;
+    font-weight: 700;
+  }
+
+  .commentModal {
+    background: #fff;
+    padding: 20px;
+    border: none;
+  }
+
+  .description {
+    height: 200px;
+    width: 100%;
+    margin: 12px 0;
+    border: 1px solid rgba(216, 216, 216, 0.5) !important;
+    padding: 5px;
+    overflow-y: auto;
+    background-color: rgba(216, 216, 216, 0.2) !important
+  }
+
+  .startDateTime, .endDateTime {
+    min-width: 250px;
+    white-space: normal;
+    margin-right: 1%;
+    text-align: left;
+  }
+}
+
+.CalendarModalPage {
+
+  .modal-wrapper {
+    height: 495px;
+    width: 850px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%) !important;
+    position: fixed;
+  }
+
+  .modal-wrapper .scroll-content {
+    background-color: rgba(255,255,255,1) !important;
+    color: rgba(74,74,74,1);
+    font-family: "Helvetica Neue";
+    font-size: 18px;
+    font-weight: 300;
+    line-height: 28px;
+    text-align: left;
+    overflow-y: auto;
+  }
+
+  .modal-wrapper .toolbar-title {
+    color: rgba(74,74,74,1);
+    font-family: "Helvetica Neue";
+    font-size: 22px;
+    font-weight: 300;
+    line-height: 27px;
+    text-align: left;
+  }
+
+  .toolbar {
+    height: 52px !important;
+    border-bottom: 1px solid rgba(233, 232, 232,1) !important;
+  }
+
+  .padding-style {
+    padding: 0 10px 1px;
+  }
+
+  ion-footer {
+    text-align: right;
+    padding: 12px;
+    margin: 0px;
+  }
+}

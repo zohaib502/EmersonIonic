@@ -1,0 +1,314 @@
+page-review-submit {
+  .mrg-top {
+    margin-top: 0px !important;
+  }
+
+  .pdfbtn {
+    height: 28px;
+    width: 26px;
+    cursor: pointer;
+    vertical-align: middle;
+  }
+
+  .printbtn {
+    height: 22px;
+    width: 28px;
+    cursor: pointer;
+    vertical-align: middle;
+  }
+
+  .emailbtn {
+    height: 19px;
+    width: 28px;
+    cursor: pointer;
+    vertical-align: middle;
+  }
+
+  .WF-ionlabel {
+    font-family: "Helvetica Neue";
+    font-size: 14px;
+    font-weight: 300;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    color: #000000;
+  }
+
+  .valueLabel {
+    word-wrap: break-word !important;
+    white-space: normal;
+  }
+
+  .global-padding {
+    padding: 12px !important;
+  }
+
+  .global-left-padding {
+    padding-left: 12px !important;
+  }
+
+  .reviewListItem {
+    cursor: pointer;
+  }
+
+  .reviewListBgColor {
+    background-color: #f7f7f6 !important;
+  }
+
+  .saveSubmitBox {
+    width: auto;
+    position: absolute;
+    right: 17%;
+  }
+
+  .back-next-button {
+    height: 30px;
+    min-width: 80px;
+    border-radius: 3px;
+    background-color: rgba(142, 177, 95, 1) !important;
+    color: rgba(255, 255, 255, 1);
+    font-family: "Helvetica Neue";
+    font-size: 14px;
+    line-height: 16px;
+    text-transform: capitalize;
+    margin: 0px 10px;
+  }
+
+  .submit-button {
+    width: 35% !important;
+  }
+
+  .alignRight {
+    text-align: right;
+  }
+
+  .alignLeft {
+    text-align: left;
+  }
+
+  .sub-header {
+    font-size: 20px;
+    color: #9b9b9b;
+    min-height: 20px;
+  }
+
+  .innerLabel {
+    font-family: "Helvetica Neue";
+    font-size: 14px;
+    font-weight: 300;
+  }
+
+  .reviewLabel {
+    color: green;
+    font-family: "Helvetica Neue";
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 16px;
+  }
+
+  .reviewLabel1 {
+    color: #e2951d;
+    font-family: "Helvetica Neue";
+    font-size: 14px;
+    font-weight: 300;
+  }
+
+  .reviewLabel2 {
+    color: #318c41;
+    font-family: "Helvetica Neue";
+    font-size: 14px;
+    font-weight: 300;
+  }
+
+  .select-box {
+    box-sizing: border-box;
+    height: 31px;
+    border: 1px solid #d8d5d1;
+    border-radius: 3px;
+    color: gray;
+    vertical-align: middle;
+    line-height: 20px;
+    font-size: 14px;
+    text-align: left;
+    float: right;
+    width: 35%;
+    margin-right: 20px;
+    margin-left: 10px;
+    padding: 5px;
+    color: rgba(74, 74, 74, 0.7);
+    font-family: "Helvetica Neue";
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 17px;
+  }
+
+  .select-style {
+    max-width: 100% !important;
+    background-color: #fff !important;
+  }
+
+  .comSpan {
+    padding-right: 4%
+  }
+
+  .hide-content {
+    visibility: hidden;
+  }
+
+  .no-content {
+    display: none;
+  }
+
+  .bdr-btm {
+    border-bottom: 1px solid #e7e7e7;
+  }
+
+  .card-min-height {
+    min-height: 25%;
+    padding-bottom: 3% !important;
+  }
+
+  .field-value {
+    font-size: 12px;
+    font-weight: normal;
+    font-style: normal;
+    font-family: "Helvetica Neue";
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    color: #4a4a4a;
+  }
+
+  .showinpdf-check {
+    vertical-align: middle;
+    height: 20px !important;
+    width: 20px !important;
+  }
+
+  .showinpdf-label {
+    display: inline !important;
+    vertical-align: middle;
+  }
+
+  .attachment-image {
+    object-fit: cover;
+    height: 130px;
+    width: 130px;
+    border: 8px solid #fff;
+  }
+
+  .headingLabel {
+    margin: 0px !important;
+    font-family: "Helvetica Neue" !important;
+    font-size: 22px !important;
+    font-weight: 300 !important;
+    line-height: 27px !important;
+    padding-bottom: 10px;
+  }
+
+  .attachment-caption {
+    border: 1px solid #8eb15f;
+    background-color: #f7f7f6;
+    padding: 5px;
+    border-radius: 4px;
+    width: 130px;
+    min-height: 65px;
+    margin-bottom: 20px;
+  }
+
+  .section {
+    margin-bottom: 4px;
+    padding-left: 10px;
+    margin-top: 2%;
+  }
+
+  .accordion-label {
+    color: #9bba71;
+  }
+
+  .marginLeft {
+    margin-left: 10px;
+  }
+
+  .headerBorderBottom {
+    border-bottom: 1px solid !important;
+    border-bottom-color: #EFEFF4 !important;
+  }
+
+  .onCompleted .scroll-content {
+    margin-top: 56px !important;
+  }
+
+  .checkbox-checked {
+    background-color: transparent !important;
+
+    .checkbox-inner {
+      border-color: black !important;
+    }
+  }
+
+  .checkbox .checkbox-icon {
+    border-radius: 1px;
+    width: 20px;
+    height: 20px;
+    background-color: white !important;
+  }
+
+  .checkbox {
+    vertical-align: middle;
+  }
+
+  .checkboxLabel {
+    color: black !important;
+  }
+
+  .checkbox-dark .checkbox-checked {
+    background-color: transparent !important;
+  }
+
+  .checkbox .checkbox-checked .checkbox-inner {
+    left: 6px;
+    top: 2px;
+    width: 5px;
+    height: 12px;
+    border-color: black;
+  }
+
+  .checkboxlabel {
+    color: black;
+  }
+
+  .frs-Btn {
+    margin-bottom: 0px;
+  }
+}
+
+.ios page-review-submit {
+  .reviewListItem {
+    cursor: default !important;
+  }
+
+  .back-next-button {
+    vertical-align: middle;
+  }
+
+  .filter-hd {
+    color: #9b9b9b !important;
+    font-family: "Helvetica Neue" !important;
+    font-size: 14px !important;
+    font-weight: 300 !important;
+    line-height: 16px !important;
+    vertical-align: middle !important;
+  }
+
+  .searchbar-ios {
+    .searchbar-search-icon {
+      top: 15px !important;
+    }
+
+    .searchbar-input {
+      height: 40px !important;
+    }
+  }
+}

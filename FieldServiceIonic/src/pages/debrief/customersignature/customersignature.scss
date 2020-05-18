@@ -1,0 +1,336 @@
+page-customersignature {
+  .text-border {
+    box-sizing: border-box;
+    border: 1px solid rgba(216,213,209,1);
+    border-radius: 3px;
+    background-color: rgba(247, 247, 246, 1);
+    font-size: 16px;
+    line-height: 18px;
+    padding-left: 5px !important;
+    margin-left: 5% !important;
+    height: 50% !important;
+  }
+
+  .validation {
+    border: 1px solid red !important;
+  }
+
+  .clear-button {
+    border: none;
+    font-size: 14px;
+    color: #FFFFFF;
+    border-radius: 3px;
+    background-color: #8EB15F !important;
+    text-transform: capitalize;
+  }
+
+  .bg-signature-field {
+    opacity: 0.66;
+    background-color: rgba(196,192,188,0.11);
+    box-shadow: inset 0 1px 0 0 rgba(196,192,188,0.4), inset 0 -1px 0 0 rgba(196,192,188,0.4);
+  }
+
+  .i-acknowledge-that {
+    color: #4A4A4A;
+    font-family: "Helvetica Neue";
+    font-size: 16px;
+    line-height: 18px;
+    text-align: center
+  }
+
+  .unable-to-obtain-sig {
+    color: #4A4A4A;
+    font-family: "Helvetica Neue";
+    font-size: 16px;
+    line-height: 18px;
+  }
+
+  .contactField-box {
+    box-sizing: border-box;
+    height: 31px;
+    border: 1px solid rgba(216,213,209,1);
+    border-radius: 3px;
+    background-color: rgba(247,247,246,1);
+    min-width: 160px;
+  }
+
+  .select-text {
+    color: rgba(0,0,0,1) !important;
+    font-family: "Helvetica Neue";
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 17px;
+  }
+
+  .select {
+    padding: 6px !important;
+  }
+
+  .select-style {
+    max-width: 100% !important;
+  }
+
+  .surveyText {
+    color: rgba(74, 74, 74, 0.75);
+    font-family: "Helvetica Neue";
+    font-size: 16px;
+    line-height: 18px;
+  }
+
+
+  .paddingleft {
+    padding-left: 2%;
+  }
+
+  .text-area-height {
+    height: 200%;
+  }
+
+  .marginbottom {
+    margin-bottom: 3%;
+  }
+
+  .text-label {
+    color: #9B9B9B;
+    font-family: "Helvetica Neue";
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 17px;
+  }
+
+  .customerSignature-error-validation {
+    color: rgba(142, 177, 95, 1);
+    font-family: "Helvetica Neue";
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 30px;
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .summary-report-error {
+    height: 45px;
+    width: 45px;
+    background-color: rgba(204,101,101,1);
+    border-radius: 50%;
+    margin-top: 10px !important;
+  }
+
+  .arrow-green {
+    height: 9.07px;
+    width: 14.04px;
+    padding-left: 5px;
+    margin-top: 4px;
+  }
+
+  .left-align {
+    left: 5%;
+  }
+
+  .verify-password-box {
+    /*padding: 40px !important;*/
+    width: 440px !important;
+    height: 180px !important;
+    border-radius: 3px !important;
+    background-color: #FFFFFF;
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+    position: fixed;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    left: 50%;
+    z-index: 2;
+    border: 1px solid rgba(0,0,0,.2);
+    border-radius: 6px;
+  }
+
+  .commentBox1 .text-input {
+    width: 80%;
+    height: 70px;
+    border-radius: 3px;
+    background-color: rgba(245, 245, 245, 1);
+    font-size: 15px;
+    color: #4a4a4a;
+    line-height: 18px;
+    font-family: "Helvetica Neue";
+    border: 1px solid rgba(216,216,216,1);
+    padding: 5px !important;
+  }
+
+  .comments-textarea {
+    width: 100%;
+    height: 70px;
+    border-radius: 3px;
+    background-color: rgba(236, 235, 233, 0.4);
+    box-sizing: border-box;
+    font-size: 16px;
+    color: #4a4a4a;
+    line-height: 18px;
+    font-family: "Helvetica Neue";
+    margin-left: auto;
+    margin-right: auto;
+    padding: 5px;
+    border: 1px solid #d8d5d1;
+  }
+
+
+  .customerSign-value .text-input {
+    box-sizing: border-box;
+    border: 1px solid rgba(216,213,209,1);
+    border-radius: 3px;
+    background-color: rgba(247, 247, 246, 1);
+    font-size: 15px;
+    line-height: 18px;
+    padding-left: 5px !important;
+    height: 35px;
+    width: 90%;
+    margin-left: 0;
+  }
+
+  .radio .radio-icon {
+    left: 0;
+    top: 0;
+    margin: 0;
+    border-radius: 0%;
+    position: relative;
+    display: block;
+    width: 18px;
+    height: 18px;
+    border-width: 2px;
+    border-style: solid;
+    border-color: #eee;
+    background: #eee;
+  }
+
+  .radio .radio-inner {
+    position: absolute;
+    top: 0px;
+    left: 4px;
+    height: 8px;
+    width: 8px;
+    border-radius: 0px;
+    background-color: #eee;
+    transition: none;
+  }
+
+  .radio .radio-checked .radio-inner {
+    -ms-transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+    transform: rotate(45deg);
+    height: 12px;
+    display: inline-block;
+    width: 6px;
+    border: solid black;
+    border-width: 0 2px 2px 0;
+  }
+
+  .list .item-block .item-inner {
+    vertical-align: middle;
+    display: inline-block;
+  }
+
+  .item-block {
+    width: unset;
+  }
+
+  .item .radio {
+    margin: 9px 9px 0 9px !important;
+  }
+
+  .password-box {
+    box-sizing: border-box;
+    height: 31px;
+    border: 1px solid rgba(216,213,209,1);
+    border-radius: 2px;
+    background-color: rgba(247,247,246,1);
+    margin: 0 15px 0 0;
+    width: 85%;
+  }
+
+  .verify-box-title {
+    color: black;
+    font-family: "Helvetica Neue";
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 22px;
+    vertical-align: middle;
+    height: 32px;
+    padding: 9px 9px 25px 7px;
+  }
+
+  .verify-btn {
+    background: rgba(142,177,95,1);
+    border-radius: 5px !important;
+    text-transform: capitalize;
+  }
+
+  .verify-submit-btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  .customerSign-validation-text {
+    color: rgba(204,101,101,1);
+    font-family: "Helvetica Neue";
+    font-size: 12px;
+    font-weight: 300;
+    line-height: 15px;
+    margin-top: 5px;
+  }
+
+  .checkbox .checkbox-checked {
+    background-color: transparent !important;
+    border-color: unset !important;
+    border-radius: 0px;
+    border-width: 1px;
+  }
+
+  .checkbox .checkbox-checked .checkbox-inner {
+    left: 6px;
+    top: 2px;
+    width: 5px;
+    height: 12px;
+    border-color: black;
+  }
+
+  .checkbox-label {
+    color: #60b2d5;
+    font-family: "Helvetica Neue";
+    font-size: 14px;
+    font-weight: bold;
+  }
+
+  .item.item-md .checkbox-md {
+    margin: 3px 9px 0 0;
+  }
+
+  .checkbox-icon {
+    height: 20px !important;
+    width: 20px !important;
+    border-width: 1px !important;
+    border-radius: 0px !important;
+  }
+
+  .userPrefItem {
+    width: auto;
+    padding-left: 0px !important;
+    display: inline-block;
+    margin-right: 10px;
+    min-width: 160px;
+  }
+
+  .userPrefItem.item.item-block .item-inner, .userPrefItem.item .checkbox {
+    display: inline-block;
+    height: 30px;
+    vertical-align: middle;
+  }
+
+  .custTimeStamp{
+    min-width: 200px;
+  }
+}
+
+.ios page-customersignature {
+  .customerSignature-error-validation {
+    cursor: default !important;
+  }
+}

@@ -1,0 +1,44 @@
+<ion-card>
+  <ion-card-content>
+    <ion-row class="global-padding full-width">
+      <div class="timeBlock">
+        <div class="comm-start">
+          <div class="inline-block timepicker-icon verticalMiddle">
+            <img src="assets/imgs/icons/ic_time-icon_24x24.png" class="clockIcon timepicker" />
+          </div>
+          <div class="inline-block verticalMiddle">
+            <timepicker class="timepicker-box inline-block" [(ngModel)]="Start_Time"
+              (ngModelChange)="getTimeOnChange($event, 'Start_Time')" [showMeridian]="false"
+              (click)="utilityProvider.selectAllContent($event)"></timepicker>
+          </div>
+        </div>
+        <div class="comm-end">
+          <div class="inline-block timepicker-icon verticalMiddle">
+            <img src="assets/imgs/icons/ic_end_time.png" class="clockIcon timepicker" />
+          </div>
+          <div class="inline-block verticalMiddle">
+            <timepicker class="timepicker-box inline-block" [(ngModel)]="End_Time"
+              (ngModelChange)="getTimeOnChange($event, 'End_Time')" [showMeridian]="false" 
+              (click)="utilityProvider.selectAllContent($event)"></timepicker>
+          </div> 
+        </div>
+        <div class="comm-duration">
+          <div class="inline-block verticalMiddle">
+            <ion-input [disabled]="!isEnabled" [(ngModel)]="duration" class="duration-box"></ion-input>
+          </div>
+
+        </div>
+      </div>
+      <div class="notesBlock">
+        <div class="notes">
+          <ion-textarea (ionChange)="checkforspace($event)" maxlength="255" class="notesBox value" placeholder="{{'Notes' | translate}}"
+            [(ngModel)]="notes"></ion-textarea>
+        </div>
+        <div class="comm-save">
+        <button ion-button type="submit" class="save-btn" [disabled]="duration == '00:00'"  (click)="saveDuration()">{{'Save' | translate }}
+          </button>
+        </div>
+      </div>
+    </ion-row>
+  </ion-card-content>
+</ion-card>

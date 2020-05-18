@@ -1,0 +1,139 @@
+<!--
+  Generated template for the CommonSearchModalPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <ion-title class="padding-style" translate>{{'Search' | translate}}</ion-title>
+    <ion-buttons end>
+      <button ion-button class="closebtn" (click)="closeModal()">
+        <i class="fa fa-times fa-2x"></i>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="search-modal" padding>
+  <!-- 02-18-2019 -- Mansi Arora -- remove padding top if search fields are empty -->
+  <div [ngClass]="showErr ? 'full-width global-padding search-div' : 'full-width global-padding'">
+    <!-- 02-16-2019 -- Mansi Arora -- show error if search fields are empty -->
+    <p class="error-message" *ngIf="showErr" translate>{{ ErrorText | translate }}</p>
+    <ion-row *ngIf="element.ElementID == Enums.Elements.Customer">
+      <div class="value searchBoxDiv" *ngFor="let field of PostRenderArgs.SearchColumns; trackBy: trackByFn; let i = index">
+        <ion-label class="label" translate>
+          {{field.placeHolder | translate}}
+        </ion-label>
+        <!-- 02-16-2019 -- Mansi Arora -- call search function on key up -->
+        <ion-input #searchInput class="input-box value" *ngIf="field.type == 'text' || field.type == 'number'" [type]="field.type"
+          [(ngModel)]="field.value" (keyup)="doneTyping()">
+        </ion-input>
+        <!-- 02/25/2019 -- mayur Varshney -- START : SmartSearch -->
+        <div *ngIf="field.type == 'select'">
+          <ion-input tappable *ngIf="!isDropdownVisible" [readonly]="true"
+            [disabled]="!(field.data && field.data.length > 0)" [(ngModel)]="field.value" class="input-box WF-input searchNSelect select-style"
+            (focus)="toggleSearchDropdown()">
+          </ion-input>
+          <div *ngIf="isDropdownVisible" class="internalSearchNSelect">
+            <ion-input autofocus (focusout)="hideSearchSelectDropDown(false)" [(ngModel)]="Value" placeholder="{{'Search' | translate}}"
+              class="input-box full-width WF-input"></ion-input>
+            <ion-content no-padding debounce="500">
+              <div (scroll)="scrollHandler($event)" class="main-div">
+                <ion-list class="autoSearchFields">
+                  <ion-item *ngIf="(field.data | sortbyname | search : { LookupValue : Value }).length == 0">
+                    <ion-label translate>{{'No result found!' | translate}}</ion-label>
+                  </ion-item>
+                  <ion-item tappable (ionSelect)="setSelectedValue(null)" *ngIf="(field.data | sortbyname | search : { LookupValue : Value }).length != 0">
+                    <ion-label class="smart-search-radio" translate>{{'No Value' | translate}}</ion-label>
+                    <ion-radio (ionSelect)="setSelectedValue(null)"></ion-radio>
+                  </ion-item>
+                  <div *ngIf="(field.data).length > 0">
+                    <ion-item tappable (ionSelect)="setSelectedValue(option, field)" *ngFor="let option of field.data | sortbyname | filterUnique | search : { LookupValue : Value } | slice:0: dropDownListLength; trackBy: trackByFn;">
+                      <ion-label class="smart-search-radio" translate>{{option.LookupValue | translate}}</ion-label>
+                      <ion-radio [value]="option.LookupValue" [checked]="field.value == option.LookupValue" (ionSelect)="setSelectedValue(option, field)"></ion-radio>
+                    </ion-item>
+                  </div>
+                </ion-list>
+              </div>
+            </ion-content>
+          </div>
+        </div>
+        <!-- End Smart Search -->
+      </div>
+    </ion-row>
+    <ion-row *ngIf="element.ElementID != Enums.Elements.Customer">
+      <div class="value" style="width: 100%" *ngIf="PostRenderArgs.SearchColumns">
+        <!-- <ion-label class="label">
+          {{field.placeHolder | translate}}
+        </ion-label> -->
+        <!-- 02-16-2019 -- Mansi Arora -- call search function on key up -->
+        <ion-input #searchInput placeholder="{{'Search' | translate}}" autofocus class="input-box value" type="text" [(ngModel)]="PostRenderArgs.SearchColumns[0].value">
+        </ion-input>
+        <!-- End Smart Search -->
+      </div>
+    </ion-row>
+  </div>
+  <div class="full-width">
+    <ion-list *ngIf="lovData.length > 0">
+      <ion-row class="headContent" *ngIf="element.ElementID == Enums.Elements.Customer">
+        <div class="header-width headerWidth{{i}}" *ngFor="let field of PostRenderArgs.SearchColumns; trackBy: trackByFn; let i = index">
+          <ion-label class="label" translate>{{field.placeHolder | translate}}</ion-label>
+        </div>
+      </ion-row>
+      <div class="global-padding scrollContent full-width" *ngIf="element.ElementID == Enums.Elements.Customer">
+          <ion-row class="strippedClass searchResultRow" *ngFor="let data of lovData| paginate: { itemsPerPage: 20, currentPage: pageNumber }; trackBy: trackByFn; let i = index">
+            <div class="header-width headerWidth{{j}} {{PostRenderArgs.CSSClass}}" *ngFor="let SearchColumn of PostRenderArgs.SearchColumns; trackBy: trackByFn; let j = index">
+              <span class="value" translate>{{(data[SearchColumn.key] ? ('' + data[SearchColumn.key]) : '') | translate}}</span>
+            </div>
+          <button ion-button small class="select-customer-btn" pull-right (click)="selectItem(data, i)">{{'Select' | translate}}</button>
+        </ion-row>
+      </div>
+      <div (scroll)="scrollHandlerForModal($event)" text-center class="global-padding scrollContent-searchdropdown full-width" *ngIf="element.ElementID != Enums.Elements.Customer">
+        <ion-row *ngIf="isDataSearched && element.ElementID == Enums.Elements.Customer && lovData.length == 0 && !showSpinner" class="no-records">
+          <div>
+            <h5 translate>{{'No record found' | translate}}</h5>
+          </div>
+        </ion-row>
+        <ion-row *ngIf="element.ElementID != Enums.Elements.Customer && (lovData | filterUnique | search : { translator : translate, LookupValue : PostRenderArgs.SearchColumns[0].value } | slice:0: lovDataLength).length == 0 && !showSpinner" class="no-records">
+          <div>
+            <h5 translate>{{'No record found' | translate}}</h5>
+          </div>
+        </ion-row>
+
+        <ion-row tappable (click)="selectItem(null, i)" class="strippedClass searchResultRow pointer" *ngIf="element.IsRequired != 'Y' && (lovData | filterUnique | search : { translator : translate, LookupValue : PostRenderArgs.SearchColumns[0].value } | slice:0: lovDataLength).length !=0">
+          <div class="full-width">
+              <div class="header-width {{PostRenderArgs.CSSClass}} inline-block" style="line-height: 50px;">
+                <span class="value" translate>{{'No Value'}}</span>
+              </div>
+              <!-- <button ion-button small class="select-customer-btn" pull-right (click)="selectItem(null, i)">{{'Select' | translate}}</button> -->
+          </div>
+        </ion-row>
+        <ion-row tappable (click)="selectItem(data, i)" class="strippedClass searchResultRow pointer" *ngFor="let data of lovData | filterUnique | search : { translator : translate, LookupValue : PostRenderArgs.SearchColumns[0].value } | slice:0: lovDataLength; trackBy: trackByFn; let i = index">
+          <div class="full-width">
+              <div class="header-width {{PostRenderArgs.CSSClass}} inline-block" style="line-height: 50px;" *ngFor="let SearchColumn of PostRenderArgs.SearchColumns; trackBy: trackByFn; let j = index">
+                <span class="value" translate>{{(data[SearchColumn.key] ? ('' + data[SearchColumn.key]) : '') | translate}}</span>
+              </div>
+              <!-- <button ion-button small class="select-customer-btn" pull-right (click)="selectItem(data, i)">{{'Select' | translate}}</button> -->
+          </div>
+        </ion-row>
+      </div>
+    </ion-list>
+    <ion-row *ngIf="showSpinner" class="no-records">
+      <div>
+        <ion-spinner class="spinner" icon="spiral"></ion-spinner>
+      </div>
+    </ion-row>
+
+  </div>
+</ion-content>
+<ion-footer>
+  <ion-row *ngIf="element.ElementID == Enums.Elements.Customer && lovData.length > 0">
+    <div class="pull-right full-width">
+      <pagination-controls class="controls" (pageChange)="pageNumber = $event" maxSize="10" directionLinks="true"
+        autoHide="true" previousLabel="{{'Previous' | translate}}" nextLabel="{{'Next' | translate}}"
+        screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page" screenReaderCurrentLabel="You're on page">
+      </pagination-controls>
+    </div>
+  </ion-row>
+</ion-footer>

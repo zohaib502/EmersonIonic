@@ -1,0 +1,171 @@
+<ion-content padding class="sdr-pages page-background">
+  <ion-card>
+    <ion-card-header class="global-padding">
+      <ion-row global>
+        <ion-col col-3>
+          <div class="header-left">{{'Final Tests'|translate}}</div>
+        </ion-col>
+        <ion-col *ngIf="selectedProcess==Enums.Selected_Process.FCR_AND_SDR" class="align-rgt" col-9>
+          <span class="ft-size verticalMiddle">{{'Continue'|translate}}</span>
+          <button (click)="gotofcr()" ion-button
+            class="frs-Btn verticalMiddle">{{'Field Completion Report'|translate}}</button>
+        </ion-col>
+      </ion-row>
+    </ion-card-header>
+    <page-sdr-header></page-sdr-header>
+    <ion-card-content>
+      <div class="global-padding">
+        <ion-row>
+          <ion-col no-padding>
+            <span class="txt-left">{{'Air Pressure Test'|translate}}</span>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <div class="inline-block half-width">
+            <div class="inline-block checkboxLabel">
+              <span class="pre-test">{{'Pre-Test'|translate}}</span>
+              <ion-checkbox color="dark" [disabled]="true" [checked]="finallistdata.DONEAIRPRESSUREPRETEST=='true'">
+              </ion-checkbox>
+            </div>
+            <div class="inline-block textbox">
+              <span class="pre-test">{{'Pre-Test Result'|translate}}</span>
+              <ion-textarea maxlength="2000" [disabled]="true" [(ngModel)]="finallistdata.AIRPRESSUREPRETEST"
+                (focusout)="finallistdata.AIRPRESSUREPRETEST = utilityProvider.sliceValueUptoLimit($event.target.value, $event.target.maxLength)"
+                class="cus-txt-area"></ion-textarea>
+            </div>
+          </div>
+          <div class="inline-block half-width">
+            <div class="inline-block checkboxLabel">
+              <span class="post-test">{{'Post-Test'|translate}}</span>
+              <ion-checkbox color="dark" (ionChange)="selectCheckBox('airpresuretest', $event)"
+                [checked]="finallistdata.DONEAIRPRESSUREPOSTTEST=='true'"></ion-checkbox>
+            </div>
+            <div class="inline-block textbox">
+              <span class="post-test">{{'Post-Test Result'|translate}}</span>
+              <ion-textarea maxlength="2000" [(ngModel)]="finallistdata.AIRPRESSUREPOSTTEST"
+                (focusout)="finallistdata.AIRPRESSUREPOSTTEST = utilityProvider.sliceValueUptoLimit($event.target.value, $event.target.maxLength)"
+                class="cus-txt-area">
+              </ion-textarea>
+            </div>
+          </div>
+        </ion-row>
+      </div>
+      <div class="global-padding">
+        <ion-row>
+          <ion-col no-padding>
+            <span class="txt-left">{{'Function Test'|translate}}</span>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <div class="inline-block half-width">
+            <div class="inline-block checkboxLabel">
+              <span class="pre-test">{{'Pre-Test'|translate}}</span>
+              <ion-checkbox [disabled]="true" [checked]="finallistdata.DONEFUNCTIONPRETEST=='true'" color="dark">
+              </ion-checkbox>
+            </div>
+            <div class="inline-block textbox">
+              <span class="pre-test">{{'Pre-Test Result'|translate}}</span>
+              <ion-textarea maxlength="2000" [disabled]="true" [(ngModel)]="finallistdata.FUNCTIONPRETEST"
+                (focusout)="finallistdata.FUNCTIONPRETEST = utilityProvider.sliceValueUptoLimit($event.target.value, $event.target.maxLength)"
+                class="cus-txt-area"></ion-textarea>
+            </div>
+          </div>
+          <div class="inline-block half-width">
+            <div class="inline-block checkboxLabel">
+              <span class="post-test">{{'Post-Test'|translate}}</span>
+              <ion-checkbox color="dark" (ionChange)="selectCheckBox('functiontest', $event)"
+                [checked]="finallistdata.DONEFUNCTIONPOSTTEST=='true'"></ion-checkbox>
+            </div>
+            <div class="inline-block textbox">
+              <span class="post-test">{{'Post-Test Result'|translate}}</span>
+              <ion-textarea maxlength="2000" [(ngModel)]="finallistdata.FUNCTIONPOSTTEST"
+                (focusout)="finallistdata.FUNCTIONPOSTTEST = utilityProvider.sliceValueUptoLimit($event.target.value, $event.target.maxLength)"
+                class="cus-txt-area">
+              </ion-textarea>
+            </div>
+          </div>
+        </ion-row>
+      </div>
+      <div class="global-padding">
+        <ion-row>
+          <ion-col no-padding>
+            <span class="txt-left">{{'Hydro Test'|translate}}</span>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <div class="inline-block half-width">
+            <div class="inline-block checkboxLabel">
+              <span class="pre-test">{{'Pre-Test'|translate}}</span>
+              <ion-checkbox color="dark" [disabled]="true" [checked]="finallistdata.DONEHYDROPRETEST=='true'">
+              </ion-checkbox>
+            </div>
+            <div class="inline-block textbox">
+              <span class="pre-test">{{'Pre-Test Result'|translate}}</span>
+              <ion-textarea maxlength="2000" [disabled]="true" [(ngModel)]="finallistdata.HYDROPRETEST"
+                (focusout)="finallistdata.HYDROPRETEST = utilityProvider.sliceValueUptoLimit($event.target.value, $event.target.maxLength)"
+                class="cus-txt-area"></ion-textarea>
+            </div>
+          </div>
+          <div class="inline-block half-width">
+            <div class="inline-block checkboxLabel">
+              <span class="post-test">{{'Post-Test'|translate}}</span>
+              <ion-checkbox color="dark" (ionChange)="selectCheckBox('hydrotest', $event)"
+                [checked]="finallistdata.DONEHYDROPOSTTEST=='true'"></ion-checkbox>
+            </div>
+            <div class="inline-block textbox">
+              <span class="post-test">{{'Post-Test Result'|translate}}</span>
+              <ion-textarea maxlength="2000" [(ngModel)]="finallistdata.HYDROPOSTTEST"
+                (focusout)="finallistdata.HYDROPOSTTEST = utilityProvider.sliceValueUptoLimit($event.target.value, $event.target.maxLength)"
+                class="cus-txt-area">
+              </ion-textarea>
+            </div>
+          </div>
+        </ion-row>
+      </div>
+      <div class="global-padding">
+        <ion-row>
+          <ion-col no-padding>
+            <span class="txt-left">{{'Visual test'|translate}}</span>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <div class="inline-block half-width">
+            <div class="inline-block checkboxLabel">
+              <span class="pre-test">{{'Pre-Test'|translate}}</span>
+              <ion-checkbox color="dark" [disabled]="true" [checked]="finallistdata.DONEVISUALPRETEST=='true'">
+              </ion-checkbox>
+            </div>
+            <div class="inline-block textbox">
+              <span class="pre-test">{{'Pre-Test Result'|translate}}</span>
+              <ion-textarea maxlength="2000" [disabled]="true" [(ngModel)]="finallistdata.VISUALPRETEST"
+                (focusout)="finallistdata.VISUALPRETEST = utilityProvider.sliceValueUptoLimit($event.target.value, $event.target.maxLength)"
+                class="cus-txt-area"></ion-textarea>
+            </div>
+          </div>
+          <div class="inline-block half-width">
+            <div class="inline-block checkboxLabel">
+              <span class="post-test">{{'Post-Test'|translate}}</span>
+              <ion-checkbox color="dark" (ionChange)="selectCheckBox('visualtest', $event)"
+                [checked]="finallistdata.DONEVISUALPOSTTEST=='true'"></ion-checkbox>
+            </div>
+            <div class="inline-block textbox">
+              <span class="post-test">{{'Post-Test Result'|translate}}</span>
+              <ion-textarea maxlength="2000" [(ngModel)]="finallistdata.VISUALPOSTTEST"
+                (focusout)="finallistdata.VISUALPOSTTEST = utilityProvider.sliceValueUptoLimit($event.target.value, $event.target.maxLength)"
+                class="cus-txt-area">
+              </ion-textarea>
+            </div>
+          </div>
+        </ion-row>
+      </div>
+      <ion-row>
+        <ion-col text-left>
+          <button (click)="redirect('back')" ion-button class="footer-Button ">{{'Back'|translate}}</button>
+        </ion-col>
+        <ion-col text-right>
+          <button (click)="redirect('photos')" ion-button class="footer-Button ">{{ bottomNavBtn|translate}}</button>
+        </ion-col>
+      </ion-row>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

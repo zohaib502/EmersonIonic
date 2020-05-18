@@ -1,0 +1,656 @@
+<div *ngIf="ifCompleted && taskStatus == 'Completed-Awaiting Review'">
+  <ion-header>
+    <page-custom-header [header]="header_data"></page-custom-header>
+  </ion-header>
+</div>
+<ion-content padding *ngIf="!onVerify" [ngClass]="taskStatus == 'Completed-Awaiting Review' ? 'onCompleted':''">
+  <ion-card>
+    <ion-card-header>
+      <ion-row class="global-padding">
+
+        <ion-col col-5 no-padding *ngIf="taskStatus != 'Completed-Awaiting Review'">
+          <h3 class="inline-block label summary-companyName">{{taskObj.Customer_Name}}</h3>
+        </ion-col>
+        <ion-col col-5 no-padding *ngIf="taskStatus == 'Completed-Awaiting Review'">
+          <h1 class="inline-block label summary-companyName">
+            <span translate="Job"></span> #{{taskObj.Job_Number ? taskObj.Job_Number : taskObj.Task_Number}}
+            <!-- //12/06/2018 -- Pratibha -- show job number in FSR in case of standalone -->
+            <span ng-if="taskObj.Customer_Name"> - </span>{{taskObj.Customer_Name}}
+          </h1>
+          <img *ngIf="taskStatus == 'Completed-Awaiting Review'" class="completed-msg inline-block" src="assets/imgs/icons/ic_finished-job.png" />
+        </ion-col>
+        <ion-col col-7 text-right no-padding>
+          <div class="full-height full-width">
+            <ion-col col-4>
+              <span class="continue-navigation" *ngIf="_taskObj.Selected_Process == enums.Selected_Process.FCR_AND_SDR && _taskObj.Business_Unit != enums.BusinessUnitNames.PWS">
+                <span class="continue-text"> {{'Continue' | translate}}</span>
+                <button ion-button class="sdr-btn" (click)="gotoSDR()">{{'Service Detail Report' | translate}}</button>
+              </span>
+            </ion-col>
+            <ion-col col-2>
+              <span>
+                <img (click)="openPdf(false)" src="assets/imgs/icons/ic_pdf.png" id="pdfbtn" class="summary-report-pdfbtn">
+              </span>
+            </ion-col>
+            <ion-col col-2>
+              <span>
+                <img (click)="openPdf(false)" src="assets/imgs/icons/ic_print.png" id="printbtn" class="summary-report-printbtn">
+              </span>
+            </ion-col>
+            <ion-col col-2>
+              <span>
+                <img (click)="openPdf(true)" src="assets/imgs/icons/ic_email_to.png" id="emailbtn" class="summary-report-emailbtn">
+              </span>
+            </ion-col>
+            <ion-col col-2 *ngIf="taskStatus == 'Completed-Awaiting Review'">
+              <button class="summary-report-backbtn" (click)="backToFieldJobs()" translate="Back"></button>
+            </ion-col>
+            <!-- 11/11/2018 -- Mayur Varshney -- Add SDR Button on job completion if user select Both (FCR then SDR process) -- Start-->
+            <!-- 25-03-2019 Radheshyam kumar commented this code -->
+            <!-- <ion-col col-2 *ngIf="taskStatusId == enums.Jobstatus.Completed_Awaiting_Review && selectedProcess == enums.Selected_Process.FCR_AND_SDR && taskObj.Business_Unit != enums.BusinessUnitNames.PWS">
+              <button class="summary-report-SDRbtn" (click)="gotoSDR()" translate="SDR"></button>
+            </ion-col> -->
+            <!-- 11/11/2018 -- Mayur Varshney -- End -->
+            <ion-col col-6 *ngIf="taskStatus != 'Completed-Awaiting Review'">
+              <span>
+                <img (click)="lockScreen()" *ngIf="locked" src="assets/imgs/icons/ic_locked.png" class="lock-btn pointer" />
+                <img (click)="lockScreen()" *ngIf="!locked" src="assets/imgs/icons/ic_unlocked.png" class="lock-btn pointer" />
+              </span>
+            </ion-col>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-card-header>
+    <ion-card-content *ngIf="taskObj.IsStandalone == 'false'">
+      <ion-row class="global-padding full-width" *ngIf="taskStatus != 'Completed-Awaiting Review'">
+        <div class="unsubmitted-summary-header">
+          <span class="label" translate="Service Request"></span>
+          <span class="value block">{{taskObj.Service_Request}}</span>
+        </div>
+        <div class="unsubmitted-summary-header">
+          <span class="label" translate="Job Description"></span>
+          <span class="value block">{{taskObj.Job_Description | translate}}</span>
+        </div>
+        <div class="unsubmitted-summary-header">
+          <span class="label" translate="Start/End Date"></span>
+          <span class="value block">{{taskObj.Start_Date | customDate}} - {{taskObj.End_date | customDate}}</span>
+        </div>
+        <div class="unsubmitted-summary-header">
+          <span class="label" translate="Duration"></span>
+          <span class="value block">{{taskObj.Duration}}</span>
+        </div>
+        <div class="unsubmitted-summary-header">
+          <span class="label" translate="Customer PO Number"></span>
+          <span class="value block">{{taskObj.Customer_PONumber}}</span>
+        </div>
+      </ion-row>
+      <ion-row *ngIf="taskStatus == 'Completed-Awaiting Review'" class="global-padding">
+        <div class="submitted-summary-header">
+          <span class="label" translate="Service Request"></span>
+          <span class="value block">{{taskObj.Service_Request}}</span>
+        </div>
+        <div class="submitted-summary-header">
+          <span class="label" translate="Job Description"></span>
+          <span class="value block">{{taskObj.Job_Description}}</span>
+        </div>
+        <div class="submitted-summary-header">
+          <span class="label" translate="Customer PO Number"></span>
+          <span class="value block">{{taskObj.Customer_PONumber}}</span>
+        </div>
+      </ion-row>
+      <div class="stroke"></div>
+      <ion-row *ngIf="!valueProvider.getTask().IsStandalone || valueProvider.getTask().IsStandalone == 'false'" class="global-padding full-width">
+        <div class="label summary-jd-table">
+          <span translate="Item Number"></span>
+        </div>
+        <div class="label summary-jd-table">
+          <span translate="Item Description"></span>
+        </div>
+        <div class="label summary-jd-table">
+          <span translate="System ID / Serial"></span> #
+        </div>
+        <div class="label summary-jd-table">
+          <span translate="Tag"></span> #
+        </div>
+      </ion-row>
+      <ion-list *ngIf="!valueProvider.getTask().IsStandalone || valueProvider.getTask().IsStandalone == 'false'">
+        <ion-row class="global-padding strippedClass" *ngFor="let installB of installBaseList; let i=index">
+          <div class="value summary-jd-table">
+            <span *ngIf="installB.Item_Number">{{installB.Item_Number}}</span>
+            <span *ngIf="!installB.Item_Number">{{ 'NO VALUE' | translate}}</span>
+          </div>
+          <div class="value summary-jd-table">
+            <span *ngIf="installB.Description">
+              {{installB.Description | slice:0:150}}
+            </span>
+            <span *ngIf="installB.Description ? installB.Description.length > 150 : ''" class="readMore pointer">
+              <a name="btn2" (click)="installedBaseReadmore(installB.Description,i)">
+                <span>...</span>
+                <span>{{'Read More' | translate}}</span>
+              </a>
+            </span>
+            <span *ngIf="!installB.Description">{{ 'NO VALUE' | translate}}</span>
+          </div>
+          <div *ngIf="installB.System_ID" class="value summary-jd-table">{{installB.System_ID}}</div>
+          <div *ngIf="!installB.System_ID" class="value summary-jd-table">
+            <span *ngIf="installB.Serial_Number">{{installB.Serial_Number}}</span>
+            <span *ngIf="!installB.Serial_Number">{{"NO VALUE" | translate}}</span>
+          </div>
+          <div class="value summary-jd-table">
+            <span *ngIf="installB.TagNumber">{{installB.TagNumber}}</span>
+            <span *ngIf="!installB.TagNumber">{{ 'NO VALUE' | translate}}</span>
+          </div>
+        </ion-row>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+  <ion-card>
+    <ion-card-header>
+      <ion-row class="global-padding">
+        <h1 translate="Notes"></h1>
+      </ion-row>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-row *ngIf="noteArraySummary.length > 0" class="value global-padding">
+        <ion-col col-3 *ngFor="let n of noteArraySummary; let i=index" class="global-padding notes">
+          <div style="width:85%">
+            <span class="block created-by">{{n.Created_By}}</span>
+            <span class="block notes-date-type">{{n.Date | customDate}}</span>
+            <span class="inline-block">
+              <span>{{'Type' | translate}}: </span>
+              <span class="notes-date-type">{{n.Note_Type | translate}}</span>
+            </span>
+            <span class="stroke block"></span>
+            <span class="block notes-block">
+              <span *ngIf="!n.System_ID">{{(n.Item_Number || n.Serial_Number ? n.Item_Number + " " + n.Serial_Number + " : " : '') + n.Notes | slice:0:200}}
+              </span>
+              <span *ngIf="n.System_ID">{{(n.System_ID ? n.System_ID + " : " : '') + n.Notes | slice:0:200}}
+              </span>
+              <span *ngIf="n.Notes ? n.Notes.length > 200 : ''" class="readMore pointer">
+                <a name="btn2" (click)="notesReadmore(n.Notes,n.Notes_Install_Base,n.Note_Type,i,n.Serial_Number,n.Item_Number,n.System_ID)">
+                  <span>...</span>
+                  <span>{{'Read More' | translate}}</span>
+                </a>
+              </span>
+            </span>
+          </div>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="noteArraySummary.length === 0">
+        <ion-col class="global-padding taskoverflow-notes"></ion-col>
+      </ion-row>
+    </ion-card-content>
+  </ion-card>
+  <ion-card>
+    <ion-card-header>
+      <ion-row class="global-padding">
+        <h1 translate="Attachments"></h1>
+      </ion-row>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-row *ngIf="attachmentList.length > 0" class="value shaded-block global-padding">
+        <ion-col col-2 *ngFor="let attachment of attachmentList">
+          <span class="block pointer attachment-box">
+            <a (click)="openResource(attachment)">
+              <span *ngIf="attachment.contentType.indexOf('image')>-1">
+                <!-- Start 08/10/2018 Zohaib Khan: ngif condition to show thumbnails or actual attachment  -->
+                <img *ngIf="attachment.isThumbnailCreated" class="attachment-image-box" [src]="sanitizer.bypassSecurityTrustUrl(filePath + 'thumb_'+attachment.filename)">
+                <img *ngIf="!attachment.isThumbnailCreated" class="attachment-image-box" [src]="sanitizer.bypassSecurityTrustUrl(mainFilePath + attachment.filename)">
+                <!-- END 08/10/2018 Zohaib Khan -->
+              </span>
+              <span *ngIf="attachment.filetype.indexOf('pdf')>-1">
+                <img class="attachment-pdf-icon-box" src="assets/imgs/pdf.png">
+              </span>
+              <span *ngIf="attachment.filetype.indexOf('doc') > -1 || attachment.filetype.indexOf('docx') > -1">
+                <img class="attachment-icon-box" src="assets/imgs/doc.png">
+              </span>
+              <span *ngIf="attachment.filetype.indexOf('xlsx') > -1 || attachment.filetype.indexOf('xls') > -1">
+                <img class="attachment-icon-box" src="assets/imgs/xls.png">
+              </span>
+              <span *ngIf="attachment.filetype.indexOf('pptx') > -1 || attachment.filetype.indexOf('ppt') > -1">
+                <img class="attachment-icon-box" src="assets/imgs/ppt.png">
+              </span>
+              <span *ngIf="attachment.filetype.indexOf('txt') > -1 ">
+                <img class="attachment-icon-box" src="assets/imgs/txt.png">
+              </span>
+              <span *ngIf="attachment.filetype.indexOf('jpeg') < 0 && attachment.filetype.indexOf('jpg') < 0 && attachment.filetype.indexOf('JPG') < 0 && attachment.filetype.indexOf('png') < 0 && attachment.filetype.indexOf('PNG') < 0 && attachment.filetype.indexOf('image') < 0 && attachment.contentType.indexOf('image') < 0 && attachment.filetype.indexOf('pdf') < 0 && attachment.filetype.indexOf('doc') < 0 && attachment.filetype.indexOf('docx') < 0 && attachment.filetype.indexOf('xlsx') < 0 && attachment.filetype.indexOf('xls') < 0&& attachment.filetype.indexOf('ppt') < 0 && attachment.filetype.indexOf('pptx') < 0 && attachment.filetype.indexOf('txt') < 0">
+                <img class="attachment-icon-box" src="assets/imgs/unknown.png">
+              </span>
+            </a>
+          </span>
+          <span class="block attachment-name-box">{{attachment.fileDisc}}</span>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="attachmentList.length === 0">
+        <ion-col class="global-padding taskoverflow-notes"></ion-col>
+      </ion-row>
+    </ion-card-content>
+  </ion-card>
+  <ion-card>
+    <ion-card-header>
+      <ion-row class="global-padding">
+        <h1>{{'Time' | translate}}</h1>
+      </ion-row>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-row class="global-padding">
+        <!-- 08062018 KW START removed Service Date and Start Time/End Time label and added Start Date Time and End Date Time -->
+        <ion-col class="label">
+          <span>{{'Start Date Time' | translate}}</span> /
+          <span class="block">{{'End Date Time' | translate}}</span>
+        </ion-col>
+        <!-- END -->
+        <ion-col class="label">{{'Charge Method' | translate}}</ion-col>
+        <ion-col class="label">{{'Work Type' | translate}}</ion-col>
+        <ion-col class="label" *ngIf="isClarityUser">{{'Overtime Code' | translate}}</ion-col>
+        <ion-col class="label" *ngIf="isClarityUser">{{'Shift Code' | translate}}</ion-col>
+        <!-- <ion-col class="label hide" *ngIf="valueProvider.getResourceId() == '0'">SerialNumber </ion-col>
+        <ion-col class="label hide" *ngIf="valueProvider.getResourceId() == '0'">TagNumber </ion-col> -->
+        <ion-col class="label summary-duration" text-left>{{'Duration' | translate}}</ion-col>
+        <ion-col class="label">{{'Item' | translate}}</ion-col>
+      </ion-row>
+      <ion-list class="table-striped" *ngIf="timeArray!=undefined && timeArray.length>0">
+        <ion-row class="strippedClass global-padding" *ngFor="let time of timeArray; let i = index">
+          <ion-col class="value">
+            <!-- 08062018 KW START removed Service Date value and added Start Date Time and End Date Time value -->
+            <span [ngClass]="((time.Service_Start_Date == 'Sub Total') || (time.Service_Start_Date == 'Grand Total')) ? '': 'start-Date-Style'">
+              {{time.Service_Start_Date && (time.Service_Start_Date == 'Sub Total' || time.Service_Start_Date == 'Grand Total') ? (time.Service_Start_Date | translate) : (time.displayStartDate) +' '+ (time.Start_Time) }}
+            </span>
+            <span>{{(time.Service_Start_Date == 'Sub Total' || time.Service_Start_Date == 'Grand Total') ? '' : ' / '}}</span>
+            <span [ngClass]="((time.Service_Start_Date == 'Sub Total') || (time.Service_Start_Date == 'Grand Total')) ? '': 'end-Date-Style block'">
+              {{time.Service_Start_Date && (time.Service_Start_Date == 'Sub Total' || time.Service_Start_Date == 'Grand Total') ? '' : (time.displayEndDate) +' '+ (time.End_Time)}}
+            </span>
+          </ion-col>
+          <!-- END -->
+          <ion-col class="value">{{time.Charge_Method | translate}}</ion-col>
+          <ion-col class="value">{{ time.Work_Type | translate }}</ion-col>
+          <ion-col class="value" *ngIf="isClarityUser">{{time.Time_Code  | translate}} </ion-col>
+          <ion-col class="value" *ngIf="isClarityUser">{{time.Shift_Code}} </ion-col>
+          <!-- <ion-col class="value" *ngIf="valueProvider.getResourceId() == '0'">{{time.SerialNumber}} </ion-col>
+          <ion-col class="value" *ngIf="valueProvider.getResourceId() == '0'">{{time.TagNumber}} </ion-col> -->
+          <ion-col class="value summary-duration" text-left [ngStyle]="{'font-weight':time.grandTotal}">{{time.Duration}}</ion-col>
+          <ion-col class="value">{{time.Item | translate}}</ion-col>
+        </ion-row>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+  <ion-card>
+    <ion-card-header>
+      <ion-row class="global-padding">
+        <h1>{{'Material' | translate}}</h1>
+      </ion-row>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-row class="global-padding full-width">
+        <div class="label sm-mth-cm">{{'Charge Method' | translate}}</div>
+        <div class="label sm-mth-q">{{'Quantity' | translate}}</div>
+        <!-- <div class="label sm-mth-s">
+          {{'Serial' | translate}}
+          <span>#</span>
+        </div> -->
+        <div class="label sm-mth-si">{{'Serial In' | translate}}</div>
+        <div class="label sm-mth-so">{{'Serial Out' | translate}}</div>
+        <div class="label sm-mth-in">{{'Item Name' | translate}}</div>
+        <div class="label sm-mth-id">{{'Description' | translate}}</div>
+
+        <!--08/03/2018 Mayur Varshney
+          remove text-center for making all fields left align
+        -->
+
+        <div class="label sm-mth-uom">{{'UOM' | translate}}</div>
+      </ion-row>
+      <ion-list class="table-striped" *ngIf="materialArray!=undefined && materialArray.length>0">
+        <ion-row class="strippedClass global-padding full-width" *ngFor="let material of materialArrayClone; let i = index">
+          <div class="value materialListStyle sm-mth-cm">{{material[0].Charge_Type | translate}}</div>
+          <div class="value materialListStyle sm-mth-q">{{material.length}}</div>
+          <!-- <div class="value serialTypeStyle sm-mth-s">
+            <span class="summarySerialblock  block" *ngFor="let serialno of material.SerialArray">
+              {{serialno.Serial_Number}}
+            </span>
+          </div> -->
+          <div class="value serialTypeStyle sm-mth-si-so">
+            <div *ngFor="let serialInOut of material">
+              <span *ngIf="serialInOut.Serial_In || serialInOut.Serial_Out" class="summarySerialInblock inline-block">
+                {{serialInOut.Serial_In}}
+              </span>
+              <span *ngIf="serialInOut.Serial_In || serialInOut.Serial_Out" class="summarySerialOutblock inline-block">
+                {{serialInOut.Serial_Out}}
+              </span>
+            </div>
+          </div>
+          <div class="value materialListStyle sm-mth-in">{{material[0].ItemName}}</div>
+          <div class="value materialListStyle sm-mth-id">{{material[0].Description}}</div>
+          <div class="value materialListStyle sm-mth-uom">{{material[0].UOM}}</div>
+        </ion-row>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+  <ion-card *ngIf="taskStatus !='Completed-Awaiting Review' && taskStatusId != enums.Jobstatus.Debrief_In_Progress && taskStatusId != enums.Jobstatus.Debrief_Declined">
+    <ion-card-header>
+      <ion-row class="global-padding">
+        <h1>{{'Signature' | translate}}</h1>
+      </ion-row>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-row *ngIf="engineer!=undefined||engineer!=null">
+        <img src="{{engineer.Sign_File_Path}}" />
+      </ion-row>
+      <ion-row>
+        <ion-col text-center class="signature-UI">
+          <label>
+            <span translate="Emerson"></span>
+          </label>
+          <label>
+            <span translate="Service Representative"></span> : {{valueProvider.getUser().Name}}
+          </label>
+          <label *ngIf="engineer && engineer.Engg_Sign_Time" class="timestamp">
+            {{valueProvider.getFormattedTime(engineer.Engg_Sign_Time)}}</label>
+        </ion-col>
+      </ion-row>
+    </ion-card-content>
+    <ion-row class="stroke"></ion-row>
+    <ion-row text-center>
+      <button ion-button class="reviewed-btn btn summary-reviewBtn" *ngIf="taskStatusId == enums.Jobstatus.Debrief_Started" (click)="submitsignature()">{{'Reviewed' | translate}}</button>
+    </ion-row>
+  </ion-card>
+
+  <ion-card *ngIf="taskStatus=='Completed-Awaiting Review' || taskStatusId == enums.Jobstatus.Debrief_In_Progress || taskStatusId == enums.Jobstatus.Debrief_Declined">
+    <ion-card-header>
+      <ion-row class="global-padding">
+        <h1>{{'Signature' | translate}}</h1>
+      </ion-row>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-row class="signature-UI">
+        <ion-col col-6 text-center>
+          <label class="summary-sign-label">
+            <span translate="Emerson"></span>
+          </label>
+          <label class="summary-sign-label">
+            <span translate="Service Representative"></span> : {{valueProvider.getUser().Name}}
+          </label>
+        </ion-col>
+        <ion-col col-6 text-center>
+          <h3>{{taskObj.Customer_Name}}</h3>
+          <label *ngIf="customer">
+            <span class="block value">{{'Customer Representative' | translate}} : {{customer.Customer_Name ?
+              customer.Customer_Name : ''}}</span>
+            <span class="value">{{ 'Job Responsibility' | translate }} : {{ customer.Job_responsibilty ?
+              customer.Job_responsibilty : '' }}</span>
+          </label>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="engineer">
+        <ion-col col-6 *ngIf="engineer" text-center>
+          <img src="{{engineer.Sign_File_Path}}" />
+        </ion-col>
+        <ion-col col-6 *ngIf="customer" text-center>
+          <img src="{{customer.Cust_Sign_File}}" />
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col col-6 class="center-align" *ngIf="engineer" text-center>
+          <ion-label>{{valueProvider.getFormattedTime(engineer.Engg_Sign_Time)}}</ion-label>
+        </ion-col>
+        <ion-col col-6 class="center-align" *ngIf="customer" text-center>
+          <ion-label>{{valueProvider.getFormattedTime(customer.Cust_Sign_Time)}}</ion-label>
+        </ion-col>
+      </ion-row>
+      <ion-row class="stroke"></ion-row>
+      <ion-row class="summary-footer">
+        <ion-col col-4>
+          <button *ngIf="taskStatus=='Completed-Awaiting Review'" class="summary-report-backbtn" (click)="backToFieldJobs()"
+            translate="Back"></button>
+        </ion-col>
+        <ion-col col-4 text-center no-padding>
+          <button *ngIf="taskStatusId == enums.Jobstatus.Debrief_In_Progress || taskStatusId == enums.Jobstatus.Debrief_Declined"
+            class="summary-report-backbtn" (click)="submitAdditionalData(enums.Jobstatus.Completed_Awaiting_Review)"
+            translate="Submit Final Debrief"></button>
+        </ion-col>
+        <ion-col col-4 text-center no-padding>
+          <ion-col col-2>
+            <span>
+              <img (click)="openPdf(false)" src="assets/imgs/icons/ic_pdf.png" id="pdfbtn1" class="summary-report-pdfbtn">
+            </span>
+          </ion-col>
+          <ion-col col-2>
+            <span>
+              <img (click)="openPdf(false)" src="assets/imgs/icons/ic_print.png" id="printbtn1" class="summary-report-printbtn">
+            </span>
+          </ion-col>
+          <ion-col col-2>
+            <span>
+              <img (click)="openPdf(true)" src="assets/imgs/icons/ic_email_to.png" id="emailbtn1" class="summary-report-emailbtn">
+            </span>
+          </ion-col>
+          <!-- 11/12/2018 -- Mayur Varshney -- Add SDR Button on job completion if user select Both (FCR then SDR process) -- Start-->
+          <!-- 25-03-2019 Radheshyam kumar commented this code -->
+          <!-- <ion-col col-2 *ngIf="taskStatusId == enums.Jobstatus.Completed_Awaiting_Review && selectedProcess == enums.Selected_Process.FCR_AND_SDR && taskObj.Business_Unit != enums.BusinessUnitNames.PWS">
+            <button class="summary-report-SDRbtn" (click)="gotoSDR()" translate="SDR"></button>
+          </ion-col> -->
+          <!-- 11/12/2018 -- Mayur Varshney -- End -->
+        </ion-col>
+      </ion-row>
+    </ion-card-content>
+  </ion-card>
+
+  <!--START 07/24/2018 Zohaib Khan
+    Added Disclaimer section in summary page -->
+  <ion-card *ngIf="valueProvider.getUserPreferences()[0].FSR_Disclaimer=='true'||valueProvider.getUserPreferences()[0].FSR_Disclaimer==true">
+    <ion-card-header>
+      <ion-row class="global-padding">
+        <h1 translate="Disclaimer"></h1>
+      </ion-row>
+    </ion-card-header>
+    <ion-card-content>
+      <div class="full-width" text-center>
+        <span class="question_label block">
+          {{'Estimated travel time for return trip. Actual time may be corrected upon arrival. This allows for any delays such as gates, guards, or traffic.' | translate}}
+        </span>
+      </div>
+    </ion-card-content>
+  </ion-card>
+  <!-- END 07/24/2018 Zohaib Khan
+        Added Disclaimer section in summary page -->
+  <ion-card *ngIf="valueProvider.getSortedModifiedTime() && valueProvider.getSortedModifiedTime().length>0">
+    <ion-card-header>
+      <ion-row class="global-padding">
+        <h1>{{'Updated Time prior to Customer Signature' | translate}}</h1>
+      </ion-row>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-row class="global-padding">
+        <!-- 08062018 KW START removed Service Date and Start Time/End Time label and added Start Date Time and End Date Time -->
+        <ion-col class="label">
+          <span>{{'Start Date Time' | translate}}</span> /
+          <span class="block">{{'End Date Time' | translate}}</span>
+        </ion-col>
+        <!-- END -->
+        <ion-col class="label">{{'Charge Method' | translate}}</ion-col>
+        <ion-col class="label">{{'Work Type' | translate}}</ion-col>
+        <ion-col class="label" *ngIf="isClarityUser">{{'Overtime Code' | translate}}</ion-col>
+        <ion-col class="label" *ngIf="isClarityUser">{{'Shift Code' | translate}}</ion-col>
+        <ion-col class="label summary-duration" text-left>{{'Duration' | translate}}</ion-col>
+        <ion-col class="label">{{'Item' | translate}}</ion-col>
+      </ion-row>
+      <ion-list class="table-striped">
+        <ion-row *ngFor="let time of valueProvider.getSortedModifiedTime(); let i = index">
+          <!-- 10/31/2018 Zohaib Khan: Added class to make the row strippeed based on entry only if entry is original -->
+          <ion-row class="global-padding" [ngClass]="(time.CurrentMobileId && time.DB_Syncstatus == 'true') ? 'strippedBackground': ''" style="width: 100%;">
+            <ion-col class="value">
+              <!-- 08062018 KW START removed Service Date value and added Start Date Time and End Date Time value -->
+              <span [ngClass]="((time.Service_Start_Date == 'Sub Total') || (time.Service_Start_Date == 'Grand Total')) ? '': 'start-Date-Style'">
+                {{time.Service_Start_Date && (time.Service_Start_Date == 'Sub Total' || time.Service_Start_Date == 'Grand Total') ? (time.Service_Start_Date | translate) : (time.displayStartDate) +' '+ (time.Start_Time)}}
+              </span>
+              <span>{{(time.Service_Start_Date == 'Sub Total' || time.Service_Start_Date == 'Grand Total') ? '' : ' / '}}</span>
+              <span [ngClass]="((time.Service_Start_Date == 'Sub Total') || (time.Service_Start_Date == 'Grand Total')) ? '': 'end-Date-Style block'">
+                {{time.Service_Start_Date && (time.Service_Start_Date == 'Sub Total' || time.Service_Start_Date == 'Grand Total') ? '' : (time.displayEndDate) +' '+ (time.End_Time)}}
+              </span>
+            </ion-col>
+            <!-- END -->
+            <ion-col class="value">{{time.Charge_Method | translate}}</ion-col>
+            <ion-col class="value">{{ time.Work_Type | translate }}</ion-col>
+            <ion-col class="value" *ngIf="isClarityUser">{{time.Time_Code}} </ion-col>
+            <ion-col class="value" *ngIf="isClarityUser">{{time.Shift_Code}} </ion-col>
+            <ion-col class="value summary-duration" text-left [ngStyle]="{'font-weight':time.grandTotal}">{{time.Duration}}</ion-col>
+            <ion-col class="value">{{time.Item | translate}}</ion-col>
+
+          </ion-row>
+        </ion-row>
+
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+  <ion-card *ngIf="valueProvider.getadditionalTime() && valueProvider.getadditionalTime().length>0">
+    <ion-card-header>
+      <ion-row class="global-padding">
+        <h1>{{'Additional Time' | translate}}</h1>
+      </ion-row>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-row class="global-padding">
+        <!-- 08062018 KW START removed Service Date and Start Time/End Time label and added Start Date Time and End Date Time -->
+        <ion-col class="label">
+          <span>{{'Start Date Time' | translate}}</span> /
+          <span class="block">{{'End Date Time' | translate}}</span>
+        </ion-col>
+        <!-- END -->
+        <ion-col class="label">{{'Charge Method' | translate}}</ion-col>
+        <ion-col class="label">{{'Work Type' | translate}}</ion-col>
+        <ion-col class="label" *ngIf="isClarityUser">{{'Overtime Code' | translate}}</ion-col>
+        <ion-col class="label" *ngIf="isClarityUser">{{'Shift Code' | translate}}</ion-col>
+        <ion-col class="label summary-duration" text-left>{{'Duration' | translate}}</ion-col>
+        <ion-col class="label">{{'Item' | translate}}</ion-col>
+      </ion-row>
+      <ion-list class="table-striped">
+        <ion-row class="strippedClass global-padding" *ngFor="let time of valueProvider.getadditionalTime(); let i = index">
+          <ion-col class="value">
+            <!-- 08062018 KW START removed Service Date value and added Start Date Time and End Date Time value -->
+            <span [ngClass]="((time.Service_Start_Date == 'Sub Total') || (time.Service_Start_Date == 'Grand Total')) ? '': 'start-Date-Style'">
+              {{time.Service_Start_Date && (time.Service_Start_Date == 'Sub Total' || time.Service_Start_Date == 'Grand Total') ? (time.Service_Start_Date | translate) : (time.displayStartDate) +' '+ (time.Start_Time)}}
+            </span>
+            <span>{{(time.Service_Start_Date == 'Sub Total' || time.Service_Start_Date == 'Grand Total') ? '' : ' / '}}</span>
+            <span [ngClass]="((time.Service_Start_Date == 'Sub Total') || (time.Service_Start_Date == 'Grand Total')) ? '': 'end-Date-Style block'">
+              {{time.Service_Start_Date && (time.Service_Start_Date == 'Sub Total' || time.Service_Start_Date == 'Grand Total') ? '' : (time.displayEndDate) +' '+ (time.End_Time)}}
+            </span>
+          </ion-col>
+          <!-- END -->
+          <ion-col class="value">{{time.Charge_Method | translate}}</ion-col>
+          <ion-col class="value">{{ time.Work_Type | translate }}</ion-col>
+          <ion-col class="value" *ngIf="isClarityUser">{{time.Time_Code}} </ion-col>
+          <ion-col class="value" *ngIf="isClarityUser">{{time.Shift_Code}} </ion-col>
+          <ion-col class="value summary-duration" text-left [ngStyle]="{'font-weight':time.grandTotal}">{{time.Duration}}</ion-col>
+          <ion-col class="value">{{time.Item | translate}}</ion-col>
+        </ion-row>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card *ngIf="valueProvider.getSortedModifiedMaterial() && valueProvider.getSortedModifiedMaterial().length>0">
+    <ion-card-header>
+      <ion-row class="global-padding">
+        <h1>{{'Updated Material prior to Customer Signature' | translate}}</h1>
+      </ion-row>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-row class="global-padding full-width">
+        <div class="label sm-mth-cm">{{'Charge Method' | translate}}</div>
+        <div class="label sm-mth-q">{{'Quantity' | translate}}</div>
+        <!-- <div class="label sm-mth-s">
+          {{'Serial' | translate}}
+          <span>#</span>
+        </div> -->
+        <div class="label sm-mth-si">{{'Serial In' | translate}}</div>
+        <div class="label sm-mth-so">{{'Serial Out' | translate}}</div>
+        <div class="label sm-mth-in">{{'Item Name' | translate}}</div>
+        <div class="label sm-mth-id">{{'Description' | translate}}</div>
+
+        <!--08/03/2018 Mayur Varshney
+          remove text-center for making all fields left align
+        -->
+
+        <div class="label sm-mth-uom">{{'UOM' | translate}}</div>
+      </ion-row>
+      <ion-list class="table-striped">
+        <ion-row *ngFor="let material of valueProvider.getSortedModifiedMaterial(); let i = index">
+          <!-- 10/31/2018 Zohaib Khan: Added class to make the row strippeed based on entry -->
+          <ion-row class="global-padding full-width" [ngClass]="(material[0].CurrentMobileId && material[0].Sync_Status == 'true') ? 'strippedBackground': ''"
+            style="width: 100%;">
+            <div class="value materialListStyle sm-mth-cm">{{material[0].Charge_Type | translate}}</div>
+            <div class="value materialListStyle sm-mth-q">{{material.length}}</div>
+            <!-- <div class="value serialTypeStyle sm-mth-s">
+              <span class="summarySerialblock  block" *ngFor="let serialno of material.SerialArray">
+                {{serialno.Serial_Number}}
+              </span>
+            </div> -->
+            <div class="value serialTypeStyle sm-mth-si-so">
+              <div *ngFor="let serialInOut of material">
+                <span *ngIf="serialInOut.Serial_In || serialInOut.Serial_Out" class="summarySerialInblock inline-block">
+                  {{serialInOut.Serial_In}}
+                </span>
+                <span *ngIf="serialInOut.Serial_In || serialInOut.Serial_Out" class="summarySerialOutblock inline-block">
+                  {{serialInOut.Serial_Out}}
+                </span>
+              </div>
+            </div>
+            <div class="value materialListStyle sm-mth-in">{{material[0].ItemName}}</div>
+            <div class="value materialListStyle sm-mth-id">{{material[0].Description}}</div>
+            <div class="value materialListStyle sm-mth-uom">{{material[0].UOM}}</div>
+          </ion-row>
+        </ion-row>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card *ngIf="valueProvider.getAdditionalMaterial() && valueProvider.getAdditionalMaterial().length>0">
+    <ion-card-header>
+      <ion-row class="global-padding">
+        <h1>{{'Additional Material' | translate}}</h1>
+      </ion-row>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-row class="global-padding full-width">
+        <div class="label sm-mth-cm">{{'Charge Method' | translate}}</div>
+        <div class="label sm-mth-q">{{'Quantity' | translate}}</div>
+        <!-- <div class="label sm-mth-s">
+          {{'Serial' | translate}}
+          <span>#</span>
+        </div> -->
+        <div class="label sm-mth-si">{{'Serial In' | translate}}</div>
+        <div class="label sm-mth-so">{{'Serial Out' | translate}}</div>
+        <div class="label sm-mth-in">{{'Item Name' | translate}}</div>
+        <div class="label sm-mth-id">{{'Description' | translate}}</div>
+
+        <!--08/03/2018 Mayur Varshney
+          remove text-center for making all fields left align
+        -->
+
+        <div class="label sm-mth-uom">{{'UOM' | translate}}</div>
+      </ion-row>
+      <ion-list class="table-striped">
+        <ion-row class="strippedClass global-padding full-width" *ngFor="let material of valueProvider.getAdditionalMaterial(); let i = index">
+          <div class="value materialListStyle sm-mth-cm">{{material[0].Charge_Type | translate}}</div>
+          <div class="value materialListStyle sm-mth-q">{{material.length}}</div>
+          <!-- <div class="value serialTypeStyle sm-mth-s">
+            <span class="summarySerialblock  block" *ngFor="let serialno of material.SerialArray">
+              {{serialno.Serial_Number}}
+            </span>
+          </div> -->
+          <div class="value serialTypeStyle sm-mth-si-so">
+            <div *ngFor="let serialInOut of material">
+              <span *ngIf="serialInOut.Serial_In || serialInOut.Serial_Out" class="summarySerialInblock inline-block">
+                {{serialInOut.Serial_In}}
+              </span>
+              <span *ngIf="serialInOut.Serial_Out || serialInOut.Serial_In" class="summarySerialOutblock inline-block">
+                {{serialInOut.Serial_Out}}
+              </span>
+            </div>
+          </div>
+          <div class="value materialListStyle sm-mth-in">{{material[0].ItemName}}</div>
+          <div class="value materialListStyle sm-mth-id">{{material[0].Description}}</div>
+          <div class="value materialListStyle sm-mth-uom">{{material[0].UOM}}</div>
+        </ion-row>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

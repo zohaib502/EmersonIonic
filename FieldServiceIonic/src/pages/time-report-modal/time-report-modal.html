@@ -1,0 +1,41 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title class="padding-style">{{'Time Report' | translate}}</ion-title>
+    <ion-buttons end>
+      <button ion-button class="closebtn" (click)="closeModal()" id="tr1"><i class="fa fa-times fa-2x"></i></button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+  <div class="contentBox">
+    <ion-row>
+      <div class="spacingMargin inline-block">
+        <ion-col no-padding>
+          <ion-label class="label">{{'From Date' | translate}}<span class="validator"></span></ion-label>
+          <input id="tr2" type="text" class="date-box inline-block" [disabled]="!isEnabled" bsDatepicker [(bsValue)]="from_date"
+            #dps="bsDatepicker" [bsConfig]="datepickerConfig" [minDate]="minDate" (onHidden)="checkDateWindow()"
+            value="{{from_date | date:'dd-MMM-yyyy'}}" (onShown)="onShowPicker($event)">
+          <span><img (click)="dps.show()" [attr.aria-expanded]="dps.isOpen" id="tr3"
+              src="assets/imgs/icons/ic_calendar-for-field.png" class="calIcon pointer" /></span>
+        </ion-col>
+      </div>
+      <div class="spacingMargin inline-block">
+        <ion-col no-padding>
+          <ion-label class="label">{{'To Date' | translate}}<span class="validator"></span></ion-label>
+          <input id="tr4" type="text" class="date-box inline-block" [disabled]="!isEnabled" bsDatepicker [(bsValue)]="to_date"
+            #dp="bsDatepicker" [bsConfig]="datepickerConfig" value="{{to_date | date:'dd-MMM-yyyy'}}"
+            [minDate]="from_date" (onShown)="onShowPicker($event)">
+          <span><img (click)="dp.show()" [attr.aria-expanded]="dp.isOpen"
+              src="assets/imgs/icons/ic_calendar-for-field.png" class="calIcon pointer" id="tr5" /></span>
+        </ion-col>
+      </div>
+      <div class="inline-block">
+        <ion-label class="label btnlabel"></ion-label>
+        <button ion-button (click)="exportData()" class="save-btn btn inline-block filterBtn verticalMiddle" id="tr6">{{'Export Time Report'
+          | translate}}</button>
+      </div>
+    </ion-row>
+  </div>
+</ion-content>

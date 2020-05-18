@@ -1,0 +1,95 @@
+<ion-content padding>
+  <ion-card>
+    <ion-card-header>
+      <ion-row class="global-padding">
+        <ion-col col-4 no-padding>
+          <h1>{{'Service Representative' | translate}}</h1>
+        </ion-col>
+        <ion-col col-8 text-right no-padding>
+          <span class="continue-navigation" *ngIf="_taskObj.Selected_Process == enums.Selected_Process.FCR_AND_SDR && _taskObj.Business_Unit != enums.BusinessUnitNames.PWS">
+              <span class="continue-text"> {{'Continue' | translate}}</span>
+            <button ion-button class="sdr-btn" (click)="gotoSDR()">{{'Service Detail Report' | translate}}</button>
+          </span>
+          <span class="pageNavigationBtn"><span (click)="gottoNotes()" style="margin-right: 70px" class="pointer">&lt; {{'Notes' | translate}}</span><span (click)="submitsignature()" [class.disableSummary]="enableSummary" class="pointer">{{'Summary'| translate}} &gt;</span></span>
+        </ion-col>
+      </ion-row>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-row class="signaturePage-padding" *ngIf="_taskObj.IsStandalone != 'true'">
+        <ion-col col-2></ion-col>
+        <ion-col col-2>
+          <ion-item class="followUP">
+            <ion-label [ngClass]="engineerObject.followUp ? 'checkbox-label followUPLabel':'followUPLabel'" translate="Follow-Up"></ion-label>
+            <ion-checkbox checkbox-positive ng-checked="engineerObject.followUp" [(ngModel)]="engineerObject.followUp" (ionChange)="clearfollowUp()"></ion-checkbox>
+          </ion-item>
+        </ion-col>
+        <ion-col col-2>
+          <ion-item class="followUP">
+            <ion-label [ngClass]="engineerObject.salesQuote ? 'checkbox-label followUPLabel':'followUPLabel'" translate="Spare Quote"></ion-label>
+            <ion-checkbox checkbox-positive ng-checked="engineerObject.salesQuote" [(ngModel)]="engineerObject.salesQuote" (ionChange)="clearSpareQuote()"></ion-checkbox>
+          </ion-item>
+        </ion-col>
+        <ion-col col-2>
+          <ion-item class="followUP">
+            <ion-label [ngClass]="engineerObject.salesVisit ? 'checkbox-label followUPLabel':'followUPLabel'" translate="Sales Visit"></ion-label>
+            <ion-checkbox checkbox-positive ng-checked="engineerObject.salesVisit" [(ngModel)]="engineerObject.salesVisit" (ionChange)="clearSalesVisit()"></ion-checkbox>
+          </ion-item>
+        </ion-col>
+        <ion-col col-2>
+          <ion-item class="followUP">
+            <ion-label [ngClass]="engineerObject.salesLead ? 'checkbox-label followUPLabel':'followUPLabel'" translate="Sales Lead"></ion-label>
+            <ion-checkbox checkbox-positive ng-checked="engineerObject.salesLead" [(ngModel)]="engineerObject.salesLead" (ionChange)="clearSalesLead()"></ion-checkbox>
+          </ion-item>
+        </ion-col>
+        <ion-col col-2></ion-col>
+      </ion-row>
+      <ion-row *ngIf="_taskObj.IsStandalone != 'true' && engineerObject.followUp" class="signaturePage-padding">
+        <ion-col col-2></ion-col>
+        <ion-col col-8>
+          <ion-textarea class="engSign-textarea" maxlength="500" (keypress)="_keyPressInText($event)" [(ngModel)]="engineerObject.Follow_Up" placeholder="{{'Additional Information On Follow-Up' | translate }}"></ion-textarea>
+        </ion-col>
+        <ion-col col-2></ion-col>
+      </ion-row>
+      <ion-row *ngIf="_taskObj.IsStandalone != 'true' && engineerObject.salesQuote" class="signaturePage-padding">
+        <ion-col col-2></ion-col>
+        <ion-col col-8>
+          <ion-textarea class="engSign-textarea" maxlength="500" (keypress)="_keyPressInText($event)" [(ngModel)]="engineerObject.Spare_Quote" placeholder="{{'Additional Information On Spare Quote' | translate}}"></ion-textarea>
+        </ion-col>
+        <ion-col col-2></ion-col>
+      </ion-row>
+      <ion-row *ngIf="_taskObj.IsStandalone != 'true' && engineerObject.salesVisit" class="signaturePage-padding">
+        <ion-col col-2></ion-col>
+        <ion-col col-8>
+          <ion-textarea class="engSign-textarea" maxlength="500" (keypress)="_keyPressInText($event)" [(ngModel)]="engineerObject.Sales_Visit" placeholder="{{'Additional Information On Sales Visit' | translate}}"></ion-textarea>
+        </ion-col>
+        <ion-col col-2></ion-col>
+      </ion-row>
+      <ion-row *ngIf="_taskObj.IsStandalone != 'true' && engineerObject.salesLead" class="signaturePage-padding">
+        <ion-col col-2></ion-col>
+        <ion-col col-8>
+          <ion-textarea class="engSign-textarea" maxlength="500" (keypress)="_keyPressInText($event)" [(ngModel)]="engineerObject.Sales_Head" placeholder="{{'Additional Information On Sales Lead' | translate}}"></ion-textarea>
+        </ion-col>
+        <ion-col col-2></ion-col>
+      </ion-row>
+      <ion-row class="bg-signature-field">
+        <signature-pad class="col-md-12" [options]="signaturePadOptions" id="signatureCanvas" (onEndEvent)="updateEnggTime()"></signature-pad>
+      </ion-row>
+      <ion-item>
+        <ion-label>{{valueService.getFormattedTime(engineerObject.Engg_Sign_Time)}}</ion-label>
+      </ion-item>
+      <ion-row>
+        <ion-col col-4></ion-col>
+        <ion-col col-4 class="engSign-label center-block" translate="Service Representative Signature"></ion-col>
+        <ion-col col-4></ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col col-4></ion-col>
+        <ion-col col-4 class="center-block">
+          <button ion-button class="clear-btn btn" (click)="drawClear()">{{'Clear'| translate}}</button>
+          <button ion-button class="next-btn btn" (click)="submitsignature()" [disabled]="signaturePad.isEmpty()"> {{'Next'| translate}}</button>
+        </ion-col>
+        <ion-col col-4></ion-col>
+      </ion-row>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

@@ -1,0 +1,120 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>{{'Feedback Details' | translate}}</ion-title>
+    <ion-buttons end>
+      <button ion-button class="closebtn" (click)="closeModal()">
+        <i class="fa fa-times fa-2x"></i>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-row class="full-width" *ngIf="ifAvgRating">
+    <div class="spacingMargin ratingStar">
+      <ion-col col-9 no-padding>
+        <rating disabled [(ngModel)]="fiveRating" readOnly="true" max="5" emptyStarIconName="star-outline" halfStarIconName="star-half"
+          starIconName="star" nullable="false">
+        </rating>
+      </ion-col>
+      <ion-col col-3 no-padding>
+        <div class="reviewcount inline-block" (click)="setFeedbackList(fiveRating)">
+          <span class="verticalMiddle">{{fiveStarCount}} {{'Reviews' | translate}}</span>
+        </div>
+      </ion-col>
+    </div>
+  </ion-row>
+  <ion-row class="full-width" *ngIf="ifAvgRating">
+    <div class="spacingMargin ratingStar">
+      <ion-col col-9 no-padding>
+        <rating disabled [(ngModel)]="fourRating" readOnly="true" max="5" emptyStarIconName="star-outline" halfStarIconName="star-half"
+          starIconName="star" nullable="false">
+        </rating>
+      </ion-col>
+      <ion-col col-3 no-padding>
+        <div class="reviewcount inline-block" (click)="setFeedbackList(fourRating)">
+          <span class="verticalMiddle">{{fourStarCount}} {{'Reviews' | translate}}</span>
+        </div>
+      </ion-col>
+    </div>
+  </ion-row>
+  <ion-row class="full-width" *ngIf="ifAvgRating">
+    <div class="spacingMargin ratingStar">
+      <ion-col col-9 no-padding>
+        <rating disabled [(ngModel)]="threeRating" readOnly="true" max="5" emptyStarIconName="star-outline" halfStarIconName="star-half"
+          starIconName="star" nullable="false">
+        </rating>
+      </ion-col>
+      <ion-col col-3 no-padding>
+        <div class="reviewcount inline-block" (click)="setFeedbackList(threeRating)">
+          <span class="verticalMiddle">{{threeStarCount}} {{'Reviews' | translate}}</span>
+        </div>
+      </ion-col>
+    </div>
+  </ion-row>
+  <ion-row class="full-width" *ngIf="ifAvgRating">
+    <div class="spacingMargin ratingStar">
+      <ion-col col-9 no-padding>
+        <rating disabled [(ngModel)]="twoRating" readOnly="true" max="5" emptyStarIconName="star-outline" halfStarIconName="star-half"
+          starIconName="star" nullable="false">
+        </rating>
+      </ion-col>
+      <ion-col col-3 no-padding>
+        <div class="reviewcount inline-block" (click)="setFeedbackList(twoRating)">
+          <span class="verticalMiddle">{{twoStarCount}} {{'Reviews' | translate}}</span>
+        </div>
+      </ion-col>
+    </div>
+  </ion-row>
+  <ion-row class="full-width" *ngIf="ifAvgRating">
+    <div class="spacingMargin ratingStar">
+      <ion-col col-9 no-padding>
+        <rating disabled [(ngModel)]="oneRating" readOnly="true" max="5" emptyStarIconName="star-outline" halfStarIconName="star-half"
+          starIconName="star" nullable="false">
+        </rating>
+      </ion-col>
+      <ion-col col-3 no-padding>
+        <div class="reviewcount inline-block" (click)="setFeedbackList(oneRating)">
+          <span class="verticalMiddle">{{oneStarCount}} {{'Reviews' | translate}}</span>
+        </div>
+      </ion-col>
+    </div>
+  </ion-row>
+
+  <ion-row class="global-padding" style="width:100%" *ngIf="!ifAvgRating">
+    <div class="spacingMargin" style="width:50%">
+      <ion-col no-padding>
+        <ion-label class="label">{{'Email' | translate}}</ion-label>
+        <span class="value">{{userFeedback.USER_EMAIL}}</span>
+      </ion-col>
+    </div>
+    <div class="spacingMargin">
+      <ion-col no-padding>
+        <ion-label class="label">{{'Date' | translate}}</ion-label>
+        <!-- 26-7-18, Suraj Gorai, Use custom Moment for show date, Start -->
+        <span class="value"> {{Moment(userFeedback.FEEDBACK_DATE).format('DD-MMM-YYYY')}}</span>
+        <!-- 26-7-18, Suraj Gorai, End -->
+      </ion-col>
+    </div>
+  </ion-row>
+  <ion-row class="global-padding full-width" *ngIf="!ifAvgRating">
+    <div class="full-width ratingStar" *ngFor="let ques of questions">
+      <div class="spacingMargin inline-block" style="width:50%">
+        <ion-col no-padding>
+          <ion-label class="label">{{ques.Questions | translate}}</ion-label>
+          <rating disabled [(ngModel)]="userFeedback.RATING" readOnly="true" max="5" emptyStarIconName="star-outline" halfStarIconName="star-half"
+            starIconName="star" nullable="false">
+          </rating>
+        </ion-col>
+      </div>
+    </div>
+  </ion-row>
+  <ion-row class="global-padding" style="width:100%" *ngIf="!ifAvgRating">
+    <div class="spacingMargin">
+      <ion-col no-padding>
+        <ion-label class="label">{{'Comments' | translate}}</ion-label>
+        <span class="value">{{userFeedback.COMMENTS}}</span>
+      </ion-col>
+    </div>
+  </ion-row>
+</ion-content>

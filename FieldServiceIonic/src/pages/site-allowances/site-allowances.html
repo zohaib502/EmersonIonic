@@ -1,0 +1,687 @@
+<ion-header>
+  <page-custom-header [header]="headerData"></page-custom-header>
+</ion-header>
+
+<ion-content padding class="page-background common-css">
+  <ion-card>
+    <ion-row class="global-padding full-width paddingBottom0">
+      <div class="day-week-view">
+        <div class="week-left-btn inline-block">
+          <div class="previous-week pointer" *ngIf="enableDisableDate" (click)="setWeekDay('setWeekStart')">
+            <i class="fa fa-angle-left left-icon"></i>
+          </div>
+        </div>
+        <div class="week-dates inline-block">
+          {{weekStart}} - {{weekEnd}}
+        </div>
+        <div class="calendar inline-block">
+          <input type="text" tappable class="cal-date-box inline-block" bsDatepicker [bsConfig]="datepickerConfig" value="{{ calendarSelectedDay }}" [(ngModel)]="calendarSelectedDay"
+            #dps="bsDatepicker" (onShown)="onShowPicker($event)" (onHidden)="getDurationOnDate(true)" >
+          <span>
+            <img (click)="dps.show()" tappable [attr.aria-expanded]="dps.isOpen"
+              src="assets/imgs/icons/ic_calendar-for-field.png" class="calIcon pointer" />
+          </span>
+
+        </div>
+        <div class="week-right-btn inline-block">
+          <div class="next-week pointer" *ngIf="!futureWeek" (click)="setWeekDay('setWeekEnd')">
+            <i class="fa fa-angle-right right-icon"></i>
+          </div>
+        </div>
+      </div>
+      <div class="delete-div">
+        <button ion-button class="deleteBtn" [disabled]="!allowanceListLength" (click)="deleteTime()">{{'Delete Entire Week' | translate}}
+        </button>
+      </div>
+    </ion-row>
+    <ion-row class="full-width">
+      <ion-item class="WF-toggle toggle-all-accordion">
+        <ion-label *ngIf="toggleAllaccordion == false">{{'Expand all' | translate}}</ion-label>
+        <ion-label *ngIf="toggleAllaccordion == true">{{'Collapse all' | translate}}</ion-label>
+        <ion-toggle [(ngModel)]="toggleAllaccordion" (ngModelChange)="expandAll($event)"></ion-toggle>
+      </ion-item>
+    </ion-row>
+    <ion-row class="full-width">
+      <div class="value inline-block gridLabel">
+        <div class="emptygrid"></div>
+        <div class="weekLabel"><label class="label dayLabel">{{'Allowances' | translate}}</label></div>
+      </div>
+      <div *ngFor="let day of days" class="input-grid">
+        <div class="dayNameLabel"><label class="label dayLabel">{{day.dayName}}</label></div>
+        <div class="dayDateLabel"><label class="label">{{day.dayDate}}</label></div>
+      </div>
+    </ion-row>
+    <ion-list>
+      <ion-row>
+        <div class="section pointer">
+          <div
+              (click)="expandItem('Overtime')" class="inline-block">
+              <ion-icon class="arrowIcon" item-left name="arrow-dropright" *ngIf="overtimeExpanded == false">
+              </ion-icon>
+              <ion-icon class="arrowIcon" role="img" *ngIf="overtimeExpanded == true"
+                aria-label="arrow dropdown" name="arrow-dropdown"></ion-icon>
+              <span class="accordion-label"> {{'Overtime' | translate}} </span>
+            </div>
+        </div>
+        <div class="accordion" *ngIf="overtimeExpanded == true">
+          <ion-row class="full-width padding5 paddingTop0">
+            <div class="value inline-block input-gridLabel">{{'Hours' | translate}}</div>
+
+            <div class="input-grid">
+              <ion-input placeholder=""  maxlength="5"  (focusout)="calOvertime('Field1_Overtime_0')" [(ngModel)]="SiteAllowanceObj.Field1_Overtime_0" class="project-box select-style" [ngClass]="SiteAllowanceObj.Field2_Overtime_0 && SiteAllowanceObj.Field2_Overtime_0 !='No Value' && (SiteAllowanceObj.Field1_Overtime_0 == undefined || SiteAllowanceObj.Field1_Overtime_0 =='' || SiteAllowanceObj.Field1_Overtime_0 =='No Value')  ? 'input-validation' :''" [disabled]="isDisableDay0"></ion-input>
+            </div>
+            <div class="input-grid">
+              <ion-input  maxlength="5" (focusout)="calOvertime('Field1_Overtime_1')" [(ngModel)]="SiteAllowanceObj.Field1_Overtime_1" class="project-box select-style" [ngClass]="SiteAllowanceObj.Field2_Overtime_1 && SiteAllowanceObj.Field2_Overtime_1 !='No Value' && (SiteAllowanceObj.Field1_Overtime_1 == undefined || SiteAllowanceObj.Field1_Overtime_1 =='' || SiteAllowanceObj.Field1_Overtime_1 =='No Value')  ? 'input-validation' :''" [disabled]="isDisableDay1"></ion-input>
+            </div>
+            <div class="input-grid">
+              <ion-input  maxlength="5" (focusout)="calOvertime('Field1_Overtime_2')" [(ngModel)]="SiteAllowanceObj.Field1_Overtime_2" class="project-box select-style" [ngClass]="SiteAllowanceObj.Field2_Overtime_2 && SiteAllowanceObj.Field2_Overtime_2 !='No Value' && (SiteAllowanceObj.Field1_Overtime_2 == undefined || SiteAllowanceObj.Field1_Overtime_2 =='' || SiteAllowanceObj.Field1_Overtime_2 =='No Value')  ? 'input-validation' :''" [disabled]="isDisableDay2"></ion-input>
+            </div>
+            <div class="input-grid">
+              <ion-input  maxlength="5" (focusout)="calOvertime('Field1_Overtime_3')" [(ngModel)]="SiteAllowanceObj.Field1_Overtime_3" class="project-box select-style" [ngClass]="SiteAllowanceObj.Field2_Overtime_3 && SiteAllowanceObj.Field2_Overtime_3 !='No Value' && (SiteAllowanceObj.Field1_Overtime_3 == undefined || SiteAllowanceObj.Field1_Overtime_3 =='' || SiteAllowanceObj.Field1_Overtime_3 =='No Value')  ? 'input-validation' :''" [disabled]="isDisableDay3"></ion-input>
+            </div>
+            <div class="input-grid">
+              <ion-input  maxlength="5" (focusout)="calOvertime('Field1_Overtime_4')" [(ngModel)]="SiteAllowanceObj.Field1_Overtime_4" class="project-box select-style" [ngClass]="SiteAllowanceObj.Field2_Overtime_4 && SiteAllowanceObj.Field2_Overtime_4 !='No Value' && (SiteAllowanceObj.Field1_Overtime_4 == undefined || SiteAllowanceObj.Field1_Overtime_4 =='' || SiteAllowanceObj.Field1_Overtime_4 =='No Value')  ? 'input-validation' :''" [disabled]="isDisableDay4"></ion-input>
+            </div>
+            <div class="input-grid">
+              <ion-input  maxlength="5" (focusout)="calOvertime('Field1_Overtime_5')" [(ngModel)]="SiteAllowanceObj.Field1_Overtime_5" class="project-box select-style" [ngClass]="SiteAllowanceObj.Field2_Overtime_5 && SiteAllowanceObj.Field2_Overtime_5 !='No Value' && (SiteAllowanceObj.Field1_Overtime_5 == undefined || SiteAllowanceObj.Field1_Overtime_5 =='' || SiteAllowanceObj.Field1_Overtime_5 =='No Value')  ? 'input-validation' :''" [disabled]="isDisableDay5"></ion-input>
+            </div>
+            <div class="input-grid">
+              <ion-input   maxlength="5" (focusout)="calOvertime('Field1_Overtime_6')" [(ngModel)]="SiteAllowanceObj.Field1_Overtime_6" class="project-box select-style" [ngClass]="SiteAllowanceObj.Field2_Overtime_6 &&SiteAllowanceObj.Field2_Overtime_6 !='No Value' && (SiteAllowanceObj.Field1_Overtime_6 == undefined || SiteAllowanceObj.Field1_Overtime_6 =='' || SiteAllowanceObj.Field1_Overtime_6 =='No Value')  ? 'input-validation' :''" [disabled]="isDisableDay6"></ion-input>
+            </div>
+          </ion-row>
+          <ion-row class="full-width padding5">
+            <div class="value inline-block input-gridLabel">{{'Multiplier' | translate}}</div>
+
+            <div class="input-grid">
+              <ion-input [(ngModel)]="SiteAllowanceObj.Field2_Overtime_0"
+              name="SiteAllowanceObj.Field2_Overtime_0" class="project-box searchNSelect select-style"
+              [readonly]="true" tappable (click)="searchModal('Multiplier','Field2_Overtime_0')" [ngClass]="SiteAllowanceObj.Field1_Overtime_0 && SiteAllowanceObj.Field1_Overtime_0 !='No Value' && (SiteAllowanceObj.Field2_Overtime_0 == undefined || SiteAllowanceObj.Field2_Overtime_0 =='' || SiteAllowanceObj.Field2_Overtime_0 =='No Value') ? 'input-validation' :''" [disabled]="isDisableDay0">
+            </ion-input>
+            <ion-input maxlength="50" *ngIf="SiteAllowanceObj.Field2_Overtime_0 == 'Other'" (focusout)="trimSpace('Field2_Overtime_0_OT')" class="project-box otherProject-box"
+            [ngClass]="!SiteAllowanceObj.Field2_Overtime_0_OT ? 'input-validation': '' "
+            [(ngModel)]="SiteAllowanceObj.Field2_Overtime_0_OT" >
+          </ion-input>
+            </div>
+            <div class="input-grid">
+              <ion-input [(ngModel)]="SiteAllowanceObj.Field2_Overtime_1"
+              name="SiteAllowanceObj.Field2_Overtime_1" class="project-box searchNSelect select-style"
+              [readonly]="true" tappable (click)="searchModal('Multiplier','Field2_Overtime_1')" [ngClass]="SiteAllowanceObj.Field1_Overtime_1 && SiteAllowanceObj.Field1_Overtime_1 !='No Value' && (SiteAllowanceObj.Field2_Overtime_1 == undefined || SiteAllowanceObj.Field2_Overtime_1 =='' || SiteAllowanceObj.Field2_Overtime_1 =='No Value')  ? 'input-validation' :''" [disabled]="isDisableDay1">
+            </ion-input>
+            <ion-input maxlength="50" *ngIf="SiteAllowanceObj.Field2_Overtime_1 == 'Other'" (focusout)="trimSpace('Field2_Overtime_1_OT')" class="project-box otherProject-box" [ngClass]="!SiteAllowanceObj.Field2_Overtime_1_OT ? 'input-validation':'' " [(ngModel)]="SiteAllowanceObj.Field2_Overtime_1_OT">
+              </ion-input>
+            </div>
+            <div class="input-grid">
+              <ion-input [(ngModel)]="SiteAllowanceObj.Field2_Overtime_2"
+              name="SiteAllowanceObj.Field2_Overtime_2" class="project-box searchNSelect select-style"
+              [readonly]="true" tappable (click)="searchModal('Multiplier','Field2_Overtime_2')" [ngClass]="SiteAllowanceObj.Field1_Overtime_2 && SiteAllowanceObj.Field1_Overtime_2 !='No Value' && (SiteAllowanceObj.Field2_Overtime_2 == undefined || SiteAllowanceObj.Field2_Overtime_2 =='' || SiteAllowanceObj.Field2_Overtime_2 =='No Value')  ? 'input-validation' :''" [disabled]="isDisableDay2">
+            </ion-input>
+            <ion-input maxlength="50" *ngIf="SiteAllowanceObj.Field2_Overtime_2 == 'Other'" (focusout)="trimSpace('Field2_Overtime_2_OT')" class="project-box otherProject-box" [ngClass]="!SiteAllowanceObj.Field2_Overtime_2_OT ? 'input-validation':'' " [(ngModel)]="SiteAllowanceObj.Field2_Overtime_2_OT">
+            </ion-input>
+            </div>
+            <div class="input-grid">
+              <ion-input [(ngModel)]="SiteAllowanceObj.Field2_Overtime_3"
+              name="SiteAllowanceObj.Field2_Overtime_3" class="project-box searchNSelect select-style"
+              [readonly]="true" tappable (click)="searchModal('Multiplier','Field2_Overtime_3')" [ngClass]="SiteAllowanceObj.Field1_Overtime_3 && SiteAllowanceObj.Field1_Overtime_3 !='No Value' && (SiteAllowanceObj.Field2_Overtime_3 == undefined || SiteAllowanceObj.Field2_Overtime_3 =='' || SiteAllowanceObj.Field2_Overtime_3 =='No Value')  ? 'input-validation' :''" [disabled]="isDisableDay3">
+            </ion-input>
+            <ion-input maxlength="50" *ngIf="SiteAllowanceObj.Field2_Overtime_3 == 'Other'" (focusout)="trimSpace('Field2_Overtime_3_OT')" class="project-box otherProject-box" [ngClass]="!SiteAllowanceObj.Field2_Overtime_3_OT ? 'input-validation':'' " [(ngModel)]="SiteAllowanceObj.Field2_Overtime_3_OT">
+            </ion-input>
+            </div>
+            <div class="input-grid">
+              <ion-input [(ngModel)]="SiteAllowanceObj.Field2_Overtime_4"
+              name="SiteAllowanceObj.Field2_Overtime_4" class="project-box searchNSelect select-style"
+              [readonly]="true" tappable (click)="searchModal('Multiplier','Field2_Overtime_4')" [ngClass]="SiteAllowanceObj.Field1_Overtime_4 && SiteAllowanceObj.Field1_Overtime_4 !='No Value' && (SiteAllowanceObj.Field2_Overtime_4 == undefined || SiteAllowanceObj.Field2_Overtime_4 =='' || SiteAllowanceObj.Field2_Overtime_4 =='No Value')  ? 'input-validation' :''" [disabled]="isDisableDay4">
+            </ion-input>
+            <ion-input maxlength="50" *ngIf="SiteAllowanceObj.Field2_Overtime_4 == 'Other'" (focusout)="trimSpace('Field2_Overtime_4_OT')" class="project-box otherProject-box" [ngClass]="!SiteAllowanceObj.Field2_Overtime_4_OT ? 'input-validation':'' " [(ngModel)]="SiteAllowanceObj.Field2_Overtime_4_OT">
+            </ion-input>
+            </div>
+            <div class="input-grid">
+              <ion-input [(ngModel)]="SiteAllowanceObj.Field2_Overtime_5"
+              name="SiteAllowanceObj.Field2_Overtime_5" class="project-box searchNSelect select-style"
+              [readonly]="true" tappable (click)="searchModal('Multiplier','Field2_Overtime_5')" [ngClass]="SiteAllowanceObj.Field1_Overtime_5 && SiteAllowanceObj.Field1_Overtime_5 !='No Value' && (SiteAllowanceObj.Field2_Overtime_5 == undefined || SiteAllowanceObj.Field2_Overtime_5 =='' || SiteAllowanceObj.Field2_Overtime_5 =='No Value')  ? 'input-validation' :''" [disabled]="isDisableDay5">
+            </ion-input>
+            <ion-input maxlength="50" *ngIf="SiteAllowanceObj.Field2_Overtime_5 == 'Other'" (focusout)="trimSpace('Field2_Overtime_5_OT')" class="project-box otherProject-box" [ngClass]="!SiteAllowanceObj.Field2_Overtime_5_OT ? 'input-validation':'' " [(ngModel)]="SiteAllowanceObj.Field2_Overtime_5_OT">
+            </ion-input>
+            </div>
+            <div class="input-grid">
+              <ion-input [(ngModel)]="SiteAllowanceObj.Field2_Overtime_6"
+              name="SiteAllowanceObj.Field2_Overtime_6" class="project-box searchNSelect select-style"
+              [readonly]="true" tappable (click)="searchModal('Multiplier','Field2_Overtime_6')" [ngClass]="SiteAllowanceObj.Field1_Overtime_6 && SiteAllowanceObj.Field1_Overtime_6 !='No Value' && (SiteAllowanceObj.Field2_Overtime_6 == undefined || SiteAllowanceObj.Field2_Overtime_6 =='' || SiteAllowanceObj.Field2_Overtime_6 =='No Value')  ? 'input-validation' :''" [disabled]="isDisableDay6">
+            </ion-input>
+            <ion-input maxlength="50" *ngIf="SiteAllowanceObj.Field2_Overtime_6 == 'Other'" (focusout)="trimSpace('Field2_Overtime_6_OT')" class="project-box otherProject-box" [ngClass]="!SiteAllowanceObj.Field2_Overtime_6_OT ? 'input-validation':'' " [(ngModel)]="SiteAllowanceObj.Field2_Overtime_6_OT">
+            </ion-input>
+            </div>
+          </ion-row>
+        </div>
+        <ion-row class="stroke full-width"></ion-row>
+      </ion-row>
+      <ion-row>
+        <div class="section pointer">
+          <div
+              (click)="expandItem('Travel')" class="inline-block">
+              <ion-icon class="arrowIcon" item-left name="arrow-dropright" *ngIf="travelExpanded == false">
+              </ion-icon>
+              <ion-icon class="arrowIcon" role="img" *ngIf="travelExpanded == true"
+                aria-label="arrow dropdown" name="arrow-dropdown"></ion-icon>
+              <span class="accordion-label"> {{'Travel' | translate}} </span>
+            </div>
+        </div>
+        <div class="accordion" *ngIf="travelExpanded == true">
+          <ion-row class="full-width padding5 paddingTop0">
+            <div class="value inline-block input-gridLabel">{{'Hours' | translate}}</div>
+
+            <div class="input-grid">
+              <ion-input placeholder="" maxlength="5" (focusout)="calOvertime('Field1_Travel_0')" [(ngModel)]="SiteAllowanceObj.Field1_Travel_0" class="project-box select-style" [ngClass]="SiteAllowanceObj.Field2_Travel_0 && SiteAllowanceObj.Field2_Travel_0 !='No Value' && (SiteAllowanceObj.Field1_Travel_0 == undefined || SiteAllowanceObj.Field1_Travel_0 =='' || SiteAllowanceObj.Field1_Travel_0 =='No Value')  ? 'input-validation' :''" [disabled]="isDisableDay0"></ion-input>
+            </div>
+            <div class="input-grid">
+              <ion-input placeholder="" maxlength="5" (focusout)="calOvertime('Field1_Travel_1')" [(ngModel)]="SiteAllowanceObj.Field1_Travel_1" class="project-box select-style" [ngClass]="SiteAllowanceObj.Field2_Travel_1 && SiteAllowanceObj.Field2_Travel_1 !='No Value' && (SiteAllowanceObj.Field1_Travel_1 == undefined || SiteAllowanceObj.Field1_Travel_1 =='' || SiteAllowanceObj.Field1_Travel_1 =='No Value')  ? 'input-validation' :''" [disabled]="isDisableDay1"></ion-input>
+            </div>
+            <div class="input-grid">
+              <ion-input placeholder="" maxlength="5" (focusout)="calOvertime('Field1_Travel_2')" [(ngModel)]="SiteAllowanceObj.Field1_Travel_2" class="project-box select-style" [ngClass]="SiteAllowanceObj.Field2_Travel_2 && SiteAllowanceObj.Field2_Travel_2 !='No Value' && (SiteAllowanceObj.Field1_Travel_2 == undefined || SiteAllowanceObj.Field1_Travel_2 =='' || SiteAllowanceObj.Field1_Travel_2 =='No Value')  ? 'input-validation' :''" [disabled]="isDisableDay2"></ion-input>
+            </div>
+            <div class="input-grid">
+              <ion-input placeholder="" maxlength="5" (focusout)="calOvertime('Field1_Travel_3')" [(ngModel)]="SiteAllowanceObj.Field1_Travel_3" class="project-box select-style" [ngClass]="SiteAllowanceObj.Field2_Travel_3 && SiteAllowanceObj.Field2_Travel_3 !='No Value' && (SiteAllowanceObj.Field1_Travel_3 == undefined || SiteAllowanceObj.Field1_Travel_3 =='' || SiteAllowanceObj.Field1_Travel_3 =='No Value')  ? 'input-validation' :''" [disabled]="isDisableDay3"></ion-input>
+            </div>
+            <div class="input-grid">
+              <ion-input placeholder="" maxlength="5" (focusout)="calOvertime('Field1_Travel_4')" [(ngModel)]="SiteAllowanceObj.Field1_Travel_4" class="project-box select-style" [ngClass]="SiteAllowanceObj.Field2_Travel_4 && SiteAllowanceObj.Field2_Travel_4 !='No Value' && (SiteAllowanceObj.Field1_Travel_4 == undefined || SiteAllowanceObj.Field1_Travel_4 =='' || SiteAllowanceObj.Field1_Travel_4 =='No Value')  ? 'input-validation' :''" [disabled]="isDisableDay4"></ion-input>
+            </div>
+            <div class="input-grid">
+              <ion-input placeholder="" maxlength="5" (focusout)="calOvertime('Field1_Travel_5')" [(ngModel)]="SiteAllowanceObj.Field1_Travel_5" class="project-box select-style" [ngClass]="SiteAllowanceObj.Field2_Travel_5 && SiteAllowanceObj.Field2_Travel_5 !='No Value' && (SiteAllowanceObj.Field1_Travel_5 == undefined || SiteAllowanceObj.Field1_Travel_5 =='' || SiteAllowanceObj.Field1_Travel_5 =='No Value')  ? 'input-validation' :''" [disabled]="isDisableDay5"></ion-input>
+            </div>
+            <div class="input-grid">
+              <ion-input placeholder="" maxlength="5" (focusout)="calOvertime('Field1_Travel_6')" [(ngModel)]="SiteAllowanceObj.Field1_Travel_6" class="project-box select-style" [ngClass]="SiteAllowanceObj.Field2_Travel_6 && SiteAllowanceObj.Field2_Travel_6 !='No Value' && (SiteAllowanceObj.Field1_Travel_6 == undefined || SiteAllowanceObj.Field1_Travel_6 =='' || SiteAllowanceObj.Field1_Travel_6 =='No Value')  ? 'input-validation' :''" [disabled]="isDisableDay6"></ion-input>
+            </div>
+
+          </ion-row>
+          <ion-row class="full-width padding5">
+            <div class="value inline-block input-gridLabel">{{'Multiplier' | translate}}</div>
+            <div class="input-grid">
+              <ion-input [(ngModel)]="SiteAllowanceObj.Field2_Travel_0"
+              name="SiteAllowanceObj.Field2_Travel_0" class="project-box searchNSelect select-style"
+              [readonly]="true" tappable (click)="searchModal('Multiplier','Field2_Travel_0')" [ngClass]="SiteAllowanceObj.Field1_Travel_0 && SiteAllowanceObj.Field1_Travel_0 !='No Value' && (SiteAllowanceObj.Field2_Travel_0 == undefined || SiteAllowanceObj.Field2_Travel_0 =='' || SiteAllowanceObj.Field2_Travel_0 =='No Value')  ? 'input-validation' :''" [disabled]="isDisableDay0">
+            </ion-input>
+            <ion-input maxlength="50" *ngIf="SiteAllowanceObj.Field2_Travel_0 == 'Other'" (focusout)="trimSpace('Field2_Travel_0_OT')" class="project-box otherProject-box" [ngClass]="!SiteAllowanceObj.Field2_Travel_0_OT ? 'input-validation':'' " [(ngModel)]="SiteAllowanceObj.Field2_Travel_0_OT">
+            </ion-input>
+            </div>
+            <div class="input-grid">
+              <ion-input [(ngModel)]="SiteAllowanceObj.Field2_Travel_1"
+              name="SiteAllowanceObj.Field2_Travel_1" class="project-box searchNSelect select-style"
+              [readonly]="true" tappable (click)="searchModal('Multiplier','Field2_Travel_1')" [ngClass]="SiteAllowanceObj.Field1_Travel_1 && SiteAllowanceObj.Field1_Travel_1 !='No Value' && (SiteAllowanceObj.Field2_Travel_1 == undefined || SiteAllowanceObj.Field2_Travel_1 ==''  || SiteAllowanceObj.Field2_Travel_1 =='No Value')  ? 'input-validation' :''" [disabled]="isDisableDay1">
+            </ion-input>
+            <ion-input maxlength="50" *ngIf="SiteAllowanceObj.Field2_Travel_1 == 'Other'" (focusout)="trimSpace('Field2_Travel_1_OT')" class="project-box otherProject-box" [ngClass]="!SiteAllowanceObj.Field2_Travel_1_OT ? 'input-validation':'' " [(ngModel)]="SiteAllowanceObj.Field2_Travel_1_OT">
+            </ion-input>
+            </div>
+            <div class="input-grid">
+              <ion-input [(ngModel)]="SiteAllowanceObj.Field2_Travel_2"
+              name="SiteAllowanceObj.Field2_Travel_2" class="project-box searchNSelect select-style"
+              [readonly]="true" tappable (click)="searchModal('Multiplier','Field2_Travel_2')" [ngClass]="SiteAllowanceObj.Field1_Travel_2 && SiteAllowanceObj.Field1_Travel_2 !='No Value' && (SiteAllowanceObj.Field2_Travel_2 == undefined || SiteAllowanceObj.Field2_Travel_2 =='' || SiteAllowanceObj.Field2_Travel_2 =='No Value')  ? 'input-validation' :''" [disabled]="isDisableDay2">
+            </ion-input>
+            <ion-input maxlength="50" *ngIf="SiteAllowanceObj.Field2_Travel_2 == 'Other'" (focusout)="trimSpace('Field2_Travel_2_OT')" class="project-box otherProject-box" [ngClass]="!SiteAllowanceObj.Field2_Travel_2_OT ? 'input-validation':'' " [(ngModel)]="SiteAllowanceObj.Field2_Travel_2_OT">
+            </ion-input>
+            </div>
+            <div class="input-grid">
+              <ion-input [(ngModel)]="SiteAllowanceObj.Field2_Travel_3"
+              name="SiteAllowanceObj.Field2_Travel_3" class="project-box searchNSelect select-style"
+              [readonly]="true" tappable (click)="searchModal('Multiplier','Field2_Travel_3')" [ngClass]="SiteAllowanceObj.Field1_Travel_3 && SiteAllowanceObj.Field1_Travel_3 !='No Value' && (SiteAllowanceObj.Field2_Travel_3 == undefined || SiteAllowanceObj.Field2_Travel_3 =='' || SiteAllowanceObj.Field2_Travel_3 =='No Value')  ? 'input-validation' :''" [disabled]="isDisableDay3">
+            </ion-input>
+            <ion-input maxlength="50" *ngIf="SiteAllowanceObj.Field2_Travel_3 == 'Other'" (focusout)="trimSpace('Field2_Travel_3_OT')" class="project-box otherProject-box" [ngClass]="!SiteAllowanceObj.Field2_Travel_3_OT ? 'input-validation':'' " [(ngModel)]="SiteAllowanceObj.Field2_Travel_3_OT">
+            </ion-input>
+            </div>
+            <div class="input-grid">
+              <ion-input [(ngModel)]="SiteAllowanceObj.Field2_Travel_4"
+              name="SiteAllowanceObj.Field2_Travel_4" class="project-box searchNSelect select-style"
+              [readonly]="true" tappable (click)="searchModal('Multiplier','Field2_Travel_4')" [ngClass]="SiteAllowanceObj.Field1_Travel_4 && SiteAllowanceObj.Field1_Travel_4 !='No Value' && (SiteAllowanceObj.Field2_Travel_4 == undefined || SiteAllowanceObj.Field2_Travel_4 =='' || SiteAllowanceObj.Field2_Travel_4 =='No Value')  ? 'input-validation' :''" [disabled]="isDisableDay4">
+            </ion-input>
+            <ion-input maxlength="50" *ngIf="SiteAllowanceObj.Field2_Travel_4 == 'Other'" (focusout)="trimSpace('Field2_Travel_4_OT')" class="project-box otherProject-box" [ngClass]="!SiteAllowanceObj.Field2_Travel_4_OT ? 'input-validation':'' " [(ngModel)]="SiteAllowanceObj.Field2_Travel_4_OT">
+            </ion-input>
+            </div>
+            <div class="input-grid">
+              <ion-input [(ngModel)]="SiteAllowanceObj.Field2_Travel_5"
+              name="SiteAllowanceObj.Field2_Travel_5" class="project-box searchNSelect select-style"
+              [readonly]="true" tappable (click)="searchModal('Multiplier','Field2_Travel_5')" [ngClass]="SiteAllowanceObj.Field1_Travel_5 && SiteAllowanceObj.Field1_Travel_5 !='No Value' && (SiteAllowanceObj.Field2_Travel_5 == undefined || SiteAllowanceObj.Field2_Travel_5 =='' || SiteAllowanceObj.Field2_Travel_5 =='No Value')  ? 'input-validation' :''" [disabled]="isDisableDay5">
+            </ion-input>
+            <ion-input maxlength="50" *ngIf="SiteAllowanceObj.Field2_Travel_5 == 'Other'" (focusout)="trimSpace('Field2_Travel_5_OT')" class="project-box otherProject-box" [ngClass]="!SiteAllowanceObj.Field2_Travel_5_OT ? 'input-validation':'' " [(ngModel)]="SiteAllowanceObj.Field2_Travel_5_OT">
+            </ion-input>
+            </div>
+            <div class="input-grid">
+              <ion-input [(ngModel)]="SiteAllowanceObj.Field2_Travel_6"
+              name="SiteAllowanceObj.Field2_Travel_6" class="project-box searchNSelect select-style"
+              [readonly]="true" tappable (click)="searchModal('Multiplier','Field2_Travel_6')" [ngClass]="SiteAllowanceObj.Field1_Travel_6 && SiteAllowanceObj.Field1_Travel_6 !='No Value' && (SiteAllowanceObj.Field2_Travel_6 == undefined || SiteAllowanceObj.Field2_Travel_6 =='' || SiteAllowanceObj.Field2_Travel_6 =='No Value')  ? 'input-validation' :''" [disabled]="isDisableDay6">
+            </ion-input>
+            <ion-input maxlength="50" *ngIf="SiteAllowanceObj.Field2_Travel_6 == 'Other'" (focusout)="trimSpace('Field2_Travel_6_OT')" class="project-box otherProject-box" [ngClass]="!SiteAllowanceObj.Field2_Travel_6_OT ? 'input-validation':'' " [(ngModel)]="SiteAllowanceObj.Field2_Travel_6_OT">
+            </ion-input>
+            </div>
+          </ion-row>
+        </div>
+        <ion-row class="stroke full-width"></ion-row>
+      </ion-row>
+      <ion-row>
+        <div class="section pointer">
+          <div
+              (click)="expandItem('Site Allowance')" class="inline-block">
+              <ion-icon class="arrowIcon" item-left name="arrow-dropright" *ngIf="siteAllowanceExpanded == false">
+              </ion-icon>
+              <ion-icon class="arrowIcon" role="img" *ngIf="siteAllowanceExpanded == true"
+                aria-label="arrow dropdown" name="arrow-dropdown"></ion-icon>
+              <span class="accordion-label"> {{'Site Allowance' | translate}} </span>
+            </div>
+        </div>
+        <div class="accordion" *ngIf="siteAllowanceExpanded == true">
+          <ion-row class="full-width padding5 paddingTop0">
+            <div class="value inline-block input-gridLabel">{{'Onshore / Offshore' | translate}}</div>
+            <div class="input-grid">
+              <ion-input [(ngModel)]="SiteAllowanceObj.Field1_SiteAllowance_0"
+              name="SiteAllowanceObj.Field1_SiteAllowance_0" class="project-box searchNSelect select-style"
+              [readonly]="true" tappable (click)="searchModal('Site','Field1_SiteAllowance_0')" [ngClass]="SiteAllowanceObj.Field2_SiteAllowance_0 && SiteAllowanceObj.Field2_SiteAllowance_0 !='No Value' && (SiteAllowanceObj.Field1_SiteAllowance_0 == undefined || SiteAllowanceObj.Field1_SiteAllowance_0 =='' || SiteAllowanceObj.Field1_SiteAllowance_0 =='No Value')  ? 'input-validation' :''" [disabled]="isDisableDay0">
+            </ion-input>
+            <ion-input maxlength="50" *ngIf="SiteAllowanceObj.Field1_SiteAllowance_0 == 'Other'" (focusout)="trimSpace('Field1_SiteAllowance_0_OT')" class="project-box otherProject-box" [ngClass]="!SiteAllowanceObj.Field1_SiteAllowance_0_OT ? 'input-validation':'' " [(ngModel)]="SiteAllowanceObj.Field1_SiteAllowance_0_OT">
+            </ion-input>
+            </div>
+            <div class="input-grid">
+              <ion-input [(ngModel)]="SiteAllowanceObj.Field1_SiteAllowance_1"
+              name="SiteAllowanceObj.Field1_SiteAllowance_1" class="project-box searchNSelect select-style"
+              [readonly]="true" tappable (click)="searchModal('Site','Field1_SiteAllowance_1')" [ngClass]="SiteAllowanceObj.Field2_SiteAllowance_1 && SiteAllowanceObj.Field2_SiteAllowance_1 !='No Value' && (SiteAllowanceObj.Field1_SiteAllowance_1 == undefined || SiteAllowanceObj.Field1_SiteAllowance_1 =='' || SiteAllowanceObj.Field1_SiteAllowance_1 =='No Value')  ? 'input-validation' :''" [disabled]="isDisableDay1">
+            </ion-input>
+            <ion-input maxlength="50" *ngIf="SiteAllowanceObj.Field1_SiteAllowance_1 == 'Other'" (focusout)="trimSpace('Field1_SiteAllowance_1_OT')" class="project-box otherProject-box" [ngClass]="!SiteAllowanceObj.Field1_SiteAllowance_1_OT ? 'input-validation':'' " [(ngModel)]="SiteAllowanceObj.Field1_SiteAllowance_1_OT">
+            </ion-input>
+            </div>
+            <div class="input-grid">
+              <ion-input [(ngModel)]="SiteAllowanceObj.Field1_SiteAllowance_2"
+              name="SiteAllowanceObj.Field1_SiteAllowance_2" class="project-box searchNSelect select-style"
+              [readonly]="true" tappable (click)="searchModal('Site','Field1_SiteAllowance_2')" [ngClass]="SiteAllowanceObj.Field2_SiteAllowance_2 && SiteAllowanceObj.Field2_SiteAllowance_2 !='No Value' && (SiteAllowanceObj.Field1_SiteAllowance_2 == undefined || SiteAllowanceObj.Field1_SiteAllowance_2 =='' || SiteAllowanceObj.Field1_SiteAllowance_2 =='No Value')  ? 'input-validation' :''" [disabled]="isDisableDay2">
+            </ion-input>
+            <ion-input maxlength="50" *ngIf="SiteAllowanceObj.Field1_SiteAllowance_2 == 'Other'" (focusout)="trimSpace('Field1_SiteAllowance_2_OT')" class="project-box otherProject-box" [ngClass]="!SiteAllowanceObj.Field1_SiteAllowance_2_OT ? 'input-validation':'' " [(ngModel)]="SiteAllowanceObj.Field1_SiteAllowance_2_OT">
+            </ion-input>
+            </div>
+            <div class="input-grid">
+              <ion-input [(ngModel)]="SiteAllowanceObj.Field1_SiteAllowance_3"
+              name="SiteAllowanceObj.Field1_SiteAllowance_3" class="project-box searchNSelect select-style"
+              [readonly]="true" tappable (click)="searchModal('Site','Field1_SiteAllowance_3')" [ngClass]="SiteAllowanceObj.Field2_SiteAllowance_3 && SiteAllowanceObj.Field2_SiteAllowance_3 !='No Value' && (SiteAllowanceObj.Field1_SiteAllowance_3 == undefined || SiteAllowanceObj.Field1_SiteAllowance_3 =='' || SiteAllowanceObj.Field1_SiteAllowance_3 =='No Value')  ? 'input-validation' :''" [disabled]="isDisableDay3">
+            </ion-input>
+            <ion-input maxlength="50" *ngIf="SiteAllowanceObj.Field1_SiteAllowance_3 == 'Other'" (focusout)="trimSpace('Field1_SiteAllowance_3_OT')" class="project-box otherProject-box" [ngClass]="!SiteAllowanceObj.Field1_SiteAllowance_3_OT ? 'input-validation':'' " [(ngModel)]="SiteAllowanceObj.Field1_SiteAllowance_3_OT">
+            </ion-input>
+            </div>
+            <div class="input-grid">
+              <ion-input [(ngModel)]="SiteAllowanceObj.Field1_SiteAllowance_4"
+              name="SiteAllowanceObj.Field1_SiteAllowance_4" class="project-box searchNSelect select-style"
+              [readonly]="true" tappable (click)="searchModal('Site','Field1_SiteAllowance_4')" [ngClass]="SiteAllowanceObj.Field2_SiteAllowance_4 && SiteAllowanceObj.Field2_SiteAllowance_4 !='No Value' && (SiteAllowanceObj.Field1_SiteAllowance_4 == undefined || SiteAllowanceObj.Field1_SiteAllowance_4 =='' || SiteAllowanceObj.Field1_SiteAllowance_4 =='No Value')  ? 'input-validation' :''" [disabled]="isDisableDay4">
+            </ion-input>
+            <ion-input maxlength="50" *ngIf="SiteAllowanceObj.Field1_SiteAllowance_4 == 'Other'" (focusout)="trimSpace('Field1_SiteAllowance_4_OT')" class="project-box otherProject-box" [ngClass]="!SiteAllowanceObj.Field1_SiteAllowance_4_OT ? 'input-validation':'' " [(ngModel)]="SiteAllowanceObj.Field1_SiteAllowance_4_OT">
+            </ion-input>
+            </div>
+            <div class="input-grid">
+              <ion-input [(ngModel)]="SiteAllowanceObj.Field1_SiteAllowance_5"
+              name="SiteAllowanceObj.Field1_SiteAllowance_5" class="project-box searchNSelect select-style"
+              [readonly]="true" tappable (click)="searchModal('Site','Field1_SiteAllowance_5')" [ngClass]="SiteAllowanceObj.Field2_SiteAllowance_5 && SiteAllowanceObj.Field2_SiteAllowance_5 !='No Value' && (SiteAllowanceObj.Field1_SiteAllowance_5 == undefined || SiteAllowanceObj.Field1_SiteAllowance_5 =='' || SiteAllowanceObj.Field1_SiteAllowance_5 =='No Value')  ? 'input-validation' :''" [disabled]="isDisableDay5">
+            </ion-input>
+            <ion-input maxlength="50" *ngIf="SiteAllowanceObj.Field1_SiteAllowance_5 == 'Other'" (focusout)="trimSpace('Field1_SiteAllowance_5_OT')" class="project-box otherProject-box" [ngClass]="!SiteAllowanceObj.Field1_SiteAllowance_5_OT ? 'input-validation':'' " [(ngModel)]="SiteAllowanceObj.Field1_SiteAllowance_5_OT">
+            </ion-input>
+            </div>
+            <div class="input-grid">
+              <ion-input [(ngModel)]="SiteAllowanceObj.Field1_SiteAllowance_6"
+              name="SiteAllowanceObj.Field1_SiteAllowance_6" class="project-box searchNSelect select-style"
+              [readonly]="true" tappable (click)="searchModal('Site','Field1_SiteAllowance_6')" [ngClass]="SiteAllowanceObj.Field2_SiteAllowance_6 && SiteAllowanceObj.Field2_SiteAllowance_6 !='No Value' && (SiteAllowanceObj.Field1_SiteAllowance_6 == undefined || SiteAllowanceObj.Field1_SiteAllowance_6 =='' || SiteAllowanceObj.Field2_SiteAllowance_6 =='No Value')  ? 'input-validation' :''" [disabled]="isDisableDay6">
+            </ion-input>
+            <ion-input maxlength="50" *ngIf="SiteAllowanceObj.Field1_SiteAllowance_6 == 'Other'" (focusout)="trimSpace('Field1_SiteAllowance_6_OT')" class="project-box otherProject-box" [ngClass]="!SiteAllowanceObj.Field1_SiteAllowance_6_OT ? 'input-validation':'' " [(ngModel)]="SiteAllowanceObj.Field1_SiteAllowance_6_OT">
+            </ion-input>
+            </div>
+
+          </ion-row>
+          <ion-row class="full-width padding5">
+            <div class="value inline-block input-gridLabel">{{'Country' | translate}}</div>
+            <div class="input-grid">
+              <ion-input [(ngModel)]="SiteAllowanceObj.Field2_SiteAllowance_0"
+              name="SiteAllowanceObj.Field2_SiteAllowance_0" class="project-box searchNSelect select-style"
+              [readonly]="true" tappable (click)="searchModal('Country','Field2_SiteAllowance_0')" [ngClass]="SiteAllowanceObj.Field1_SiteAllowance_0 && SiteAllowanceObj.Field1_SiteAllowance_0 !='No Value' && (SiteAllowanceObj.Field2_SiteAllowance_0 == undefined || SiteAllowanceObj.Field2_SiteAllowance_0 =='' || SiteAllowanceObj.Field2_SiteAllowance_0 =='No Value')  ? 'input-validation' :''" [disabled]="isDisableDay0">
+            </ion-input>
+            <ion-input maxlength="50" *ngIf="SiteAllowanceObj.Field2_SiteAllowance_0 == 'Other'" (focusout)="trimSpace('Field2_SiteAllowance_0_OT')" class="project-box otherProject-box" [ngClass]="!SiteAllowanceObj.Field2_SiteAllowance_0_OT ? 'input-validation':'' " [(ngModel)]="SiteAllowanceObj.Field2_SiteAllowance_0_OT">
+            </ion-input>
+            </div>
+            <div class="input-grid">
+              <ion-input [(ngModel)]="SiteAllowanceObj.Field2_SiteAllowance_1"
+              name="SiteAllowanceObj.Field2_SiteAllowance_1" class="project-box searchNSelect select-style"
+              [readonly]="true" tappable (click)="searchModal('Country','Field2_SiteAllowance_1')" [ngClass]="SiteAllowanceObj.Field1_SiteAllowance_1 && SiteAllowanceObj.Field1_SiteAllowance_1 !='No Value' && (SiteAllowanceObj.Field2_SiteAllowance_1 == undefined || SiteAllowanceObj.Field2_SiteAllowance_1 =='' || SiteAllowanceObj.Field2_SiteAllowance_1 =='No Value')  ? 'input-validation' :''" [disabled]="isDisableDay1">
+            </ion-input>
+            <ion-input maxlength="50" *ngIf="SiteAllowanceObj.Field2_SiteAllowance_1 == 'Other'" (focusout)="trimSpace('Field2_SiteAllowance_1_OT')" class="project-box otherProject-box" [ngClass]="!SiteAllowanceObj.Field2_SiteAllowance_1_OT ? 'input-validation':'' " [(ngModel)]="SiteAllowanceObj.Field2_SiteAllowance_1_OT">
+            </ion-input>
+            </div>
+            <div class="input-grid">
+              <ion-input [(ngModel)]="SiteAllowanceObj.Field2_SiteAllowance_2"
+              name="SiteAllowanceObj.Field2_SiteAllowance_2" class="project-box searchNSelect select-style"
+              [readonly]="true" tappable (click)="searchModal('Country','Field2_SiteAllowance_2')" [ngClass]="SiteAllowanceObj.Field1_SiteAllowance_2 && SiteAllowanceObj.Field1_SiteAllowance_2 !='No Value' && (SiteAllowanceObj.Field2_SiteAllowance_2 == undefined || SiteAllowanceObj.Field2_SiteAllowance_2 =='' || SiteAllowanceObj.Field2_SiteAllowance_2 =='No Value')  ? 'input-validation' :''" [disabled]="isDisableDay2">
+            </ion-input>
+            <ion-input maxlength="50" *ngIf="SiteAllowanceObj.Field2_SiteAllowance_2 == 'Other'" (focusout)="trimSpace('Field2_SiteAllowance_2_OT')" class="project-box otherProject-box" [ngClass]="!SiteAllowanceObj.Field2_SiteAllowance_2_OT ? 'input-validation':'' " [(ngModel)]="SiteAllowanceObj.Field2_SiteAllowance_2_OT">
+            </ion-input>
+            </div>
+            <div class="input-grid">
+              <ion-input [(ngModel)]="SiteAllowanceObj.Field2_SiteAllowance_3"
+              name="SiteAllowanceObj.Field2_SiteAllowance_3" class="project-box searchNSelect select-style"
+              [readonly]="true" tappable (click)="searchModal('Country','Field2_SiteAllowance_3')" [ngClass]="SiteAllowanceObj.Field1_SiteAllowance_3 && SiteAllowanceObj.Field1_SiteAllowance_3 !='No Value' && (SiteAllowanceObj.Field2_SiteAllowance_3 == undefined || SiteAllowanceObj.Field2_SiteAllowance_3 =='' || SiteAllowanceObj.Field2_SiteAllowance_3 =='No Value')  ? 'input-validation' :''" [disabled]="isDisableDay3">
+            </ion-input>
+            <ion-input maxlength="50" *ngIf="SiteAllowanceObj.Field2_SiteAllowance_3 == 'Other'" (focusout)="trimSpace('Field2_SiteAllowance_3_OT')" class="project-box otherProject-box" [ngClass]="!SiteAllowanceObj.Field2_SiteAllowance_3_OT ? 'input-validation':'' " [(ngModel)]="SiteAllowanceObj.Field2_SiteAllowance_3_OT">
+            </ion-input>
+            </div>
+            <div class="input-grid">
+              <ion-input [(ngModel)]="SiteAllowanceObj.Field2_SiteAllowance_4"
+              name="SiteAllowanceObj.Field2_SiteAllowance_4" class="project-box searchNSelect select-style"
+              [readonly]="true" tappable (click)="searchModal('Country','Field2_SiteAllowance_4')" [ngClass]="SiteAllowanceObj.Field1_SiteAllowance_4 && SiteAllowanceObj.Field1_SiteAllowance_4 !='No Value' && (SiteAllowanceObj.Field2_SiteAllowance_4 == undefined || SiteAllowanceObj.Field2_SiteAllowance_4 =='' || SiteAllowanceObj.Field2_SiteAllowance_4 =='No Value')  ? 'input-validation' :''" [disabled]="isDisableDay4">
+            </ion-input>
+            <ion-input maxlength="50" *ngIf="SiteAllowanceObj.Field2_SiteAllowance_4 == 'Other'" (focusout)="trimSpace('Field2_SiteAllowance_4_OT')" class="project-box otherProject-box" [ngClass]="!SiteAllowanceObj.Field2_SiteAllowance_4_OT ? 'input-validation':'' " [(ngModel)]="SiteAllowanceObj.Field2_SiteAllowance_4_OT">
+            </ion-input>
+            </div>
+            <div class="input-grid">
+              <ion-input [(ngModel)]="SiteAllowanceObj.Field2_SiteAllowance_5"
+              name="SiteAllowanceObj.Field2_SiteAllowance_5" class="project-box searchNSelect select-style"
+              [readonly]="true" tappable (click)="searchModal('Country','Field2_SiteAllowance_5')" [ngClass]="SiteAllowanceObj.Field1_SiteAllowance_5 && SiteAllowanceObj.Field1_SiteAllowance_5 !='No Value' && (SiteAllowanceObj.Field2_SiteAllowance_5 == undefined || SiteAllowanceObj.Field2_SiteAllowance_5 =='' || SiteAllowanceObj.Field2_SiteAllowance_5 =='No Value')  ? 'input-validation' :''" [disabled]="isDisableDay5">
+            </ion-input>
+            <ion-input maxlength="50" *ngIf="SiteAllowanceObj.Field2_SiteAllowance_5 == 'Other'" (focusout)="trimSpace('Field2_SiteAllowance_5_OT')" class="project-box otherProject-box" [ngClass]="!SiteAllowanceObj.Field2_SiteAllowance_5_OT ? 'input-validation':'' " [(ngModel)]="SiteAllowanceObj.Field2_SiteAllowance_5_OT">
+            </ion-input>
+            </div>
+            <div class="input-grid">
+              <ion-input [(ngModel)]="SiteAllowanceObj.Field2_SiteAllowance_6"
+              name="SiteAllowanceObj.Field2_SiteAllowance_6" class="project-box searchNSelect select-style"
+              [readonly]="true" tappable (click)="searchModal('Country','Field2_SiteAllowance_6')" [ngClass]="SiteAllowanceObj.Field1_SiteAllowance_6 && SiteAllowanceObj.Field1_SiteAllowance_6 !='No Value' && (SiteAllowanceObj.Field2_SiteAllowance_6 == undefined || SiteAllowanceObj.Field2_SiteAllowance_6 =='' || SiteAllowanceObj.Field2_SiteAllowance_6 =='No Value')  ? 'input-validation' :''" [disabled]="isDisableDay6">
+            </ion-input>
+            <ion-input maxlength="50" *ngIf="SiteAllowanceObj.Field2_SiteAllowance_6 == 'Other'" (focusout)="trimSpace('Field2_SiteAllowance_6_OT')" class="project-box otherProject-box" [ngClass]="!SiteAllowanceObj.Field2_SiteAllowance_6_OT ? 'input-validation':'' " [(ngModel)]="SiteAllowanceObj.Field2_SiteAllowance_6_OT">
+            </ion-input>
+            </div>
+          </ion-row>
+        </div>
+        <ion-row class="stroke full-width"></ion-row>
+      </ion-row>
+      <ion-row>
+        <div class="section pointer">
+          <div
+              (click)="expandItem('Meal')" class="inline-block">
+              <ion-icon class="arrowIcon" item-left name="arrow-dropright" *ngIf="mealExpanded == false">
+              </ion-icon>
+              <ion-icon class="arrowIcon" role="img" *ngIf="mealExpanded == true"
+                aria-label="arrow dropdown" name="arrow-dropdown"></ion-icon>
+              <span class="accordion-label"> {{'Meal' | translate}} </span>
+            </div>
+        </div>
+        <div class="accordion" *ngIf="mealExpanded == true">
+          <ion-row class="full-width padding5">
+            <div class="value inline-block input-gridLabel">{{'Onshore / Offshore' | translate}}</div>
+            <div class="input-grid">
+              <ion-input [(ngModel)]="SiteAllowanceObj.Field2_Meal_0"
+              name="SiteAllowanceObj.Field2_Meal_0" class="project-box searchNSelect select-style"
+              [readonly]="true" tappable (click)="searchModal('Site','Field2_Meal_0')" [ngClass]="SiteAllowanceObj.Field1_Meal_0 && SiteAllowanceObj.Field1_Meal_0 !='No Value' && (SiteAllowanceObj.Field2_Meal_0 == undefined || SiteAllowanceObj.Field2_Meal_0 =='' || SiteAllowanceObj.Field2_Meal_0 =='No Value')  ? 'input-validation' :''" [disabled]="isDisableDay0">
+            </ion-input>
+            <ion-input maxlength="50" *ngIf="SiteAllowanceObj.Field2_Meal_0 == 'Other'" (focusout)="trimSpace('Field2_Meal_0_OT')" class="project-box otherProject-box" [ngClass]="!SiteAllowanceObj.Field2_Meal_0_OT ? 'input-validation':'' " [(ngModel)]="SiteAllowanceObj.Field2_Meal_0_OT">
+            </ion-input>
+            </div>
+            <div class="input-grid">
+              <ion-input [(ngModel)]="SiteAllowanceObj.Field2_Meal_1"
+              name="SiteAllowanceObj.Field2_Meal_1" class="project-box searchNSelect select-style"
+              [readonly]="true" tappable (click)="searchModal('Site','Field2_Meal_1')" [ngClass]="SiteAllowanceObj.Field1_Meal_1 && SiteAllowanceObj.Field1_Meal_1 !='No Value' && (SiteAllowanceObj.Field2_Meal_1 == undefined || SiteAllowanceObj.Field2_Meal_1 =='' || SiteAllowanceObj.Field2_Meal_1 =='No Value')  ? 'input-validation' :''" [disabled]="isDisableDay1">
+            </ion-input>
+            <ion-input maxlength="50" *ngIf="SiteAllowanceObj.Field2_Meal_1 == 'Other'" (focusout)="trimSpace('Field2_Meal_1_OT')" class="project-box otherProject-box" [ngClass]="!SiteAllowanceObj.Field2_Meal_1_OT ? 'input-validation':'' " [(ngModel)]="SiteAllowanceObj.Field2_Meal_1_OT">
+            </ion-input>
+            </div>
+            <div class="input-grid">
+              <ion-input [(ngModel)]="SiteAllowanceObj.Field2_Meal_2"
+              name="SiteAllowanceObj.Field2_Meal_2" class="project-box searchNSelect select-style"
+              [readonly]="true" tappable (click)="searchModal('Site','Field2_Meal_2')" [ngClass]="SiteAllowanceObj.Field1_Meal_2 && SiteAllowanceObj.Field1_Meal_2 !='No Value' && (SiteAllowanceObj.Field2_Meal_2 == undefined || SiteAllowanceObj.Field2_Meal_2 =='' || SiteAllowanceObj.Field2_Meal_2 =='No Value')  ? 'input-validation' :''" [disabled]="isDisableDay2">
+            </ion-input>
+            <ion-input maxlength="50" *ngIf="SiteAllowanceObj.Field2_Meal_2 == 'Other'" (focusout)="trimSpace('Field2_Meal_2_OT')" class="project-box otherProject-box" [ngClass]="!SiteAllowanceObj.Field2_Meal_2_OT ? 'input-validation':'' " [(ngModel)]="SiteAllowanceObj.Field2_Meal_2_OT">
+            </ion-input>
+            </div>
+            <div class="input-grid">
+              <ion-input [(ngModel)]="SiteAllowanceObj.Field2_Meal_3"
+              name="SiteAllowanceObj.Field2_Meal_3" class="project-box searchNSelect select-style"
+              [readonly]="true" tappable (click)="searchModal('Site','Field2_Meal_3')" [ngClass]="SiteAllowanceObj.Field1_Meal_3 && SiteAllowanceObj.Field1_Meal_3 !='No Value' && (SiteAllowanceObj.Field2_Meal_3 == undefined || SiteAllowanceObj.Field2_Meal_3 =='' || SiteAllowanceObj.Field2_Meal_3 =='No Value')  ? 'input-validation' :''" [disabled]="isDisableDay3">
+            </ion-input>
+            <ion-input maxlength="50" *ngIf="SiteAllowanceObj.Field2_Meal_3 == 'Other'" (focusout)="trimSpace('Field2_Meal_3_OT')" class="project-box otherProject-box" [ngClass]="!SiteAllowanceObj.Field2_Meal_3_OT ? 'input-validation':'' " [(ngModel)]="SiteAllowanceObj.Field2_Meal_3_OT">
+            </ion-input>
+            </div>
+            <div class="input-grid">
+              <ion-input [(ngModel)]="SiteAllowanceObj.Field2_Meal_4"
+              name="SiteAllowanceObj.Field2_Meal_4" class="project-box searchNSelect select-style"
+              [readonly]="true" tappable (click)="searchModal('Site','Field2_Meal_4')" [ngClass]="SiteAllowanceObj.Field1_Meal_4 && SiteAllowanceObj.Field1_Meal_4 !='No Value' && (SiteAllowanceObj.Field2_Meal_4 == undefined || SiteAllowanceObj.Field2_Meal_4 =='' || SiteAllowanceObj.Field2_Meal_4 =='No Value')  ? 'input-validation' :''" [disabled]="isDisableDay4">
+            </ion-input>
+            <ion-input maxlength="50" *ngIf="SiteAllowanceObj.Field2_Meal_4 == 'Other'" (focusout)="trimSpace('Field2_Meal_4_OT')" class="project-box otherProject-box" [ngClass]="!SiteAllowanceObj.Field2_Meal_4_OT ? 'input-validation':'' " [(ngModel)]="SiteAllowanceObj.Field2_Meal_4_OT">
+            </ion-input>
+            </div>
+            <div class="input-grid">
+              <ion-input [(ngModel)]="SiteAllowanceObj.Field2_Meal_5"
+              name="SiteAllowanceObj.Field2_Meal_5" class="project-box searchNSelect select-style"
+              [readonly]="true" tappable (click)="searchModal('Site','Field2_Meal_5')" [ngClass]="SiteAllowanceObj.Field1_Meal_5 && SiteAllowanceObj.Field1_Meal_5 !='No Value' && (SiteAllowanceObj.Field2_Meal_5 == undefined || SiteAllowanceObj.Field2_Meal_5 =='' || SiteAllowanceObj.Field2_Meal_5 =='No Value')  ? 'input-validation' :''" [disabled]="isDisableDay5">
+            </ion-input>
+            <ion-input maxlength="50" *ngIf="SiteAllowanceObj.Field2_Meal_5 == 'Other'" (focusout)="trimSpace('Field2_Meal_5_OT')" class="project-box otherProject-box" [ngClass]="!SiteAllowanceObj.Field2_Meal_5_OT ? 'input-validation':'' " [(ngModel)]="SiteAllowanceObj.Field2_Meal_5_OT">
+            </ion-input>
+            </div>
+            <div class="input-grid">
+              <ion-input [(ngModel)]="SiteAllowanceObj.Field2_Meal_6"
+              name="SiteAllowanceObj.Field2_Meal_6" class="project-box searchNSelect select-style"
+              [readonly]="true" tappable (click)="searchModal('Site','Field2_Meal_6')" [ngClass]="SiteAllowanceObj.Field1_Meal_6 && SiteAllowanceObj.Field1_Meal_6 !='No Value' && (SiteAllowanceObj.Field2_Meal_6 == undefined || SiteAllowanceObj.Field2_Meal_6 =='' || SiteAllowanceObj.Field2_Meal_6 =='No Value')  ? 'input-validation' :''" [disabled]="isDisableDay6">
+            </ion-input>
+            <ion-input maxlength="50" *ngIf="SiteAllowanceObj.Field2_Meal_6 == 'Other'" (focusout)="trimSpace('Field2_Meal_6_OT')" class="project-box otherProject-box" [ngClass]="!SiteAllowanceObj.Field2_Meal_6_OT ? 'input-validation':'' " [(ngModel)]="SiteAllowanceObj.Field2_Meal_6_OT">
+            </ion-input>
+            </div>
+          </ion-row>
+          <ion-row class="full-width padding5 paddingTop0">
+            <div class="value inline-block input-gridLabel">{{'Country' | translate}}</div>
+            <div class="input-grid">
+              <ion-input [(ngModel)]="SiteAllowanceObj.Field1_Meal_0"
+              name="SiteAllowanceObj.Field1_Meal_0" class="project-box searchNSelect select-style"
+              [readonly]="true" tappable (click)="searchModal('Country','Field1_Meal_0')" [ngClass]="SiteAllowanceObj.Field2_Meal_0 && SiteAllowanceObj.Field2_Meal_0 !='No Value' && (SiteAllowanceObj.Field1_Meal_0 == undefined || SiteAllowanceObj.Field1_Meal_0 =='' || SiteAllowanceObj.Field1_Meal_0 =='No Value')  ? 'input-validation' :''" [disabled]="isDisableDay0">
+            </ion-input>
+            <ion-input maxlength="50" *ngIf="SiteAllowanceObj.Field1_Meal_0 == 'Other'" (focusout)="trimSpace('Field1_Meal_0_OT')" class="project-box otherProject-box" [ngClass]="!SiteAllowanceObj.Field1_Meal_0_OT ? 'input-validation':'' " [(ngModel)]="SiteAllowanceObj.Field1_Meal_0_OT">
+            </ion-input>
+            </div>
+            <div class="input-grid">
+              <ion-input [(ngModel)]="SiteAllowanceObj.Field1_Meal_1"
+              name="SiteAllowanceObj.Field1_Meal_1" class="project-box searchNSelect select-style"
+              [readonly]="true" tappable (click)="searchModal('Country','Field1_Meal_1')" [ngClass]="SiteAllowanceObj.Field2_Meal_1 && SiteAllowanceObj.Field2_Meal_1 !='No Value' && (SiteAllowanceObj.Field1_Meal_1 == undefined || SiteAllowanceObj.Field1_Meal_1 =='' || SiteAllowanceObj.Field1_Meal_1 =='No Value')  ? 'input-validation' :''" [disabled]="isDisableDay1">
+            </ion-input>
+            <ion-input maxlength="50" *ngIf="SiteAllowanceObj.Field1_Meal_1 == 'Other'" (focusout)="trimSpace('Field1_Meal_1_OT')" class="project-box otherProject-box" [ngClass]="!SiteAllowanceObj.Field1_Meal_1_OT ? 'input-validation':'' " [(ngModel)]="SiteAllowanceObj.Field1_Meal_1_OT">
+            </ion-input>
+            </div>
+            <div class="input-grid">
+              <ion-input [(ngModel)]="SiteAllowanceObj.Field1_Meal_2"
+              name="SiteAllowanceObj.Field1_Meal_2" class="project-box searchNSelect select-style"
+              [readonly]="true" tappable (click)="searchModal('Country','Field1_Meal_2')" [ngClass]="SiteAllowanceObj.Field2_Meal_2 && SiteAllowanceObj.Field2_Meal_2 !='No Value' && (SiteAllowanceObj.Field1_Meal_2 == undefined || SiteAllowanceObj.Field1_Meal_2 =='' || SiteAllowanceObj.Field1_Meal_2 =='No Value')  ? 'input-validation' :''" [disabled]="isDisableDay2">
+            </ion-input>
+            <ion-input maxlength="50" *ngIf="SiteAllowanceObj.Field1_Meal_2 == 'Other'" (focusout)="trimSpace('Field1_Meal_2_OT')" class="project-box otherProject-box" [ngClass]="!SiteAllowanceObj.Field1_Meal_2_OT ? 'input-validation':'' " [(ngModel)]="SiteAllowanceObj.Field1_Meal_2_OT">
+            </ion-input>
+            </div>
+            <div class="input-grid">
+              <ion-input [(ngModel)]="SiteAllowanceObj.Field1_Meal_3"
+              name="SiteAllowanceObj.Field1_Meal_3" class="project-box searchNSelect select-style"
+              [readonly]="true" tappable (click)="searchModal('Country','Field1_Meal_3')" [ngClass]="SiteAllowanceObj.Field2_Meal_3 && SiteAllowanceObj.Field2_Meal_3 !='No Value' && (SiteAllowanceObj.Field1_Meal_3 == undefined || SiteAllowanceObj.Field1_Meal_3 =='' || SiteAllowanceObj.Field1_Meal_3 =='No Value')  ? 'input-validation' :''" [disabled]="isDisableDay3">
+            </ion-input>
+            <ion-input maxlength="50" *ngIf="SiteAllowanceObj.Field1_Meal_3 == 'Other'" (focusout)="trimSpace('Field1_Meal_3_OT')" class="project-box otherProject-box" [ngClass]="!SiteAllowanceObj.Field1_Meal_3_OT ? 'input-validation':'' " [(ngModel)]="SiteAllowanceObj.Field1_Meal_3_OT">
+            </ion-input>
+            </div>
+            <div class="input-grid">
+              <ion-input [(ngModel)]="SiteAllowanceObj.Field1_Meal_4"
+              name="SiteAllowanceObj.Field1_Meal_4" class="project-box searchNSelect select-style"
+              [readonly]="true" tappable (click)="searchModal('Country','Field1_Meal_4')" [ngClass]="SiteAllowanceObj.Field2_Meal_4 && SiteAllowanceObj.Field2_Meal_4 !='No Value' && (SiteAllowanceObj.Field1_Meal_4 == undefined || SiteAllowanceObj.Field1_Meal_4 =='' || SiteAllowanceObj.Field1_Meal_4 =='No Value')  ? 'input-validation' :''" [disabled]="isDisableDay4">
+            </ion-input>
+            <ion-input maxlength="50" *ngIf="SiteAllowanceObj.Field1_Meal_4 == 'Other'" (focusout)="trimSpace('Field1_Meal_4_OT')" class="project-box otherProject-box" [ngClass]="!SiteAllowanceObj.Field1_Meal_4_OT ? 'input-validation':'' " [(ngModel)]="SiteAllowanceObj.Field1_Meal_4_OT">
+            </ion-input>
+            </div>
+            <div class="input-grid">
+              <ion-input [(ngModel)]="SiteAllowanceObj.Field1_Meal_5"
+              name="SiteAllowanceObj.Field1_Meal_5" class="project-box searchNSelect select-style"
+              [readonly]="true" tappable (click)="searchModal('Country','Field1_Meal_5')" [ngClass]="SiteAllowanceObj.Field2_Meal_5 && SiteAllowanceObj.Field2_Meal_5 !='No Value' && (SiteAllowanceObj.Field1_Meal_5 == undefined || SiteAllowanceObj.Field1_Meal_5 =='' || SiteAllowanceObj.Field1_Meal_5 =='No Value')  ? 'input-validation' :''" [disabled]="isDisableDay5">
+            </ion-input>
+            <ion-input maxlength="50" *ngIf="SiteAllowanceObj.Field1_Meal_5 == 'Other'" (focusout)="trimSpace('Field1_Meal_5_OT')" class="project-box otherProject-box" [ngClass]="!SiteAllowanceObj.Field1_Meal_5_OT ? 'input-validation':'' " [(ngModel)]="SiteAllowanceObj.Field1_Meal_5_OT">
+            </ion-input>
+            </div>
+            <div class="input-grid">
+              <ion-input [(ngModel)]="SiteAllowanceObj.Field1_Meal_6"
+              name="SiteAllowanceObj.Field1_Meal_6" class="project-box searchNSelect select-style"
+              [readonly]="true" tappable (click)="searchModal('Country','Field1_Meal_6')" [ngClass]="SiteAllowanceObj.Field2_Meal_6 && SiteAllowanceObj.Field2_Meal_6 !='No Value' && (SiteAllowanceObj.Field1_Meal_6 == undefined || SiteAllowanceObj.Field1_Meal_6 =='' || SiteAllowanceObj.Field1_Meal_6 =='No Value')  ? 'input-validation' :''" [disabled]="isDisableDay6">
+            </ion-input>
+            <ion-input maxlength="50" *ngIf="SiteAllowanceObj.Field1_Meal_6 == 'Other'" (focusout)="trimSpace('Field1_Meal_6_OT')" class="project-box otherProject-box" [ngClass]="!SiteAllowanceObj.Field1_Meal_6_OT ? 'input-validation':'' " [(ngModel)]="SiteAllowanceObj.Field1_Meal_6_OT">
+            </ion-input>
+            </div>
+
+          </ion-row>
+        </div>
+        <ion-row class="stroke full-width"></ion-row>
+      </ion-row>
+      <ion-row class="full-width padding5 paddingTop10">
+        <div class="value inline-block notesLabel">{{'Notes' | translate}}</div>
+
+        <div class="input-grid">
+          <ion-input tappable *ngIf="!SiteAllowanceObj.Notes_0" placeholder="" [(ngModel)]="SiteAllowanceObj.Notes_0"
+            (click)="addEditNotes('SiteAllowanceObj_Notes_0', SiteAllowanceObj.Notes_0)"
+            class="project-box select-style" [readonly]="true" [disabled]="isDisableDay0"></ion-input>
+          <span *ngIf="SiteAllowanceObj.Notes_0" class="value">
+            <span class="allowance_notes_value">{{SiteAllowanceObj.Notes_0}}</span>
+            <img (click)="addEditNotes('SiteAllowanceObj_Notes_0', SiteAllowanceObj.Notes_0)" class="edit-img inline-block pointer" src="assets/imgs/icons/edit-icon.png">
+          </span>
+        </div>
+        <div class="input-grid">
+          <ion-input tappable *ngIf="!SiteAllowanceObj.Notes_1" placeholder="" [(ngModel)]="SiteAllowanceObj.Notes_1"
+            (click)="addEditNotes('SiteAllowanceObj_Notes_1', SiteAllowanceObj.Notes_1)"
+            class="project-box select-style" [readonly]="true" [disabled]="isDisableDay1"></ion-input>
+          <span *ngIf="SiteAllowanceObj.Notes_1" class="value">
+            <span class="allowance_notes_value">{{SiteAllowanceObj.Notes_1}}</span>
+            <img (click)="addEditNotes('SiteAllowanceObj_Notes_1', SiteAllowanceObj.Notes_1)" class="edit-img inline-block pointer" src="assets/imgs/icons/edit-icon.png">
+          </span>
+        </div>
+        <div class="input-grid">
+          <ion-input tappable *ngIf="!SiteAllowanceObj.Notes_2" placeholder="" [(ngModel)]="SiteAllowanceObj.Notes_2"
+            (click)="addEditNotes('SiteAllowanceObj_Notes_2', SiteAllowanceObj.Notes_2)"
+            class="project-box select-style" [readonly]="true" [disabled]="isDisableDay2"></ion-input>
+          <span *ngIf="SiteAllowanceObj.Notes_2" class="value">
+            <span class="allowance_notes_value">{{SiteAllowanceObj.Notes_2}}</span>
+            <img (click)="addEditNotes('SiteAllowanceObj_Notes_2', SiteAllowanceObj.Notes_2)" class="edit-img inline-block pointer" src="assets/imgs/icons/edit-icon.png">
+          </span>
+        </div>
+        <div class="input-grid">
+          <ion-input tappable *ngIf="!SiteAllowanceObj.Notes_3" placeholder="" [(ngModel)]="SiteAllowanceObj.Notes_3"
+            (click)="addEditNotes('SiteAllowanceObj_Notes_3', SiteAllowanceObj.Notes_3)"
+            class="project-box select-style" [readonly]="true" [disabled]="isDisableDay3"></ion-input>
+          <span *ngIf="SiteAllowanceObj.Notes_3" class="value">
+            <span class="allowance_notes_value">{{SiteAllowanceObj.Notes_3}}</span>
+            <img (click)="addEditNotes('SiteAllowanceObj_Notes_3', SiteAllowanceObj.Notes_3)" class="edit-img inline-block pointer" src="assets/imgs/icons/edit-icon.png">
+          </span>
+        </div>
+        <div class="input-grid">
+          <ion-input tappable *ngIf="!SiteAllowanceObj.Notes_4" placeholder="" [(ngModel)]="SiteAllowanceObj.Notes_4"
+            (click)="addEditNotes('SiteAllowanceObj_Notes_4', SiteAllowanceObj.Notes_4)"
+            class="project-box select-style" [readonly]="true" [disabled]="isDisableDay4"></ion-input>
+          <span *ngIf="SiteAllowanceObj.Notes_4" class="value">
+            <span class="allowance_notes_value">{{SiteAllowanceObj.Notes_4}}</span>
+            <img (click)="addEditNotes('SiteAllowanceObj_Notes_4', SiteAllowanceObj.Notes_4)" class="edit-img inline-block pointer" src="assets/imgs/icons/edit-icon.png">
+          </span>
+        </div>
+        <div class="input-grid">
+          <ion-input tappable *ngIf="!SiteAllowanceObj.Notes_5" placeholder="" [(ngModel)]="SiteAllowanceObj.Notes_5"
+            (click)="addEditNotes('SiteAllowanceObj_Notes_5', SiteAllowanceObj.Notes_5)"
+            class="project-box select-style" [readonly]="true" [disabled]="isDisableDay5"></ion-input>
+          <span *ngIf="SiteAllowanceObj.Notes_5" class="value">
+            <span class="allowance_notes_value">{{SiteAllowanceObj.Notes_5}}</span>
+            <img (click)="addEditNotes('SiteAllowanceObj_Notes_5', SiteAllowanceObj.Notes_5)" class="edit-img inline-block pointer" src="assets/imgs/icons/edit-icon.png">
+          </span>
+        </div>
+        <div class="input-grid">
+          <ion-input tappable *ngIf="!SiteAllowanceObj.Notes_6" placeholder="" [(ngModel)]="SiteAllowanceObj.Notes_6"
+            (click)="addEditNotes('SiteAllowanceObj_Notes_6', SiteAllowanceObj.Notes_6)"
+            class="project-box select-style" [readonly]="true" [disabled]="isDisableDay6"></ion-input>
+          <span *ngIf="SiteAllowanceObj.Notes_6" class="value">
+            <span class="allowance_notes_value">{{SiteAllowanceObj.Notes_6}}</span>
+            <img (click)="addEditNotes('SiteAllowanceObj_Notes_6', SiteAllowanceObj.Notes_6)" class="edit-img inline-block pointer" src="assets/imgs/icons/edit-icon.png">
+          </span>
+        </div>
+      </ion-row>
+    </ion-list>
+    <ion-row>
+      <div class="save-cancel full-width global-padding">
+        <button (click)="SaveAllowances()" ion-button class="save-btn">{{'Save' | translate }}</button>
+        <button (click)="cancelBtn()" ion-button class="cancel-btn">{{'Cancel' | translate }}</button>
+      </div>
+    </ion-row>
+  </ion-card>
+  <ion-card>
+    <ion-row>
+      <div class="section pointer">
+        <div
+            (click)="expandItem('summarisedHours')" class="inline-block">
+            <ion-icon class="arrowIcon" item-left name="arrow-dropright" *ngIf="summHoursExpanded == false">
+            </ion-icon>
+            <ion-icon class="arrowIcon" role="img" *ngIf="summHoursExpanded == true"
+              aria-label="arrow dropdown" name="arrow-dropdown"></ion-icon>
+            <span class="accordion-label"> {{'Summarized Hours' | translate}} </span>
+          </div>
+      </div>
+      <div *ngIf="summHoursExpanded == true" class="accordion">
+        <ion-row class="full-width s-global-pd paddingTop0">
+          <div class="value inline-block gridLabel">
+            <div class="emptygrid"></div>
+            <div class="weekLabel"><label class="label dayLabel"></label></div>
+          </div>
+          <div *ngFor="let day of days" class="input-grid">
+            <div class="dayNameLabel"><label class="label dayLabel">{{day.dayName}}</label></div>
+            <div class="dayDateLabel"><label class="label">{{day.dayDate}}</label></div>
+          </div>
+        </ion-row>
+        <ion-row class="full-width bdr-btm">
+        </ion-row>
+        <ion-row *ngFor="let data of siteAllowanceEntries" class="full-width strippedClass">
+          <ion-row class="full-width s-global-pd">
+            <div class="s-empty-cl"></div>
+            <div class="s-hd label">{{'Customer' | translate}}</div>
+            <div *ngFor="let name of data.section" class="s-hd ">
+              <span class="label">{{name.Customer}}</span>
+            </div>
+          </ion-row>
+          <ion-row *ngIf="valueProvider.getUser().ClarityID != ''" class="full-width s-global-pd">
+            <div class="s-empty-cl"></div>
+            <div class="s-hd label">{{'Project' | translate}}</div>
+            <div *ngFor="let name of data.section" class="s-hd ">
+              <span class="label">{{name.Clarity_Project}}</span>
+            </div>
+          </ion-row>
+          <ion-row class="full-width s-global-pd">
+            <div class="s-empty-cl"></div>
+            <div class="s-hd label">{{'Job ID' | translate}}</div>
+            <div *ngFor="let id of data.section" class="s-hd ">
+              <span class="label">{{id.Job_ID}}</span>
+            </div>
+          </ion-row>
+          <ion-row *ngIf="valueProvider.getUser().ClarityID == ''" class="full-width s-global-pd">
+            <div class="s-empty-cl"></div>
+            <div class="s-hd label">{{'Work Type' | translate}}</div>
+            <div *ngFor="let data of data.section" class="s-hd">
+              <span class="label">{{data.Work_Type}}</span>
+            </div>
+          </ion-row>
+          <ion-row *ngIf="valueProvider.getUser().ClarityID != ''" class="full-width s-global-pd">
+            <div class="s-empty-cl"></div>
+            <div class="s-hd label">{{'Task' | translate}}</div>
+            <div *ngFor="let name of data.section" class="s-hd ">
+              <span class="label">{{name.Field_Job_Name}}</span>
+            </div>
+          </ion-row>
+          <ion-row class="full-width s-global-pd">
+            <div class="s-empty-cl"></div>
+            <div class="s-hd label">{{'Hours'| translate}}</div>
+            <div *ngFor="let id of data.section" class="s-hd ">
+              <span class="label">{{id.Duration}}</span>
+            </div>
+          </ion-row>
+        </ion-row>
+        <ion-row>
+        <div *ngIf="siteAllowanceEntries.length == 0" class="noRecordFound">{{'No record found' | translate}}</div>
+        </ion-row>
+        <div class=" bdr-top">
+          <ion-row class="full-width s-global-pd">
+            <div class="s-empty-cl"></div>
+            <div class="s-hd label lbl-clr">{{'Total Hours' | translate}}</div>
+            <!-- <span *ngIf="last" > -->
+            <div class="s-hd lbl-clr " *ngFor="let totalhours of siteAllowenceHours">
+              {{totalhours}}</div>
+            <!-- </span> -->
+            <!-- <span >{{hours.totalhours.Totalhours}}</span> -->
+
+          </ion-row>
+        </div>
+      </div>
+    </ion-row>
+  </ion-card>
+</ion-content>

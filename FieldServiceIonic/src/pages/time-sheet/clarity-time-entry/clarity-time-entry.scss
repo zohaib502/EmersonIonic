@@ -1,0 +1,72 @@
+page-clarity-time-entry {
+  .body-item-box {
+    width: 23%;
+    margin-right: 2%;
+  }
+  .footerRight {
+    width: 100% !important;
+  }
+  .footer-Button {
+    margin: 3% 1% 1% 0 !important;
+  }
+
+  .calendar {
+    vertical-align: middle;
+    margin:10px 5px 15px 10px;
+  }
+  .cal-date-box {
+    width: 0px;
+    border: none;
+  }
+  .searchNSelect::after {
+   top:15px !important;    
+  }    
+  
+  .errorPointer{
+    cursor: not-allowed;
+  }
+
+  .cancel-btn{
+        background-color: rgba(155, 155, 155, 1);
+        text-transform: capitalize;
+        height: 28px !important;
+        border-radius: 3px;
+        border: none;
+        font-size: 14px !important;
+        cursor: pointer;
+        font-family: "Helvetica Neue";
+        padding: 10px;
+    }
+    .footer-Button-close {
+      background-color: rgba(155, 155, 155, 1);
+      color: rgba(255, 255, 255, 1) !important;
+      text-transform: capitalize;
+      height: 31px;
+      min-width: 80px;
+      border-radius: 3px;
+      border: none;
+      margin: 3% 3% 1% 0%;
+      font-size: 14px;
+      font-family: "Helvetica Neue";
+      box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
+    }
+    .save-btn{
+      height: 28px !important;
+    }
+    .comm-start{
+      padding-left: 30px;
+    }
+    .notesBox .text-input{
+      background-color: #fff !important;
+      width: 98% !important;
+    }
+    .dateRow{
+      padding-left: 12px !important;
+    }
+    .zeroDuration{
+      border: 1px solid rgba(216, 21, 21, 1) !important;
+    }
+    .timepicker-box .bs-chevron-up {
+      top: 2px !important;
+    }
+}

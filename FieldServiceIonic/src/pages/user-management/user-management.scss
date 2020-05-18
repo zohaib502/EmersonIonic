@@ -1,0 +1,111 @@
+page-user-management {
+  .font-size {
+    margin: 0px !important;
+    font-family: "Helvetica Neue" !important;
+    font-size: 22px !important;
+    font-weight: 300 !important;
+    line-height: 27px !important;
+    color: black;
+  }
+
+  .border-right {
+    border-right: 1px solid #e7e7e7
+  }
+
+  .searchKeyLabel {
+    width: 33%;
+  }
+
+  .searchKeyLabel {
+    min-width: 180px;
+    max-width: 245px;
+    width: 30%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+
+  ion-searchbar .searchbar-input {
+    padding-bottom: 0px !important;
+    height: 30px;
+    border: 1px solid rgba(238, 238, 238, 1);
+    width: 340px;
+    border-radius: 3px;
+    background-color: rgba(247, 247, 246, 1);
+    box-shadow: none !important;
+  }
+
+  ion-searchbar {
+    width: unset;
+  }
+
+  ion-searchbar {
+    width: 340px;
+    height: 35px;
+    min-height: unset !important;
+    padding: 0px !important;
+  }
+
+  .searchbar .searchbar-input {
+    padding: 0 10px 0 30px;
+    vertical-align: middle;
+  }
+
+  .searchbar .searchbar-search-icon {
+    top: 7px;
+    left: 7px;
+  }
+
+  .pagination {
+    font-size: 14px !important;
+    line-height: 21px !important;
+    margin-top: 4px;
+  }
+
+  .ngx-pagination .current {
+    font-family: "Helvetica Neue";
+    text-align: center;
+    padding: 2px 1px 0 0;
+    background: #8eb15f;
+    color: #fefefe;
+    cursor: default;
+    border-radius: 50%;
+    width: 26px;
+    height: 26px;
+    font-weight: bold;
+  }
+
+  .ngx-pagination {
+    margin: 14px 10px 0 0 !important;
+    padding: 0px;
+
+    .ellipsis {
+      width: auto !important;
+      vertical-align: middle
+    }
+  }
+
+  .hd {
+    text-align: center;
+    padding: 5px;
+  }
+
+  .user-not-found {
+    color: rgba(74, 74, 74, 1);
+    font-family: "Helvetica Neue";
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 17px;
+  }
+
+  .item.item-md .checkbox-md {
+    margin: 9px 10px 9px 4px;
+  }
+
+  .searchbar-input-container {
+    margin-top: 22px;
+  }
+
+  .add-btn{
+    margin: 0px;
+  }
+}

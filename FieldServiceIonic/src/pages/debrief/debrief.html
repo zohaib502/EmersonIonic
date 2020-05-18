@@ -1,0 +1,44 @@
+<ion-header *ngIf="!valueService.getDebriefHeader()"
+  [ngClass]="lockEnabled ? 'applyLockScreenForHeader':''">
+  <page-custom-header *ngIf="header_data" [header]="header_data"></page-custom-header>
+</ion-header>
+
+<ion-content padding [ngClass]="lockEnabled ? 'applyLockScreenForContent':''|| header_data?'onCompleted':''">
+  <ion-tabs *ngIf="valueService.getTask().IsStandalone == 'false'" tabsPlacement="top" [selectedIndex]="1" #myTabs
+    id="myTabs" [ngClass]="(valueService.getTask().Task_Status == 'Completed-Awaiting Review') ?'hideTabbar':''">
+    <ion-tab [root]="tab1Root" (ionSelect)="onselectOverview($event)" tabTitle="{{'Overview' | translate }}"></ion-tab>
+    <ion-tab [root]="tab2Root" (ionSelect)="onselect($event)" tabTitle="{{'Time' | translate }}"></ion-tab>
+    <ion-tab [root]="tab3Root" (ionSelect)="onselect($event)" tabTitle="{{'Expenses' | translate }}"></ion-tab>
+    <ion-tab [root]="tab4Root" (ionSelect)="onselect($event)" tabTitle="{{'Material' | translate }}"></ion-tab>
+    <ion-tab [root]="tab5Root" (ionSelect)="onselect($event)" tabTitle="{{'Notes' | translate }}"></ion-tab>
+    <ion-tab [root]="tab6Root"
+      [show]="(((valueService.getTaskData().length > 0 && valueService.getTaskData().Status == enums.Jobstatus.Debrief_In_Progress) || valueService.getTask().StatusID == enums.Jobstatus.Debrief_In_Progress || valueService.getTask().StatusID == enums.Jobstatus.Debrief_Declined ) ? false : true)"
+      (ionSelect)="onselect($event)" tabTitle="{{'Emerson Signature' | translate }}"></ion-tab>
+    <ion-tab [root]="tab7Root"
+      [enabled]="((index == '6' || index == '7') || ((valueService.getTaskData().length > 0 && valueService.getTaskData().Status == enums.Jobstatus.Debrief_In_Progress) || valueService.getTask().StatusID == enums.Jobstatus.Debrief_In_Progress ) || (valueService.getTask().StatusID == enums.Jobstatus.Debrief_Declined)  ? true : false)"
+      (ionSelect)="onselectSummary($event)" tabTitle="{{'Summary' | translate }}"></ion-tab>
+    <ion-tab [root]="tab8Root"
+      [show]="((valueService.getTaskData().length > 0 && valueService.getTaskData().Status == enums.Jobstatus.Debrief_In_Progress) || (valueService.getTask().StatusID == enums.Jobstatus.Debrief_In_Progress) || (valueService.getTask().StatusID == enums.Jobstatus.Debrief_Declined ) ? false : true)"
+      [enabled]="((index == '6' || index == '7')  ? true : false)" (ionSelect)="onselectCustomerSig($event)"
+      tabTitle="{{'Customer Signature' | translate }}"></ion-tab>
+  </ion-tabs>
+
+  <ion-tabs *ngIf="valueService.getTask().IsStandalone == 'true'" tabsPlacement="top" [selectedIndex]="1" #myTabs
+    id="myTabs" [ngClass]="(valueService.getTask().Task_Status == 'Completed-Awaiting Review') ?'hideTabbar':''">
+    <ion-tab [root]="tab1Root" (ionSelect)="onselectNew($event)" tabTitle="{{'SDR' | translate }}"></ion-tab>
+    <ion-tab [root]="tab2Root" (ionSelect)="onselect($event)" tabTitle="{{'Time' | translate }}"></ion-tab>
+    <ion-tab [root]="tab3Root" (ionSelect)="onselect($event)" tabTitle="{{'Expenses' | translate }}"></ion-tab>
+    <ion-tab [root]="tab4Root" (ionSelect)="onselect($event)" tabTitle="{{'Material' | translate }}"></ion-tab>
+    <ion-tab [root]="tab5Root" (ionSelect)="onselect($event)" tabTitle="{{'Notes' | translate }}"></ion-tab>
+    <ion-tab [root]="tab6Root"
+      [show]="(((valueService.getTaskData().length > 0 && valueService.getTaskData().Status == enums.Jobstatus.Debrief_In_Progress) || valueService.getTask().StatusID == enums.Jobstatus.Debrief_In_Progress || valueService.getTask().StatusID == enums.Jobstatus.Debrief_Declined ) ? false : true)"
+      (ionSelect)="onselect($event)" tabTitle="{{'Emerson Signature' | translate }}"></ion-tab>
+    <ion-tab [root]="tab7Root"
+      [enabled]="((index == '6' || index == '7') || ((valueService.getTaskData().length > 0 && valueService.getTaskData().Status == enums.Jobstatus.Debrief_In_Progress) || valueService.getTask().StatusID == enums.Jobstatus.Debrief_In_Progress ) || (valueService.getTask().StatusID == enums.Jobstatus.Debrief_Declined)  ? true : false)"
+      (ionSelect)="onselectSummary($event)" tabTitle="{{'Summary' | translate }}"></ion-tab>
+    <ion-tab [root]="tab8Root"
+      [show]="((valueService.getTaskData().length > 0 && valueService.getTaskData().Status == enums.Jobstatus.Debrief_In_Progress) || (valueService.getTask().StatusID == enums.Jobstatus.Debrief_In_Progress) || (valueService.getTask().StatusID == enums.Jobstatus.Debrief_Declined ) ? false : true)"
+      [enabled]="((index == '6' || index == '7')  ? true : false)" (ionSelect)="onselectCustomerSig($event)"
+      tabTitle="{{'Customer Signature' | translate }}"></ion-tab>
+  </ion-tabs>
+</ion-content>

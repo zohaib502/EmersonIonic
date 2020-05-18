@@ -1,0 +1,49 @@
+time-duration {
+    .duration-box {
+        box-sizing: border-box;
+        height: 28px;
+        border: 1px solid rgba(216,213,209,1);
+        border-radius: 3px;
+        background-color: rgba(247,247,246,1);
+        width: 72px;
+      }
+      .timepicker-box .bs-timepicker-field {
+        box-sizing: border-box;
+        height: 25px;
+        border: 1px solid rgba(216,213,209,1);
+        border-radius: 3px;
+        background-color: rgba(247,247,246,1);
+        text-align: center;
+        width: 30px;
+        font-family: "Helvetica Neue";
+        color: black !important;
+        font-size: 12px;
+        font-weight: 300;
+        line-height: 17px;
+      }
+    
+      .timepicker-icon {
+        padding-top: 5px;
+        padding-right: 5px;
+      }
+    
+      .timepicker-box .bs-chevron-up, .timepicker-box .bs-chevron-down {
+        margin: 0 auto;
+      }
+    
+      .bs-chevron {
+        border-width: 3px 0 0 3px;
+        color: rgba(193, 189, 189,1);
+        width: 10px;
+        height: 10px;
+        cursor: pointer;
+      }
+    
+      .timepicker-box .bs-chevron-down {
+        top: 0px;
+      }
+    
+      .timepicker-box .bs-chevron-up {
+        top: 5px;
+      }
+}

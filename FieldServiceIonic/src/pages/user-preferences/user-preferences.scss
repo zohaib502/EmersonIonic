@@ -1,0 +1,274 @@
+page-user-preferences {
+
+  .select-style {
+    max-width: 100% !important;
+  }
+
+  .field-box {
+    box-sizing: border-box;
+    height: 31px;
+    border: 1px solid rgba(216,213,209,1);
+    border-radius: 3px;
+    background-color: rgba(247,247,246,1);
+    width: 135px;
+  }
+
+  .cuntry-box {
+    box-sizing: border-box;
+    height: 31px;
+    border: 1px solid rgba(216,213,209,1);
+    border-radius: 3px;
+    background-color: rgba(247,247,246,1);
+    width: 130px;
+  }
+
+  .dateformat-box {
+    box-sizing: border-box;
+    height: 31px;
+    border: 1px solid rgba(216,213,209,1);
+    border-radius: 3px;
+    background-color: rgba(247,247,246,1);
+    width: 140px;
+  }
+
+  .itemclass {
+    padding-left: 0px !important;
+  }
+
+  .address-box {
+    box-sizing: border-box;
+    height: 31px;
+    border: 1px solid rgba(216,213,209,1);
+    border-radius: 3px;
+    background-color: rgba(247,247,246,1);
+    width: 150px;
+  }
+
+  .select-text {
+    color: rgba(0,0,0,1) !important;
+    font-family: "Helvetica Neue";
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 17px;
+  }
+
+  .select {
+    padding: 6px !important;
+  }
+
+  .add-btn {
+    height: 33px;
+    width: 33px;
+    border-radius: 3px;
+    margin: 14px 0px 0px 1px;
+  }
+
+  .checkbox .checkbox-checked {
+    background-color: transparent !important;
+    border-color: unset !important;
+    border-radius: 0px;
+    border-width: 1px;
+  }
+
+  .checkbox .checkbox-checked .checkbox-inner {
+    left: 6px;
+    top: 2px;
+    width: 5px;
+    height: 12px;
+    border-color: black;
+  }
+
+  .checkbox-label {
+    color: #60b2d5;
+    font-family: "Helvetica Neue";
+    font-size: 14px;
+    font-weight: bold;
+    white-space: normal;
+  }
+
+  .item.item-md .checkbox-md {
+    margin: 3px 9px 0 0;
+  }
+
+  .checkbox-icon {
+    height: 20px !important;
+    width: 20px !important;
+    border-width: 1px !important;
+    border-radius: 0px !important;
+  }
+
+  .saveBtn {
+    margin-left: 20%;
+    margin-top: 20px;
+  }
+
+  .userPrefItem {
+    width: auto;
+    padding-left: 0px !important;
+    display: inline-block;
+  }
+
+  .userPrefLabel {
+    margin-right: 0px !important;
+  }
+
+  .userPrefItem.item.item-block .item-inner, .userPrefItem.item .checkbox {
+    display: inline-block;
+    height: 30px;
+    vertical-align: middle;
+  }
+
+  .userPrefBtn {
+    min-width: 60px;
+    margin-top: 15px;
+  }
+
+  .item.item .checkbox {
+    margin: 12px 8px 8px 2px;
+  }
+
+  .checkBoxDiv {
+    width: 100%;
+  }
+  .fsrModal {
+    width: 85%;
+  }
+
+  .btnDiv {
+    width: 15%;
+  }
+
+  .blue-btn{
+    background-color:#5d6b8a !important;
+  }
+}
+
+
+.UserPreferencesModal {
+  .modal-wrapper {
+    height: 350px;
+    width: 940px !important;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%) !important;
+    position: fixed;
+  }
+
+  .modal-wrapper .scroll-content {
+    background-color: rgba(255,255,255,1) !important;
+    color: rgba(74,74,74,1);
+    font-family: "Helvetica Neue";
+    font-size: 18px;
+    font-weight: 300;
+    line-height: 28px;
+    text-align: left;
+    overflow-y: hidden;
+  }
+
+  .modal-wrapper .toolbar-title {
+    color: rgba(74,74,74,1);
+    font-family: "Helvetica Neue";
+    font-size: 22px;
+    font-weight: 300;
+    line-height: 27px;
+    text-align: left;
+  }
+
+  .select-style {
+    max-width: 100% !important;
+  }
+
+  .field-box {
+    box-sizing: border-box;
+    height: 31px;
+    border: 1px solid rgba(216,213,209,1);
+    border-radius: 3px;
+    background-color: rgba(247,247,246,1);
+    width: 170px;
+  }
+
+  .cuntry-box {
+    box-sizing: border-box;
+    height: 31px;
+    border: 1px solid rgba(216,213,209,1);
+    border-radius: 3px;
+    background-color: rgba(247,247,246,1);
+    width: 130px;
+  }
+
+  .dateformat-box {
+    box-sizing: border-box;
+    height: 31px;
+    border: 1px solid rgba(216,213,209,1);
+    border-radius: 3px;
+    background-color: rgba(247,247,246,1);
+    width: 230px;
+  }
+
+  .itemclass {
+    padding-left: 0px !important;
+  }
+
+
+  .select-text {
+    color: rgba(0,0,0,1) !important;
+    font-family: "Helvetica Neue";
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 17px;
+  }
+
+  .select {
+    padding: 6px !important;
+  }
+
+  .add-btn {
+    height: 33px;
+    width: 33px;
+    border-radius: 3px;
+    margin: 14px 0px 0px 1px;
+  }
+
+  .checkbox .checkbox-checked {
+    background-color: transparent !important;
+    border-color: unset !important;
+    border-radius: 0px;
+    border-width: 1px;
+  }
+
+  .checkbox .checkbox-checked .checkbox-inner {
+    left: 6px;
+    top: 2px;
+    width: 5px;
+    height: 12px;
+    border-color: black;
+  }
+
+  .checkbox-label {
+    color: #60b2d5;
+    font-family: "Helvetica Neue";
+    font-size: 15px;
+    font-weight: bold;
+  }
+
+  .item.item-md .checkbox-md {
+    margin: 3px 9px 0 0;
+  }
+
+  .checkbox-icon {
+    height: 20px !important;
+    width: 20px !important;
+    border-width: 1px !important;
+    border-radius: 0px !important;
+  }
+
+  .saveBtn {
+    margin-left: 14%;
+    margin-top: 15px;
+  }
+  .startDayOfmonth{
+    width: 200px !important;
+  }
+}

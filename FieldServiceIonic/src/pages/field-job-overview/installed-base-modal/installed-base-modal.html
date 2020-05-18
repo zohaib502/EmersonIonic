@@ -1,0 +1,63 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title class="padding-style" start *ngIf="installBaseObject.InstalledBaseId == undefined">{{'Add New Installed Base' | translate}}</ion-title>
+    <ion-title class="padding-style" start *ngIf="installBaseObject.InstalledBaseId">{{'Edit Installed Base' | translate}}</ion-title>
+    <ion-buttons end>
+      <button ion-button (click)="save()" class="save-btn btn" [disabled]="!installBaseObject.Item_Number || !installBaseObject.Product_Id || !installBaseObject.Manufacturer_Id || !installBaseObject.Status_Id ">{{ 'Save' | translate }}</button>
+      <button ion-button class="closebtn" (click)="closeModal()"><i class="fa fa-times fa-2x"></i></button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+<ion-content padding>
+  <ion-row class="global-padding full-width">
+    <div class="spacingMargin">
+      <ion-label class="label">{{'Item Number' | translate}}<span class="validator"></span></ion-label>
+      <ion-input type="text" required [attr.maxlength]="20" placeholder="{{'IB Item Number' | translate}}" [(ngModel)]="installBaseObject.Item_Number" name="installBaseObject.Item_Number" class="address-textbox">
+      </ion-input>
+    </div>
+    <div class="spacingMargin">
+      <ion-label class="label">{{'Tag Number' | translate}}</ion-label>
+      <ion-input type="text" [attr.maxlength]="30" placeholder="{{'IB Tag Number' | translate}}" [(ngModel)]="installBaseObject.TagNumber" name="installBaseObject.TagNumber" class="address-textbox">
+      </ion-input>
+    </div>
+    <div class="spacingMargin">
+      <ion-label class="label label-style">{{'Serial Number' | translate}}</ion-label>
+      <ion-input type="text" required [attr.maxlength]="80" placeholder="{{'IB Serial Number' | translate}}" [(ngModel)]="installBaseObject.Serial_Number" name="installBaseObject.SerialNumber" class="address-textbox">
+      </ion-input>
+    </div>
+  </ion-row>
+  <ion-row class="global-padding full-width">
+    <div class="spacingMargin">
+      <ion-col no-padding>
+        <ion-label class="label">{{'Manufacturer' | translate}}<span class="validator"></span></ion-label>
+        <!--10-18-18 Radheshyam kumar addedd tappable attribute on evey ion-select to resolve the double click issue -->
+        <ion-select	*ngIf="showSelects" tappable interface="popover" required placeholder="{{'Select' | translate}}" [(ngModel)]="installBaseObject.Manufacturer_Id" name="Manufacturer_Id" class="select-style address-selectbox">
+          <ion-option disabled value="{{''}}">{{'Select Manufacturer' | translate}}</ion-option>
+          <ion-option *ngFor="let item of manufacturerList" [value]="item.ID">{{item.Value | translate}}</ion-option>
+        </ion-select>
+      </ion-col>
+    </div>
+    <div class="spacingMargin">
+      <ion-col no-padding>
+        <ion-label class="label">{{'Product' | translate}}<span class="validator"></span></ion-label>
+        <ion-select	*ngIf="showSelects" tappable interface="popover" required placeholder="{{'Select' | translate}}" [(ngModel)]="installBaseObject.Product_Id" (ionChange)="selectProductLine($event)" name="Product_Line" class="select-style address-selectbox">
+          <ion-option disabled value="{{''}}">{{'Select Product' | translate}}</ion-option>
+          <ion-option *ngFor="let item of productList" [value]="item.ID">{{item.Value | translate}}</ion-option>
+        </ion-select>
+      </ion-col>
+    </div>
+    <div class="spacingMargin">
+      <ion-col no-padding>
+        <ion-label class="label">{{'Status' | translate}}<span class="validator"></span></ion-label>
+        <ion-select	*ngIf="showSelects" tappable interface="popover" required placeholder="{{'Select' | translate}}" [(ngModel)]="installBaseObject.Status_Id" name="Status_Id" class="select-style address-selectbox">
+          <ion-option disabled value="{{''}}">{{'Select Status' | translate}}</ion-option>
+          <ion-option *ngFor="let item of StatusList" [value]="item.ID">{{item.Value | translate}}</ion-option>
+        </ion-select>
+      </ion-col>
+    </div>
+  </ion-row>
+  <ion-row class="global-padding">
+    <ion-label class="label">{{'Description' | translate}}</ion-label>
+    <textarea class="commentBox value" maxlength="4000" (keypress)="_keyPress($event)" placeholder="{{'Enter Description' | translate}}" [(ngModel)]="installBaseObject.Description"></textarea>
+  </ion-row>
+</ion-content>

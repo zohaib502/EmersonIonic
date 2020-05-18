@@ -1,0 +1,32 @@
+
+<ion-header>
+  <ion-navbar>
+    <ion-title class="padding-style">{{'Choose an option' | translate}}</ion-title>
+    <ion-buttons end>
+      <button ion-button class="closebtn" (click)="closeModal()">
+        <i class="fa fa-times fa-2x"></i>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+  <ion-toolbar >
+    <ion-searchbar placeholder="{{ 'Search' | translate }}" [(ngModel)]="taskInput" #searchBar (ionChange)="checkforspace($event)"></ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content >
+    <ion-list>
+    <div class="scrollContent full-width" >
+        <ion-row class="strippedClass searchResultRow pointer"
+          *ngFor="let data of showData | search:{LookupValue:taskInput} | filterUnique" tappable (click)="selectItem(data)">
+          <div class="LookupValues">
+            {{data.LookupValue}}
+          </div>
+        </ion-row>
+        <div *ngIf="taskInput.length > 0 && (showData | search: {LookupValue:taskInput}).length == 0 && jobidDropdown && jobidnotnull" tappable class="selectOpt" >
+          <button ion-button class="select-btn" (click)="selectOpt()">{{'Select' | translate}}
+          </button>
+        </div>
+    </div>
+  </ion-list>
+</ion-content>

@@ -1,0 +1,349 @@
+<ion-header>
+  <page-custom-header *ngIf="navCtrl.parent == null" [header]="header_data"></page-custom-header>
+</ion-header>
+
+<ion-content padding>
+  <ion-card>
+    <ion-card-header>
+      <ion-row class="global-padding full-width">
+        <div class="SRLabel_FCR_SDR">
+          <span class="label" translate="Service Request"></span>
+          <span class="value inline-block non-ellipsis"> - {{taskObj.Service_Request}}</span>
+        </div>
+        <!--<div class="safetyCheckbox">
+          <ion-item class="spacingMargin">-->
+        <!-- // 12/05/2018 -- Mansi Arora -- make label active when safety checkbox checked and renamed to Completed Safety Checklist? -->
+        <!-- // 12/14/2018 -- Mansi Arora -- Disable checkbox when accept page, enable while debrief started page -->
+        <!--<ion-label [ngClass]="(taskObj.Safety_Check == true || taskObj.Safety_Check == 'true') ? 'checkbox-label label' : 'label'" translate="Completed Safety Checklist"></ion-label>
+            <ion-checkbox checkbox-positive ng-checked="taskObj.Safety_Check" [(ngModel)]="taskObj.Safety_Check" name="taskObj.Safety_Check" (ionChange)="updateSafetyCheck($event)" [disabled]="!(taskObj.StatusID == enums.Jobstatus.Accepted)"></ion-checkbox>
+          </ion-item>
+        </div>-->
+        <div class="btnArea_FCR_SDR" *ngIf="taskObj.StatusID != enums.Jobstatus.Assigned && (taskObj.Business_Group == enums.BusinessGroupNames.Final_Control || taskObj.Business_Unit == enums.BusinessUnitNames.PWS)">
+          <button [disabled]="taskObj.Selected_Process && taskObj.Selected_Process != '2' || dateCondition" ion-button class="FCR_btn pointer btn"
+            (click)="openDebrief(enums.Selected_Process.FCR)">
+            <span class="non-ellipsis block">{{ 'Field Completion Report' | translate }}</span>
+          </button>
+          <!-- <button [disabled]="taskObj.Selected_Process && taskObj.Selected_Process != '1'" ion-button class="SDR_btn pointer btn"
+            (click)="gotoSDR()">
+            <span class="non-ellipsis block">{{ 'Service Detail Report' | translate }}</span>
+          </button> -->
+          <!-- <button [disabled]="taskObj.Selected_Process && taskObj.Selected_Process != '3'" ion-button class="Both_btn pointer btn"
+            (click)="openDebrief(enums.Selected_Process.FCR_AND_SDR)">
+            <span class="non-ellipsis block">{{ 'Both' | translate }}</span>
+          </button> -->
+          <button [disabled]="taskObj.Selected_Process && taskObj.Selected_Process != '3' || dateCondition" *ngIf="taskObj.Business_Unit != enums.BusinessUnitNames.PWS" ion-button class="Both_btn pointer btn"
+            (click)="openDebrief(enums.Selected_Process.FCR_AND_SDR)">
+            <span class="non-ellipsis block">{{ 'Field Completion + Service Detail Report' | translate }}</span>
+          </button>
+        </div>
+        <div class="btnArea_FCR_SDR" *ngIf="taskObj.StatusID == enums.Jobstatus.Assigned || (taskObj.Business_Group != enums.BusinessGroupNames.Final_Control && taskObj.Business_Unit != enums.BusinessUnitNames.PWS)">
+          <button ion-button class="accept-btn pointer btn" (click)="acceptJob()" *ngIf="taskStatus == 'Assigned'">
+            <span class="non-ellipsis block">{{ 'Accept' | translate }}</span>
+          </button>
+          <button ion-button class="debrief-btn pointer btn" [disabled]="dateCondition" *ngIf="taskStatus == 'Accepted' || taskStatus == 'Debrief_Started' || taskStatus ==='Debrief Started' || taskStatusId == enums.Jobstatus.Debrief_In_Progress || taskStatusId == enums.Jobstatus.Debrief_Declined || valueProvider.getTaskObject().StatusID == enums.Jobstatus.Debrief_Declined || taskStatusId == enums.Jobstatus.Debrief_Started"
+            (click)="openDebrief()">
+            <span class="non-ellipsis block">{{ 'Debrief' | translate }}</span>
+          </button>
+        </div>
+      </ion-row>
+      <ion-row class="global-padding full-width FCR_SDR_JobDesc_Label">
+        <div class="JDLabel">
+          <span class="label" translate="Job Description"></span>
+        </div>
+        <div class="ESEDLabel">
+          <span class="label" translate="Estimated Start/End Date"></span>
+        </div>
+        <div class="EDLabel">
+          <span class="label" translate="Estimated Duration"></span>
+        </div>
+        <div class="CPNLabel">
+          <span class="label" translate="Customer PO Number"></span>
+        </div>
+      </ion-row>
+      <ion-row class="global-padding full-width FCR_SDR_JobDesc_Value">
+        <div class="JDLabel">
+          <span class="value block non-ellipsis">{{taskObj.Job_Description | translate}}</span>
+        </div>
+        <div class="ESEDLabel">
+          <div class="value non-ellipsis">
+            <span>{{converted_Start_Date}}</span>
+            <span> - </span>
+            <span>{{converted_End_Date}}</span>
+          </div>
+        </div>
+        <div class="EDLabel">
+          <span class="value block non-ellipsis">{{taskObj.Duration}}</span>
+        </div>
+        <div class="CPNLabel">
+          <span class="value block non-ellipsis">{{taskObj.Customer_PONumber}}</span>
+          <!--<span (click)="openHistoyModal()" class="label historyLabel">( {{'Show History' | translate}} )</span>-->
+        </div>
+      </ion-row>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-row class="shaded-block global-padding customer-name-block">
+        <h3 class="non-ellipsis">{{taskObj.Customer_Name}}</h3>
+      </ion-row>
+      <ion-row class="shaded-block global-padding bottom-border">
+        <ion-col col-3 *ngFor="let c of contactList | sort: {property: 'Default_Value', order: -1 } | slice:0: 2">
+          <div *ngIf="c.Contact_Name">
+            <span *ngIf="c.Contacts_Preferences" class="block label" translate="{{c.Contacts_Preferences}} Contact"></span>
+            <span class="block contact-person-name">{{c.Contact_Name}}</span>
+            <span *ngIf="c.Office_Phone" class="block contact-info">
+              <img class="phone-icon inline-block" src="assets/imgs/icons/ic_phone.png" alt="" />
+              <span> {{c.Office_Phone || NA}}</span>
+            </span>
+            <span *ngIf="c.Mobile_Phone" class="block contact-info">
+              <img class="mobile-icon inline-block" src="assets/imgs/icons/ic_mobile.png" alt="" />
+              <span> {{c.Mobile_Phone || NA}}</span>
+            </span>
+            <span *ngIf="c.Email" class="block contact-info">
+              <img class="mail-icon inline-block" src="assets/imgs/icons/ic_email.png" alt="" />
+              <span> {{c.Email || NA}}</span>
+            </span>
+          </div>
+        </ion-col>
+        <ion-col col-6>
+          <div>
+            <ion-row>
+              <ion-col col-5 (click)="mapClicked()" class="pointer">
+                <span class="block address-info">{{taskObj.Address1}}</span>
+                <span *ngIf="taskObj.Address2 && taskObj.Address2!=''" class="block address-info">{{taskObj.Address2}}</span>
+                <span *ngIf="taskObj.Country == 'Germany'">
+                  <span class="block address-info">{{taskObj.Zip_Code}} {{taskObj.City}}</span>
+                  <span class="block address-info">{{taskObj.State}}</span>
+                </span>
+                <span *ngIf="taskObj.Country != 'Germany'">
+                  <span class="block address-info">{{taskObj.City}}</span>
+                  <span class="block address-info">{{taskObj.State}} {{taskObj.Zip_Code}}</span>
+                </span>
+              </ion-col>
+              <ion-col col-2>
+                <span>
+                  <i class="fa fa-3x fa-map-marker pin pointer btn" (click)="mapClicked()"></i>
+                </span>
+              </ion-col>
+              <ion-col col-5></ion-col>
+            </ion-row>
+          </div>
+        </ion-col>
+      </ion-row>
+      <ion-row class="global-padding bottom-border shaded-block">
+        <div class="full-width">
+          <ion-row>
+            <ion-col col-4 class="label">{{'Contract No.' | translate}}</ion-col>
+            <ion-col col-8 class="label">{{'Contract Description' | translate}}</ion-col>
+          </ion-row>
+          <ion-row class="contract-box-row">
+            <ion-col col-4 class="value">{{taskObj.Contract_Number}}</ion-col>
+            <ion-col col-8 class="value">{{taskObj.Contract_Desc_Link}}</ion-col>
+          </ion-row>
+        </div>
+      </ion-row>
+      <!--10/16/2018 -- Mayur Varshney -- Apply check if valueProvider is not loaded and user click on field job-->
+      <!--10/24/2018 -- Zohaib Khan -- Added separated Row for declined comments -->
+      <ion-row class="global-padding bottom-border shaded-block" *ngIf="valueProvider.getTask() && valueProvider.getTask().DeclineComments && valueProvider.getTask().StatusID == enums.Jobstatus.Debrief_Declined">
+        <div style="margin-left: 5px;" class="full-width">
+          <ion-row>
+            <span class="label">{{'Declined Comments' | translate}}</span>
+          </ion-row>
+          <ion-row class="contract-box-row">
+            <span style="margin-top: 5px" class="value block non-ellipsis">
+              {{taskObj.DeclineComments | slice:0:250}}
+              <span *ngIf="taskObj.DeclineComments ? taskObj.DeclineComments.length > 250 : ''" class="readMore pointer inline-block">
+                <a name="btn2" (click)="notesReadmore(taskObj.DeclineComments,'','')">
+                  <span>...</span><span>{{'Read More' | translate}}</span>
+                </a>
+              </span>
+            </span>
+          </ion-row>
+        </div>
+      </ion-row>
+      <ion-row class="global-padding">
+        <h2 class="installBaseLabel" translate="Installed Base"></h2>
+        <button *ngIf="valueProvider.getTask().Business_Group != enums.BusinessGroupNames.System" [disabled]="taskStatus == 'Assigned' "
+          class="addbtn-box btn" no-padding (click)="addInstalledBase()">
+          <img class="add-btn pointer" src="assets/imgs/icons/Add-button.png">
+        </button>
+      </ion-row>
+      <ion-row class="global-padding bottom-border">
+        <ion-col col-3 class="label">
+          <span translate="Item Number"></span>
+        </ion-col>
+        <ion-col col-3 class="label">
+          <span translate="Item Description"></span>
+        </ion-col>
+        <ion-col col-3 class="label">
+          <span translate="System ID / Serial"></span> #
+        </ion-col>
+        <ion-col col-2 class="label">
+          <span translate="Tag"></span> #
+        </ion-col>
+        <ion-col col-1 class="label"></ion-col>
+      </ion-row>
+      <ion-list>
+        <ion-row class="global-padding strippedClass" *ngFor="let installB of installBaseList; let i=index">
+          <ion-col col-3 class="value">{{installB.Item_Number ? installB.Item_Number : "NO VALUE"}}</ion-col>
+          <ion-col col-3 class="value">
+            {{installB.Description ? (installB.Description | slice:0:200) : "NO VALUE"}}
+            <span *ngIf="installB.Description ? installB.Description.length > 200 : ''" class="readMore pointer">
+              <a name="btn2" (click)="notesReadmore(installB.Description,'',i)">
+                <span>...</span>
+                <span>{{'Read More' | translate}}</span>
+              </a>
+            </span>
+          </ion-col>
+          <ion-col *ngIf="installB.System_ID" col-3 class="value">
+            <a class="pointer" (click)="projectListRequirement(installB.System_ID)">{{installB.System_ID}}</a>
+          </ion-col>
+          <ion-col *ngIf="!installB.System_ID" col-3 class="value">
+            <span *ngIf="installB.Serial_Number">{{installB.Serial_Number}}</span>
+            <span *ngIf="!installB.Serial_Number">{{"NO VALUE" | translate}}</span>
+          </ion-col>
+          <ion-col col-2 class="value">{{installB.TagNumber ? installB.TagNumber : "NO VALUE"}}</ion-col>
+          <ion-col col-1 *ngIf="taskStatus == 'Accepted' || taskStatus == 'Debrief Started'">
+            <img class="inline-block edit-img pointer" src="assets/imgs/icons/edit-icon.png" (click)="editInstalledBase(installB,i)">
+            <!--
+             07/27/2018 Mayur Varshney
+             Adding pendingSync Icon on multiple basis, as follows
+             - add install base offline
+             - edit install base offline
+            -->
+            <span *ngIf="installB.Sync_Status == 'false'" class="inline-block pull-right">
+              <i class="fa fa-cloud-upload pendingIcon" aria-hidden="true"></i>
+            </span>
+          </ion-col>
+        </ion-row>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+  <ion-card>
+    <ion-card-header>
+      <ion-row class="global-padding">
+        <ion-col col-7>
+          <h1 translate="Onsite Requirement"></h1>
+        </ion-col>
+        <ion-col col-5></ion-col>
+      </ion-row>
+    </ion-card-header>
+    <ion-card-content>
+
+      <!-- Notes -->
+
+      <ion-row class="global-padding">
+        <h2 translate="Notes"></h2>
+      </ion-row>
+      <ion-row *ngIf="notesList.length > 0" class="value global-padding">
+        <ion-col col-3 *ngFor="let n of notesList; let i=index" class="global-padding">
+          <div style="width:85%">
+            <span class="block created-by">{{n.Created_By}}</span>
+            <span class="block notes-date-type">{{n.Start_Date | customDate}}</span>
+            <span class="inline-block">
+              <span>{{'Type' | translate}}: </span>
+              <span class="notes-date-type"> {{n.Notes_type | translate}}</span>
+            </span>
+            <span class="stroke block"></span>
+            <span class="block notes-block">
+              {{n.Notes | slice:0:200}}
+              <span *ngIf="n.Notes.length > 200" class="readMore pointer">
+                <a name="btn2" (click)="notesReadmore(n.Notes,n.Notes_type,i)">
+                  <span>...</span>
+                  <span>{{'Read More' | translate}}</span>
+                </a>
+              </span>
+            </span>
+          </div>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="notesList.length === 0">
+        <ion-col class="global-padding taskoverflow-notes" translate="No Notes"></ion-col>
+      </ion-row>
+
+      <!-- References -->
+
+      <ion-row class="global-padding">
+        <h2 translate="References"></h2>
+      </ion-row>
+      <ion-row *ngIf="attachmentList.length > 0" class="value shaded-block global-padding">
+        <ion-col col-2 *ngFor="let attachment of attachmentList" text-center>
+          <!-- 09/04/2018 -- Mayur Varshney -- Show pending sync icon on the basis of attachmentStatus, show spinner during sync process if image is not downloaded -- Start-->
+          <span [ngClass]="attachment.Attachment_Status == 'false' ? 'block attachment-box' : 'block pointer attachment-box'">
+            <a (click)="attachment.Attachment_Status == 'false' ? false : openResource(attachment)">
+              <span *ngIf="attachment.contentType.indexOf('image')>-1">
+                <span *ngIf="attachment.Attachment_Status == 'false'" class="no-image">
+                  <i *ngIf="!syncProvider.ifAutoSyncing()" class="fa fa-cloud-download fa-lg pendingImageSync"></i>
+                  <img src="assets/imgs/no-preview.png" class="attachment-image-box">
+                  <ion-spinner *ngIf="syncProvider.ifAutoSyncing() && utilityProvider.isConnected()" name="crescent"></ion-spinner>
+                </span>
+                <span *ngIf="attachment.Attachment_Status == 'true'">
+                  <img *ngIf="attachment.isThumbnailCreated && attachment.SRID" class="attachment-image-box" [src]="sanitizer.bypassSecurityTrustUrl(filePath+attachment.SRID+'/thumbnails/' + 'thumb_'+attachment.filename)">
+                  <img *ngIf="!attachment.isThumbnailCreated && attachment.SRID" class="attachment-image-box" [src]="sanitizer.bypassSecurityTrustUrl(filePath+attachment.SRID+'/' +attachment.filename)">
+                  <img *ngIf="attachment.isThumbnailCreated && !attachment.SRID" class="attachment-image-box" [src]="sanitizer.bypassSecurityTrustUrl(filePathTasks+attachment.Task_Number+'/thumbnails/' + 'thumb_'+attachment.filename)">
+                  <img *ngIf="!attachment.isThumbnailCreated && !attachment.SRID" class="attachment-image-box" [src]="sanitizer.bypassSecurityTrustUrl(filePathTasks+attachment.Task_Number+'/' +attachment.filename)">
+                </span>
+              </span>
+              <!-- 09/05/2018 -- Mayur Varshney -- Show pending icon when attachment status is 0 and sync process is not running -- Start -->
+              <span *ngIf="attachment.filetype.indexOf('pdf')>-1">
+                <i *ngIf="attachment.Attachment_Status == 'false'" class="fa fa-cloud-download fa-lg pendingImageSync"></i>
+                <img class="attachment-pdf-icon-box" src="assets/imgs/pdf.png" />
+              </span>
+              <span *ngIf="attachment.filetype.indexOf('doc') > -1 || attachment.filetype.indexOf('docx') > -1">
+                <i *ngIf="attachment.Attachment_Status == 'false'" class="fa fa-cloud-download fa-lg pendingImageSync"></i>
+                <img class="attachment-icon-box" src="assets/imgs/doc.png">
+              </span>
+              <span *ngIf="attachment.filetype.indexOf('xlsx') > -1 || attachment.filetype.indexOf('xls') > -1">
+                <i *ngIf="attachment.Attachment_Status == 'false'" class="fa fa-cloud-download fa-lg pendingImageSync"></i>
+                <img class="attachment-icon-box" src="assets/imgs/xls.png">
+              </span>
+              <span *ngIf="attachment.filetype.indexOf('pptx') > -1 || attachment.filetype.indexOf('ppt') > -1">
+                <i *ngIf="attachment.Attachment_Status== 'false'" class="fa fa-cloud-download fa-lg pendingImageSync"></i>
+                <img class="attachment-icon-box" src="assets/imgs/ppt.png">
+              </span>
+              <span *ngIf="attachment.filetype.indexOf('txt') > -1 ">
+                <i *ngIf="attachment.Attachment_Status == 'false'" class="fa fa-cloud-download fa-lg pendingImageSync"></i>
+                <img class="attachment-icon-box" src="assets/imgs/txt.png">
+              </span>
+              <span *ngIf="attachment.contentType.indexOf('image') < 0 && attachment.filetype.indexOf('pdf') < 0 && attachment.filetype.indexOf('doc') < 0 && attachment.filetype.indexOf('docx') < 0 && attachment.filetype.indexOf('xlsx') < 0 && attachment.filetype.indexOf('xls') < 0&& attachment.filetype.indexOf('ppt') < 0 && attachment.filetype.indexOf('pptx') < 0 && attachment.filetype.indexOf('txt') < 0">
+                <i *ngIf="attachment.Attachment_Status == 'false'" class="fa fa-cloud-download fa-lg pendingImageSync"></i>
+                <img class="attachment-icon-box" src="assets/imgs/unknown.png">
+              </span>
+              <!-- 09/05/2018 -- Mayur Varshney -- Show pending icon when attachment status is 0 and sync process is not running -- End -->
+            </a>
+          </span>
+          <!-- 09/04/2018 -- Mayur Varshney -- Show pending sync icon on the basis of attachmentStatus, show spinner during sync process if image is not downloaded -- End-->
+          <span class="block attachment-name-box">{{attachment.fileDisc}}</span>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="attachmentList.length === 0">
+        <ion-col class="global-padding taskoverflow-notes" translate="No References"></ion-col>
+      </ion-row>
+      <form novalidate>
+        <ion-row class="global-padding">
+          <h2 translate="Add Equipments/Tools"></h2>
+        </ion-row>
+        <ion-row class="global-padding">
+          <div class="taskoverflow-notes">
+            <ion-input class="equipment-input-box inline-block" maxlength="50" [disabled]="taskStatus == 'Assigned'" placeholder="{{'Enter Tools or Equipments' | translate}}"
+              [(ngModel)]="tools.Tool_Name" name="Tool_Name" id="toolInput"></ion-input>
+            <button type="submit" class="addbtn-box pointer btn" (click)="addTool()" no-padding [disabled]="taskStatus == 'Assigned' || !tools.Tool_Name">
+              <img src="assets/imgs/icons/Add-button.png">
+            </button>
+          </div>
+        </ion-row>
+      </form>
+      <ion-list *ngFor="let tool of toolsList; let i = index" class="strippedClassForTools">
+        <ion-row>
+          <ion-col col-5 no-padding>
+            <label class="toolsList non-ellipsis inline-block toolname taskoverflow-notes">
+              {{tool.Tool_Name}}
+            </label>
+          </ion-col>
+          <ion-col col-2>
+            <img src="assets/imgs/icons/delete-icon.png" class="delete-icon pointer custom-center" (click)="deleteTool(tool,i)" />
+          </ion-col>
+          <ion-col col-5></ion-col>
+        </ion-row>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

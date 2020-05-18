@@ -1,0 +1,707 @@
+<ion-content padding class="sdr-pages">
+    <ion-card>
+        <ion-card-header>
+            <ion-row class="global-padding">
+                <ion-col col-3>
+                    <div class="header-left">{{'Inspection Measurement'|translate}}</div>
+                </ion-col>
+                <ion-col col-9 *ngIf="selectedProcess==Enums.Selected_Process.FCR_AND_SDR" class="txt-rgt">
+                    <span class="ft-size verticalMiddle">Continue</span> <button (click)="goToFcr()" ion-button
+                        class="frs-Btn verticalMiddle ">{{'Field Completion Report'|translate}}</button>
+                </ion-col>
+            </ion-row>
+        </ion-card-header>
+        <page-sdr-header></page-sdr-header>
+        <ion-card-content>
+            <div class="full-width global-padding">
+                <span class="label">Asset Beyond Economical Repair</span>
+                <ion-checkbox color="dark" [checked]="imDataObj.ASSET_BEYOND_ECONOMICAL_REPAIR == 'true'"
+                    [(ngModel)]="imDataObj.ASSET_BEYOND_ECONOMICAL_REPAIR">
+                </ion-checkbox>
+            </div>
+            <ion-row>
+                <ion-item class="WF-toggle toggle-all-accordion">
+                    <ion-label *ngIf="toggleAllaccordion == false" text-right>{{'Expand all' | translate}}</ion-label>
+                    <ion-label *ngIf="toggleAllaccordion == true" text-right>{{'Collapse all' | translate}}</ion-label>
+                    <ion-toggle [(ngModel)]="toggleAllaccordion" (ionChange)="toggleAccordion($event)"></ion-toggle>
+                </ion-item>
+            </ion-row>
+            <div class="full-width global-padding">
+            <ion-row class="customRows global-padding">
+                <div class="full-width">
+                    <div class="inline-block"
+                        [ngClass]="imDataObj.SPRINGS_SPRINGS_NA == 'true'  ? 'disable-content' : ''"
+                        (click)="expandOuter('Springs')">
+                        <ion-icon class="arrowIcon" item-left name="arrow-dropright"
+                            *ngIf="!expandOuterAccordion.Springs">
+                        </ion-icon>
+                        <ion-icon class="arrowIcon" role="img" *ngIf="expandOuterAccordion.Springs"
+                            aria-label="arrow dropdown" name="arrow-dropdown">
+                        </ion-icon>
+
+                        <span class="label pointer">{{'Springs' | translate}}</span>
+                    </div>
+                    <div class="inline-block pull-right marginRight25">
+                        <span class="label">{{'N/A' | translate}}</span>
+                        <ion-checkbox color="dark"
+                            (click)="confirmAlert(imDataObj.SPRINGS_SPRINGS_NA, 'Springs', 'SPRINGS_SPRINGS_NA')"
+                            [checked]="imDataObj.SPRINGS_SPRINGS_NA == 'true' "
+                            [(ngModel)]="imDataObj.SPRINGS_SPRINGS_NA">
+                        </ion-checkbox>
+                    </div>
+                    <div class="block full-width" *ngIf="expandOuterAccordion.Springs">
+                        <ion-row>
+                            <div class="half-screen marginTop15">
+                                <span class="label inline-block">{{'Spring Number' | translate}}</span>
+                                <ion-input maxlength="250" class="project-box "
+                                    [(ngModel)]="imDataObj.SPRINGS_SPRING_NUMBER">
+                                </ion-input>
+                            </div>
+                            <div class="half-screen marginTop15">
+                                <span class="label inline-block">{{'Spring Range' | translate}}</span>
+                                <ion-input maxlength="250" class="project-box "
+                                    [(ngModel)]="imDataObj.SPRINGS_SPRING_RANGE">
+                                </ion-input>
+                            </div>
+                        </ion-row>
+                        <ion-row>
+                            <div class="half-screen marginTop15">
+                                <span class="label inline-block">{{'Spring Material' | translate}}</span>
+                                <ion-input class="project-box searchNSelect select-style" tappable
+                                    (click)="searchModal('SpringMaterial','SPRINGS_SPRING_MATERIAL')" [readonly]="true"
+                                    [(ngModel)]="imDataObj.SPRINGS_SPRING_MATERIAL">
+                                </ion-input>
+                                <ion-input maxlength="250" *ngIf="imDataObj.SPRINGS_SPRING_MATERIAL == 'Other'"
+                                    class="project-box "
+                                    [ngClass]="!imDataObj.SPRINGS_SPRING_MATERIAL_OT ? 'input-validation': '' "
+                                    [(ngModel)]="imDataObj.SPRINGS_SPRING_MATERIAL_OT">
+                                </ion-input>
+                            </div>
+                            <div class="half-screen marginTop15">
+                                <span class="label inline-block">{{'Spindle Runout' | translate}}</span>
+                                <ion-input maxlength="250" class="project-box "
+                                    [(ngModel)]="imDataObj.SPRINGS_SPINDLE_RUNOUT">
+                                </ion-input>
+                            </div>
+                        </ion-row>
+                        <ion-row>
+                            <div class="quarter-screen marginTop15">
+                                <span class="label inline-block">{{'Number of Coils' | translate}}</span>
+                                <ion-input maxlength="250" class="project-box "
+                                    [(ngModel)]="imDataObj.SPRINGS_NUMBER_OF_COILS">
+                                </ion-input>
+                            </div>
+                            <div class="quarter-screen marginTop15">
+                                <span class="label inline-block">{{'Pitch' | translate}}</span>
+                                <ion-input maxlength="250" class="project-box " [(ngModel)]="imDataObj.SPRINGS_PITCH">
+                                </ion-input>
+                            </div>
+                            <div class="quarter-screen marginTop15">
+                                <span class="label inline-block">{{'Length' | translate}}</span>
+                                <span [ngClass]="imDataObj.SPRINGS_LENGTH_UOM ? 'validator' :''"
+                                    class="inline-block"></span>
+                                <ion-input [ngClass]="errorObj.SPRINGS_LENGTH  ? 'input-validation' :''" maxlength="250"
+                                    class="project-box " [(ngModel)]="imDataObj.SPRINGS_LENGTH">
+                                </ion-input>
+                            </div>
+                            <div class="quarter-screen marginTop15">
+                                <span class="label inline-block">{{'UOM' | translate}}</span>
+                                <span [ngClass]="imDataObj.SPRINGS_LENGTH ? 'validator' :''"
+                                    class="inline-block"></span>
+                                <ion-input [ngClass]="errorObj.SPRINGS_LENGTH_UOM  ? 'input-validation' :''"
+                                    class="project-box searchNSelect select-style" tappable
+                                    (click)="searchModal('UnitOfMeasurementLength','SPRINGS_LENGTH_UOM')"
+                                    [readonly]="true" [(ngModel)]="imDataObj.SPRINGS_LENGTH_UOM">
+                                </ion-input>
+                                <ion-input maxlength="250" *ngIf="imDataObj.SPRINGS_LENGTH_UOM == 'Other'"
+                                    class="project-box "
+                                    [ngClass]="!imDataObj.SPRINGS_LENGTH_UOM_OT ? 'input-validation': '' "
+                                    [(ngModel)]="imDataObj.SPRINGS_LENGTH_UOM_OT">
+                                </ion-input>
+                            </div>
+                        </ion-row>
+                        <ion-row>
+                            <div class="quarter-screen marginTop15">
+                                <span class="label inline-block">{{'Diameter' | translate}}</span>
+                                <span [ngClass]="imDataObj.SPRINGS_DIAMETER_UOM ? 'validator' :''"
+                                    class="inline-block"></span>
+                                <ion-input maxlength="250"
+                                    [ngClass]="errorObj.SPRINGS_DIAMETER  ? 'input-validation' :''" class="project-box "
+                                    [(ngModel)]="imDataObj.SPRINGS_DIAMETER">
+                                </ion-input>
+                            </div>
+                            <div class="quarter-screen marginTop15">
+                                <span class="label inline-block">{{'UOM' | translate}}</span>
+                                <span [ngClass]="imDataObj.SPRINGS_DIAMETER ? 'validator' :''"
+                                    class="inline-block"></span>
+                                <ion-input [ngClass]="errorObj.SPRINGS_DIAMETER_UOM  ? 'input-validation' :''"
+                                    class="project-box searchNSelect select-style" tappable
+                                    (click)="searchModal('UnitOfMeasurementLength','SPRINGS_DIAMETER_UOM')"
+                                    [readonly]="true" [(ngModel)]="imDataObj.SPRINGS_DIAMETER_UOM">
+                                </ion-input>
+                                <ion-input maxlength="250" *ngIf="imDataObj.SPRINGS_DIAMETER_UOM == 'Other'"
+                                    class="project-box "
+                                    [ngClass]="!imDataObj.SPRINGS_DIAMETER_UOM_OT ? 'input-validation': '' "
+                                    [(ngModel)]="imDataObj.SPRINGS_DIAMETER_UOM_OT">
+                                </ion-input>
+                            </div>
+                            <div class="quarter-screen marginTop15">
+                                <span class="label inline-block">{{'Wire Diameter' | translate}}</span>
+                                <span [ngClass]="imDataObj.SPRINGS_WIRE_DIAMETER_UOM ? 'validator' :''"
+                                    class="inline-block"></span>
+                                <ion-input maxlength="250"
+                                    [ngClass]="errorObj.SPRINGS_WIRE_DIAMETER  ? 'input-validation' :''"
+                                    class="project-box " [(ngModel)]="imDataObj.SPRINGS_WIRE_DIAMETER">
+                                </ion-input>
+                            </div>
+                            <div class="quarter-screen marginTop15">
+                                <span class="label inline-block">{{'UOM' | translate}}</span>
+                                <span [ngClass]="imDataObj.SPRINGS_WIRE_DIAMETER ? 'validator' :''"
+                                    class="inline-block"></span>
+                                <ion-input [ngClass]="errorObj.SPRINGS_DIAMETER_UOM  ? 'input-validation' :''"
+                                    class="project-box searchNSelect select-style" tappable
+                                    (click)="searchModal('UnitOfMeasurementLength','SPRINGS_WIRE_DIAMETER_UOM')"
+                                    [readonly]="true" [(ngModel)]="imDataObj.SPRINGS_WIRE_DIAMETER_UOM">
+                                </ion-input>
+                                <ion-input maxlength="250" *ngIf="imDataObj.SPRINGS_WIRE_DIAMETER_UOM == 'Other'"
+                                    class="project-box "
+                                    [ngClass]="!imDataObj.SPRINGS_WIRE_DIAMETER_UOM_OT ? 'input-validation': '' "
+                                    [(ngModel)]="imDataObj.SPRINGS_WIRE_DIAMETER_UOM_OT">
+                                </ion-input>
+                            </div>
+                        </ion-row>
+                    </div>
+                </div>
+            </ion-row>
+            <ion-row class="customRows global-padding">
+                <div class="full-width">
+                    <div class="inline-block"
+                        [ngClass]="imDataObj.NOZZLE_HEIGHT_NOZZLE_HEIGHT_NA == 'true'  ? 'disable-content' : ''"
+                        (click)="expandOuter('NozzleHeight')">
+                        <ion-icon class="arrowIcon" item-left name="arrow-dropright"
+                            *ngIf="!expandOuterAccordion.NozzleHeight">
+                        </ion-icon>
+                        <ion-icon class="arrowIcon" role="img" *ngIf="expandOuterAccordion.NozzleHeight"
+                            aria-label="arrow dropdown" name="arrow-dropdown">
+                        </ion-icon>
+
+                        <span class="label pointer">{{'Nozzle Height' | translate}}</span>
+                    </div>
+                    <div class="inline-block pull-right marginRight25">
+                        <span class="label">{{'N/A' | translate}}</span>
+                        <ion-checkbox color="dark"
+                            (click)="confirmAlert(imDataObj.NOZZLE_HEIGHT_NOZZLE_HEIGHT_NA, 'NozzleHeight', 'NOZZLE_HEIGHT_NOZZLE_HEIGHT_NA')"
+                            [checked]="imDataObj.NOZZLE_HEIGHT_NOZZLE_HEIGHT_NA == 'true' "
+                            [(ngModel)]="imDataObj.NOZZLE_HEIGHT_NOZZLE_HEIGHT_NA">
+                        </ion-checkbox>
+                    </div>
+                    <div class="block full-width" *ngIf="expandOuterAccordion.NozzleHeight">
+                        <ion-row>
+                            <div class="quarter-screen marginTop15">
+                                <span class="label inline-block">{{'Min' | translate}}</span>
+                                <span [ngClass]="imDataObj.NOZZLE_HEIGHT_MIN_UOM ? 'validator' :''"
+                                    class="inline-block"></span>
+                                <ion-input maxlength="250"
+                                    [ngClass]="errorObj.NOZZLE_HEIGHT_MIN  ? 'input-validation' :''"
+                                    class="project-box " [(ngModel)]="imDataObj.NOZZLE_HEIGHT_MIN">
+                                </ion-input>
+                            </div>
+                            <div class="quarter-screen marginTop15">
+                                <span class="label inline-block">{{'UOM' | translate}}</span>
+                                <span [ngClass]="imDataObj.NOZZLE_HEIGHT_MIN ? 'validator' :''"
+                                    class="inline-block"></span>
+                                <ion-input [ngClass]="errorObj.NOZZLE_HEIGHT_MIN_UOM  ? 'input-validation' :''"
+                                    class="project-box searchNSelect select-style" tappable
+                                    (click)="searchModal('UnitOfMeasurementLength','NOZZLE_HEIGHT_MIN_UOM')"
+                                    [readonly]="true" [(ngModel)]="imDataObj.NOZZLE_HEIGHT_MIN_UOM">
+                                </ion-input>
+                                <ion-input maxlength="250" *ngIf="imDataObj.NOZZLE_HEIGHT_MIN_UOM == 'Other'"
+                                    class="project-box "
+                                    [ngClass]="!imDataObj.NOZZLE_HEIGHT_MIN_UOM_OT ? 'input-validation': '' "
+                                    [(ngModel)]="imDataObj.NOZZLE_HEIGHT_MIN_UOM_OT">
+                                </ion-input>
+                            </div>
+                            <div class="quarter-screen marginTop15">
+                                <span class="label inline-block">{{'Actual' | translate}}</span>
+                                <span [ngClass]="imDataObj.NOZZLE_HEIGHT_ACTUAL_UOM ? 'validator' :''"
+                                    class="inline-block"></span>
+                                <ion-input maxlength="250"
+                                    [ngClass]="errorObj.NOZZLE_HEIGHT_ACTUAL  ? 'input-validation' :''"
+                                    class="project-box " [(ngModel)]="imDataObj.NOZZLE_HEIGHT_ACTUAL">
+                                </ion-input>
+                            </div>
+                            <div class="quarter-screen marginTop15">
+                                <span class="label inline-block">{{'UOM' | translate}}</span>
+                                <span [ngClass]="imDataObj.NOZZLE_HEIGHT_ACTUAL ? 'validator' :''"
+                                    class="inline-block"></span>
+                                <ion-input [ngClass]="errorObj.NOZZLE_HEIGHT_ACTUAL_UOM  ? 'input-validation' :''"
+                                    class="project-box searchNSelect select-style" tappable
+                                    (click)="searchModal('UnitOfMeasurementLength','NOZZLE_HEIGHT_ACTUAL_UOM')"
+                                    [readonly]="true" [(ngModel)]="imDataObj.NOZZLE_HEIGHT_ACTUAL_UOM">
+                                </ion-input>
+                                <ion-input maxlength="250" *ngIf="imDataObj.NOZZLE_HEIGHT_ACTUAL_UOM == 'Other'"
+                                    class="project-box "
+                                    [ngClass]="!imDataObj.NOZZLE_HEIGHT_ACTUAL_UOM_OT ? 'input-validation': '' "
+                                    [(ngModel)]="imDataObj.NOZZLE_HEIGHT_ACTUAL_UOM_OT">
+                                </ion-input>
+                            </div>
+                        </ion-row>
+                    </div>
+                </div>
+            </ion-row>
+            <ion-row class="customRows global-padding">
+                <div class="full-width">
+                    <div class="inline-block"
+                        [ngClass]="imDataObj.DISC_HEIGHT_DISC_HEIGHT_NA == 'true'  ? 'disable-content' : ''"
+                        (click)="expandOuter('DiscHeight')">
+                        <ion-icon class="arrowIcon" item-left name="arrow-dropright"
+                            *ngIf="!expandOuterAccordion.DiscHeight">
+                        </ion-icon>
+                        <ion-icon class="arrowIcon" role="img" *ngIf="expandOuterAccordion.DiscHeight"
+                            aria-label="arrow dropdown" name="arrow-dropdown">
+                        </ion-icon>
+
+                        <span class="label pointer">{{'Disc Height' | translate}}</span>
+                    </div>
+                    <div class="inline-block pull-right marginRight25">
+                        <span class="label">{{'N/A' | translate}}</span>
+                        <ion-checkbox color="dark"
+                            (click)="confirmAlert(imDataObj.DISC_HEIGHT_DISC_HEIGHT_NA, 'DiscHeight', 'DISC_HEIGHT_DISC_HEIGHT_NA')"
+                            [checked]="imDataObj.DISC_HEIGHT_DISC_HEIGHT_NA == 'true' "
+                            [(ngModel)]="imDataObj.DISC_HEIGHT_DISC_HEIGHT_NA">
+                        </ion-checkbox>
+                    </div>
+                    <div class="block full-width" *ngIf="expandOuterAccordion.DiscHeight">
+                        <ion-row>
+                            <div class="quarter-screen marginTop15">
+                                <span class="label inline-block">{{'Min' | translate}}</span>
+                                <span [ngClass]="imDataObj.DISC_HEIGHT_MIN_UOM ? 'validator' :''"
+                                    class="inline-block"></span>
+                                <ion-input maxlength="250"
+                                    [ngClass]="errorObj.DISC_HEIGHT_MIN  ? 'input-validation' :''" class="project-box "
+                                    [(ngModel)]="imDataObj.DISC_HEIGHT_MIN">
+                                </ion-input>
+                            </div>
+                            <div class="quarter-screen marginTop15">
+                                <span class="label inline-block">{{'UOM' | translate}}</span>
+                                <span [ngClass]="imDataObj.DISC_HEIGHT_MIN ? 'validator' :''"
+                                    class="inline-block"></span>
+                                <ion-input [ngClass]="errorObj.DISC_HEIGHT_MIN_UOM  ? 'input-validation' :''"
+                                    class="project-box searchNSelect select-style" tappable
+                                    (click)="searchModal('UnitOfMeasurementLength','DISC_HEIGHT_MIN_UOM')"
+                                    [readonly]="true" [(ngModel)]="imDataObj.DISC_HEIGHT_MIN_UOM">
+                                </ion-input>
+                                <ion-input maxlength="250" *ngIf="imDataObj.DISC_HEIGHT_MIN_UOM == 'Other'"
+                                    class="project-box "
+                                    [ngClass]="!imDataObj.DISC_HEIGHT_MIN_UOM_OT ? 'input-validation': '' "
+                                    [(ngModel)]="imDataObj.DISC_HEIGHT_MIN_UOM_OT">
+                                </ion-input>
+                            </div>
+                            <div class="quarter-screen marginTop15">
+                                <span class="label inline-block">{{'Actual' | translate}}</span>
+                                <span [ngClass]="imDataObj.DISC_HEIGHT_ACTUAL_UOM ? 'validator' :''"
+                                    class="inline-block"></span>
+                                <ion-input maxlength="250"
+                                    [ngClass]="errorObj.DISC_HEIGHT_ACTUAL  ? 'input-validation' :''"
+                                    class="project-box " [(ngModel)]="imDataObj.DISC_HEIGHT_ACTUAL">
+                                </ion-input>
+                            </div>
+                            <div class="quarter-screen marginTop15">
+                                <span class="label inline-block">{{'UOM' | translate}}</span>
+                                <span [ngClass]="imDataObj.DISC_HEIGHT_ACTUAL ? 'validator' :''"
+                                    class="inline-block"></span>
+                                <ion-input [ngClass]="errorObj.DISC_HEIGHT_ACTUAL_UOM  ? 'input-validation' :''"
+                                    class="project-box searchNSelect select-style" tappable
+                                    (click)="searchModal('UnitOfMeasurementLength','DISC_HEIGHT_ACTUAL_UOM')"
+                                    [readonly]="true" [(ngModel)]="imDataObj.DISC_HEIGHT_ACTUAL_UOM">
+                                </ion-input>
+                                <ion-input maxlength="250" *ngIf="imDataObj.DISC_HEIGHT_ACTUAL_UOM == 'Other'"
+                                    class="project-box "
+                                    [ngClass]="!imDataObj.DISC_HEIGHT_ACTUAL_UOM_OT ? 'input-validation': '' "
+                                    [(ngModel)]="imDataObj.DISC_HEIGHT_ACTUAL_UOM_OT">
+                                </ion-input>
+                            </div>
+                        </ion-row>
+                    </div>
+                </div>
+            </ion-row>
+            <ion-row class="customRows global-padding">
+                <div class="full-width">
+                    <div class="inline-block"
+                        [ngClass]="imDataObj.GUIDE_INSIDE_DIAMETER_GUIDE_INSIDE_DIAMETER_NA == 'true'  ? 'disable-content' : ''"
+                        (click)="expandOuter('GuideInsideDiameter')">
+                        <ion-icon class="arrowIcon" item-left name="arrow-dropright"
+                            *ngIf="!expandOuterAccordion.GuideInsideDiameter">
+                        </ion-icon>
+                        <ion-icon class="arrowIcon" role="img" *ngIf="expandOuterAccordion.GuideInsideDiameter"
+                            aria-label="arrow dropdown" name="arrow-dropdown">
+                        </ion-icon>
+
+                        <span class="label pointer">{{'Guide Inside Diameter' | translate}}</span>
+                    </div>
+                    <div class="inline-block pull-right marginRight25">
+                        <span class="label">{{'N/A' | translate}}</span>
+                        <ion-checkbox color="dark"
+                            (click)="confirmAlert(imDataObj.GUIDE_INSIDE_DIAMETER_GUIDE_INSIDE_DIAMETER_NA, 'GuideInsideDiameter', 'GUIDE_INSIDE_DIAMETER_GUIDE_INSIDE_DIAMETER_NA')"
+                            [checked]="imDataObj.GUIDE_INSIDE_DIAMETER_GUIDE_INSIDE_DIAMETER_NA == 'true' "
+                            [(ngModel)]="imDataObj.GUIDE_INSIDE_DIAMETER_GUIDE_INSIDE_DIAMETER_NA">
+                        </ion-checkbox>
+                    </div>
+                    <div class="block full-width" *ngIf="expandOuterAccordion.GuideInsideDiameter">
+                        <ion-row>
+                            <div class="quarter-screen marginTop15">
+                                <span class="label inline-block">{{'Max' | translate}}</span>
+                                <span [ngClass]="imDataObj.GUIDE_INSIDE_DIAMETER_MAX_UOM ? 'validator' :''"
+                                    class="inline-block"></span>
+                                <ion-input maxlength="250"
+                                    [ngClass]="errorObj.GUIDE_INSIDE_DIAMETER_MAX  ? 'input-validation' :''"
+                                    class="project-box " [(ngModel)]="imDataObj.GUIDE_INSIDE_DIAMETER_MAX">
+                                </ion-input>
+                            </div>
+                            <div class="quarter-screen marginTop15">
+                                <span class="label inline-block">{{'UOM' | translate}}</span>
+                                <span [ngClass]="imDataObj.GUIDE_INSIDE_DIAMETER_MAX ? 'validator' :''"
+                                    class="inline-block"></span>
+                                <ion-input [ngClass]="errorObj.GUIDE_INSIDE_DIAMETER_MAX_UOM  ? 'input-validation' :''"
+                                    class="project-box searchNSelect select-style" tappable
+                                    (click)="searchModal('UnitOfMeasurementLength','GUIDE_INSIDE_DIAMETER_MAX_UOM')"
+                                    [readonly]="true" [(ngModel)]="imDataObj.GUIDE_INSIDE_DIAMETER_MAX_UOM">
+                                </ion-input>
+                                <ion-input maxlength="250" *ngIf="imDataObj.GUIDE_INSIDE_DIAMETER_MAX_UOM == 'Other'"
+                                    class="project-box "
+                                    [ngClass]="!imDataObj.GUIDE_INSIDE_DIAMETER_MAX_UOM_OT ? 'input-validation': '' "
+                                    [(ngModel)]="imDataObj.GUIDE_INSIDE_DIAMETER_MAX_UOM_OT">
+                                </ion-input>
+                            </div>
+                            <div class="quarter-screen marginTop15">
+                                <span class="label inline-block">{{'Actual' | translate}}</span>
+                                <span [ngClass]="imDataObj.GUIDE_INSIDE_DIAMETER_ACTUAL_UOM ? 'validator' :''"
+                                    class="inline-block"></span>
+                                <ion-input maxlength="250"
+                                    [ngClass]="errorObj.GUIDE_INSIDE_DIAMETER_ACTUAL  ? 'input-validation' :''"
+                                    class="project-box " [(ngModel)]="imDataObj.GUIDE_INSIDE_DIAMETER_ACTUAL">
+                                </ion-input>
+                            </div>
+                            <div class="quarter-screen marginTop15">
+                                <span class="label inline-block">{{'UOM' | translate}}</span>
+                                <span [ngClass]="imDataObj.GUIDE_INSIDE_DIAMETER_ACTUAL ? 'validator' :''"
+                                    class="inline-block"></span>
+                                <ion-input
+                                    [ngClass]="errorObj.GUIDE_INSIDE_DIAMETER_ACTUAL_UOM  ? 'input-validation' :''"
+                                    class="project-box searchNSelect select-style" tappable
+                                    (click)="searchModal('UnitOfMeasurementLength','GUIDE_INSIDE_DIAMETER_ACTUAL_UOM')"
+                                    [readonly]="true" [(ngModel)]="imDataObj.GUIDE_INSIDE_DIAMETER_ACTUAL_UOM">
+                                </ion-input>
+                                <ion-input maxlength="250" *ngIf="imDataObj.GUIDE_INSIDE_DIAMETER_ACTUAL_UOM == 'Other'"
+                                    class="project-box "
+                                    [ngClass]="!imDataObj.GUIDE_INSIDE_DIAMETER_ACTUAL_UOM_OT ? 'input-validation': '' "
+                                    [(ngModel)]="imDataObj.GUIDE_INSIDE_DIAMETER_ACTUAL_UOM_OT">
+                                </ion-input>
+                            </div>
+                        </ion-row>
+                    </div>
+                </div>
+            </ion-row>
+            <ion-row class="customRows global-padding">
+                <div class="full-width">
+                    <div class="inline-block"
+                        [ngClass]="imDataObj.DISC_HOLDER_OUTSIDE_DIAMETER_DISC_HOLDER_OUTSIDE_DIAMETER_NA == 'true'  ? 'disable-content' : ''"
+                        (click)="expandOuter('DiscHolderOutsideDiameter')">
+                        <ion-icon class="arrowIcon" item-left name="arrow-dropright"
+                            *ngIf="!expandOuterAccordion.DiscHolderOutsideDiameter">
+                        </ion-icon>
+                        <ion-icon class="arrowIcon" role="img" *ngIf="expandOuterAccordion.DiscHolderOutsideDiameter"
+                            aria-label="arrow dropdown" name="arrow-dropdown">
+                        </ion-icon>
+
+                        <span class="label pointer">{{'Disc Holder Outside Diameter' | translate}}</span>
+                    </div>
+                    <div class="inline-block pull-right marginRight25">
+                        <span class="label">{{'N/A' | translate}}</span>
+                        <ion-checkbox color="dark"
+                            (click)="confirmAlert(imDataObj.DISC_HOLDER_OUTSIDE_DIAMETER_DISC_HOLDER_OUTSIDE_DIAMETER_NA, 'DiscHolderOutsideDiameter', 'DISC_HOLDER_OUTSIDE_DIAMETER_DISC_HOLDER_OUTSIDE_DIAMETER_NA')"
+                            [checked]="imDataObj.DISC_HOLDER_OUTSIDE_DIAMETER_DISC_HOLDER_OUTSIDE_DIAMETER_NA == 'true' "
+                            [(ngModel)]="imDataObj.DISC_HOLDER_OUTSIDE_DIAMETER_DISC_HOLDER_OUTSIDE_DIAMETER_NA">
+                        </ion-checkbox>
+                    </div>
+                    <div class="block full-width" *ngIf="expandOuterAccordion.DiscHolderOutsideDiameter">
+                        <ion-row>
+                            <div class="quarter-screen marginTop15">
+                                <span class="label inline-block">{{'Min' | translate}}</span>
+                                <span [ngClass]="imDataObj.DISC_HOLDER_OUTSIDE_DIAMETER_MIN_UOM ? 'validator' :''"
+                                    class="inline-block"></span>
+                                <ion-input maxlength="250"
+                                    [ngClass]="errorObj.DISC_HOLDER_OUTSIDE_DIAMETER_MIN  ? 'input-validation' :''"
+                                    class="project-box " [(ngModel)]="imDataObj.DISC_HOLDER_OUTSIDE_DIAMETER_MIN">
+                                </ion-input>
+                            </div>
+                            <div class="quarter-screen marginTop15">
+                                <span class="label inline-block">{{'UOM' | translate}}</span>
+                                <span [ngClass]="imDataObj.DISC_HOLDER_OUTSIDE_DIAMETER_MIN ? 'validator' :''"
+                                    class="inline-block"></span>
+                                <ion-input
+                                    [ngClass]="errorObj.DISC_HOLDER_OUTSIDE_DIAMETER_MIN_UOM  ? 'input-validation' :''"
+                                    class="project-box searchNSelect select-style" tappable
+                                    (click)="searchModal('UnitOfMeasurementLength','DISC_HOLDER_OUTSIDE_DIAMETER_MIN_UOM')"
+                                    [readonly]="true" [(ngModel)]="imDataObj.DISC_HOLDER_OUTSIDE_DIAMETER_MIN_UOM">
+                                </ion-input>
+                                <ion-input maxlength="250"
+                                    *ngIf="imDataObj.DISC_HOLDER_OUTSIDE_DIAMETER_MIN_UOM == 'Other'"
+                                    class="project-box "
+                                    [ngClass]="!imDataObj.DISC_HOLDER_OUTSIDE_DIAMETER_MIN_UOM_OT ? 'input-validation': '' "
+                                    [(ngModel)]="imDataObj.DISC_HOLDER_OUTSIDE_DIAMETER_MIN_UOM_OT">
+                                </ion-input>
+                            </div>
+                            <div class="quarter-screen marginTop15">
+                                <span class="label inline-block">{{'Actual' | translate}}</span>
+                                <span [ngClass]="imDataObj.DISC_HOLDER_OUTSIDE_DIAMETER_ACTUAL_UOM ? 'validator' :''"
+                                    class="inline-block"></span>
+                                <ion-input maxlength="250"
+                                    [ngClass]="errorObj.DISC_HOLDER_OUTSIDE_DIAMETER_ACTUAL  ? 'input-validation' :''"
+                                    class="project-box " [(ngModel)]="imDataObj.DISC_HOLDER_OUTSIDE_DIAMETER_ACTUAL">
+                                </ion-input>
+                            </div>
+                            <div class="quarter-screen marginTop15">
+                                <span class="label inline-block">{{'UOM' | translate}}</span>
+                                <span [ngClass]="imDataObj.DISC_HOLDER_OUTSIDE_DIAMETER_ACTUAL ? 'validator' :''"
+                                    class="inline-block"></span>
+                                <ion-input
+                                    [ngClass]="errorObj.DISC_HOLDER_OUTSIDE_DIAMETER_ACTUAL_UOM  ? 'input-validation' :''"
+                                    class="project-box searchNSelect select-style" tappable
+                                    (click)="searchModal('UnitOfMeasurementLength','DISC_HOLDER_OUTSIDE_DIAMETER_ACTUAL_UOM')"
+                                    [readonly]="true" [(ngModel)]="imDataObj.DISC_HOLDER_OUTSIDE_DIAMETER_ACTUAL_UOM">
+                                </ion-input>
+                                <ion-input maxlength="250"
+                                    *ngIf="imDataObj.DISC_HOLDER_OUTSIDE_DIAMETER_ACTUAL_UOM == 'Other'"
+                                    class="project-box "
+                                    [ngClass]="!imDataObj.DISC_HOLDER_OUTSIDE_DIAMETER_ACTUAL_UOM_OT ? 'input-validation': '' "
+                                    [(ngModel)]="imDataObj.DISC_HOLDER_OUTSIDE_DIAMETER_ACTUAL_UOM_OT">
+                                </ion-input>
+                            </div>
+                        </ion-row>
+                    </div>
+                </div>
+            </ion-row>
+            <ion-row class="customRows global-padding">
+                <div class="full-width">
+                    <div class="inline-block"
+                        [ngClass]="imDataObj.ORIFICE_INNER_DIAMETER_ORIFICE_INNER_DIAMETER_NA == 'true'  ? 'disable-content' : ''"
+                        (click)="expandOuter('OrificeInnerDiameter')">
+                        <ion-icon class="arrowIcon" item-left name="arrow-dropright"
+                            *ngIf="!expandOuterAccordion.OrificeInnerDiameter">
+                        </ion-icon>
+                        <ion-icon class="arrowIcon" role="img" *ngIf="expandOuterAccordion.OrificeInnerDiameter"
+                            aria-label="arrow dropdown" name="arrow-dropdown">
+                        </ion-icon>
+
+                        <span class="label pointer">{{'Orifice Inner Diameter' | translate}}</span>
+                    </div>
+                    <div class="inline-block pull-right marginRight25">
+                        <span class="label">{{'N/A' | translate}}</span>
+                        <ion-checkbox color="dark"
+                            (click)="confirmAlert(imDataObj.ORIFICE_INNER_DIAMETER_ORIFICE_INNER_DIAMETER_NA, 'OrificeInnerDiameter', 'ORIFICE_INNER_DIAMETER_ORIFICE_INNER_DIAMETER_NA')"
+                            [checked]="imDataObj.ORIFICE_INNER_DIAMETER_ORIFICE_INNER_DIAMETER_NA == 'true' "
+                            [(ngModel)]="imDataObj.ORIFICE_INNER_DIAMETER_ORIFICE_INNER_DIAMETER_NA">
+                        </ion-checkbox>
+                    </div>
+                    <div class="block full-width" *ngIf="expandOuterAccordion.OrificeInnerDiameter">
+                        <ion-row>
+                            <div class="quarter-screen marginTop15">
+                                <span class="label inline-block">{{'Value' | translate}}</span>
+                                <span [ngClass]="imDataObj.ORIFICE_INNER_DIAMETER_VALUE_UOM ? 'validator' :''"
+                                    class="inline-block"></span>
+                                <ion-input maxlength="250"
+                                    [ngClass]="errorObj.ORIFICE_INNER_DIAMETER_VALUE  ? 'input-validation' :''"
+                                    class="project-box " [(ngModel)]="imDataObj.ORIFICE_INNER_DIAMETER_VALUE">
+                                </ion-input>
+                            </div>
+                            <div class="quarter-screen marginTop15">
+                                <span class="label inline-block">{{'UOM' | translate}}</span>
+                                <span [ngClass]="imDataObj.ORIFICE_INNER_DIAMETER_VALUE ? 'validator' :''"
+                                    class="inline-block"></span>
+                                <ion-input
+                                    [ngClass]="errorObj.ORIFICE_INNER_DIAMETER_VALUE_UOM  ? 'input-validation' :''"
+                                    class="project-box searchNSelect select-style" tappable
+                                    (click)="searchModal('UnitOfMeasurementLength','ORIFICE_INNER_DIAMETER_VALUE_UOM')"
+                                    [readonly]="true" [(ngModel)]="imDataObj.ORIFICE_INNER_DIAMETER_VALUE_UOM">
+                                </ion-input>
+                                <ion-input maxlength="250" *ngIf="imDataObj.ORIFICE_INNER_DIAMETER_VALUE_UOM == 'Other'"
+                                    class="project-box "
+                                    [ngClass]="!imDataObj.ORIFICE_INNER_DIAMETER_VALUE_UOM_OT ? 'input-validation': '' "
+                                    [(ngModel)]="imDataObj.ORIFICE_INNER_DIAMETER_VALUE_UOM_OT">
+                                </ion-input>
+                            </div>
+                        </ion-row>
+                    </div>
+                </div>
+            </ion-row>
+            <ion-row class="customRows global-padding">
+                <div class="full-width">
+                    <div class="inline-block" [ngClass]="imDataObj.SEAT_SEAT_NA == 'true'  ? 'disable-content' : ''"
+                        (click)="expandOuter('Seat')">
+                        <ion-icon class="arrowIcon" item-left name="arrow-dropright" *ngIf="!expandOuterAccordion.Seat">
+                        </ion-icon>
+                        <ion-icon class="arrowIcon" role="img" *ngIf="expandOuterAccordion.Seat"
+                            aria-label="arrow dropdown" name="arrow-dropdown">
+                        </ion-icon>
+
+                        <span class="label pointer">{{'Seat' | translate}}</span>
+                    </div>
+                    <div class="inline-block pull-right marginRight25">
+                        <span class="label">{{'N/A' | translate}}</span>
+                        <ion-checkbox color="dark"
+                            (click)="confirmAlert(imDataObj.SEAT_SEAT_NA, 'Seat', 'SEAT_SEAT_NA')"
+                            [checked]="imDataObj.SEAT_SEAT_NA == 'true' " [(ngModel)]="imDataObj.SEAT_SEAT_NA">
+                        </ion-checkbox>
+                    </div>
+                    <div class="block full-width" *ngIf="expandOuterAccordion.Seat">
+                        <ion-row>
+                            <div class="quarter-screen marginTop15">
+                                <span class="label inline-block">{{'Inside Step' | translate}}</span>
+                                <span [ngClass]="imDataObj.SEAT_INSIDE_STEP_UOM ? 'validator' :''"
+                                    class="inline-block"></span>
+                                <ion-input maxlength="250"
+                                    [ngClass]="errorObj.SEAT_INSIDE_STEP  ? 'input-validation' :''" class="project-box "
+                                    [(ngModel)]="imDataObj.SEAT_INSIDE_STEP">
+                                </ion-input>
+                            </div>
+                            <div class="quarter-screen marginTop15">
+                                <span class="label inline-block">{{'UOM' | translate}}</span>
+                                <span [ngClass]="imDataObj.SEAT_INSIDE_STEP ? 'validator' :''"
+                                    class="inline-block"></span>
+                                <ion-input [ngClass]="errorObj.SEAT_INSIDE_STEP_UOM  ? 'input-validation' :''"
+                                    class="project-box searchNSelect select-style" tappable
+                                    (click)="searchModal('UnitOfMeasurementLength','SEAT_INSIDE_STEP_UOM')"
+                                    [readonly]="true" [(ngModel)]="imDataObj.SEAT_INSIDE_STEP_UOM">
+                                </ion-input>
+                                <ion-input maxlength="250" *ngIf="imDataObj.SEAT_INSIDE_STEP_UOM == 'Other'"
+                                    class="project-box "
+                                    [ngClass]="!imDataObj.SEAT_INSIDE_STEP_UOM_OT ? 'input-validation': '' "
+                                    [(ngModel)]="imDataObj.SEAT_INSIDE_STEP_UOM_OT">
+                                </ion-input>
+                            </div>
+                            <div class="quarter-screen marginTop15">
+                                <span class="label inline-block">{{'Outside Step' | translate}}</span>
+                                <span [ngClass]="imDataObj.SEAT_OUTSIDE_STEP_UOM ? 'validator' :''"
+                                    class="inline-block"></span>
+                                <ion-input maxlength="250"
+                                    [ngClass]="errorObj.SEAT_OUTSIDE_STEP  ? 'input-validation' :''"
+                                    class="project-box " [(ngModel)]="imDataObj.SEAT_OUTSIDE_STEP">
+                                </ion-input>
+                            </div>
+                            <div class="quarter-screen marginTop15">
+                                <span class="label inline-block">{{'UOM' | translate}}</span>
+                                <span [ngClass]="imDataObj.SEAT_OUTSIDE_STEP ? 'validator' :''"
+                                    class="inline-block"></span>
+                                <ion-input [ngClass]="errorObj.SEAT_OUTSIDE_STEP_UOM  ? 'input-validation' :''"
+                                    class="project-box searchNSelect select-style" tappable
+                                    (click)="searchModal('UnitOfMeasurementLength','SEAT_OUTSIDE_STEP_UOM')"
+                                    [readonly]="true" [(ngModel)]="imDataObj.SEAT_OUTSIDE_STEP_UOM">
+                                </ion-input>
+                                <ion-input maxlength="250" *ngIf="imDataObj.SEAT_OUTSIDE_STEP_UOM == 'Other'"
+                                    class="project-box "
+                                    [ngClass]="!imDataObj.SEAT_OUTSIDE_STEP_UOM_OT ? 'input-validation': '' "
+                                    [(ngModel)]="imDataObj.SEAT_OUTSIDE_STEP_UOM_OT">
+                                </ion-input>
+                            </div>
+                        </ion-row>
+                        <ion-row>
+                            <div class="quarter-screen marginTop15">
+                                <span class="label inline-block">{{'ID' | translate}}</span>
+                                <span [ngClass]="imDataObj.SEAT_ID_UOM ? 'validator' :''" class="inline-block"></span>
+                                <ion-input maxlength="250" [ngClass]="errorObj.SEAT_ID  ? 'input-validation' :''"
+                                    class="project-box " [(ngModel)]="imDataObj.SEAT_ID">
+                                </ion-input>
+                            </div>
+                            <div class="quarter-screen marginTop15">
+                                <span class="label inline-block">{{'UOM' | translate}}</span>
+                                <span [ngClass]="imDataObj.SEAT_ID ? 'validator' :''" class="inline-block"></span>
+                                <ion-input [ngClass]="errorObj.SEAT_ID_UOM  ? 'input-validation' :''"
+                                    class="project-box searchNSelect select-style" tappable
+                                    (click)="searchModal('UnitOfMeasurementLength','SEAT_ID_UOM')" [readonly]="true"
+                                    [(ngModel)]="imDataObj.SEAT_ID_UOM">
+                                </ion-input>
+                                <ion-input maxlength="250" *ngIf="imDataObj.SEAT_ID_UOM == 'Other'" class="project-box "
+                                    [ngClass]="!imDataObj.SEAT_ID_UOM_OT ? 'input-validation': '' "
+                                    [(ngModel)]="imDataObj.SEAT_ID_UOM_OT">
+                                </ion-input>
+                            </div>
+                            <div class="quarter-screen marginTop15">
+                                <span class="label inline-block">{{'OD' | translate}}</span>
+                                <span [ngClass]="imDataObj.SEAT_OD_UOM ? 'validator' :''" class="inline-block"></span>
+                                <ion-input maxlength="250" [ngClass]="errorObj.SEAT_OD  ? 'input-validation' :''"
+                                    class="project-box " [(ngModel)]="imDataObj.SEAT_OD">
+                                </ion-input>
+                            </div>
+                            <div class="quarter-screen marginTop15">
+                                <span class="label inline-block">{{'UOM' | translate}}</span>
+                                <span [ngClass]="imDataObj.SEAT_OD ? 'validator' :''" class="inline-block"></span>
+                                <ion-input [ngClass]="errorObj.SEAT_OD_UOM  ? 'input-validation' :''"
+                                    class="project-box searchNSelect select-style" tappable
+                                    (click)="searchModal('UnitOfMeasurementLength','SEAT_OD_UOM')" [readonly]="true"
+                                    [(ngModel)]="imDataObj.SEAT_OD_UOM">
+                                </ion-input>
+                                <ion-input maxlength="250" *ngIf="imDataObj.SEAT_OD_UOM == 'Other'" class="project-box "
+                                    [ngClass]="!imDataObj.SEAT_OD_UOM_OT ? 'input-validation': '' "
+                                    [(ngModel)]="imDataObj.SEAT_OD_UOM_OT">
+                                </ion-input>
+                            </div>
+                        </ion-row>
+                    </div>
+                </div>
+            </ion-row>
+            <ion-row class="customRows global-padding">
+                <div class="full-width">
+                    <div class="inline-block"
+                        [ngClass]="imDataObj.PERFORMED_BY_PERFORMED_BY_NA == 'true'  ? 'disable-content' : ''"
+                        (click)="expandOuter('PerformedBy')">
+                        <ion-icon class="arrowIcon" item-left name="arrow-dropright"
+                            *ngIf="!expandOuterAccordion.PerformedBy">
+                        </ion-icon>
+                        <ion-icon class="arrowIcon" role="img" *ngIf="expandOuterAccordion.PerformedBy"
+                            aria-label="arrow dropdown" name="arrow-dropdown">
+                        </ion-icon>
+
+                        <span class="label pointer">{{'Performed By' | translate}}</span>
+                    </div>
+                    <div class="inline-block pull-right marginRight25">
+                        <span class="label">{{'N/A' | translate}}</span>
+                        <ion-checkbox color="dark"
+                            (click)="confirmAlert(imDataObj.PERFORMED_BY_PERFORMED_BY_NA, 'PerformedBy', 'PERFORMED_BY_PERFORMED_BY_NA')"
+                            [checked]="imDataObj.PERFORMED_BY_PERFORMED_BY_NA == 'true' "
+                            [(ngModel)]="imDataObj.PERFORMED_BY_PERFORMED_BY_NA">
+                        </ion-checkbox>
+                    </div>
+                    <div class="block full-width" *ngIf="expandOuterAccordion.PerformedBy">
+                        <ion-row>
+                            <div class="half-screen marginTop15">
+                                <span class="label inline-block">{{'Performed By' | translate}}</span>
+                                <ion-input maxlength="250" class="project-box "
+                                    [(ngModel)]="imDataObj.PERFORMED_BY_PERFORMED_BY">
+                                </ion-input>
+                            </div>
+                            <div class="half-screen marginTop15">
+                                <span class="label inline-block">{{'Assembled By' | translate}}</span>
+                                <ion-input maxlength="250" class="project-box "
+                                    [(ngModel)]="imDataObj.PERFORMED_BY_ASSEMBLED_BY">
+                                </ion-input>
+                            </div>
+                        </ion-row>
+                    </div>
+                </div>
+            </ion-row>
+        </div>
+            <!-- TO End-->
+            <ion-row>
+                <ion-col text-left>
+                    <button (click)="redirect('back')" id="afBackBtn" ion-button
+                        class="footer-Button">{{'Back' | translate}}</button>
+                </ion-col>
+                <ion-col text-right>
+                    <button (click)="redirect('')" ion-button id="afNextBtn"
+                        class="footer-Button">{{ bottomNavBtn | translate}}</button>
+                </ion-col>
+            </ion-row>
+        </ion-card-content>
+    </ion-card>
+</ion-content>

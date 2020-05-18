@@ -1,0 +1,696 @@
+<ion-content class="workflow-loader" *ngIf="showLoader">
+
+    <ion-card>
+        <ion-spinner class="spinner" icon="spiral"></ion-spinner>
+    </ion-card>
+
+</ion-content>
+
+<ion-content *ngIf="!showLoader" padding class="sdr-pages page-background">
+
+    <ion-card class="CardSection Photos" id="Section_AsFoundPerformance">
+
+        <ion-card-header class="card-header card-header-md">
+            <ion-row class="global-padding">
+                <ion-col>
+                    <div class="header-left">{{'Attributes'|translate}}</div>
+                </ion-col>
+                <ion-col *ngIf="selectedProcess==Enums.Selected_Process.FCR_AND_SDR" class="align-rgt" col-9>
+                    <span class="ft-size">{{'Continue'|translate}}</span>
+                    <button (click)="goToFcr()" ion-button
+                        class="frs-Btn mrg-tp">{{'Field Completion Report'|translate}}</button>
+                </ion-col>
+            </ion-row>
+        </ion-card-header>
+
+        <page-sdr-header></page-sdr-header>
+
+        <ion-card-content>
+
+            <ion-row class="global-padding">
+
+                <div class="width-thirty spacingMargin INLET-Element" id="INLET">
+                    <ion-col no-padding>
+                        <ion-label class="label ionLabel marginTop">
+                            <span class="checkboxLabel">{{'Inlet' | translate}}</span>
+                        </ion-label>
+                        <ion-input maxlength="250" [readonly]="true" [(ngModel)]="AsFoundPerformanceObj.INLET"
+                            name="AsFoundPerformanceObj.INLET" (click)="searchModal('Inlet','INLET')" tappable
+                            class="project-box searchNSelect select-style">
+                        </ion-input>
+                        <ion-input maxlength="250" *ngIf="AsFoundPerformanceObj.INLET == 'Other'"
+                            [(ngModel)]="AsFoundPerformanceObj.INLET_OT" name="AsFoundPerformanceObj.INLET_OT"
+                            [ngClass]="!AsFoundPerformanceObj.INLET_OT ? 'validation-error' : ''"
+                            class="project-box select-style otherBox">
+                        </ion-input>
+                    </ion-col>
+                </div>
+
+                <div class="width-thirty spacingMargin INLET_CONNECTION_TYPE-Element" id="INLET_CONNECTION_TYPE">
+                    <ion-col no-padding>
+                        <ion-label class="label ionLabel marginTop">
+                            <span class="checkboxLabel">{{'Inlet Connection Type' | translate}}</span>
+                        </ion-label>
+                        <ion-input maxlength="250" [readonly]="true"
+                            [(ngModel)]="AsFoundPerformanceObj.INLET_CONNECTION_TYPE"
+                            name="AsFoundPerformanceObj.INLET_CONNECTION_TYPE"
+                            (click)="searchModal('InletOutletConnType','INLET_CONNECTION_TYPE')" tappable
+                            class="project-box searchNSelect select-style">
+                        </ion-input>
+                        <ion-input maxlength="250" *ngIf="AsFoundPerformanceObj.INLET_CONNECTION_TYPE == 'Other'"
+                            [(ngModel)]="AsFoundPerformanceObj.INLET_CONNECTION_TYPE_OT"
+                            name="AsFoundPerformanceObj.INLET_CONNECTION_TYPE_OT"
+                            [ngClass]="!AsFoundPerformanceObj.INLET_CONNECTION_TYPE_OT ? 'validation-error' : ''"
+                            class="project-box select-style otherBox">
+                        </ion-input>
+                    </ion-col>
+                </div>
+
+                <div class="width-thirty spacingMargin INLET_CONNECTION_RATING-Element" id="INLET_CONNECTION_RATING">
+                    <ion-col no-padding>
+                        <ion-label class="label ionLabel marginTop">
+                            <span class="checkboxLabel">{{'Inlet Connection Rating' | translate}}</span>
+                        </ion-label>
+                        <ion-input maxlength="250" [readonly]="true"
+                            [(ngModel)]="AsFoundPerformanceObj.INLET_CONNECTION_RATING"
+                            name="AsFoundPerformanceObj.INLET_CONNECTION_RATING"
+                            (click)="searchModal('InletOutletConnRating','INLET_CONNECTION_RATING')" tappable
+                            class="project-box searchNSelect select-style">
+                        </ion-input>
+                        <ion-input maxlength="250" *ngIf="AsFoundPerformanceObj.INLET_CONNECTION_RATING == 'Other'"
+                            [(ngModel)]="AsFoundPerformanceObj.INLET_CONNECTION_RATING_OT"
+                            name="AsFoundPerformanceObj.INLET_CONNECTION_RATING_OT"
+                            [ngClass]="!AsFoundPerformanceObj.INLET_CONNECTION_RATING_OT ? 'validation-error' : ''"
+                            class="project-box select-style otherBox">
+                        </ion-input>
+                    </ion-col>
+                </div>
+
+                <div class="width-thirty spacingMargin OUTLET-Element" id="OUTLET">
+                    <ion-col no-padding>
+                        <ion-label class="label ionLabel marginTop">
+                            <span class="checkboxLabel">{{'Outlet' | translate}}</span>
+                        </ion-label>
+                        <ion-input maxlength="250" [readonly]="true" [(ngModel)]="AsFoundPerformanceObj.OUTLET"
+                            name="AsFoundPerformanceObj.OUTLET" (click)="searchModal('Inlet','OUTLET')" tappable
+                            class="project-box searchNSelect select-style">
+                        </ion-input>
+                        <ion-input maxlength="250" *ngIf="AsFoundPerformanceObj.OUTLET == 'Other'"
+                            [(ngModel)]="AsFoundPerformanceObj.OUTLET_OT" name="AsFoundPerformanceObj.OUTLET_OT"
+                            [ngClass]="!AsFoundPerformanceObj.OUTLET_OT ? 'validation-error' : ''"
+                            class="project-box select-style otherBox">
+                        </ion-input>
+                    </ion-col>
+                </div>
+
+                <div class="width-thirty spacingMargin OUTLET_CONNECTION_TYPE-Element" id="OUTLET_CONNECTION_TYPE">
+                    <ion-col no-padding>
+                        <ion-label class="label ionLabel marginTop">
+                            <span class="checkboxLabel">{{'Outlet Connection Type' | translate}}</span>
+                        </ion-label>
+                        <ion-input maxlength="250" [readonly]="true"
+                            [(ngModel)]="AsFoundPerformanceObj.OUTLET_CONNECTION_TYPE"
+                            name="AsFoundPerformanceObj.OUTLET_CONNECTION_TYPE"
+                            (click)="searchModal('InletOutletConnType','OUTLET_CONNECTION_TYPE')" tappable
+                            class="project-box searchNSelect select-style">
+                        </ion-input>
+                        <ion-input maxlength="250" *ngIf="AsFoundPerformanceObj.OUTLET_CONNECTION_TYPE == 'Other'"
+                            [(ngModel)]="AsFoundPerformanceObj.OUTLET_CONNECTION_TYPE_OT"
+                            name="AsFoundPerformanceObj.OUTLET_CONNECTION_TYPE_OT"
+                            [ngClass]="!AsFoundPerformanceObj.OUTLET_CONNECTION_TYPE_OT ? 'validation-error' : ''"
+                            class="project-box select-style otherBox">
+                        </ion-input>
+                    </ion-col>
+                </div>
+
+                <div class="width-thirty spacingMargin OUTLET_CONNECTION_RATING-Element" id="OUTLET_CONNECTION_RATING">
+                    <ion-col no-padding>
+                        <ion-label class="label ionLabel marginTop">
+                            <span class="checkboxLabel">{{'Outlet Connection Rating' | translate}}</span>
+                        </ion-label>
+                        <ion-input maxlength="250" [readonly]="true"
+                            [(ngModel)]="AsFoundPerformanceObj.OUTLET_CONNECTION_RATING"
+                            name="AsFoundPerformanceObj.OUTLET_CONNECTION_RATING"
+                            (click)="searchModal('InletOutletConnRating','OUTLET_CONNECTION_RATING')" tappable
+                            class="project-box searchNSelect select-style">
+                        </ion-input>
+                        <ion-input maxlength="250" *ngIf="AsFoundPerformanceObj.OUTLET_CONNECTION_RATING == 'Other'"
+                            [(ngModel)]="AsFoundPerformanceObj.OUTLET_CONNECTION_RATING_OT"
+                            name="AsFoundPerformanceObj.OUTLET_CONNECTION_RATING_OT"
+                            [ngClass]="!AsFoundPerformanceObj.OUTLET_CONNECTION_RATING_OT ? 'validation-error' : ''"
+                            class="project-box select-style otherBox">
+                        </ion-input>
+                    </ion-col>
+                </div>
+
+                <div class="width-thirty spacingMargin TEST_MEDIUM-Element" id="TEST_MEDIUM">
+                    <ion-col no-padding>
+                        <ion-label class="label ionLabel marginTop">
+                            <span class="checkboxLabel">{{'Test Medium' | translate}}</span>
+                        </ion-label>
+                        <ion-input maxlength="250" [readonly]="true" [(ngModel)]="AsFoundPerformanceObj.TEST_MEDIUM"
+                            name="AsFoundPerformanceObj.TEST_MEDIUM" (click)="searchModal('TestMedium','TEST_MEDIUM')"
+                            tappable class="project-box searchNSelect select-style">
+                        </ion-input>
+                        <ion-input maxlength="250" *ngIf="AsFoundPerformanceObj.TEST_MEDIUM == 'Other'"
+                            [(ngModel)]="AsFoundPerformanceObj.TEST_MEDIUM_OT"
+                            name="AsFoundPerformanceObj.TEST_MEDIUM_OT"
+                            [ngClass]="!AsFoundPerformanceObj.TEST_MEDIUM_OT ? 'validation-error' : ''"
+                            class="project-box select-style otherBox">
+                        </ion-input>
+                    </ion-col>
+                </div>
+
+            </ion-row>
+
+            <ion-row class="global-padding">
+                <ion-item>
+                    <ion-label *ngIf="toggleAllaccordion == false" text-right>{{'Expand all' | translate}}</ion-label>
+                    <ion-label *ngIf="toggleAllaccordion == true" text-right>{{'Collapse all' | translate}}</ion-label>
+                    <ion-toggle [(ngModel)]="toggleAllaccordion" (ionChange)="toggleAccordion($event)"></ion-toggle>
+                </ion-item>
+            </ion-row>
+
+            <div class="full-width global-padding">
+
+                <!-- Pre-Test Data Row -->
+                <ion-row class="customRows">
+                    <div class="full-width">
+                        <div class="inline-block spacingMargin"
+                            [ngClass]="AsFoundPerformanceObj.PRE_TEST_DATA_PRE_TEST_DATA_NA == 'true' || AsFoundPerformanceObj.PRE_TEST_DATA_PRE_TEST_DATA_NA == true ? 'disable-content' : ''">
+                            <span (click)="expandOuter('PRE_TEST_DATA')">
+                                <ion-icon class="arrowIcon" item-left name="arrow-dropright"
+                                    *ngIf="!expandOuterAccordion.PRE_TEST_DATA">
+                                </ion-icon>
+                                <ion-icon class="arrowIcon" role="img" *ngIf="expandOuterAccordion.PRE_TEST_DATA"
+                                    aria-label="arrow dropdown" name="arrow-dropdown">
+                                </ion-icon>
+                            </span>
+                            <span (click)="expandOuter('PRE_TEST_DATA')"
+                                class="label pointer accordion-label">{{'Pre-Test Data' | translate}}</span>
+                        </div>
+                        <div class="inline-block pull-right">
+                            <div class="spacingMargin">
+                                <div class="WF-checkbox">
+                                    <span class="label checkboxLabel">{{'N/A' | translate}}</span>
+                                    <input id="checkbox-PRE_TEST_DATA-NA" type="checkbox"
+                                        [checked]="AsFoundPerformanceObj.PRE_TEST_DATA_PRE_TEST_DATA_NA == true || AsFoundPerformanceObj.PRE_TEST_DATA_PRE_TEST_DATA_NA == 'true'"
+                                        [ngModel] class="accordionCheckBox"
+                                        (change)="confirmAlert($event, 'PRE_TEST_DATA')">
+                                    <label for="checkbox-PRE_TEST_DATA-NA"></label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="block full-width attachmentBox" *ngIf="expandOuterAccordion.PRE_TEST_DATA">
+                            <ion-row>
+                                <div class="body-item-box marginTop15 inline-block">
+                                    <span class="label">{{'First Pop Pressure' | translate}}</span>
+                                    <span
+                                        [ngClass]="showValidationClass(AsFoundPerformanceObj.PRE_TEST_DATA_FIRST_POP_PRESSURE_UOM) ? 'validator' : ''"></span>
+                                    <ion-input maxlength="250"
+                                        [ngClass]="errorObj.indexOf('PRE_TEST_DATA_FIRST_POP_PRESSURE') != -1 && !AsFoundPerformanceObj.PRE_TEST_DATA_FIRST_POP_PRESSURE ? 'validation-error' : ''"
+                                        [(ngModel)]="AsFoundPerformanceObj.PRE_TEST_DATA_FIRST_POP_PRESSURE"
+                                        name="AsFoundPerformanceObj.PRE_TEST_DATA_FIRST_POP_PRESSURE"
+                                        class="project-box select-style">
+                                    </ion-input>
+                                </div>
+                                <div class="body-item-box marginTop15 inline-block">
+                                    <ion-label class="label ionLabel marginTop">
+                                        <span class="checkboxLabel">{{'UOM' | translate}}</span>
+                                        <span
+                                            [ngClass]="showValidationClass(AsFoundPerformanceObj.PRE_TEST_DATA_FIRST_POP_PRESSURE) ? 'validator' : ''"></span>
+                                    </ion-label>
+                                    <ion-input maxlength="250" [readonly]="true"
+                                        [ngClass]="errorObj.indexOf('PRE_TEST_DATA_FIRST_POP_PRESSURE_UOM') != -1 && !AsFoundPerformanceObj.PRE_TEST_DATA_FIRST_POP_PRESSURE_UOM ? 'validation-error' : ''"
+                                        [(ngModel)]="AsFoundPerformanceObj.PRE_TEST_DATA_FIRST_POP_PRESSURE_UOM"
+                                        name="AsFoundPerformanceObj.PRE_TEST_DATA_FIRST_POP_PRESSURE_UOM"
+                                        (click)="searchModal('UnitOfMeasurement','PRE_TEST_DATA_FIRST_POP_PRESSURE_UOM')"
+                                        tappable class="project-box searchNSelect select-style">
+                                    </ion-input>
+                                    <ion-input maxlength="250"
+                                        *ngIf="AsFoundPerformanceObj.PRE_TEST_DATA_FIRST_POP_PRESSURE_UOM == 'Other'"
+                                        [(ngModel)]="AsFoundPerformanceObj.PRE_TEST_DATA_FIRST_POP_PRESSURE_UOM_OT"
+                                        name="AsFoundPerformanceObj.PRE_TEST_DATA_FIRST_POP_PRESSURE_UOM_OT"
+                                        [ngClass]="!AsFoundPerformanceObj.PRE_TEST_DATA_FIRST_POP_PRESSURE_UOM_OT ? 'validation-error' : ''"
+                                        class="project-box select-style otherBox"> </ion-input>
+                                </div>
+                                <div class="body-item-box marginTop15 inline-block">
+                                    <span class="label">{{'Second Pop Pressure' | translate}}</span>
+                                    <span
+                                        [ngClass]="showValidationClass(AsFoundPerformanceObj.PRE_TEST_DATA_SECOND_POP_PRESSURE_UOM) ? 'validator' : ''"></span>
+                                    <ion-input maxlength="250"
+                                        [ngClass]="errorObj.indexOf('PRE_TEST_DATA_SECOND_POP_PRESSURE') != -1 && !AsFoundPerformanceObj.PRE_TEST_DATA_SECOND_POP_PRESSURE ? 'validation-error' : ''"
+                                        [(ngModel)]="AsFoundPerformanceObj.PRE_TEST_DATA_SECOND_POP_PRESSURE"
+                                        name="AsFoundPerformanceObj.PRE_TEST_DATA_SECOND_POP_PRESSURE"
+                                        class="project-box select-style">
+                                    </ion-input>
+                                </div>
+                                <div class="body-item-box marginTop15 inline-block">
+                                    <ion-label class="label ionLabel marginTop">
+                                        <span class="checkboxLabel">{{'UOM' | translate}}</span>
+                                        <span
+                                            [ngClass]="showValidationClass(AsFoundPerformanceObj.PRE_TEST_DATA_SECOND_POP_PRESSURE) ? 'validator' : ''"></span>
+                                    </ion-label>
+                                    <ion-input maxlength="250" [readonly]="true"
+                                        [ngClass]="errorObj.indexOf('PRE_TEST_DATA_SECOND_POP_PRESSURE_UOM') != -1 && !AsFoundPerformanceObj.PRE_TEST_DATA_SECOND_POP_PRESSURE_UOM ? 'validation-error' : ''"
+                                        [(ngModel)]="AsFoundPerformanceObj.PRE_TEST_DATA_SECOND_POP_PRESSURE_UOM"
+                                        name="AsFoundPerformanceObj.PRE_TEST_DATA_SECOND_POP_PRESSURE_UOM"
+                                        (click)="searchModal('UnitOfMeasurement','PRE_TEST_DATA_SECOND_POP_PRESSURE_UOM')"
+                                        tappable class="project-box searchNSelect select-style">
+                                    </ion-input>
+                                    <ion-input maxlength="250"
+                                        *ngIf="AsFoundPerformanceObj.PRE_TEST_DATA_SECOND_POP_PRESSURE_UOM == 'Other'"
+                                        [(ngModel)]="AsFoundPerformanceObj.PRE_TEST_DATA_SECOND_POP_PRESSURE_UOM_OT"
+                                        name="AsFoundPerformanceObj.PRE_TEST_DATA_SECOND_POP_PRESSURE_UOM_OT"
+                                        [ngClass]="!AsFoundPerformanceObj.PRE_TEST_DATA_SECOND_POP_PRESSURE_UOM_OT ? 'validation-error' : ''"
+                                        class="project-box select-style otherBox"> </ion-input>
+                                </div>
+                            </ion-row>
+                            <ion-row>
+                                <div class="body-item-box marginTop15 inline-block">
+                                    <span class="label">{{'Third Pop Pressure' | translate}}</span>
+                                    <span
+                                        [ngClass]="showValidationClass(AsFoundPerformanceObj.PRE_TEST_DATA_THIRD_POP_PRESSURE_UOM) ? 'validator' : ''"></span>
+                                    <ion-input maxlength="250"
+                                        [ngClass]="errorObj.indexOf('PRE_TEST_DATA_THIRD_POP_PRESSURE') != -1 && !AsFoundPerformanceObj.PRE_TEST_DATA_THIRD_POP_PRESSURE ? 'validation-error' : ''"
+                                        [(ngModel)]="AsFoundPerformanceObj.PRE_TEST_DATA_THIRD_POP_PRESSURE"
+                                        name="AsFoundPerformanceObj.PRE_TEST_DATA_THIRD_POP_PRESSURE"
+                                        class="project-box select-style">
+                                    </ion-input>
+                                </div>
+                                <div class="body-item-box marginTop15 inline-block">
+                                    <ion-label class="label ionLabel marginTop">
+                                        <span class="checkboxLabel">{{'UOM' | translate}}</span>
+                                        <span
+                                            [ngClass]="showValidationClass(AsFoundPerformanceObj.PRE_TEST_DATA_THIRD_POP_PRESSURE) ? 'validator' : ''"></span>
+                                    </ion-label>
+                                    <ion-input maxlength="250" [readonly]="true"
+                                        [ngClass]="errorObj.indexOf('PRE_TEST_DATA_THIRD_POP_PRESSURE_UOM') != -1 && !AsFoundPerformanceObj.PRE_TEST_DATA_THIRD_POP_PRESSURE_UOM ? 'validation-error' : ''"
+                                        [(ngModel)]="AsFoundPerformanceObj.PRE_TEST_DATA_THIRD_POP_PRESSURE_UOM"
+                                        name="AsFoundPerformanceObj.PRE_TEST_DATA_THIRD_POP_PRESSURE_UOM"
+                                        (click)="searchModal('UnitOfMeasurement','PRE_TEST_DATA_THIRD_POP_PRESSURE_UOM')"
+                                        tappable class="project-box searchNSelect select-style">
+                                    </ion-input>
+                                    <ion-input maxlength="250"
+                                        *ngIf="AsFoundPerformanceObj.PRE_TEST_DATA_THIRD_POP_PRESSURE_UOM == 'Other'"
+                                        [(ngModel)]="AsFoundPerformanceObj.PRE_TEST_DATA_THIRD_POP_PRESSURE_UOM_OT"
+                                        name="AsFoundPerformanceObj.PRE_TEST_DATA_THIRD_POP_PRESSURE_UOM_OT"
+                                        [ngClass]="!AsFoundPerformanceObj.PRE_TEST_DATA_THIRD_POP_PRESSURE_UOM_OT ? 'validation-error' : ''"
+                                        class="project-box select-style otherBox"> </ion-input>
+                                </div>
+                                <div class="body-item-box marginTop15 inline-block">
+                                    <span class="label">{{'Pre Open Pressure' | translate}}</span>
+                                    <span
+                                        [ngClass]="showValidationClass(AsFoundPerformanceObj.PRE_TEST_DATA_PRE_OPEN_PRESSURE_UOM) ? 'validator' : ''"></span>
+                                    <ion-input maxlength="250"
+                                        [ngClass]="errorObj.indexOf('PRE_TEST_DATA_PRE_OPEN_PRESSURE') != -1 && !AsFoundPerformanceObj.PRE_TEST_DATA_PRE_OPEN_PRESSURE ? 'validation-error' : ''"
+                                        [(ngModel)]="AsFoundPerformanceObj.PRE_TEST_DATA_PRE_OPEN_PRESSURE"
+                                        name="AsFoundPerformanceObj.PRE_TEST_DATA_PRE_OPEN_PRESSURE"
+                                        class="project-box select-style">
+                                    </ion-input>
+                                </div>
+                                <div class="body-item-box marginTop15 inline-block">
+                                    <ion-label class="label ionLabel marginTop">
+                                        <span class="checkboxLabel">{{'UOM' | translate}}</span>
+                                        <span
+                                            [ngClass]="showValidationClass(AsFoundPerformanceObj.PRE_TEST_DATA_PRE_OPEN_PRESSURE) ? 'validator' : ''"></span>
+                                    </ion-label>
+                                    <ion-input maxlength="250" [readonly]="true"
+                                        [ngClass]="errorObj.indexOf('PRE_TEST_DATA_PRE_OPEN_PRESSURE_UOM') != -1 && !AsFoundPerformanceObj.PRE_TEST_DATA_PRE_OPEN_PRESSURE_UOM ? 'validation-error' : ''"
+                                        [(ngModel)]="AsFoundPerformanceObj.PRE_TEST_DATA_PRE_OPEN_PRESSURE_UOM"
+                                        name="AsFoundPerformanceObj.PRE_TEST_DATA_PRE_OPEN_PRESSURE_UOM"
+                                        (click)="searchModal('UnitOfMeasurement','PRE_TEST_DATA_PRE_OPEN_PRESSURE_UOM')"
+                                        tappable class="project-box searchNSelect select-style">
+                                    </ion-input>
+                                    <ion-input maxlength="250"
+                                        *ngIf="AsFoundPerformanceObj.PRE_TEST_DATA_PRE_OPEN_PRESSURE_UOM == 'Other'"
+                                        [(ngModel)]="AsFoundPerformanceObj.PRE_TEST_DATA_PRE_OPEN_PRESSURE_UOM_OT"
+                                        name="AsFoundPerformanceObj.PRE_TEST_DATA_PRE_OPEN_PRESSURE_UOM_OT"
+                                        [ngClass]="!AsFoundPerformanceObj.PRE_TEST_DATA_PRE_OPEN_PRESSURE_UOM_OT ? 'validation-error' : ''"
+                                        class="project-box select-style otherBox"> </ion-input>
+                                </div>
+                            </ion-row>
+                            <ion-row>
+                                <div class="body-item-box marginTop15 inline-block">
+                                    <span class="label">{{'Seat Tightness Pressure' | translate}}</span>
+                                    <span
+                                        [ngClass]="showValidationClass(AsFoundPerformanceObj.PRE_TEST_DATA_SEAT_TIGHTNESS_PRESSURE_UOM) ? 'validator' : ''"></span>
+                                    <ion-input maxlength="250"
+                                        [ngClass]="errorObj.indexOf('PRE_TEST_DATA_SEAT_TIGHTNESS_PRESSURE') != -1 && !AsFoundPerformanceObj.PRE_TEST_DATA_SEAT_TIGHTNESS_PRESSURE ? 'validation-error' : ''"
+                                        [(ngModel)]="AsFoundPerformanceObj.PRE_TEST_DATA_SEAT_TIGHTNESS_PRESSURE"
+                                        name="AsFoundPerformanceObj.PRE_TEST_DATA_SEAT_TIGHTNESS_PRESSURE"
+                                        class="project-box select-style">
+                                    </ion-input>
+                                </div>
+                                <div class="body-item-box marginTop15 inline-block">
+                                    <ion-label class="label ionLabel marginTop">
+                                        <span class="checkboxLabel">{{'UOM' | translate}}</span>
+                                        <span
+                                            [ngClass]="showValidationClass(AsFoundPerformanceObj.PRE_TEST_DATA_SEAT_TIGHTNESS_PRESSURE) ? 'validator' : ''"></span>
+                                    </ion-label>
+                                    <ion-input maxlength="250" [readonly]="true"
+                                        [ngClass]="errorObj.indexOf('PRE_TEST_DATA_SEAT_TIGHTNESS_PRESSURE_UOM') != -1 && !AsFoundPerformanceObj.PRE_TEST_DATA_SEAT_TIGHTNESS_PRESSURE_UOM ? 'validation-error' : ''"
+                                        [(ngModel)]="AsFoundPerformanceObj.PRE_TEST_DATA_SEAT_TIGHTNESS_PRESSURE_UOM"
+                                        name="AsFoundPerformanceObj.PRE_TEST_DATA_SEAT_TIGHTNESS_PRESSURE_UOM"
+                                        (click)="searchModal('UnitOfMeasurement','PRE_TEST_DATA_SEAT_TIGHTNESS_PRESSURE_UOM')"
+                                        tappable class="project-box searchNSelect select-style">
+                                    </ion-input>
+                                    <ion-input maxlength="250"
+                                        *ngIf="AsFoundPerformanceObj.PRE_TEST_DATA_SEAT_TIGHTNESS_PRESSURE_UOM == 'Other'"
+                                        [(ngModel)]="AsFoundPerformanceObj.PRE_TEST_DATA_SEAT_TIGHTNESS_PRESSURE_UOM_OT"
+                                        name="AsFoundPerformanceObj.PRE_TEST_DATA_SEAT_TIGHTNESS_PRESSURE_UOM_OT"
+                                        [ngClass]="!AsFoundPerformanceObj.PRE_TEST_DATA_SEAT_TIGHTNESS_PRESSURE_UOM_OT ? 'validation-error' : ''"
+                                        class="project-box select-style otherBox"> </ion-input>
+                                </div>
+                            </ion-row>
+                            <ion-row>
+                                <div class="body-item-box marginTop15 inline-block">
+                                    <span class="label">{{'Back Pressure' | translate}}</span>
+                                    <ion-checkbox name="PRE_TEST_DATA_BACK_PRESSURE" (click)="deleteBackPressureData()"
+                                        [(ngModel)]="AsFoundPerformanceObj.PRE_TEST_DATA_BACK_PRESSURE"
+                                        [checked]="AsFoundPerformanceObj.PRE_TEST_DATA_BACK_PRESSURE == 'true' || AsFoundPerformanceObj.PRE_TEST_DATA_BACK_PRESSURE == true">
+                                    </ion-checkbox>
+                                </div>
+                            </ion-row>
+                            <ion-row>
+                                <div class="radioListElement spacingMarginUsingPadding inline-block">
+                                    <span class="label">{{'Back Pressure Test Pressure' | translate}}</span>
+                                    <span
+                                        [ngClass]="showValidationClass(AsFoundPerformanceObj.PRE_TEST_DATA_BACK_PRESSURE_TEST_PRESSURE_UOM) ? 'validator' : ''"></span>
+                                    <ion-input maxlength="250"
+                                        [ngClass]="errorObj.indexOf('PRE_TEST_DATA_BACK_PRESSURE_TEST_PRESSURE') != -1 && !AsFoundPerformanceObj.PRE_TEST_DATA_BACK_PRESSURE_TEST_PRESSURE ? 'validation-error' : ''"
+                                        [disabled]="!AsFoundPerformanceObj.PRE_TEST_DATA_BACK_PRESSURE"
+                                        [(ngModel)]="AsFoundPerformanceObj.PRE_TEST_DATA_BACK_PRESSURE_TEST_PRESSURE"
+                                        name="AsFoundPerformanceObj.PRE_TEST_DATA_BACK_PRESSURE_TEST_PRESSURE"
+                                        class="project-box select-style">
+                                    </ion-input>
+                                </div>
+                                <div class="radioListElement spacingMarginUsingPadding inline-block">
+                                    <ion-label class="label ionLabel marginTop">
+                                        <span class="checkboxLabel">{{'UOM' | translate}}</span>
+                                        <span
+                                            [ngClass]="showValidationClass(AsFoundPerformanceObj.PRE_TEST_DATA_BACK_PRESSURE_TEST_PRESSURE) ? 'validator' : ''"></span>
+                                    </ion-label>
+                                    <ion-input maxlength="250" [readonly]="true"
+                                        [disabled]="!AsFoundPerformanceObj.PRE_TEST_DATA_BACK_PRESSURE"
+                                        [ngClass]="errorObj.indexOf('PRE_TEST_DATA_BACK_PRESSURE_TEST_PRESSURE_UOM') != -1 && !AsFoundPerformanceObj.PRE_TEST_DATA_BACK_PRESSURE_TEST_PRESSURE_UOM ? 'validation-error' : ''"
+                                        [(ngModel)]="AsFoundPerformanceObj.PRE_TEST_DATA_BACK_PRESSURE_TEST_PRESSURE_UOM"
+                                        name="AsFoundPerformanceObj.PRE_TEST_DATA_BACK_PRESSURE_TEST_PRESSURE_UOM"
+                                        (click)="searchModal('UnitOfMeasurement','PRE_TEST_DATA_BACK_PRESSURE_TEST_PRESSURE_UOM')"
+                                        tappable class="project-box searchNSelect select-style">
+                                    </ion-input>
+                                    <ion-input maxlength="250"
+                                        [disabled]="!AsFoundPerformanceObj.PRE_TEST_DATA_BACK_PRESSURE"
+                                        *ngIf="AsFoundPerformanceObj.PRE_TEST_DATA_BACK_PRESSURE_TEST_PRESSURE_UOM == 'Other'"
+                                        [(ngModel)]="AsFoundPerformanceObj.PRE_TEST_DATA_BACK_PRESSURE_TEST_PRESSURE_UOM_OT"
+                                        name="AsFoundPerformanceObj.PRE_TEST_DATA_BACK_PRESSURE_TEST_PRESSURE_UOM_OT"
+                                        [ngClass]="!AsFoundPerformanceObj.PRE_TEST_DATA_BACK_PRESSURE_TEST_PRESSURE_UOM_OT ? 'validation-error' : ''"
+                                        class="project-box select-style otherBox"> </ion-input>
+                                </div>
+                            </ion-row>
+                            <ion-row>
+                                <div class="body-item-box marginTop15 inline-block">
+                                    <span class="label">{{'Leak Test' | translate}}</span>
+                                    <ion-checkbox name="PRE_TEST_DATA_LEAK_TEST"
+                                        [(ngModel)]="AsFoundPerformanceObj.PRE_TEST_DATA_LEAK_TEST"
+                                        [checked]="AsFoundPerformanceObj.PRE_TEST_DATA_LEAK_TEST == 'true' || AsFoundPerformanceObj.PRE_TEST_DATA_LEAK_TEST == true">
+                                    </ion-checkbox>
+                                </div>
+                            </ion-row>
+                            <ion-row>
+                                <div class="body-item-box marginTop15 inline-block">
+                                    <ion-label class="label ionLabel marginTop">
+                                        <span class="checkboxLabel">{{'Leak Test Results' | translate}}</span>
+                                    </ion-label>
+                                    <ion-input maxlength="250" [readonly]="true"
+                                        [ngClass]="errorObj.indexOf('PRE_TEST_DATA_LEAK_TEST_RESULT') != -1 && !AsFoundPerformanceObj.PRE_TEST_DATA_LEAK_TEST_RESULT ? 'validation-error' : ''"
+                                        [(ngModel)]="AsFoundPerformanceObj.PRE_TEST_DATA_LEAK_TEST_RESULT"
+                                        name="AsFoundPerformanceObj.PRE_TEST_DATA_LEAK_TEST_RESULT"
+                                        (click)="searchModal('TestResult','PRE_TEST_DATA_LEAK_TEST_RESULT')" tappable
+                                        class="project-box searchNSelect select-style">
+                                    </ion-input>
+                                    <ion-input maxlength="250"
+                                        *ngIf="AsFoundPerformanceObj.PRE_TEST_DATA_LEAK_TEST_RESULT == 'Other'"
+                                        [(ngModel)]="AsFoundPerformanceObj.PRE_TEST_DATA_LEAK_TEST_RESULT_OT"
+                                        name="AsFoundPerformanceObj.PRE_TEST_DATA_LEAK_TEST_RESULT_OT"
+                                        [ngClass]="!AsFoundPerformanceObj.PRE_TEST_DATA_LEAK_TEST_RESULT_OT ? 'validation-error' : ''"
+                                        class="project-box select-style otherBox"> </ion-input>
+                                </div>
+                                <div class="body-item-box marginTop15 inline-block">
+                                    <ion-label class="label ionLabel marginTop">
+                                        <span class="checkboxLabel">{{'Bellows Test' | translate}}</span>
+                                    </ion-label>
+                                    <ion-input maxlength="250" [readonly]="true"
+                                        [ngClass]="errorObj.indexOf('PRE_TEST_DATA_BELLOWS_TEST') != -1 && !AsFoundPerformanceObj.PRE_TEST_DATA_BELLOWS_TEST ? 'validation-error' : ''"
+                                        [(ngModel)]="AsFoundPerformanceObj.PRE_TEST_DATA_BELLOWS_TEST"
+                                        name="AsFoundPerformanceObj.PRE_TEST_DATA_BELLOWS_TEST"
+                                        (click)="searchModal('BellowsTest','PRE_TEST_DATA_BELLOWS_TEST')" tappable
+                                        class="project-box searchNSelect select-style">
+                                    </ion-input>
+                                    <ion-input maxlength="250"
+                                        *ngIf="AsFoundPerformanceObj.PRE_TEST_DATA_BELLOWS_TEST == 'Other'"
+                                        [(ngModel)]="AsFoundPerformanceObj.PRE_TEST_DATA_BELLOWS_TEST_OT"
+                                        name="AsFoundPerformanceObj.PRE_TEST_DATA_BELLOWS_TEST_OT"
+                                        [ngClass]="!AsFoundPerformanceObj.PRE_TEST_DATA_BELLOWS_TEST_OT ? 'validation-error' : ''"
+                                        class="project-box select-style otherBox"> </ion-input>
+                                </div>
+                                <div class="body-item-box marginTop15 inline-block">
+                                    <ion-label class="label ionLabel marginTop">
+                                        <span class="checkboxLabel">{{'Back Pressure Test Medium' | translate}}</span>
+                                    </ion-label>
+                                    <ion-input maxlength="250" [readonly]="true"
+                                        [ngClass]="errorObj.indexOf('PRE_TEST_DATA_BACK_PRESSURE_TEST_MEDIUM') != -1 && !AsFoundPerformanceObj.PRE_TEST_DATA_BACK_PRESSURE_TEST_MEDIUM ? 'validation-error' : ''"
+                                        [(ngModel)]="AsFoundPerformanceObj.PRE_TEST_DATA_BACK_PRESSURE_TEST_MEDIUM"
+                                        name="AsFoundPerformanceObj.PRE_TEST_DATA_BACK_PRESSURE_TEST_MEDIUM"
+                                        (click)="searchModal('TestMedium','PRE_TEST_DATA_BACK_PRESSURE_TEST_MEDIUM')"
+                                        tappable class="project-box searchNSelect select-style">
+                                    </ion-input>
+                                    <ion-input maxlength="250"
+                                        *ngIf="AsFoundPerformanceObj.PRE_TEST_DATA_BACK_PRESSURE_TEST_MEDIUM == 'Other'"
+                                        [(ngModel)]="AsFoundPerformanceObj.PRE_TEST_DATA_BACK_PRESSURE_TEST_MEDIUM_OT"
+                                        name="AsFoundPerformanceObj.PRE_TEST_DATA_BACK_PRESSURE_TEST_MEDIUM_OT"
+                                        [ngClass]="!AsFoundPerformanceObj.PRE_TEST_DATA_BACK_PRESSURE_TEST_MEDIUM_OT ? 'validation-error' : ''"
+                                        class="project-box select-style otherBox"> </ion-input>
+                                </div>
+                                <div class="body-item-box marginTop15 inline-block">
+                                    <ion-label class="label ionLabel marginTop">
+                                        <span class="checkboxLabel">{{'Back Pressure Test Result' | translate}}</span>
+                                    </ion-label>
+                                    <ion-input maxlength="250" [readonly]="true"
+                                        [ngClass]="errorObj.indexOf('PRE_TEST_DATA_BACK_PRESSURE_TEST_RESULT') != -1 && !AsFoundPerformanceObj.PRE_TEST_DATA_BACK_PRESSURE_TEST_RESULT ? 'validation-error' : ''"
+                                        [(ngModel)]="AsFoundPerformanceObj.PRE_TEST_DATA_BACK_PRESSURE_TEST_RESULT"
+                                        name="AsFoundPerformanceObj.PRE_TEST_DATA_BACK_PRESSURE_TEST_RESULT"
+                                        (click)="searchModal('BackPressureTest','PRE_TEST_DATA_BACK_PRESSURE_TEST_RESULT')"
+                                        tappable class="project-box searchNSelect select-style">
+                                    </ion-input>
+                                    <ion-input maxlength="250"
+                                        *ngIf="AsFoundPerformanceObj.PRE_TEST_DATA_BACK_PRESSURE_TEST_RESULT == 'Other'"
+                                        [(ngModel)]="AsFoundPerformanceObj.PRE_TEST_DATA_BACK_PRESSURE_TEST_RESULT_OT"
+                                        name="AsFoundPerformanceObj.PRE_TEST_DATA_BACK_PRESSURE_TEST_RESULT_OT"
+                                        [ngClass]="!AsFoundPerformanceObj.PRE_TEST_DATA_BACK_PRESSURE_TEST_RESULT_OT ? 'validation-error' : ''"
+                                        class="project-box select-style otherBox"> </ion-input>
+                                </div>
+                            </ion-row>
+                            <ion-row>
+                                <div class="body-item-box marginTop15 inline-block">
+                                    <ion-label class="label ionLabel marginTop">
+                                        <span class="checkboxLabel">{{'Pre-Test Result' | translate}}</span>
+                                    </ion-label>
+                                    <ion-input maxlength="250" [readonly]="true"
+                                        [ngClass]="errorObj.indexOf('PRE_TEST_DATA_PRE_TEST_RESULT') != -1 && !AsFoundPerformanceObj.PRE_TEST_DATA_PRE_TEST_RESULT ? 'validation-error' : ''"
+                                        [(ngModel)]="AsFoundPerformanceObj.PRE_TEST_DATA_PRE_TEST_RESULT"
+                                        name="AsFoundPerformanceObj.PRE_TEST_DATA_PRE_TEST_RESULT"
+                                        (click)="searchModal('TestResult','PRE_TEST_DATA_PRE_TEST_RESULT')" tappable
+                                        class="project-box searchNSelect select-style">
+                                    </ion-input>
+                                    <ion-input maxlength="250"
+                                        *ngIf="AsFoundPerformanceObj.PRE_TEST_DATA_PRE_TEST_RESULT == 'Other'"
+                                        [(ngModel)]="AsFoundPerformanceObj.PRE_TEST_DATA_PRE_TEST_RESULT_OT"
+                                        name="AsFoundPerformanceObj.PRE_TEST_DATA_PRE_TEST_RESULT_OT"
+                                        [ngClass]="!AsFoundPerformanceObj.PRE_TEST_DATA_PRE_TEST_RESULT_OT ? 'validation-error' : ''"
+                                        class="project-box select-style otherBox"> </ion-input>
+                                </div>
+                                <div class="body-item-box marginTop15 inline-block">
+                                    <ion-label class="label ionLabel marginTop">
+                                        <span class="checkboxLabel">{{'Pre-Test Date' | translate}}</span>
+                                    </ion-label>
+                                    <ion-input name="PRE_TEST_DATA_PRE_TEST_DATE"
+                                        [ngClass]="errorObj.indexOf('PRE_TEST_DATA_PRE_TEST_DATE') != -1 && !AsFoundPerformanceObj.PRE_TEST_DATA_PRE_TEST_DATE ? 'validation-error' : ''"
+                                        class="marginTop8 input-box dateField WF-input inline-block" bsDatepicker
+                                        #dateCompleted="bsDatepicker"
+                                        [(bsValue)]="AsFoundPerformanceObj.PRE_TEST_DATA_PRE_TEST_DATE"
+                                        [bsConfig]="{dateInputFormat: 'DD-MMM-YYYY'}"
+                                        value="{{AsFoundPerformanceObj.PRE_TEST_DATA_PRE_TEST_DATE | date:'dd-MMM-yyyy'}}"
+                                        (onShown)="onShowPicker($event)">
+                                    </ion-input>
+                                    <span class="inline-block">
+                                        <img (click)="dateCompleted.show()" [attr.aria-expanded]="dateCompleted.isOpen"
+                                            src="assets/imgs/icons/ic_calendar-for-field.png" class="calIcon pointer" />
+                                    </span>
+                                </div>
+                                <div class="body-item-box marginTop15 inline-block">
+                                    <ion-label class="label ionLabel marginTop">
+                                        <span class="checkboxLabel">{{'Pre-Tested By' | translate}}</span>
+                                    </ion-label>
+                                    <ion-input maxlength="250"
+                                        [(ngModel)]="AsFoundPerformanceObj.PRE_TEST_DATA_PRE_TESTED_BY"
+                                        name="AsFoundPerformanceObj.PRE_TEST_DATA_PRE_TESTED_BY"
+                                        class="project-box select-style">
+                                    </ion-input>
+                                </div>
+                            </ion-row>
+                            <ion-row>
+                                <div class="full-width">
+                                    <div class="spacingMargin" id="PRE_TEST_DATA_PRE_TEST_COMMENTS">
+                                        <ion-col no-padding>
+                                            <ion-label class="label ionLabel marginTop">
+                                                <span class="checkboxLabel">{{'Pre-Test Comments' | translate}}</span>
+
+                                            </ion-label>
+                                            <ion-textarea maxlength="250" rows="3"
+                                                (focusout)="AsFoundPerformanceObj.PRE_TEST_DATA_PRE_TEST_COMMENTS = utilityProvider.sliceValueUptoLimit($event.target.value, $event.target.maxLength)"
+                                                [(ngModel)]="AsFoundPerformanceObj.PRE_TEST_DATA_PRE_TEST_COMMENTS"
+                                                class="WF-textArea">
+                                            </ion-textarea>
+                                        </ion-col>
+                                    </div>
+                                </div>
+                            </ion-row>
+                        </div>
+                    </div>
+                </ion-row>
+
+                <!-- GAUGE Data Row -->
+                <ion-row class="customRows">
+                    <div class="full-width">
+                        <div class="inline-block spacingMargin"
+                            [ngClass]="AsFoundPerformanceObj.GAUGE_GAUGE_NA == 'true' || AsFoundPerformanceObj.GAUGE_GAUGE_NA == true ? 'disable-content' : ''">
+                            <span (click)="expandOuter('GAUGE')">
+                                <ion-icon class="arrowIcon" item-left name="arrow-dropright"
+                                    *ngIf="!expandOuterAccordion.GAUGE">
+                                </ion-icon>
+                                <ion-icon class="arrowIcon" role="img" *ngIf="expandOuterAccordion.GAUGE"
+                                    aria-label="arrow dropdown" name="arrow-dropdown">
+                                </ion-icon>
+                            </span>
+                            <span (click)="expandOuter('GAUGE')"
+                                class="label pointer accordion-label">{{'Gauge' | translate}}</span>
+                        </div>
+                        <div class="inline-block pull-right">
+                            <div class="spacingMargin">
+                                <div class="WF-checkbox">
+                                    <span class="label checkboxLabel">{{'N/A' | translate}}</span>
+                                    <input id="checkbox-GAUGE-NA" type="checkbox"
+                                        [checked]="AsFoundPerformanceObj.GAUGE_GAUGE_NA == true || AsFoundPerformanceObj.GAUGE_GAUGE_NA == 'true'"
+                                        [ngModel] class="accordionCheckBox" (change)="confirmAlert($event, 'GAUGE')">
+                                    <label for="checkbox-GAUGE-NA"></label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="block full-width attachmentBox" *ngIf="expandOuterAccordion.GAUGE">
+                            <ion-row>
+                                <div class="body-item-box marginTop15 inline-block">
+                                    <ion-label class="label ionLabel marginTop">
+                                        <span class="checkboxLabel">{{'Pressure Gauge ID' | translate}}</span>
+                                    </ion-label>
+                                    <ion-input maxlength="250"
+                                        [(ngModel)]="AsFoundPerformanceObj.GAUGE_PRESSURE_GAUGE_ID"
+                                        name="AsFoundPerformanceObj.GAUGE_PRESSURE_GAUGE_ID"
+                                        class="project-box select-style">
+                                    </ion-input>
+                                </div>
+                                <div class="body-item-box marginTop15 inline-block">
+                                    <ion-label class="label ionLabel marginTop">
+                                        <span class="checkboxLabel">{{'Gauge Calibration Due Date' | translate}}</span>
+                                    </ion-label>
+                                    <ion-input name="GAUGE_GAUGE_CALIBRATION_DUE_DATE"
+                                        [ngClass]="errorObj.indexOf('GAUGE_GAUGE_CALIBRATION_DUE_DATE') != -1 && !AsFoundPerformanceObj.GAUGE_GAUGE_CALIBRATION_DUE_DATE ? 'validation-error' : ''"
+                                        class="marginTop8 input-box dateField WF-input inline-block" bsDatepicker
+                                        #dateCompleted1="bsDatepicker"
+                                        [(bsValue)]="AsFoundPerformanceObj.GAUGE_GAUGE_CALIBRATION_DUE_DATE"
+                                        [bsConfig]="{dateInputFormat: 'DD-MMM-YYYY'}"
+                                        value="{{AsFoundPerformanceObj.GAUGE_GAUGE_CALIBRATION_DUE_DATE | date:'dd-MMM-yyyy'}}"
+                                        (onShown)="onShowPicker($event)">
+                                    </ion-input>
+                                    <span class="inline-block">
+                                        <img (click)="dateCompleted1.show()"
+                                            [attr.aria-expanded]="dateCompleted1.isOpen"
+                                            src="assets/imgs/icons/ic_calendar-for-field.png" class="calIcon pointer" />
+                                    </span>
+                                </div>
+                            </ion-row>
+                        </div>
+                    </div>
+                </ion-row>
+
+                <!-- CUSTOMER_SPECIFICATION Data Row -->
+                <ion-row class="customRows">
+                    <div class="full-width">
+                        <div class="inline-block spacingMargin"
+                            [ngClass]="AsFoundPerformanceObj.CUSTOMER_SPECIFICATION_CUSTOMER_SPECIFICATION_NA == 'true' || AsFoundPerformanceObj.CUSTOMER_SPECIFICATION_CUSTOMER_SPECIFICATION_NA == true ? 'disable-content' : ''">
+                            <span (click)="expandOuter('CUSTOMER_SPECIFICATION')">
+                                <ion-icon class="arrowIcon" item-left name="arrow-dropright"
+                                    *ngIf="!expandOuterAccordion.CUSTOMER_SPECIFICATION">
+                                </ion-icon>
+                                <ion-icon class="arrowIcon" role="img"
+                                    *ngIf="expandOuterAccordion.CUSTOMER_SPECIFICATION" aria-label="arrow dropdown"
+                                    name="arrow-dropdown">
+                                </ion-icon>
+                            </span>
+                            <span (click)="expandOuter('CUSTOMER_SPECIFICATION')"
+                                class="label pointer accordion-label">{{'Customer Specification' | translate}}</span>
+                        </div>
+                        <div class="inline-block pull-right">
+                            <div class="spacingMargin">
+                                <div class="WF-checkbox">
+                                    <span class="label checkboxLabel">{{'N/A' | translate}}</span>
+                                    <input id="checkbox-CUSTOMER_SPECIFICATION-NA" type="checkbox"
+                                        [checked]="AsFoundPerformanceObj.CUSTOMER_SPECIFICATION_CUSTOMER_SPECIFICATION_NA == true || AsFoundPerformanceObj.CUSTOMER_SPECIFICATION_CUSTOMER_SPECIFICATION_NA == 'true'"
+                                        [ngModel] class="accordionCheckBox"
+                                        (change)="confirmAlert($event, 'CUSTOMER_SPECIFICATION')">
+                                    <label for="checkbox-CUSTOMER_SPECIFICATION-NA"></label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="block full-width attachmentBox" *ngIf="expandOuterAccordion.CUSTOMER_SPECIFICATION">
+                            <ion-row>
+                                <div class="body-item-box marginTop15 inline-block">
+                                    <ion-label class="label ionLabel marginTop">
+                                        <span
+                                            class="checkboxLabel">{{'Customer Specification Number' | translate}}</span>
+                                    </ion-label>
+                                    <ion-input maxlength="250"
+                                        [(ngModel)]="AsFoundPerformanceObj.CUSTOMER_SPECIFICATION_CUSTOMER_SPECIFICATION_NUMBER"
+                                        name="AsFoundPerformanceObj.CUSTOMER_SPECIFICATION_CUSTOMER_SPECIFICATION_NUMBER"
+                                        class="project-box select-style">
+                                    </ion-input>
+                                </div>
+                                <div class="body-item-box marginTop30 inline-block">
+                                    <span class="label">{{'Customer Witness Required' | translate}}</span>
+                                    <ion-checkbox name="CUSTOMER_SPECIFICATION_CUSTOMER_WITNESS_REQUIRED"
+                                        [(ngModel)]="AsFoundPerformanceObj.CUSTOMER_SPECIFICATION_CUSTOMER_WITNESS_REQUIRED"
+                                        [checked]="AsFoundPerformanceObj.CUSTOMER_SPECIFICATION_CUSTOMER_WITNESS_REQUIRED == 'true' || AsFoundPerformanceObj.CUSTOMER_SPECIFICATION_CUSTOMER_WITNESS_REQUIRED == true">
+                                    </ion-checkbox>
+                                </div>
+                            </ion-row>
+                        </div>
+                    </div>
+                </ion-row>
+
+            </div>
+
+            <!-- Footer Button -->
+            <ion-row>
+                <ion-col text-left>
+                    <button (click)="redirect('back')" ion-button class="footer-Button">{{'Back' | translate}}</button>
+                </ion-col>
+                <ion-col text-right>
+                    <button (click)="redirect('findings')" ion-button
+                        class="footer-Button">{{ bottomNavBtn | translate}}</button>
+                </ion-col>
+            </ion-row>
+
+        </ion-card-content>
+
+    </ion-card>
+</ion-content>

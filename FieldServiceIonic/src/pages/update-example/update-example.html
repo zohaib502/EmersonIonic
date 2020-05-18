@@ -1,0 +1,86 @@
+<ion-header>
+
+
+
+
+
+</ion-header>
+
+
+<ion-content padding>
+
+
+  <ion-card class="version1">
+
+
+   <h1> Version : {{localVersion}}</h1>
+    <h2> Test 1 - One</h2>
+  </ion-card>
+
+
+  <ion-card>
+    <ion-card-header>
+      <ion-row class="global-padding">
+        <h1>Update Example</h1>
+      </ion-row>
+    </ion-card-header>
+    <ion-card-content >
+      This is Test
+      <button ion-button (click)="checkUpdate()">Check for Update</button>
+
+      <br>
+      <div class="instructionBox" *ngIf="isNewVersion"> New App version found. <br/>Please update Version :: {{fileUpdater.newSoftVersion}}</div>
+      <br/>
+      <button ion-button (click)="setSoftVersion()">set Soft Version</button>
+    </ion-card-content>
+
+
+
+  </ion-card>
+
+  <ion-card>
+
+    <ion-card-content >
+      <button ion-button (click)="downloadNewVersionFile()">Download Package {{fileUpdater.newSoftVersion}}.zip</button>
+
+      <br>
+      Download Status:  {{isNewVersionDownloaded}}
+
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+
+
+
+    <ion-card-content >
+      <ion-input [(ngModel)]="fileUpdater.newSoftVersion" placeholder="File Name"></ion-input>
+      <br/>
+      <button ion-button (click)="this.fileUpdater.extractSoftupdateZip(true)">Extract Package {{fileUpdater.newSoftVersion}}.zip</button>
+
+      <br>
+      Extraction Status : {{this.fileUpdater.isComplete}}
+
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+
+    <ion-card-content >
+
+      <button ion-button (click)="getSampleFile()">getSampleFile</button>
+      <br/>
+      <br/>
+
+      <ion-input [(ngModel)]="b64FileUrl" placeholder="File URL"></ion-input>
+      <br/>
+      <ion-input [(ngModel)]="b64ContentType" placeholder="COntentType"></ion-input>
+      <br/>
+
+      <button ion-button (click)="getBase64()">getBase64</button>
+      <button ion-button (click)="getBase64ZipBlobtest()">Updated Base64</button>
+
+
+    </ion-card-content>
+  </ion-card>
+</ion-content>

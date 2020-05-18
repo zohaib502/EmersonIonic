@@ -1,0 +1,52 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      <h2>{{customerName}}</h2>
+    </ion-title>
+    <ion-buttons end>
+      <button ion-button class="closebtn" (click)="closeModal()"><i class="fa fa-times fa-2x"></i></button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <div class="global-padding">
+    <ion-list class="accordion-list">
+      <ion-list-header *ngFor="let item of customerFieldJobs; let i = index" no-lines no-padding>
+        <button ion-item (click)="toggleSection(i)" detail-none [ngClass]="item.open ? 'section-active strippedClass' : 'section strippedClass'">
+          <ion-icon item-left name="add" *ngIf="!item.open"></ion-icon>
+          <ion-icon item-left name="remove" *ngIf="item.open"></ion-icon>
+          <h2 class="label">{{'Field Job' | translate}} - {{item.Task_Number}} / {{'SR Number'}} - {{item.SR_Number}}</h2>
+        </button>
+        <ion-list *ngIf="item.open">
+          <ion-row>
+            <div class="inline-block dateSec">
+              <ion-label class="label">{{'Estimated Start/End Date' | translate}}</ion-label>
+              <span class="value">{{item.Start_Date}} / {{item.End_Date}}</span>
+            </div>
+            <div class="inline-block locSec">
+              <ion-label class="label">{{'Location' | translate}}</ion-label>
+              <span class="value">{{item.Street_Address}} , {{item.City}} , {{item.State}} , {{item.Country}} , {{item.Zip_Code}}</span>
+            </div>
+            <div class="inline-block jobDescSec">
+              <ion-label class="label">{{'Job Description' | translate}}</ion-label>
+              <span class="value">{{item.Job_Description}}</span>
+            </div>
+            <div class="inline-block jobStatSec">
+              <ion-label class="label">{{'Job Status' | translate}}</ion-label>
+              <span class="value">{{item.Task_Status}}</span>
+            </div>
+            <div class="full-width">
+              <ion-label class="label">{{'Attachment' | translate}}</ion-label>
+              <ion-row>
+                <ion-col col-3 *ngFor="let attachment of item.Attachment; let i = index" no-padding>
+                  <ion-label (click)="openAttachment(item)"><span class="value attachment">{{attachment.Name}}</span></ion-label>
+                </ion-col>
+              </ion-row>
+            </div>
+          </ion-row>
+        </ion-list>
+      </ion-list-header>
+    </ion-list>
+  </div>
+</ion-content>

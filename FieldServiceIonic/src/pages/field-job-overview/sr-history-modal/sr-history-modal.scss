@@ -1,0 +1,99 @@
+page-sr-history-modal {
+  .accordion-list {
+    height: 100%;
+  }
+
+  .accordion-list ion-icon {
+    color: grey;
+  }
+
+  .section {
+    background: #fff;
+    color: #000;
+    margin-bottom: 4px;
+  }
+
+  .section-active {
+    color: #fff;
+    border: 1px solid grey;
+  }
+
+  .list {
+    margin-bottom: 4px;
+  }
+
+  .dateSec {
+    width: 24%;
+    margin-right: 1%;
+    white-space: normal;
+  }
+
+  .locSec {
+    width: 34%;
+    margin-right: 1%;
+    white-space: normal;
+  }
+
+  .jobDescSec, .jobStatSec {
+    width: 19%;
+    margin-right: 1%;
+    white-space: normal;
+  }
+
+  .attachment {
+    color: #8eb15f !important;
+    cursor: pointer;
+  }
+
+  .accordion-list .list-header {
+    margin: 0px;
+  }
+}
+
+.ios page-sr-history-modal {
+  .attachment {
+    color: #8eb15f !important;
+  }
+}
+
+.SrHistoryModalPage {
+  .modal-wrapper {
+    height: 450px;
+    width: 910px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+    top: 50%;
+    left: 55%;
+    transform: translate(-50%,-50%) !important;
+    position: fixed;
+  }
+
+  .modal-wrapper .scroll-content {
+    background-color: rgba(255,255,255,1) !important;
+    color: rgba(74,74,74,1);
+    font-family: "Helvetica Neue";
+    font-size: 18px;
+    font-weight: 300;
+    line-height: 28px;
+    text-align: left;
+    overflow-y: auto;
+  }
+
+  .modal-wrapper .toolbar-title {
+    color: rgba(74,74,74,1);
+    font-family: "Helvetica Neue";
+    font-size: 22px;
+    font-weight: 300;
+    line-height: 27px;
+    text-align: left;
+  }
+
+  .toolbar {
+    height: 52px !important;
+    border-bottom: 1px solid rgba(233, 232, 232,1) !important;
+  }
+
+  .padding-style {
+    padding: 0 10px 1px;
+  }
+}

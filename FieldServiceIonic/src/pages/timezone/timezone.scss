@@ -1,0 +1,116 @@
+page-timezone {
+  .timeZone {
+    width: 29%;
+    white-space: normal;
+    margin-right: 1%;
+  }
+
+  .timezoneLabel {
+    width: 60%;
+  }
+
+  .searchKeyLabel .searchbar {
+    padding-bottom: 0px !important;
+    margin-right: 10px;
+  }
+
+  .name {
+    width: 49%;
+    margin-right: 1%;
+    white-space: normal;
+  }
+
+  .action {
+    width: 16%;
+    margin-right: 1%;
+    white-space: normal;
+  }
+
+  ion-searchbar .searchbar-input {
+    padding-bottom: 0px !important;
+    height: 31px;
+    border: 1px solid rgba(238, 238, 238, 1);
+    width: 340px;
+    border-radius: 3px;
+    background-color: rgba(247, 247, 246, 1);
+    box-shadow: none !important;
+  }
+
+  ion-searchbar {
+    width: 340px;
+    height: 31px;
+    min-height: unset !important;
+    padding: 0px !important;
+  }
+
+  .searchbar .searchbar-input {
+    padding: 0 30px;
+    vertical-align: middle;
+  }
+
+  .searchbar .searchbar-search-icon {
+    top: 7px;
+    left: 7px;
+  }
+
+  .no-data-container {
+    margin-bottom: 0px !important;
+  }
+
+  .data-container {
+    margin-bottom: 12px !important;
+  }
+
+  .pending-indicator {
+    color: rgba(155, 155, 155, 1) !important;
+  }
+
+  .pendingIconArea{
+    width: 2%;
+    margin-right: 1%;
+  }
+
+  .checkbox-label {
+    color: #60b2d5;
+    font-family: "Helvetica Neue";
+    font-size: 14px;
+    font-weight: bold;
+    white-space: normal;
+  }
+
+  .showActiveCheckbox {
+    width: auto;
+    padding-left: 0px !important;
+    display: inline-block;
+  }
+
+  .showActiveCheckbox.item.item-block .item-inner, .showActiveCheckbox.item .checkbox {
+    display: inline-block;
+    height: 20px;
+    vertical-align: middle;
+  }
+
+  .item.item-md .checkbox-md {
+    margin: 5px 5px 9px 9px !important;
+  }
+
+}
+
+.ios page-timezone{
+  .searchKeyLabel .searchbar{
+    margin-top: 6px;
+  }
+
+  .showActiveCheckbox.item.item-block .item-inner, .showActiveCheckbox.item .checkbox {
+    height: auto;
+  }
+
+  ion-label{
+    margin: 0px !important;
+  }
+
+  .showActiveCheckbox .label{
+    margin: 13px 2px 0 0 !important;
+  }
+
+}

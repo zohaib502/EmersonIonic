@@ -1,0 +1,314 @@
+<ion-content padding>
+  <ion-list>
+    <form #myForm="ngForm">
+      <!-- <ion-card>
+         <ion-card-header>
+          <ion-row>
+            <div class="full-width">
+              <span>{{'Detailed Notes' | translate}}</span>
+              <button (click)="Save()" class="report-save-btn pull-right">
+                <img src="assets/imgs/icons/save-icon-active.png" />
+              </button>
+              <button class="goToNotes-btn pull-right inline-block" (click)="cancelDetailNotes()" no-padding type="button">{{'Back'| translate}}</button>
+            </div>
+          </ion-row>
+        </ion-card-header>
+        <ion-card-content>
+          <ion-row>
+            <ion-col col-3>
+              <ion-label stacked>
+                {{'Report NO.' | translate}}
+                <span class="validator"></span>
+              </ion-label>
+              <ion-input type="text" placeholder="{{'Enter Report NO.' | translate}}" required [attr.maxlength]="9"
+                [(ngModel)]="detailedNotes.Report_No" name="detailedNotes.Report_No" [ngClass]="detailedNotes.Report_No == '' || detailedNotes.Report_No == undefined || detailedNotes.Report_No == null ? 'input-validation' : ''"></ion-input>
+            </ion-col>
+            <ion-col col-4>
+              <ion-label stacked>
+                {{'Description 1' | translate}}
+                <span class="validator"></span>
+              </ion-label>
+              <ion-input type="text" placeholder="{{'Enter Description 1' | translate}}" required [attr.maxlength]="150"
+                [(ngModel)]="detailedNotes.Description_One" name="detailedNotes.Description_One" [ngClass]="detailedNotes.Description_One == '' || detailedNotes.Description_One == undefined || detailedNotes.Description_One == null ? 'input-validation' : ''"></ion-input>
+            </ion-col>
+            <ion-col col-4>
+              <ion-label stacked>
+                {{'Description 2' | translate}}
+                <span class="validator"></span>
+              </ion-label>
+              <ion-input type="text" required [attr.maxlength]="150" placeholder="{{'Enter Description 2' | translate}}"
+                [(ngModel)]="detailedNotes.Description_Two" name="detailedNotes.Description_Two" [ngClass]="detailedNotes.Description_Two == '' || detailedNotes.Description_Two == undefined || detailedNotes.Description_Two == null ? 'input-validation' : ''"></ion-input>
+            </ion-col>
+            <ion-col col-11>
+              <ion-label stacked>
+                {{'Summary' | translate}}
+                <span class="validator"></span>
+              </ion-label>
+              <ion-textarea required placeholder="{{'Enter Summary' | translate}}" [(ngModel)]="detailedNotes.Summary" [attr.maxlength]="2000"
+                name="detailedNotes.Summary" [ngClass]="detailedNotes.Summary == '' || detailedNotes.Summary == undefined || detailedNotes.Summary == null ? 'input-validation' : ''"></ion-textarea>
+            </ion-col>
+          </ion-row>
+        </ion-card-content>
+      </ion-card> -->
+      <!-- *ngIf="DNIDForenkey != null" -->
+      <ion-card>
+        <ion-card-header>{{'Summary' | translate}}</ion-card-header>
+        <ion-card-content>
+            <editor-sdr [ngClass]="refreshckEditor ? 'displayNone' : ''"></editor-sdr>
+            <editor-sdr [content]="detailedNotes.Summary" (contentChanged)="Summary($event)"></editor-sdr>
+        </ion-card-content>
+      </ion-card>
+
+      <ion-card>
+        <ion-card-header>{{'System Info' | translate}}</ion-card-header>
+        <ion-card-content>
+            <editor-sdr [content]="detailedNotes.System_Info" (contentChanged)="SystemInfo($event)"></editor-sdr>
+            <ion-row class="detailed-attachment-padding">
+              <ion-col col-3 no-padding>
+                <h1 class="inline-block">{{'Attachments' | translate}}</h1>
+                <label class="custom-file-upload inline-block btn">
+                  <input #attachment [(ngModel)]="filee" name="filee" (click)="attachment.value = null" value="" (change)="addAttachment($event, enums.DetailedNotes.System_Info)"
+                    type="file" />
+                  <img src="assets/imgs/icons/add attachment.png" />
+                </label>
+              </ion-col>
+            </ion-row>
+            <div *ngIf="attachmentArray != undefined && attachmentArray.length > 0">
+              <ion-row class="detailed-attachment-padding">
+                <div *ngFor="let file1 of attachmentArray; let i = index">
+                  <ion-col col-2 *ngIf="enums.DetailedNotes.System_Info == file1.Attachment_Type">
+                    <span class="block">
+                      <a class="pointer" (click)="openResource(file1)">
+                        <span *ngIf="file1.contentType.indexOf('image')>-1">
+                          <img *ngIf="file1.isThumbnailCreated && isIOS" class="attachment-image" [src]="sanitizer.bypassSecurityTrustUrl(mainFilePath + file1.filename)">
+                          <img *ngIf="file1.isThumbnailCreated && !isIOS" class="attachment-image" [src]="sanitizer.bypassSecurityTrustUrl(filePath + 'thumb_'+file1.filename)">
+                          <img *ngIf="!file1.isThumbnailCreated" class="attachment-image" [src]="sanitizer.bypassSecurityTrustUrl(mainFilePath + file1.filename)">
+                        </span>
+                        <span *ngIf="file1.contentType.indexOf('pdf')>-1">
+                          <img style="width: 135px!important" class="attachment-icon-pdf" src="assets/imgs/pdf.png">
+                        </span>
+                        <span *ngIf="file1.filetype.indexOf('doc') > -1 || file1.filetype.indexOf('docx') > -1">
+                          <img class="attachment-icon" src="assets/imgs/doc.png">
+                        </span>
+                        <span *ngIf="file1.filetype.indexOf('xlsx') > -1 || file1.filetype.indexOf('xls') > -1">
+                          <img class="attachment-icon" src="assets/imgs/xls.png">
+                        </span>
+                        <span *ngIf="file1.filetype.indexOf('pptx') > -1 || file1.filetype.indexOf('ppt') > -1">
+                          <img class="attachment-icon" src="assets/imgs/ppt.png">
+                        </span>
+                        <span *ngIf="file1.filetype.indexOf('txt') > -1 ">
+                          <img class="attachment-icon" src="assets/imgs/txt.png">
+                        </span>
+                        <span *ngIf="file1.contentType.indexOf('image') < 0 && file1.filetype.indexOf('pdf') < 0 && file1.filetype.indexOf('doc') < 0 && file1.filetype.indexOf('docx') < 0 && file1.filetype.indexOf('xlsx') < 0 && file1.filetype.indexOf('xls') < 0&& file1.filetype.indexOf('ppt') < 0 && file1.filetype.indexOf('pptx') < 0 && file1.filetype.indexOf('txt') < 0">
+                          <img class="attachment-icon" src="assets/imgs/unknown.png">
+                        </span>
+                      </a>
+                    </span>
+                    <!-- 01-18-2019 -- Mansi Arora -- Renaming attachment disabled -->
+                    <!-- 02-07-2019 -- Mansi Arora -- Renaming attachment fixed -->
+                    <span class="block" *ngIf="enums.DetailedNotes.System_Info == file1.Attachment_Type">
+                      <ion-input maxlength="50" (focusout)="renameAttachment(file1, i)" [(ngModel)]="file1.fileDisc" (focus)="focusFunction($event)" value="{{file1.fileDisc}}" name="{{i}}" class="attachment-name "></ion-input>
+                    </span>
+                    <span class="block delete-attachment-button-block" *ngIf="enums.DetailedNotes.System_Info == file1.Attachment_Type">
+                      <label text-center class="attachment-label pointer" (click)=deleteAttachmentObject(file1,i)
+                        translate="Delete"></label>
+                    </span>
+                  </ion-col>
+                </div>
+              </ion-row>
+            </div>
+        </ion-card-content>
+      </ion-card>
+      <ion-card>
+        <ion-card-header>{{'Detailed Notes' | translate}}</ion-card-header>
+        <ion-card-content>
+          <editor-sdr [content]="detailedNotes.Detailed_Notes" (contentChanged)="DetailedNotes($event)"></editor-sdr>
+          <ion-row class="detailed-attachment-padding">
+            <ion-col col-3 no-padding>
+              <h1 class="inline-block">{{'Attachments' | translate}}</h1>
+              <label class="custom-file-upload inline-block btn">
+                <input #attachment [(ngModel)]="filee" name="filee" (change)="addAttachment($event, enums.DetailedNotes.Detailed_Notes)"
+                  type="file" />
+                <img src="assets/imgs/icons/add attachment.png" />
+              </label>
+            </ion-col>
+          </ion-row>
+          <div *ngIf="attachmentArray!=undefined && attachmentArray.length>0">
+            <ion-row>
+              <div *ngFor="let file1 of attachmentArray; let i = index">
+                <ion-col col-2 *ngIf="enums.DetailedNotes.Detailed_Notes == file1.Attachment_Type">
+                  <span class="block">
+                    <a class="pointer" (click)="openResource(file1)">
+                      <span *ngIf="file1.contentType.indexOf('image')>-1">
+                        <img *ngIf="file1.isThumbnailCreated && isIOS" class="attachment-image" [src]="sanitizer.bypassSecurityTrustUrl(mainFilePath + file1.filename)">
+                        <img *ngIf="file1.isThumbnailCreated && !isIOS" class="attachment-image" [src]="sanitizer.bypassSecurityTrustUrl(filePath + 'thumb_'+file1.filename)">
+                        <img *ngIf="!file1.isThumbnailCreated" class="attachment-image" [src]="sanitizer.bypassSecurityTrustUrl(mainFilePath + file1.filename)">
+                      </span>
+                      <span *ngIf="file1.contentType.indexOf('pdf')>-1">
+                        <img style="width: 135px!important" class="attachment-icon-pdf" src="assets/imgs/pdf.png">
+                      </span>
+                      <span *ngIf="file1.filetype.indexOf('doc') > -1 || file1.filetype.indexOf('docx') > -1">
+                        <img class="attachment-icon" src="assets/imgs/doc.png">
+                      </span>
+                      <span *ngIf="file1.filetype.indexOf('xlsx') > -1 || file1.filetype.indexOf('xls') > -1">
+                        <img class="attachment-icon" src="assets/imgs/xls.png">
+                      </span>
+                      <span *ngIf="file1.filetype.indexOf('pptx') > -1 || file1.filetype.indexOf('ppt') > -1">
+                        <img class="attachment-icon" src="assets/imgs/ppt.png">
+                      </span>
+                      <span *ngIf="file1.filetype.indexOf('txt') > -1 ">
+                        <img class="attachment-icon" src="assets/imgs/txt.png">
+                      </span>
+                      <span *ngIf="file1.contentType.indexOf('image') < 0 && file1.filetype.indexOf('pdf') < 0 && file1.filetype.indexOf('doc') < 0 && file1.filetype.indexOf('docx') < 0 && file1.filetype.indexOf('xlsx') < 0 && file1.filetype.indexOf('xls') < 0&& file1.filetype.indexOf('ppt') < 0 && file1.filetype.indexOf('pptx') < 0 && file1.filetype.indexOf('txt') < 0">
+                        <img class="attachment-icon" src="assets/imgs/unknown.png">
+                      </span>
+                    </a>
+                  </span>
+                  <!-- 01-18-2019 -- Mansi Arora -- Renaming attachment disabled -->
+                  <!-- 02-07-2019 -- Mansi Arora -- Renaming attachment fixed -->
+                  <span class="block" *ngIf="enums.DetailedNotes.Detailed_Notes == file1.Attachment_Type">
+                    <ion-input maxlength="50" (focusout)="renameAttachment(file1, i)" [(ngModel)]="file1.fileDisc" (focus)="focusFunction($event)" value="{{file1.fileDisc}}" name="{{i}}" class="attachment-name "></ion-input>
+                  </span>
+                  <span class="block delete-attachment-button-block" *ngIf="enums.DetailedNotes.Detailed_Notes == file1.Attachment_Type">
+                    <label text-center class="attachment-label pointer" (click)=deleteAttachmentObject(file1,i)
+                      translate="Delete"></label>
+                  </span>
+                </ion-col>
+              </div>
+            </ion-row>
+          </div>
+        </ion-card-content>
+      </ion-card>
+      <ion-card>
+        <ion-card-header>{{'Result/Remaining Issue' | translate}}</ion-card-header>
+        <ion-card-content>
+          <editor-sdr [content]="detailedNotes.Result" (contentChanged)="ResultRemaining($event)"></editor-sdr>
+          <ion-row class="detailed-attachment-padding">
+            <ion-col col-3 no-padding>
+              <h1 class="inline-block">{{'Attachments' | translate}}</h1>
+              <label class="custom-file-upload inline-block btn">
+                <input #attachment [(ngModel)]="filee" (change)="addAttachment($event, enums.DetailedNotes.Result_Remaining)"
+                  type="file" name="filee" />
+                <img src="assets/imgs/icons/add attachment.png" />
+              </label>
+            </ion-col>
+          </ion-row>
+          <div *ngIf="attachmentArray!=undefined && attachmentArray.length>0">
+            <ion-row>
+              <div *ngFor="let file1 of attachmentArray; let i = index">
+                <ion-col *ngIf="enums.DetailedNotes.Result_Remaining == file1.Attachment_Type" col-2>
+                  <span class="block">
+                    <a class="pointer" (click)="openResource(file1)">
+                      <span *ngIf="file1.contentType.indexOf('image')>-1">
+                        <img *ngIf="file1.isThumbnailCreated && isIOS" class="attachment-image" [src]="sanitizer.bypassSecurityTrustUrl(mainFilePath + file1.filename)">
+                        <img *ngIf="file1.isThumbnailCreated && !isIOS" class="attachment-image" [src]="sanitizer.bypassSecurityTrustUrl(filePath + 'thumb_'+file1.filename)">
+                        <img *ngIf="!file1.isThumbnailCreated" class="attachment-image" [src]="sanitizer.bypassSecurityTrustUrl(mainFilePath + file1.filename)">
+                      </span>
+                      <span *ngIf="file1.contentType.indexOf('pdf')>-1">
+                        <img style="width: 135px!important" class="attachment-icon-pdf" src="assets/imgs/pdf.png">
+                      </span>
+                      <span *ngIf="file1.filetype.indexOf('doc') > -1 || file1.filetype.indexOf('docx') > -1">
+                        <img class="attachment-icon" src="assets/imgs/doc.png">
+                      </span>
+                      <span *ngIf="file1.filetype.indexOf('xlsx') > -1 || file1.filetype.indexOf('xls') > -1">
+                        <img class="attachment-icon" src="assets/imgs/xls.png">
+                      </span>
+                      <span *ngIf="file1.filetype.indexOf('pptx') > -1 || file1.filetype.indexOf('ppt') > -1">
+                        <img class="attachment-icon" src="assets/imgs/ppt.png">
+                      </span>
+                      <span *ngIf="file1.filetype.indexOf('txt') > -1 ">
+                        <img class="attachment-icon" src="assets/imgs/txt.png">
+                      </span>
+                      <span *ngIf="file1.contentType.indexOf('image') < 0 && file1.filetype.indexOf('pdf') < 0 && file1.filetype.indexOf('doc') < 0 && file1.filetype.indexOf('docx') < 0 && file1.filetype.indexOf('xlsx') < 0 && file1.filetype.indexOf('xls') < 0&& file1.filetype.indexOf('ppt') < 0 && file1.filetype.indexOf('pptx') < 0 && file1.filetype.indexOf('txt') < 0">
+                        <img class="attachment-icon" src="assets/imgs/unknown.png">
+                      </span>
+                    </a>
+                  </span>
+                  <!-- 01-18-2019 -- Mansi Arora -- Renaming attachment disabled -->
+                  <!-- 02-07-2019 -- Mansi Arora -- Renaming attachment fixed -->
+                  <span class="block" *ngIf="enums.DetailedNotes.Result_Remaining == file1.Attachment_Type">
+                    <ion-input maxlength="50" (focusout)="renameAttachment(file1, i)" [(ngModel)]="file1.fileDisc" (focus)="focusFunction($event)" value="{{file1.fileDisc}}" name="{{i}}" class="attachment-name "></ion-input>
+                  </span>
+                  <span class="block delete-attachment-button-block" *ngIf="enums.DetailedNotes.Result_Remaining == file1.Attachment_Type">
+                    <label text-center class="attachment-label pointer" (click)=deleteAttachmentObject(file1,i)
+                      translate="Delete"></label>
+                  </span>
+                </ion-col>
+              </div>
+            </ion-row>
+          </div>
+        </ion-card-content>
+      </ion-card>
+      <ion-card>
+        <ion-card-header>{{'Suggestion' | translate}}</ion-card-header>
+        <ion-card-content>
+          <editor-sdr [content]="detailedNotes.Suggestion" (contentChanged)="Suggestion($event)"></editor-sdr>
+          <ion-row class="detailed-attachment-padding">
+            <ion-col col-3 no-padding>
+              <h1 class="inline-block">{{'Attachments' | translate}}</h1>
+              <label class="custom-file-upload inline-block btn">
+                <input #attachment [(ngModel)]="filee" name="filee" (change)="addAttachment($event, enums.DetailedNotes.Suggestion)"
+                  type="file" />
+                <img src="assets/imgs/icons/add attachment.png" />
+              </label>
+            </ion-col>
+          </ion-row>
+          <div *ngIf="attachmentArray !=undefined && attachmentArray.length >0 ">
+            <ion-row>
+              <div *ngFor="let file1 of attachmentArray; let i = index">
+                <ion-col *ngIf="enums.DetailedNotes.Suggestion == file1.Attachment_Type" col-2>
+                  <span class="block">
+                    <a class="pointer" (click)="openResource(file1)">
+                      <span *ngIf="file1.contentType.indexOf('image')>-1">
+                        <img *ngIf="file1.isThumbnailCreated && isIOS" class="attachment-image" [src]="sanitizer.bypassSecurityTrustUrl(mainFilePath + file1.filename)">
+                        <img *ngIf="file1.isThumbnailCreated && !isIOS" class="attachment-image" [src]="sanitizer.bypassSecurityTrustUrl(filePath + 'thumb_'+file1.filename)">
+                        <img *ngIf="!file1.isThumbnailCreated" class="attachment-image" [src]="sanitizer.bypassSecurityTrustUrl(mainFilePath + file1.filename)">
+                      </span>
+                      <span *ngIf="file1.contentType.indexOf('pdf')>-1">
+                        <img style="width: 135px!important" class="attachment-icon-pdf" src="assets/imgs/pdf.png">
+                      </span>
+                      <span *ngIf="file1.filetype.indexOf('doc') > -1 || file1.filetype.indexOf('docx') > -1">
+                        <img class="attachment-icon" src="assets/imgs/doc.png">
+                      </span>
+                      <span *ngIf="file1.filetype.indexOf('xlsx') > -1 || file1.filetype.indexOf('xls') > -1">
+                        <img class="attachment-icon" src="assets/imgs/xls.png">
+                      </span>
+                      <span *ngIf="file1.filetype.indexOf('pptx') > -1 || file1.filetype.indexOf('ppt') > -1">
+                        <img class="attachment-icon" src="assets/imgs/ppt.png">
+                      </span>
+                      <span *ngIf="file1.filetype.indexOf('txt') > -1 ">
+                        <img class="attachment-icon" src="assets/imgs/txt.png">
+                      </span>
+                      <span *ngIf="file1.contentType.indexOf('image') < 0 && file1.filetype.indexOf('pdf') < 0 && file1.filetype.indexOf('doc') < 0 && file1.filetype.indexOf('docx') < 0 && file1.filetype.indexOf('xlsx') < 0 && file1.filetype.indexOf('xls') < 0&& file1.filetype.indexOf('ppt') < 0 && file1.filetype.indexOf('pptx') < 0 && file1.filetype.indexOf('txt') < 0">
+                        <img class="attachment-icon" src="assets/imgs/unknown.png">
+                      </span>
+                    </a>
+                  </span>
+                  <!-- 01-18-2019 -- Mansi Arora -- Renaming attachment disabled -->
+                  <!-- 02-07-2019 -- Mansi Arora -- Renaming attachment fixed -->
+                  <span class="block" *ngIf="enums.DetailedNotes.Suggestion == file1.Attachment_Type">
+                    <ion-input maxlength="50" (focusout)="renameAttachment(file1, i)" [(ngModel)]="file1.fileDisc" (focus)="focusFunction($event)" value="{{file1.fileDisc}}" class="attachment-name " name="{{i}}"></ion-input>
+                  </span>
+                  <span class="block delete-attachment-button-block" *ngIf="enums.DetailedNotes.Suggestion == file1.Attachment_Type">
+                    <label text-center class="attachment-label pointer" (click)=deleteAttachmentObject(file1,i)
+                      translate="Delete"></label>
+                  </span>
+                </ion-col>
+              </div>
+            </ion-row>
+          </div>
+          
+        </ion-card-content>
+        <ion-row class="save-btn-row">
+          <ion-col col-8></ion-col>
+          <ion-col col-4 class="detail-note-save-btn" no-padding>
+            <button class="detail-note-cancel" (click)="cancelDetailNotes()" no-padding type="button">{{'Cancel' |
+              translate}}</button>
+            <button (click)="saveDetailNotes()" class="detail-note-save" no-padding type="button">{{'Save' |
+              translate}}</button>
+          </ion-col>
+        </ion-row>
+      </ion-card>
+    </form>
+  </ion-list>
+</ion-content>

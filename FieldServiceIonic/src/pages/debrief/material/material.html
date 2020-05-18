@@ -1,0 +1,171 @@
+<ion-content padding class="page-background">
+  <ion-card>
+    <ion-card-header>
+      <ion-row class="debriefPage-padding">
+        
+        <ion-col col-5 no-padding>
+          <h1>{{'Material' | translate}}</h1>
+        </ion-col>
+        <ion-col col-7 text-right no-padding>
+            <span class="continue-navigation" *ngIf="_taskObj.Selected_Process == enums.Selected_Process.FCR_AND_SDR && _taskObj.Business_Unit != enums.BusinessUnitNames.PWS">
+                <span class="continue-text"> {{'Continue' | translate}}</span>
+              <button ion-button class="sdr-btn" (click)="gotoSDR()">{{'Service Detail Report' | translate}}</button>
+            </span>
+          <span class="pageNavigationBtn"><span class="pointer" (click)="gottoExpense()" style="margin-right: 70px">&lt;
+              {{'Expenses' | translate}}</span><span class="pointer" (click)="gottoNotes()">{{'Notes' | translate}}
+              &gt;</span></span>
+        </ion-col>
+      </ion-row>
+    </ion-card-header>
+    <ion-card-content>
+      <form (ngSubmit)="addMaterial()" #myForm="ngForm">
+        <ion-row class="debriefPage-padding">
+          <div class="material-spaceMargin">
+            <ion-col no-padding>
+              <ion-label class="label">{{'Name' | translate}}<span class="validator"></span></ion-label>
+              <ion-input required [attr.maxlength]="30" placeholder="{{'Material Name' | translate}}" [(ngModel)]="materialObject.ItemName"
+                class="description-box value" [ngClass]="materialObject.ItemName == '' || materialObject.ItemName == undefined || materialObject.ItemName == null ? 'input-validation' : ''"
+                name="materialObject.ItemName"></ion-input>
+            </ion-col>
+          </div>
+          <div class="material-spaceMargin">
+            <ion-col no-padding>
+              <ion-label class="label">{{'Description' | translate}}</ion-label>
+              <ion-input [attr.maxlength]="50" placeholder="{{'Material Description' | translate}}" [(ngModel)]="materialObject.Description"
+                class="description-box value" name="materialObject.Description"></ion-input>
+            </ion-col>
+          </div>
+          <div class="material-spaceMargin">
+            <ion-col no-padding>
+              <ion-label class="label">{{'Charge Method' | translate}}<span class="validator"></span></ion-label>
+              <!--10-18-18 Radheshyam kumar addedd tappable attribute on every ion-select to resolve the double click issue -->
+              <ion-select *ngIf="showSelects" tappable interface="popover" required [(ngModel)]="materialObject.Charge_Type_Id"
+                placeholder="{{'Select Charge Method' | translate}}" (ionChange)="setChargeTypeName($event)"
+                (ngModelChange)="setSerialItem($event)" name="materialObject.Charge_Type" [ngClass]="!materialObject.Charge_Type_Id ? 'select-validation chargeMethod-box select-style' : 'chargeMethod-box select-style'">
+                <ion-option disabled value="{{''}}">{{'Select Charge Method' | translate}}</ion-option>
+                <ion-option *ngFor="let item of chargeMethod" [value]="item.ID">{{item.Value | translate}}</ion-option>
+              </ion-select>
+            </ion-col>
+          </div>
+          <div class="material-spaceMargin">
+            <ion-col no-padding>
+              <ion-label class="label">{{'UOM' | translate}}<span class="validator"></span></ion-label>
+              <ion-select *ngIf="showSelects" tappable interface="popover" placeholder="{{'Select' | translate}}"
+                [(ngModel)]="materialObject.UOM" name="materialObject.uom" [ngClass]="!materialObject.UOM ? 'select-validation UOM-box select-style' : 'UOM-box select-style'">
+                <ion-option disabled value="{{''}}">{{'Select UOM' | translate}}</ion-option>
+                <ion-option *ngFor="let uom of UOM">{{uom.Value | translate}}</ion-option>
+              </ion-select>
+            </ion-col>
+          </div>
+          <div text-center>
+            <ion-col no-padding>
+              <ion-label class="label">{{'Product Quantity' | translate}}</ion-label>
+              <span class="inline-block"><button type="button" class="white-bg" [disabled]="materialObject.Charge_Type_Id == ''"
+                  (click)="deleteSerialItem()">-</button></span>
+              <span class="inline-block">
+                <ion-input disabled [(ngModel)]="materialObject.Product_Quantity" readonly name="materialObject.Product_Quantity"
+                  class="productQuantity-block">
+                </ion-input>
+              </span>
+              <span class="inline-block"><button type="button" class="white-bg" [disabled]="materialObject.Charge_Type_Id == ''"
+                  (click)="addSerialItem()">+</button></span>
+            </ion-col>
+          </div>
+          <div>
+            <ion-col no-padding>
+              <ion-label class="label"></ion-label>
+              <button class="addbtn-box" no-padding type="submit" [disabled]="!myForm.form.valid || !materialObject.UOM ||materialObject.Product_Quantity == '0' || addMaterialButtonDisabled"><img
+                  class="add-btn btn" src="assets/imgs/icons/Add-button.png"></button>
+            </ion-col>
+          </div>
+        </ion-row>
+        <ion-row class="serialId-box" *ngIf="serial_Item.length > 0">
+          <div class="scrollContent full-width">
+            <div *ngFor="let serial of serial_Item; let i = index;trackBy:trackByIndex" class="inline-block">
+              <div class="material-spaceMargin">
+                <div no-padding class="serialIn-block inline-block">
+                  <ion-label class="label">{{'Serial In' | translate}}</ion-label>
+                  <ion-input type="text" [attr.maxlength]="30" placeholder="0000-00000-00000" [name]="'input-'+i"
+                    [(ngModel)]="serial.Serial_In" class="serialIn-block-value"></ion-input>
+                </div>
+                <div no-padding class="inline-block">
+                  <span> - </span>
+                </div>
+                <div no-padding class="serialOut-block inline-block">
+                  <ion-label class="label">{{'Serial Out' | translate}}</ion-label>
+                  <ion-input type="text" [attr.maxlength]="30" placeholder="0000-00000-00000" [name]="'input-'+i"
+                    [(ngModel)]="serial.Serial_Out" class="serialOut-block-value"></ion-input>
+                </div>
+              </div>
+              <!-- <div *ngIf="materialObject.Charge_Type !='Warranty'" class="serial-block">
+                <div no-padding class="inline-block material-spaceMargin serialId-block">
+                  <ion-label class="label label-text-transform">{{'Serial Number' | translate}}</ion-label>
+                  <ion-input type="text" [attr.maxlength]="30" placeholder="0000-00000-00000" [name]="'input-'+i"
+                    [(ngModel)]="serial.Serial_Number" class="serialIn-block-value"></ion-input>
+                </div>
+              </div> -->
+            </div>
+          </div>
+        </ion-row>
+      </form>
+      <div *ngIf="materialArray!=undefined && materialArray.length>0">
+        <ion-row class="stroke"></ion-row>
+        <ion-row class="global-padding full-width">
+          <div class="label mth-cm">{{'Charge Method' | translate}}</div>
+          <div class="label mth-q">{{'Quantity' | translate}}</div>
+          <!-- <div class="label mth-s">{{'Serial' | translate}}#</div> -->
+          <div class="label mth-si">{{'Serial In' | translate}}</div>
+          <div class="label mth-so">{{'Serial Out' | translate}}</div>
+          <div class="label mth-in">{{'Item Name' | translate}}</div>
+          <div class="label mth-id">{{'Item Description' | translate}}</div>
+          <div text-center class="label mth-uom">{{'UOM' | translate}}</div>
+          <div class="label mth-icon"></div>
+        </ion-row>
+
+        <!-- Prateek 12/31/2018: Material Issue solved for extra space -->
+        <ion-list>
+          <ion-row class="strippedClass global-padding full-width" *ngFor="let material of materialArrayClone | sort: {property : 'Material_Id', order : -1}; let i = index">
+            <div class="value mth-cm">{{material[0].Charge_Type | translate}}</div>
+            <div class="value mth-q">{{material.length}}</div>
+            <!-- <div class="value serialTypeStyle mth-s">
+              <span class="mat-serialNo block" *ngFor="let serailno of material.SerialArray">
+                <span *ngIf="serailno.Serial_Number!=''">
+                  {{serailno.Serial_Number}}
+                </span>
+              </span>
+            </div> -->
+            <div class="value serialTypeStyle mth-si-so">
+              <div *ngFor="let serialInOut of material | sort :{property : 'Material_Id', order : -1}">
+                <span *ngIf="serialInOut.Serial_In || serialInOut.Serial_Out" class="mat-serialIn inline-block">
+
+                  {{serialInOut.Serial_In}}
+
+                </span>
+                <span *ngIf="serialInOut.Serial_Out || serialInOut.Serial_In" class="mat-serialOut inline-block">
+
+                  {{serialInOut.Serial_Out}}
+
+                </span>
+              </div>
+            </div>
+            <div class="value mth-in">{{material[0].ItemName}}</div>
+            <div class="value mth-id">{{material[0].Description}}</div>
+            <div text-center class="value mth-uom">{{material[0].UOM}}</div>
+            <div class="value mth-icon">
+              <div class="full-width" text-center>
+                <img class="inline-block copy-img pointer pull-left" src="assets/imgs/icons/ic_duplicate.png" (click)="copyMaterial(material,i)">
+                
+                <img [ngClass]="((valueService.getTask().StatusID == enums.Jobstatus.Debrief_In_Progress) && (material[0].IsAdditional == 'false')) ?  'inline-block edit-img disableImg' :'inline-block edit-img pointer'"
+                  src="assets/imgs/icons/edit-icon.png" (click)="editMaterial(material,i)">
+
+                <img [ngClass]="((valueService.getTask().StatusID == enums.Jobstatus.Debrief_In_Progress && material[0].IsAdditional == 'false') || (valueService.getTask().StatusID == enums.Jobstatus.Debrief_Declined && ( material[0].Sync_Status == 'true' || material[0].Original))) || material[0].Sync_Status == 'true' ? 'inline-block delete-img pull-right disableImg' : 'inline-block delete-img pointer pull-right'"
+                  src="assets/imgs/icons/delete-icon.png" (click)="deleteObject(material,i)">
+
+              </div>
+            </div>
+          </ion-row>
+        </ion-list>
+      </div>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

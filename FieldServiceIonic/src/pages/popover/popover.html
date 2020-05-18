@@ -1,0 +1,14 @@
+<ion-card *ngIf="userPopOver">
+  <ion-card-content>
+    <ion-row class="bottom-border">
+      <div (click)="goToUserPreferences()" [ngClass]="currentPageName != 'User Preferences' ? 'full-width userBtn pointer' : 'full-width no-click unselected userBtn'">
+        <span class="value"> <i class="fa fa-cog fa-2x userPref-img"></i>  {{'User Preferences' | translate}}</span>
+      </div>
+    </ion-row>
+    <ion-row class="bottom-border">
+      <div class="full-width userBtn pointer" (click)="signOut()">
+        <span class="value"> <i class="fa fa-sign-out fa-2x logout-img"></i>  {{'Sign Out' | translate}}</span>
+      </div>
+    </ion-row>
+  </ion-card-content>
+</ion-card>

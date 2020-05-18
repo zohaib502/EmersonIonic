@@ -1,0 +1,166 @@
+page-report {
+
+  .font-size {
+    margin: 0px !important;
+    font-family: "Helvetica Neue" !important;
+    font-size: 22px !important;
+    font-weight: 300 !important;
+    line-height: 27px !important;
+    color: black;
+  }
+
+  .border-right {
+    border-right: 1px solid #e7e7e7
+  }
+  .scroll-content {
+    background-color: map-get($colors, light);
+  }
+
+  ion-card-header {
+    font-weight: bold;
+  }
+
+  .date-box {
+    box-sizing: border-box;
+    height: 31px;
+    border: 1px solid rgba(216, 213, 209, 1);
+    border-radius: 3px;
+    background-color: rgba(247, 247, 246, 1);
+    vertical-align: middle;
+    width: 105px;
+    text-align: center;
+    color: rgba(74, 74, 74, 0.7);
+    font-family: "Helvetica Neue";
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 17px;
+  }
+
+  .country-box,
+  .os-box,
+  .userID-box,
+  .groupBy-box {
+    box-sizing: border-box;
+    height: 31px;
+    border: 1px solid rgba(216, 213, 209, 1);
+    border-radius: 3px;
+    background-color: rgba(247, 247, 246, 1);
+    width: 155px;
+  }
+
+  .businessUnit-box{
+    box-sizing: border-box;
+    height: 31px;
+    border: 1px solid rgba(216, 213, 209, 1);
+    border-radius: 3px;
+    background-color: rgba(247, 247, 246, 1);
+    width: 180px;
+  }
+
+  .os-box,
+  .userID-box {
+    margin-top: 24px;
+  }
+
+  .groupBy-box {
+    margin-right: 15px;
+  }
+
+  .select-style {
+    max-width: 100%;
+  }
+
+  .select-text {
+    color: rgba(0, 0, 0, 1) !important;
+    font-family: "Helvetica Neue";
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 17px;
+  }
+
+  .select {
+    padding: 6px !important;
+  }
+
+  .filterBtn {
+    min-width: 60px;
+    margin-top: 15px;
+  }
+
+  .chart-container {
+    position: relative;
+    margin: auto;
+    height: 60vh;
+    width: 125vh !important;
+  }
+
+  .small-chart-container {
+    position: relative;
+    margin: auto;
+    height: 50vh;
+    width: 105vh !important;
+  }
+
+  .analyticFilter {
+    padding: 0 12px 12px 12px;
+  }
+
+  .searchButton {
+    position: absolute;
+    left: 185px;
+    line-height: 30px;
+    background-color: transparent;
+  }
+
+  .noAnalytics {
+    opacity: 0.2;
+  }
+
+  .legendList {
+    width: auto;
+    max-width: 220px;
+    height: 40vh;
+    overflow-y: auto;
+    background-color: rgba(231, 231, 231, 0.3);
+    padding: 6px;
+  }
+
+  .legendList .index {
+    width: auto;
+    padding: 5px 0;
+    line-height: 17px;
+  }
+
+  .legendList .userId {
+    width: auto;
+    max-width: 180px;
+    overflow: hidden;
+    white-space: normal;
+    padding: 5px 8px;
+  }
+}
+
+.ios page-report {
+  .chart-container {
+    height: 53vh;
+    width: 105vh !important;
+  }
+
+  .small-chart-container {
+    height: 50vh;
+    width: 90vh !important;
+  }
+
+  .filterBtn {
+    margin-top: 23px;
+  }
+
+  .os-box,
+  .userID-box {
+    margin-top: 34px;
+  }
+
+  .legendList {
+    height: 30vh;
+  }
+}

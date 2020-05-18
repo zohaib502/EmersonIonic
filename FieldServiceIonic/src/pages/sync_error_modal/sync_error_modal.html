@@ -1,0 +1,61 @@
+<ion-card *ngIf="errorData">
+  <ion-card-header>
+    <ion-navbar>
+      <ion-title *ngIf="!pointOfError" class="strong">{{'Sync Interruption Errors !!!' | translate}}</ion-title>
+      <ion-title *ngIf="pointOfError" class="strong">{{'Sync Errors with Service Cloud' | translate}}</ion-title>
+      <ion-buttons end>
+        <button ion-button class="closebtn" (click)="closeModal()">
+          <i class="fa fa-times fa-2x"></i>
+        </button>
+      </ion-buttons>
+    </ion-navbar>
+  </ion-card-header>
+  <ion-card-content class="global-padding">
+    <form novalidate>
+      <ion-row  *ngFor="let error of errorData; let i = index; trackBy:trackByIndex" >
+        <ul>
+          <li class="errorMsg" *ngIf="pointOfError == 1">
+            <span *ngIf="error.isAutoSyncJob">
+                <span translate> {{'Job'}}</span>
+                <span> #</span>
+            </span>
+            <span class="strong">
+              {{ error.httpCode ? error.httpCode : error.code }} {{ error.source ? error.source : '' }}
+            </span> 
+            <span translate>
+              {{ error.userMessage ? error.userMessage : error.message }}
+            </span>
+          </li>
+          <li class="errorMsg" *ngIf="pointOfError == 2">
+            <span translate> {{'Job'}}</span>
+            <span> #</span>
+              <span class="strong" translate>
+                {{ error.httpCode }} 
+              </span>
+              <span translate>
+                {{ error.userMessage}}
+              </span>
+            </li>
+          <li class="errorMsg" *ngIf="pointOfError == 3">
+              <span translate class="strong">
+                 {{ error.source ? error.source : '' }}
+                </span>  
+              <span class="strong" translate>
+                 {{ error.httpCode }} 
+              </span>
+              <span translate>
+                {{ error.userMessage}}
+              </span>
+            </li>
+        </ul>
+      </ion-row>
+      <!-- <ion-row class="block global-padding" text-right>
+        <ion-col col-12>
+          <button ion-button class="save-btn blue-btn inline-block" type="submit" (click)="openMailModal()">
+            <span translate="Report An Issue"></span>
+          </button>
+        </ion-col>
+      </ion-row> -->
+    </form>
+  </ion-card-content>
+</ion-card>

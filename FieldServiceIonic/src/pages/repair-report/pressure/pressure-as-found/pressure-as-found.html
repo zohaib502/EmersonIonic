@@ -1,0 +1,293 @@
+<ion-content padding class="page-background sdr-pages">
+  <ion-card class="CardSection">
+    <ion-card-header>
+      <ion-row class="global-padding row">
+        <ion-col col-8>
+          <div class="header-left">{{'As Found' | translate}}</div>
+        </ion-col>
+        <ion-col class="txt-rgt">
+          <div name="goToFcrBtn" *ngIf="selectedProcess == Enums.Selected_Process.FCR_AND_SDR" class="txt-rgt">
+            <span class="ft-size">{{'Continue'|translate}}</span> <button (click)="goToFcr()" ion-button
+              class="frs-Btn no-margin" name="iso_as_found_1">{{'Field Completion Report'|translate}}</button>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-card-header>
+    <page-sdr-header></page-sdr-header>
+
+    <ion-card-content class="card-content ">
+      <!-- M Tag Data Start-->
+        <div class="full-width global-padding">
+          <span class="label pointer inline-block header">{{'Manufacturer Tag Data' | translate}}</span>
+          <div class="full-width">
+            <ion-row>
+              <div class="body-item-box marginTop15 inline-block">
+                <span class="label">{{'Manufacturer' | translate}}</span>
+                <ion-input maxlength="250" [readonly]="true" [(ngModel)]="asfoundObj.MANUFACTURER"
+                  name="asfoundObj.MANUFACTURER" (click)="searchModal('Manufacturer','MANUFACTURER')" tappable
+                  class="project-box searchNSelect select-style">
+                </ion-input>
+                <ion-input maxlength="250" *ngIf="asfoundObj.MANUFACTURER == 'Other'"
+                  [(ngModel)]="asfoundObj.MANUFACTURER_OT" name="asfoundObj.MANUFACTURER_OT"
+                  [ngClass]="!asfoundObj.MANUFACTURER_OT ? 'validation-error' : ''"
+                  class="project-box select-style otherBox"> </ion-input>
+              </div>
+              <div class="body-item-box marginTop15 inline-block">
+                <span class="label">{{'Model Number' | translate}}</span>
+                <ion-input maxlength="250" [(ngModel)]="asfoundObj.MODEL_NUMBER" name="asfoundObj.MODEL_NUMBER"
+                  class="project-box select-style">
+                </ion-input>
+              </div>
+              <div class="body-item-box marginTop15 inline-block">
+                <span class="label">{{'Serial Number' | translate}}</span>
+                <ion-input maxlength="250" [(ngModel)]="asfoundObj.SERIAL_NUMBER" name="asfoundObj.SERIAL_NUMBER"
+                  class="project-box select-style">
+                </ion-input>
+              </div>
+              <div class="body-item-box marginTop15 inline-block">
+                <span class="label">{{'ASME Code' | translate}}</span>
+                <ion-input maxlength="250" [readonly]="true" [(ngModel)]="asfoundObj.ASME_CODE"
+                  name="asfoundObj.ASME_CODE" (click)="searchModal('ASMECode','ASME_CODE')" tappable
+                  class="project-box searchNSelect select-style">
+                </ion-input>
+                <ion-input maxlength="250" *ngIf="asfoundObj.ASME_CODE == 'Other'" [(ngModel)]="asfoundObj.ASME_CODE_OT"
+                  name="asfoundObj.ASME_CODE_OT" [ngClass]="!asfoundObj.ASME_CODE_OT ? 'validation-error' : ''"
+                  class="project-box select-style otherBox"> </ion-input>
+              </div>
+            </ion-row>
+
+            <ion-row>
+              <div class="body-item-box marginTop15 inline-block">
+                <span class="label">{{'Name Plate Set Pressure' | translate}}</span>
+                <span *ngIf="asfoundObj.NAME_PLATE_SET_PRESSURE_UOM" class="validator inline-block"></span>
+                <ion-input maxlength="250" [(ngModel)]="asfoundObj.NAME_PLATE_SET_PRESSURE"
+                [ngClass]="errorObj.NAME_PLATE_SET_PRESSURE ? 'input-validation'  :''"
+                name="asfoundObj.NAME_PLATE_SET_PRESSURE" class="project-box select-style">
+                </ion-input>
+              </div>
+              <div class="body-item-box marginTop15 inline-block">
+                <span class="label">{{'UOM' | translate}}</span>
+                <span *ngIf="asfoundObj.NAME_PLATE_SET_PRESSURE" class="validator inline-block"></span>
+                <ion-input maxlength="250" [readonly]="true" [(ngModel)]="asfoundObj.NAME_PLATE_SET_PRESSURE_UOM"
+                [ngClass]="errorObj.NAME_PLATE_SET_PRESSURE_UOM ? 'input-validation'  :''"
+                  name="asfoundObj.NAME_PLATE_SET_PRESSURE_UOM"
+                  (click)="searchModal('UnitOfMeasurement','NAME_PLATE_SET_PRESSURE_UOM')" tappable
+                  class="project-box searchNSelect select-style">
+                </ion-input>
+                <ion-input maxlength="250" *ngIf="asfoundObj.NAME_PLATE_SET_PRESSURE_UOM == 'Other'"
+                  [(ngModel)]="asfoundObj.NAME_PLATE_SET_PRESSURE_UOM_OT"
+                  name="asfoundObj.NAME_PLATE_SET_PRESSURE_UOM_OT"
+                  [ngClass]="!asfoundObj.NAME_PLATE_SET_PRESSURE_UOM_OT ? 'validation-error' : ''"
+                  class="project-box select-style otherBox"> </ion-input>
+              </div>
+              <div class="body-item-box marginTop15 inline-block">
+                <span class="label">{{'Capacity' | translate}}</span>
+                <span *ngIf="asfoundObj.CAPACITY_UOM" class="validator inline-block"></span>
+                <ion-input maxlength="250" [(ngModel)]="asfoundObj.CAPACITY" name="asfoundObj.CAPACITY"
+                [ngClass]="errorObj.CAPACITY ? 'input-validation'  :''"
+                  class="project-box select-style">
+                </ion-input>
+              </div>
+              <div class="body-item-box marginTop15 inline-block">
+                <span class="label">{{'UOM' | translate}}</span>
+                <span *ngIf="asfoundObj.CAPACITY" class="validator inline-block"></span>
+                <ion-input maxlength="250" [readonly]="true" [(ngModel)]="asfoundObj.CAPACITY_UOM"
+                [ngClass]="errorObj.CAPACITY_UOM ? 'input-validation'  :''"
+                name="asfoundObj.CAPACITY_UOM"
+                  (click)="searchModal('UnitOfMeasurementCapacityPressure','CAPACITY_UOM')" tappable
+                  class="project-box searchNSelect select-style">
+                </ion-input>
+                <ion-input maxlength="250" *ngIf="asfoundObj.CAPACITY_UOM == 'Other'"
+                  [(ngModel)]="asfoundObj.CAPACITY_UOM_OT" name="asfoundObj.CAPACITY_UOM_OT"
+                  [ngClass]="!asfoundObj.CAPACITY_UOM_OT ? 'validation-error' : ''"
+                  class="project-box select-style otherBox"> </ion-input>
+              </div>
+            </ion-row>
+
+            <ion-row>
+              <div class="body-item-box marginTop15 inline-block">
+                <span class="label">{{'CDTP Pressure' | translate}}</span>
+                <span *ngIf="asfoundObj.CDTP_PRESSURE_UOM" class="validator inline-block"></span>
+                <ion-input maxlength="250" [(ngModel)]="asfoundObj.CDTP_PRESSURE" name="asfoundObj.CDTP_PRESSURE"
+                [ngClass]="errorObj.CDTP_PRESSURE ? 'input-validation'  :''"
+                  class="project-box select-style">
+                </ion-input>
+              </div>
+              <div class="body-item-box marginTop15 inline-block">
+                <span class="label">{{'UOM' | translate}}</span>
+                <span *ngIf="asfoundObj.CDTP_PRESSURE" class="validator inline-block"></span>
+                <ion-input maxlength="250" [readonly]="true" [(ngModel)]="asfoundObj.CDTP_PRESSURE_UOM"
+                [ngClass]="errorObj.CDTP_PRESSURE_UOM ? 'input-validation'  :''"
+                  name="asfoundObj.CDTP_PRESSURE_UOM" (click)="searchModal('UnitOfMeasurement','CDTP_PRESSURE_UOM')"
+                  tappable class="project-box searchNSelect select-style">
+                </ion-input>
+                <ion-input maxlength="250" *ngIf="asfoundObj.CDTP_PRESSURE_UOM == 'Other'"
+                  [(ngModel)]="asfoundObj.CDTP_PRESSURE_UOM_OT" name="asfoundObj.CDTP_PRESSURE_UOM_OT"
+                  [ngClass]="!asfoundObj.CDTP_PRESSURE_UOM_OT ? 'validation-error' : ''"
+                  class="project-box select-style otherBox"> </ion-input>
+              </div>
+              <div class="body-item-box marginTop15 inline-block">
+                <span class="label">{{'CRN' | translate}}</span>
+                <ion-input maxlength="250" [(ngModel)]="asfoundObj.CRN" name="asfoundObj.CRN"
+                  class="project-box select-style">
+                </ion-input>
+              </div>
+              <div class="body-item-box marginTop15 inline-block">
+                <span class="label">{{'NBMark' | translate}}</span>
+                <ion-checkbox name="NBMARK" [(ngModel)]="asfoundObj.NBMARK"
+                  [checked]="asfoundObj.NBMARK == 'true' || asfoundObj.NBMARK == true">
+                </ion-checkbox>
+              </div>
+            </ion-row>
+
+            <ion-row>
+              <div class="body-item-box marginTop15 inline-block">
+                <span class="label">{{'Orifice' | translate}}</span>
+                <ion-input maxlength="250" [(ngModel)]="asfoundObj.ORIFICE" name="asfoundObj.ORIFICE"
+                  class="project-box select-style">
+                </ion-input>
+              </div>
+              <div class="body-item-box marginTop15 inline-block">
+                <span class="label">{{'Shop Number' | translate}}</span>
+                <ion-input maxlength="250" [(ngModel)]="asfoundObj.SHOP_NUMBER" name="asfoundObj.SHOP_NUMBER"
+                  class="project-box select-style">
+                </ion-input>
+              </div>
+              <div class="body-item-box marginTop15 inline-block">
+                <span class="label">{{'Valve Size' | translate}}</span>
+                <ion-input maxlength="250" [readonly]="true" [(ngModel)]="asfoundObj.VALVE_SIZE"
+                  name="asfoundObj.VALVE_SIZE" (click)="searchModal('ValveSize','VALVE_SIZE')" tappable
+                  class="project-box searchNSelect select-style">
+                </ion-input>
+                <ion-input maxlength="250" *ngIf="asfoundObj.VALVE_SIZE == 'Other'"
+                  [(ngModel)]="asfoundObj.VALVE_SIZE_OT" name="asfoundObj.VALVE_SIZE_OT"
+                  [ngClass]="!asfoundObj.VALVE_SIZE_OT ? 'validation-error' : ''"
+                  class="project-box select-style otherBox"> </ion-input>
+              </div>
+              <div class="body-item-box marginTop15 inline-block">
+                <span class="label">{{'Valve Type' | translate}}</span>
+                <ion-input maxlength="250" [readonly]="true" [(ngModel)]="asfoundObj.VALVE_TYPE"
+                  name="asfoundObj.VALVE_TYPE" [disabled]="true"
+                  class="project-box searchNSelect select-style">
+                </ion-input>
+                <ion-input maxlength="250" *ngIf="asfoundObj.VALVE_TYPE == 'Other'"
+                  [(ngModel)]="asfoundObj.VALVE_TYPE_OT" name="asfoundObj.VALVE_TYPE_OT"
+                  [ngClass]="!asfoundObj.VALVE_TYPE_OT ? 'validation-error' : ''"
+                  class="project-box select-style otherBox"> </ion-input>
+              </div>
+            </ion-row>
+
+            <ion-row>
+              <div class="body-item-box marginTop15 inline-block">
+                <span class="label">{{'Temperature Correction' | translate}}</span>
+                <span *ngIf="asfoundObj.TEMPERATURE_CORRECTION_UOM" class="validator inline-block"></span>
+                <ion-input maxlength="250" [(ngModel)]="asfoundObj.TEMPERATURE_CORRECTION"
+                [ngClass]="errorObj.TEMPERATURE_CORRECTION ? 'input-validation'  :''"
+                name="asfoundObj.TEMPERATURE_CORRECTION" class="project-box select-style">
+                </ion-input>
+              </div>
+              <div class="body-item-box marginTop15 inline-block">
+                <span class="label">{{'UOM' | translate}}</span>
+                <span *ngIf="asfoundObj.TEMPERATURE_CORRECTION" class="validator inline-block"></span>
+                <ion-input maxlength="250" [readonly]="true" [(ngModel)]="asfoundObj.TEMPERATURE_CORRECTION_UOM"
+                  name="asfoundObj.TEMPERATURE_CORRECTION_UOM"
+                [ngClass]="errorObj.TEMPERATURE_CORRECTION_UOM ? 'input-validation'  :''"
+                (click)="searchModal('UnitOfMeasurement','TEMPERATURE_CORRECTION_UOM')" tappable
+                  class="project-box searchNSelect select-style">
+                </ion-input>
+                <ion-input maxlength="250" *ngIf="asfoundObj.TEMPERATURE_CORRECTION_UOM == 'Other'"
+                  [(ngModel)]="asfoundObj.TEMPERATURE_CORRECTION_UOM_OT" name="asfoundObj.TEMPERATURE_CORRECTION_UOM_OT"
+                  [ngClass]="!asfoundObj.TEMPERATURE_CORRECTION_UOM_OT ? 'validation-error' : ''"
+                  class="project-box select-style otherBox"> </ion-input>
+              </div>
+              <div class="body-item-box marginTop15 inline-block">
+                <span class="label">{{'Trim Code' | translate}}</span>
+                <ion-input maxlength="250" [(ngModel)]="asfoundObj.TRIM_CODE" name="asfoundObj.TRIM_CODE"
+                  class="project-box select-style">
+                </ion-input>
+              </div>
+            </ion-row>
+
+            <ion-row>
+              <div class="body-item-box marginTop15 inline-block">
+                <span class="label">{{'Back Pressure' | translate}}</span>
+                <ion-checkbox name="BACK_PRESSURE_CB"
+                (click)="checkCBValidation('BACK_PRESSURE')"
+                  [(ngModel)]="asfoundObj.BACK_PRESSURE_CB"
+                  [checked]="asfoundObj.BACK_PRESSURE_CB == 'true' || asfoundObj.BACK_PRESSURE_CB == true">
+                </ion-checkbox>
+              </div>
+              <div class="body-item-box marginTop15 inline-block"></div>
+              <div class="body-item-box marginTop15 inline-block">
+                <span class="label">{{'Restricted Lift' | translate}}</span>
+                <ion-checkbox name="RESTRICTED_LIFT_CB"
+                (click)="checkCBValidation('RESTRICTED_LIFT')"
+                [(ngModel)]="asfoundObj.RESTRICTED_LIFT_CB"
+                  [checked]="asfoundObj.RESTRICTED_LIFT_CB == 'true' || asfoundObj.RESTRICTED_LIFT_CB == true">
+                </ion-checkbox>
+              </div>
+            </ion-row>
+
+            <ion-row>
+              <div  class="body-item-box marginTop15 inline-block">
+                <span class="label">{{'Back Pressure' | translate}}</span>
+                <span *ngIf="asfoundObj.BACK_PRESSURE_CB==true || asfoundObj.BACK_PRESSURE_CB=='true'" class="validator inline-block"></span>
+                <ion-input [disabled]="!asfoundObj.BACK_PRESSURE_CB || asfoundObj.BACK_PRESSURE_CB=='false'" maxlength="250" [(ngModel)]="asfoundObj.BACK_PRESSURE" name="asfoundObj.BACK_PRESSURE"
+                [ngClass]="errorObj.BACK_PRESSURE ? 'input-validation'  :''"
+                class="project-box select-style">
+                </ion-input>
+              </div>
+              <div class="body-item-box marginTop15 inline-block">
+                <span class="label">{{'UOM' | translate}}</span>
+                <span *ngIf="asfoundObj.BACK_PRESSURE_CB==true || asfoundObj.BACK_PRESSURE_CB=='true'" class="validator inline-block"></span>
+                <ion-input [disabled]="!asfoundObj.BACK_PRESSURE_CB || asfoundObj.BACK_PRESSURE_CB=='false'" maxlength="250" [readonly]="true" [(ngModel)]="asfoundObj.BACK_PRESSURE_UOM"
+                [ngClass]="errorObj.BACK_PRESSURE_UOM ? 'input-validation'  :''"
+                name="asfoundObj.BACK_PRESSURE_UOM" (click)="searchModal('UnitOfMeasurement','BACK_PRESSURE_UOM')"
+                  tappable class="project-box searchNSelect select-style">
+                </ion-input>
+                <ion-input maxlength="250" *ngIf="asfoundObj.BACK_PRESSURE_UOM == 'Other'"
+                  [(ngModel)]="asfoundObj.BACK_PRESSURE_UOM_OT" name="asfoundObj.BACK_PRESSURE_UOM_OT"
+                  [ngClass]="!asfoundObj.BACK_PRESSURE_UOM_OT ? 'validation-error' : ''"
+                  class="project-box select-style otherBox"> </ion-input>
+              </div>
+              <div  class="body-item-box marginTop15 inline-block">
+                <span class="label">{{'Restricted Lift' | translate}}</span>
+                <span *ngIf="asfoundObj.RESTRICTED_LIFT_CB==true || asfoundObj.RESTRICTED_LIFT_CB=='true'" class="validator inline-block"></span>
+                <ion-input [disabled]="!asfoundObj.RESTRICTED_LIFT_CB || asfoundObj.RESTRICTED_LIFT_CB=='false'" maxlength="250" [(ngModel)]="asfoundObj.RESTRICTED_LIFT" name="asfoundObj.RESTRICTED_LIFT"
+                [ngClass]="errorObj.RESTRICTED_LIFT ? 'input-validation'  :''"
+                class="project-box select-style">
+                </ion-input>
+              </div>
+              <div  class="body-item-box marginTop15 inline-block">
+                <span class="label">{{'UOM' | translate}}</span>
+                <span *ngIf="asfoundObj.RESTRICTED_LIFT_CB==true || asfoundObj.RESTRICTED_LIFT_CB=='true'" class="validator inline-block"></span>
+                <ion-input [disabled]="!asfoundObj.RESTRICTED_LIFT_CB || asfoundObj.RESTRICTED_LIFT_CB=='false'" maxlength="250" [readonly]="true" [(ngModel)]="asfoundObj.RESTRICTED_LIFT_UOM"
+                  name="asfoundObj.RESTRICTED_LIFT_UOM" (click)="searchModal('UnitOfMeasurementLength','RESTRICTED_LIFT_UOM')"
+                [ngClass]="errorObj.RESTRICTED_LIFT_UOM ? 'input-validation'  :''"
+                tappable class="project-box searchNSelect select-style">
+                </ion-input>
+                <ion-input maxlength="250" *ngIf="asfoundObj.RESTRICTED_LIFT_UOM == 'Other'"
+                  [(ngModel)]="asfoundObj.RESTRICTED_LIFT_UOM_OT" name="asfoundObj.RESTRICTED_LIFT_UOM_OT"
+                  [ngClass]="!asfoundObj.RESTRICTED_LIFT_UOM_OT ? 'validation-error' : ''"
+                  class="project-box select-style otherBox"> </ion-input>
+              </div>
+            </ion-row>
+          </div>
+        </div>
+      
+      <!-- M Tag Data End-->
+
+      <ion-row class="mrgn-btm">
+        <ion-col text-left>
+          <button (click)="redirect('back')" id="afBackBtn" ion-button
+            class="footer-Button">{{'Back' | translate}}</button>
+        </ion-col>
+        <ion-col text-right>
+          <button (click)="redirect('')" ion-button id="afNextBtn"
+            class="footer-Button">{{ 'As Found Performance' | translate}}</button>
+        </ion-col>
+      </ion-row>
+
+    </ion-card-content>
+  </ion-card>
+</ion-content>

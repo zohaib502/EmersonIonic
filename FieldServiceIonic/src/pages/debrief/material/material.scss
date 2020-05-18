@@ -1,0 +1,180 @@
+page-material {
+  .white-bg {
+    background-color: white;
+  }
+
+  .productQuantity-block {
+    box-sizing: border-box;
+    height: 31px;
+    min-width: 31px;
+    max-width: 41px;
+    border: 1px solid rgba(216, 213, 209, 1);
+    border-radius: 2px;
+    background-color: rgba(247, 247, 246, 1);
+  }
+
+  .productQuantity-block>input {
+    text-align: center;
+    margin: 0px !important;
+  }
+
+  .serialTypeStyle {
+    word-wrap: break-word;
+    word-break: break-all;
+  }
+
+  .chargeMethod-box {
+    box-sizing: border-box;
+    height: 31px;
+    border: 1px solid rgba(216, 213, 209, 1);
+    border-radius: 2px;
+    background-color: rgba(247, 247, 246, 1);
+    width: 170px;
+  }
+
+  .select-style {
+    max-width: 100% !important;
+  }
+
+  .UOM-box {
+    box-sizing: border-box;
+    height: 31px;
+    border: 1px solid rgba(216, 213, 209, 1);
+    border-radius: 2px;
+    background-color: rgba(247, 247, 246, 1);
+  }
+
+  .add-btn {
+    height: 33px;
+    width: 33px;
+    border-radius: 3px;
+    background-color: rgba(142, 177, 95, 1);
+    margin: 14px 0px 0px 15px;
+  }
+
+  .select {
+    padding: 6px !important;
+  }
+
+  .description-box .text-input {
+    box-sizing: border-box;
+    height: 31px;
+    border: 1px solid rgba(216, 213, 209, 1);
+    border-radius: 2px;
+    background-color: rgba(247, 247, 246, 1);
+    width: 180px;
+  }
+
+  .label-text-transform {
+    text-transform: capitalize;
+  }
+
+  .serialIn-block,
+  .serialOut-block,
+  .serialId-block {
+    width: 132px;
+  }
+
+  .serial-block {
+    margin: 0 20px 0 0;
+  }
+
+  .serialIn-block-value .text-input,
+  .serialOut-block-value .text-input {
+    box-sizing: border-box;
+    height: 31px;
+    border: 1px solid rgba(216, 213, 209, 1);
+    border-radius: 2px;
+    background-color: rgba(247, 247, 246, 1);
+  }
+
+  .text-input {
+    width: 100% !important;
+    margin: 0px !important;
+    padding: 0 5px 0 5px !important;
+  }
+
+  .select-text {
+    color: rgba(0, 0, 0, 1) !important;
+    font-family: "Helvetica Neue";
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 17px;
+  }
+
+  .select {
+    padding: 6px !important;
+  }
+
+  .serialId-box {
+    padding: 0 12px 12px 17px !important;
+  }
+
+  .scrollContent {
+    overflow-x: hidden;
+    overflow-y: auto;
+    height: 135px;
+  }
+
+  .material-spaceMargin {
+    margin-right: 30px;
+  }
+
+  .text-input[disabled] {
+    opacity: 0.8;
+  }
+
+  .mth-cm,
+  .mth-q,
+  .mth-s,
+  .mth-si,
+  .mth-so,
+  .mth-in,
+  .mth-id,
+  .mth-uom {
+    width: 10%;
+    text-align: left;
+    margin-right: 1%;
+  }
+
+  .mth-si-so {
+    width: 21%;
+    text-align: left;
+    margin: 0 1% 0 0;
+  }
+
+  .mth-icon {
+    width: 12%;
+  }
+
+  .mat-serialNo {
+    word-wrap: break-word;
+    word-break: break-all;
+    margin-bottom: 5px;
+  }
+
+  .mat-serialIn,
+  .mat-serialOut {
+    word-wrap: break-word;
+    word-break: break-all;
+    margin-bottom: 10px;
+    width: 49%;
+  }
+
+  .mat-serialOut {
+    // margin: 0 1% 10px 2%;
+    padding-left: 2%;
+    width: 49%;
+  }
+}
+
+.ios page-material {
+  .add-btn {
+    margin: 20px 0px 0px 20px;
+  }
+
+  .mat-serialOut {
+    width: 48%;
+  }
+
+}

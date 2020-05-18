@@ -1,0 +1,254 @@
+<ion-content padding class="page-background">
+    <ion-card class="CardSection">
+
+        <ion-card-header>
+            <ion-row class="global-padding row">
+                <ion-col col-8>
+                    <div class="header-left">{{'Final Inspection' | translate}}</div>
+                </ion-col>
+                <ion-col class="txt-rgt">
+                    <div name="goToFcrBtn" *ngIf="selectedProcess == Enums.Selected_Process.FCR_AND_SDR"
+                        class="txt-rgt">
+                        <span class="ft-size">{{'Continue'|translate}}</span> <button (click)="goToFcr()" ion-button
+                            class="frs-Btn no-margin"
+                            name="iso_as_found_1">{{'Field Completion Report'|translate}}</button>
+                    </div>
+                </ion-col>
+            </ion-row>
+        </ion-card-header>
+
+        <page-sdr-header></page-sdr-header>
+
+        <ion-card-content class="card-content sdr-pages">
+
+            <ion-row class="customRowsWithoutBorder">
+                <div class="full-width">
+
+                    <ion-row>
+
+                        <div class="body-item-box marginTop30 inline-block">
+                            <span class="label">{{'Acknowledge' | translate}}</span>
+                            <ion-checkbox name="ACKNOWLEDGE" (click)="checkCBValidation('RESTRICTED_LIFT')"
+                                [(ngModel)]="FinalInspectionObj.ACKNOWLEDGE"
+                                [checked]="FinalInspectionObj.ACKNOWLEDGE == 'true' || FinalInspectionObj.ACKNOWLEDGE == true">
+                            </ion-checkbox>
+                        </div>
+
+                        <div class="body-item-box width-sixtyseven inline-block">
+                            <span class="label">{{'Inspected By' | translate}}</span>
+                            <ion-input maxlength="250" [(ngModel)]="FinalInspectionObj.INSPECTED_BY"
+                                name="FinalInspectionObj.INSPECTED_BY" class="project-box select-style">
+                            </ion-input>
+                        </div>
+
+                    </ion-row>
+
+                </div>
+            </ion-row>
+
+            <ion-row class="customRowsWithoutBorder">
+                <div class="full-width">
+
+                    <div class="body-item-box marginTop15">
+                        {{'New Repair Tag' | translate}}
+                    </div>
+
+                    <div class="full-width">
+
+                        <ion-row>
+
+                            <div class="body-item-box marginTop15 inline-block">
+                                <span class="label">{{'Repair Number' | translate}}</span>
+                                <ion-input maxlength="250" [(ngModel)]="FinalInspectionObj.REPAIR_NUMBER"
+                                    name="FinalInspectionObj.REPAIR_NUMBER" class="project-box select-style">
+                                </ion-input>
+                            </div>
+
+                            <div class="body-item-box marginTop15 inline-block">
+                                <span class="label">{{'Model Number' | translate}}</span>
+                                <ion-input maxlength="250" [(ngModel)]="FinalInspectionObj.MODEL_NUMBER"
+                                    name="FinalInspectionObj.MODEL_NUMBER" class="project-box select-style">
+                                </ion-input>
+                            </div>
+
+                            <div class="body-item-box marginTop15 inline-block">
+                                <span class="label">{{'Repaired By' | translate}}</span>
+                                <ion-input maxlength="250" [readonly]="true" [disabled]="true"
+                                    [(ngModel)]="FinalInspectionObj.REPAIRED_BY" name="FinalInspectionObj.REPAIRED_BY"
+                                    tappable class="project-box searchNSelect select-style">
+                                </ion-input>
+                                <ion-input maxlength="250" *ngIf="FinalInspectionObj.REPAIRED_BY == 'Other'"
+                                    [(ngModel)]="FinalInspectionObj.REPAIRED_BY_OT"
+                                    name="FinalInspectionObj.REPAIRED_BY_OT"
+                                    [ngClass]="!FinalInspectionObj.REPAIRED_BY_OT ? 'validation-error' : ''"
+                                    class="project-box select-style otherBox"> </ion-input>
+                            </div>
+
+                            <div class="body-item-box marginTop15 inline-block repairDate">
+                                <span class="label">{{'Repair Date' | translate}}</span>
+                                <ion-input maxlength="250"
+                                    value="{{FinalInspectionObj.REPAIR_DATE | date:'dd-MMM-yyyy'}}" [disabled]="true"
+                                    name="FinalInspectionObj.REPAIR_DATE" class="project-box select-style">
+                                </ion-input>
+                                <span class="inline-block calendarIcon">
+                                    <img src="assets/imgs/icons/ic_calendar-for-field.png" class="calIcon pointer" />
+                                </span>
+                            </div>
+
+                        </ion-row>
+
+                        <ion-row>
+
+                            <div class="body-item-box marginTop15 inline-block">
+                                <span class="label">{{'Set Pressure' | translate}}</span>
+                                <ion-input maxlength="250" [(ngModel)]="FinalInspectionObj.SET_PRESSURE"
+                                    name="FinalInspectionObj.SET_PRESSURE" class="project-box select-style">
+                                </ion-input>
+                            </div>
+
+                            <div class="body-item-box marginTop15 inline-block">
+                                <ion-label class="label ionLabel marginTop">
+                                    <span class="checkboxLabel">{{'UOM' | translate}}</span>
+                                    <span
+                                        [ngClass]="showValidationClass(FinalInspectionObj.SET_PRESSURE) ? 'validator' : ''"></span>
+                                </ion-label>
+                                <ion-input maxlength="250" [readonly]="true"
+                                    [ngClass]="errorObj.indexOf('SET_PRESSURE_UOM') != -1 && !FinalInspectionObj.SET_PRESSURE_UOM ? 'validation-error' : ''"
+                                    [(ngModel)]="FinalInspectionObj.SET_PRESSURE_UOM"
+                                    name="FinalInspectionObj.SET_PRESSURE_UOM"
+                                    (click)="searchModal('UnitOfMeasurement','SET_PRESSURE_UOM')" tappable
+                                    class="project-box searchNSelect select-style">
+                                </ion-input>
+                                <ion-input maxlength="250" *ngIf="FinalInspectionObj.SET_PRESSURE_UOM == 'Other'"
+                                    [(ngModel)]="FinalInspectionObj.SET_PRESSURE_UOM_OT"
+                                    name="FinalInspectionObj.SET_PRESSURE_UOM_OT"
+                                    [ngClass]="!FinalInspectionObj.SET_PRESSURE_UOM_OT ? 'validation-error' : ''"
+                                    class="project-box select-style otherBox"> </ion-input>
+                            </div>
+
+                            <div class="body-item-box marginTop15 inline-block">
+                                <span class="label">{{'Back Pressure' | translate}}</span>
+                                <ion-input maxlength="250" [(ngModel)]="FinalInspectionObj.BACK_PRESSURE"
+                                    name="FinalInspectionObj.BACK_PRESSURE" class="project-box select-style">
+                                </ion-input>
+                            </div>
+
+                            <div class="body-item-box marginTop15 inline-block">
+                                <ion-label class="label ionLabel marginTop">
+                                    <span class="checkboxLabel">{{'UOM' | translate}}</span>
+                                    <span
+                                        [ngClass]="showValidationClass(FinalInspectionObj.BACK_PRESSURE) ? 'validator' : ''"></span>
+                                </ion-label>
+                                <ion-input maxlength="250" [readonly]="true"
+                                    [ngClass]="errorObj.indexOf('BACK_PRESSURE_UOM') != -1 && !FinalInspectionObj.BACK_PRESSURE_UOM ? 'validation-error' : ''"
+                                    [(ngModel)]="FinalInspectionObj.BACK_PRESSURE_UOM"
+                                    name="FinalInspectionObj.BACK_PRESSURE_UOM"
+                                    (click)="searchModal('UnitOfMeasurement','BACK_PRESSURE_UOM')" tappable
+                                    class="project-box searchNSelect select-style">
+                                </ion-input>
+                                <ion-input maxlength="250" *ngIf="FinalInspectionObj.BACK_PRESSURE_UOM == 'Other'"
+                                    [(ngModel)]="FinalInspectionObj.BACK_PRESSURE_UOM_OT"
+                                    name="FinalInspectionObj.BACK_PRESSURE_UOM_OT"
+                                    [ngClass]="!FinalInspectionObj.BACK_PRESSURE_UOM_OT ? 'validation-error' : ''"
+                                    class="project-box select-style otherBox"> </ion-input>
+                            </div>
+
+                        </ion-row>
+
+                        <ion-row>
+
+                            <div class="body-item-box marginTop15 inline-block">
+                                <span class="label">{{'Capacity' | translate}}</span>
+                                <ion-input maxlength="250" [(ngModel)]="FinalInspectionObj.CAPACITY"
+                                    name="FinalInspectionObj.CAPACITY" class="project-box select-style">
+                                </ion-input>
+                            </div>
+
+                            <div class="body-item-box marginTop15 inline-block">
+                                <ion-label class="label ionLabel marginTop">
+                                    <span class="checkboxLabel">{{'UOM' | translate}}</span>
+                                    <span
+                                        [ngClass]="showValidationClass(FinalInspectionObj.CAPACITY) ? 'validator' : ''"></span>
+                                </ion-label>
+                                <ion-input maxlength="250" [readonly]="true"
+                                    [ngClass]="errorObj.indexOf('CAPACITY_UOM') != -1 && !FinalInspectionObj.CAPACITY_UOM ? 'validation-error' : ''"
+                                    [(ngModel)]="FinalInspectionObj.CAPACITY_UOM" name="FinalInspectionObj.CAPACITY_UOM"
+                                    (click)="searchModal('UnitOfMeasurementCapacityPressure','CAPACITY_UOM')" tappable
+                                    class="project-box searchNSelect select-style">
+                                </ion-input>
+                                <ion-input maxlength="250" *ngIf="FinalInspectionObj.CAPACITY_UOM == 'Other'"
+                                    [(ngModel)]="FinalInspectionObj.CAPACITY_UOM_OT"
+                                    name="FinalInspectionObj.CAPACITY_UOM_OT"
+                                    [ngClass]="!FinalInspectionObj.CAPACITY_UOM_OT ? 'validation-error' : ''"
+                                    class="project-box select-style otherBox"> </ion-input>
+                            </div>
+
+                            <div class="body-item-box marginTop15 inline-block">
+                                <span class="label">{{'CDTP' | translate}}</span>
+                                <ion-input maxlength="250" [(ngModel)]="FinalInspectionObj.CDTP"
+                                    name="FinalInspectionObj.CDTP" class="project-box select-style">
+                                </ion-input>
+                            </div>
+
+                            <div class="body-item-box marginTop15 inline-block">
+                                <ion-label class="label ionLabel marginTop">
+                                    <span class="checkboxLabel">{{'UOM' | translate}}</span>
+                                    <span
+                                        [ngClass]="showValidationClass(FinalInspectionObj.CDTP) ? 'validator' : ''"></span>
+                                </ion-label>
+                                <ion-input maxlength="250" [readonly]="true" [(ngModel)]="FinalInspectionObj.CDTP_UOM"
+                                    [ngClass]="errorObj.indexOf('CDTP_UOM') != -1 && !FinalInspectionObj.CDTP_UOM ? 'validation-error' : ''"
+                                    name="FinalInspectionObj.CDTP_UOM"
+                                    (click)="searchModal('UnitOfMeasurement','CDTP_UOM')" tappable
+                                    class="project-box searchNSelect select-style">
+                                </ion-input>
+                                <ion-input maxlength="250" *ngIf="FinalInspectionObj.CDTP_UOM == 'Other'"
+                                    [(ngModel)]="FinalInspectionObj.CDTP_UOM_OT" name="FinalInspectionObj.CDTP_UOM_OT"
+                                    [ngClass]="!FinalInspectionObj.CDTP_UOM_OT ? 'validation-error' : ''"
+                                    class="project-box select-style otherBox"> </ion-input>
+                            </div>
+
+                        </ion-row>
+
+                        <ion-row>
+
+                            <div class="body-item-box marginTop15 inline-block">
+                                {{'NBBI' | translate}}:
+                            </div>
+
+                            <div class="body-item-box marginTop15 inline-block">
+                                <span class="label">{{'VR Stamped' | translate}}</span>
+                                <ion-checkbox name="VR_STAMPED" (click)="checkCBValidation('VR_STAMPED')"
+                                    [(ngModel)]="FinalInspectionObj.VR_STAMPED"
+                                    [checked]="FinalInspectionObj.VR_STAMPED == 'true' || FinalInspectionObj.VR_STAMPED == true">
+                                </ion-checkbox>
+                            </div>
+
+                            <div class="body-item-box marginTop15 inline-block">
+                                <span class="label">{{'Sealed' | translate}}</span>
+                                <ion-checkbox name="SEALED" (click)="checkCBValidation('SEALED')"
+                                    [(ngModel)]="FinalInspectionObj.SEALED"
+                                    [checked]="FinalInspectionObj.SEALED == 'true' || FinalInspectionObj.SEALED == true">
+                                </ion-checkbox>
+                            </div>
+
+                        </ion-row>
+
+                    </div>
+                </div>
+            </ion-row>
+
+            <ion-row class="mrgn-btm">
+                <ion-col text-left>
+                    <button (click)="redirect('back')" id="afBackBtn" ion-button
+                        class="footer-Button">{{'Back' | translate}}</button>
+                </ion-col>
+                <ion-col text-right>
+                    <button (click)="redirect('')" ion-button id="afNextBtn"
+                        class="footer-Button">{{ 'Photos' | translate}}</button>
+                </ion-col>
+            </ion-row>
+
+        </ion-card-content>
+    </ion-card>
+</ion-content>

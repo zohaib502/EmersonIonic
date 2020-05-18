@@ -1,0 +1,68 @@
+<ion-header>
+  <page-custom-header [header]="header_data"></page-custom-header>
+</ion-header>
+<ion-content padding>
+  <ion-card>
+    <ion-card-header>
+      <ion-row class="global-padding">
+        <div class="full-width">
+          <div class="inline-block">
+            <h1 class="heading-adjust">{{'TimeZone'| translate}}</h1>
+          </div>
+          <div class="inline-block">
+            <!-- <span *ngIf="pendingSubmit.length > 0"><i class="fa fa-cloud-upload pendingIcon" aria-hidden="true"></i></span> -->
+          </div>
+          <div class="pull-right inline-block">
+            <button ion-button (click)="saveTimeZone()" class="save-btn no-margin">{{'Submit' | translate}}</button>
+          </div>
+          <div class="searchKeyLabel pull-right inline-block">
+            <ion-searchbar placeholder="{{'Search Timezone' | translate}}" [(ngModel)]="taskInput" (ionCancel)="onCancel($event)"></ion-searchbar>
+          </div>
+          <!-- 02-18-2019 -- Mansi Arora -- add checkbox to show active timezones -->
+          <div class="searchKeyLabel pull-right inline-block">
+            <ion-item class="showActiveCheckbox">
+              <!-- 02-19-2019 -- Mansi Arora -- code optimised - change value of showActive on checkbox click -->
+              <ion-label [ngClass]="showActive ? 'checkbox-label checkboxLabel':'checkboxLabel'" translate="Show Active"></ion-label>
+              <ion-checkbox checkbox-positive ng-checked="showActive" [(ngModel)]="showActive" name="showActive" (ionChange)="!showActive"></ion-checkbox>
+            </ion-item>
+          </div>
+        </div>
+      </ion-row>
+    </ion-card-header>
+    <ion-card-content>
+      <div [ngClass]="localTimeZones.length > 0 ? 'no-data-container full-width block': 'data-container full-width block'">
+        <ion-row class="global-padding bottom-border table-header">
+          <div class="label name">
+            <span translate="Timezone Name"></span>
+          </div>
+          <div class="label timeZone">
+            <span translate="Timezone"></span>
+          </div>
+          <div class="label action">
+            <span translate="Status"></span>
+          </div>
+          <div class="label pendingIconArea">
+          </div>
+        </ion-row>
+        <ion-list>
+          <!-- 02-19-2019 -- Mansi Arora -- pipe to show active timezones -->
+          <ion-row class="global-padding jobListItem strippedClass" *ngFor="let tz of localTimeZones| search: { TimeZone_Name: taskInput } | showActiveTimeZone: (showActive ? 'Y' : '')">
+            <div class="value name">{{tz.TimeZone_Name}}</div>
+            <div class="timeZone">
+              <span class="value">
+                {{tz.TimeZoneIANA}}
+              </span>
+            </div>
+            <div class="value action">
+              <ion-checkbox class="pointer" [disabled]="valueProvider.getUser().timeZoneIANA == tz.TimeZoneIANA"
+                [checked]="(tz.IsActive == 'Y')" (ionChange)="setEnable($event,tz)"></ion-checkbox>
+            </div>
+            <div class="pendingIconArea">
+              <span *ngIf="tz.isEdited == 'true'"><i class="fa fa-circle pending-indicator" aria-hidden="true"></i></span>
+            </div>
+          </ion-row>
+        </ion-list>
+      </div>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

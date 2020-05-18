@@ -1,0 +1,1582 @@
+<ion-content padding class="sdr-pages page-background">
+  <ion-card class="CardSection">
+    <ion-card-header class="card-header card-header-md">
+      <ion-row class="global-padding row">
+        <ion-col col-3>
+          <div class="header-left">As Found</div>
+        </ion-col>
+        <ion-col col-9 *ngIf="selectedProcess==Enums.Selected_Process.FCR_AND_SDR" class="txt-rgt">
+          <span class="ft-size verticalMiddle">Continue</span> <button (click)="gotofcr()" ion-button
+            class="frs-Btn verticalMiddle">{{'Field Completion Report'|translate}}</button>
+        </ion-col>
+      </ion-row>
+    </ion-card-header>
+
+    <page-sdr-header></page-sdr-header>
+
+    <ion-card-content>
+
+      <div class="pre-test-sec global-padding">
+        <ion-row>
+          <ion-col>
+            <span class="txt-left">{{'Air Pressure Test'|translate}}</span>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col col-1>
+            <span class="pre-test label"> {{'Pre-Test'|translate}}</span>
+            <ion-checkbox [(ngModel)]="preTestObj.DONEAIRPRESSUREPRETEST" (click)="deviceTstChkValChanged($event)"
+              [checked]="preTestObj.DONEAIRPRESSUREPRETEST == 'true' || preTestObj.DONEAIRPRESSUREPRETEST == true"
+              color="dark">
+            </ion-checkbox>
+          </ion-col>
+          <ion-col col-5>
+            <span class="pre-test">{{'Pre-Test Result'|translate}}</span><br>
+            <ion-textarea [(ngModel)]="preTestObj.AIRPRESSUREPRETEST" (ionChange)="deviceTestValChanged($event)"
+              (focusout)="preTestObj.AIRPRESSUREPRETEST = utilityProvider.sliceValueUptoLimit($event.target.value, $event.target.maxLength)"
+              name="preTestObj.AIRPRESSUREPRETEST" maxlength="2000" class="cus-txt-area"></ion-textarea>
+          </ion-col>
+        </ion-row>
+      </div>
+      <div class="pre-test-sec global-padding">
+        <ion-row>
+          <ion-col>
+            <span class="txt-left">{{'Function Test'|translate}}</span>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col col-1>
+            <span class="pre-test label"> {{'Pre-Test'|translate}}</span>
+            <ion-checkbox [(ngModel)]="preTestObj.DONEFUNCTIONPRETEST" (click)="deviceTstChkValChanged($event)"
+              [checked]="preTestObj.DONEFUNCTIONPRETEST == 'true' || preTestObj.DONEFUNCTIONPRETEST == true"
+              color="dark"></ion-checkbox>
+          </ion-col>
+          <ion-col col-5>
+            <span class="pre-test">{{'Pre-Test Result'|translate}}</span><br>
+            <ion-textarea maxlength="2000" [(ngModel)]="preTestObj.FUNCTIONPRETEST"
+              (focusout)="preTestObj.FUNCTIONPRETEST = utilityProvider.sliceValueUptoLimit($event.target.value, $event.target.maxLength)"
+              (ionChange)="deviceTestValChanged($event)" name="preTestObj.FUNCTIONPRETEST" maxlength="2000"
+              class="cus-txt-area"></ion-textarea>
+          </ion-col>
+        </ion-row>
+      </div>
+      <div class="pre-test-sec global-padding">
+        <ion-row>
+          <ion-col>
+            <span class="txt-left">{{'Hydro Test'|translate}}</span>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col col-1>
+            <span class="pre-test label"> {{'Pre-Test'|translate}}</span>
+            <ion-checkbox [(ngModel)]="preTestObj.DONEHYDROPRETEST" (click)="deviceTstChkValChanged($event)"
+              [checked]="preTestObj.DONEHYDROPRETEST == 'true' || preTestObj.DONEHYDROPRETEST == true" color="dark">
+            </ion-checkbox>
+          </ion-col>
+          <ion-col col-5>
+            <span class="pre-test">{{'Pre-Test Result'|translate}}</span><br>
+            <ion-textarea maxlength="2000" [(ngModel)]="preTestObj.HYDROPRETEST" name="preTestObj.HYDROPRETEST"
+              (focusout)="preTestObj.HYDROPRETEST = utilityProvider.sliceValueUptoLimit($event.target.value, $event.target.maxLength)"
+              (ionChange)="deviceTestValChanged($event)" class="cus-txt-area">
+            </ion-textarea>
+          </ion-col>
+        </ion-row>
+      </div>
+      <div class="pre-test-sec global-padding">
+        <ion-row>
+          <ion-col>
+            <span class="txt-left">{{'Visual test'|translate}}</span>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col col-1>
+            <span class="pre-test label"> {{'Pre-Test'|translate}}</span>
+            <ion-checkbox [(ngModel)]="preTestObj.DONEVISUALPRETEST" (click)="deviceTstChkValChanged($event)"
+              [checked]="preTestObj.DONEVISUALPRETEST == 'true' || preTestObj.DONEVISUALPRETEST == true" color="dark">
+            </ion-checkbox>
+          </ion-col>
+          <ion-col col-5>
+            <span class="pre-test">{{'Pre-Test Result'|translate}}</span><br>
+            <ion-textarea [(ngModel)]="preTestObj.VISUALPRETEST" (ionChange)="deviceTestValChanged($event)"
+              (focusout)="preTestObj.VISUALPRETEST = utilityProvider.sliceValueUptoLimit($event.target.value, $event.target.maxLength)"
+              name="preTestObj.VISUALPRETEST" maxlength="2000" class="cus-txt-area">
+            </ion-textarea>
+          </ion-col>
+        </ion-row>
+      </div>
+
+      <ion-item *ngIf="parentReferenceId !=3" class="WF-toggle toggle-all-accordion">
+        <ion-label *ngIf="toggleAllaccordion == false">{{'Expand all' | translate}}</ion-label>
+        <ion-label *ngIf="toggleAllaccordion == true">{{'Collapse all' | translate}}</ion-label>
+        <ion-toggle [(ngModel)]="toggleAllaccordion" (ionChange)="toggleAccordion($event)"></ion-toggle>
+      </ion-item>
+
+      <!-- Sana -->
+      <div *ngIf="parentReferenceId == '3'" class="global-padding">
+        <div class="header-padding">
+          <div class="section pointer">
+            <div
+              [ngClass]="asFoundObj.N_NETWORKTYPE_NA == 'true' || asFoundObj.N_NETWORKTYPE_NA == true ? 'disable-content' : ''"
+              (click)="expandOuter('NetworkType')" class="inline-block">
+              <ion-icon class="arrowIcon" item-left name="arrow-dropright" *ngIf="!expandOuterAccordion.NetworkType">
+              </ion-icon>
+              <ion-icon class="arrowIcon" role="img" *ngIf="expandOuterAccordion.NetworkType"
+                aria-label="arrow dropdown" name="arrow-dropdown"></ion-icon>
+              <span class="accordion-label"> {{ "Network Type" | translate}} </span>
+            </div>
+          </div>
+          <div *ngIf="expandOuterAccordion.NetworkType" class="content">
+            <ion-row class="row">
+              <div class="global-padding width-thirtythree">
+                <div class="spacingMargin">
+                  <span class="label ionLabel">{{"Network Type" | translate}} </span>
+                  <ion-input [(ngModel)]="asFoundObj.N_NETWORKTYPE_NETWORKTYPE_AF"
+                    name="asFoundObj.N_NETWORKTYPE_NETWORKTYPE_AF" class="project-box searchNSelect select-style"
+                    [readonly]="true" tappable (click)="searchModal('NetworkType','N_NETWORKTYPE_NETWORKTYPE_AF')">
+                  </ion-input>
+                  <ion-input *ngIf="asFoundObj.N_NETWORKTYPE_NETWORKTYPE_AF == 'Other'"
+                    [(ngModel)]="asFoundObj.N_NETWORKTYPE_NETWORKTYPE_AFOT"
+                    name="asFoundObj.N_NETWORKTYPE_NETWORKTYPE_AFOT"
+                    [ngClass]="!asFoundObj.N_NETWORKTYPE_NETWORKTYPE_AFOT ? 'validation-error' : ''"
+                    class="project-box otherBox">
+                  </ion-input>
+                </div>
+              </div>
+              <div class="global-padding width-thirtythree">
+                <div class="spacingMargin">
+                  <span class="label ionLabel"> {{"Protocols" | translate}} </span>
+                  <ion-input [(ngModel)]="asFoundObj.N_NETWORKTYPE_PROTOCOLS_AF"
+                    name="asFoundObj.N_NETWORKTYPE_PROTOCOLS_AF" class="project-box searchNSelect select-style"
+                    [readonly]="true" tappable (click)="searchModal('protocols','N_NETWORKTYPE_PROTOCOLS_AF')">
+                  </ion-input>
+                  <ion-input (focusout)="changeNetworkType('N_NETWORKTYPE_PROTOCOLS_AFOT')"
+                    *ngIf="asFoundObj.N_NETWORKTYPE_PROTOCOLS_AF == 'Other'"
+                    [(ngModel)]="asFoundObj.N_NETWORKTYPE_PROTOCOLS_AFOT" name="asFoundObj.N_NETWORKTYPE_PROTOCOLS_AFOT"
+                    [ngClass]="!asFoundObj.N_NETWORKTYPE_PROTOCOLS_AFOT ? 'validation-error' : ''"
+                    class="project-box otherBox">
+                  </ion-input>
+                </div>
+              </div>
+              <div class="global-padding width-thirtythree">
+                <div class="spacingMargin">
+                  <span class="label ionLabel"> {{"Loop Type" | translate}} </span>
+                  <ion-input [(ngModel)]="asFoundObj.N_NETWORKTYPE_LOOPTYPE_AF"
+                    name="asFoundObj.N_NETWORKTYPE_LOOPTYPE_AF" class="project-box searchNSelect select-style"
+                    [readonly]="true" tappable (click)="searchModal('LoopType','N_NETWORKTYPE_LOOPTYPE_AF')">
+                  </ion-input>
+                  <ion-input (focusout)="changeNetworkType('N_NETWORKTYPE_LOOPTYPE_AFOT')"
+                    *ngIf="asFoundObj.N_NETWORKTYPE_LOOPTYPE_AF == 'Other'"
+                    [(ngModel)]="asFoundObj.N_NETWORKTYPE_LOOPTYPE_AFOT" name="asFoundObj.N_NETWORKTYPE_LOOPTYPE_AFOT"
+                    [ngClass]="!asFoundObj.N_NETWORKTYPE_LOOPTYPE_AFOT ? 'validation-error' : ''"
+                    class="project-box otherBox ">
+                  </ion-input>
+                </div>
+              </div>
+              <div class="global-padding width-thirtythree">
+                <div class="spacingMargin">
+                  <span class="label ionLabel">{{"As Found" | translate}}</span>
+                  <ion-input [(ngModel)]="asFoundObj.N_NETWORKTYPE_AF" name="asFoundObj.N_NETWORKTYPE_AF"
+                    class="project-box searchNSelect select-style" [readonly]="true" tappable
+                    (click)="searchModal('AsFoundNetwork','N_NETWORKTYPE_AF')">
+                  </ion-input>
+                  <ion-input *ngIf="asFoundObj.N_NETWORKTYPE_AF == 'Other'" [(ngModel)]="asFoundObj.N_NETWORKTYPE_AFOT"
+                    name="asFoundObj.N_NETWORKTYPE_AFOT"
+                    [ngClass]="!asFoundObj.N_NETWORKTYPE_AFOT ? 'validation-error' : ''" class="project-box otherBox">
+                  </ion-input>
+                </div>
+              </div>
+              <div class="global-padding width-sixtyseven">
+                <div class="spacingMargin">
+                  <span class="label ionLabel">{{'Comment' | translate}}</span>
+                  <ion-textarea (ionChange)="asFoundValChanged($event)" [(ngModel)]="asFoundObj.N_NETWORKTYPE_AFC"
+                    (focusout)="asFoundObj.N_NETWORKTYPE_AFC = utilityProvider.sliceValueUptoLimit($event.target.value, $event.target.maxLength)"
+                    class="input  WF-textArea" maxlength="2000" rows="3">
+                  </ion-textarea>
+                </div>
+              </div>
+            </ion-row>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sana -->
+      <div *ngIf="parentReferenceId == '4'">
+
+        <div class="header-padding">
+          <div class="section headerBorderBottom pointer">
+            <div
+              [ngClass]="asFoundObj.G_HOUSINGFRAME_NA == 'true' || asFoundObj.G_HOUSINGFRAME_NA == true ? 'disable-content' : ''"
+              (click)="expandOuter('GearboxHousing')" class="inline-block">
+              <ion-icon class="arrowIcon" item-left name="arrow-dropright" *ngIf="!expandOuterAccordion.GearboxHousing">
+              </ion-icon>
+              <ion-icon class="arrowIcon" role="img" *ngIf="expandOuterAccordion.GearboxHousing"
+                aria-label="arrow dropdown" name="arrow-dropdown"></ion-icon>
+              <span class="accordion-label"> {{'Housing/Frame' | translate}} </span>
+            </div>
+            <div class="inline-block pull-right">
+              <div class="spacingMargin">
+                <div class="WF-checkbox">
+                  <span class="label">{{'N/A' | translate}}</span>
+                  <ion-checkbox
+                    (click)="confirmAlert(asFoundObj.G_HOUSINGFRAME_NA, 'GearboxHousing', 'G_HOUSINGFRAME_ALNA')"
+                    [checked]="asFoundObj.G_HOUSINGFRAME_NA == 'true' || asFoundObj.G_HOUSINGFRAME_NA == true"
+                    [(ngModel)]="asFoundObj.G_HOUSINGFRAME_NA" color="dark">
+                  </ion-checkbox>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="expandOuterAccordion.GearboxHousing" class="content">
+            <ion-row class="row">
+              <div class="global-padding width-thirtythree">
+                <div class="spacingMargin">
+                  <span class="label ionLabel"> {{'As Found' | translate}} </span>
+                  <ion-input [(ngModel)]="asFoundObj.G_HOUSINGFRAME_AF" name="asFoundObj.G_HOUSINGFRAME_AF"
+                    class="project-box searchNSelect select-style" [readonly]="true" tappable
+                    (click)="searchModalSet('jobids','G_HOUSINGFRAME_AF','GearboxHousing')">
+                  </ion-input>
+                  <ion-input *ngIf="asFoundObj.G_HOUSINGFRAME_AF == 'Other'"
+                    [(ngModel)]="asFoundObj.G_HOUSINGFRAME_AFOT" name="asFoundObj.G_HOUSINGFRAME_AF"
+                    [ngClass]="!asFoundObj.G_HOUSINGFRAME_AFOT ? 'validation-error' : ''" class="project-box otherBox">
+                  </ion-input>
+                </div>
+              </div>
+              <div class="global-padding width-sixtyseven">
+                <div class="spacingMargin">
+                  <span class="label ionLabel"> {{'Comment' | translate}} </span>
+                  <ion-textarea (ionChange)="asFoundValChanged($event)" [(ngModel)]="asFoundObj.G_HOUSINGFRAME_AFC"
+                    (focusout)="asFoundObj.G_HOUSINGFRAME_AFC = utilityProvider.sliceValueUptoLimit($event.target.value, $event.target.maxLength)"
+                    class="input  WF-textArea" maxlength="2000" rows="3">
+                  </ion-textarea>
+                </div>
+              </div>
+              <div class="global-padding width-hundered">
+                <div class="spacingMargin">
+                  <div class="accordion-ListView">
+                    <div class="inline-block accordion-ListView">
+                      <div (click)="expandInner('GearboxHousingComponents')" class="lisviewToggleIcon pointer">
+                        <ion-icon class="arrowIcon" item-left name="arrow-dropright"
+                          *ngIf="expandInnerAccordion != 'GearboxHousingComponents'">
+                        </ion-icon>
+                        <ion-icon class="arrowIcon" role="img"
+                          *ngIf="expandInnerAccordion == 'GearboxHousingComponents'" aria-label="arrow dropdown"
+                          name="arrow-dropdown"></ion-icon>
+                        <span class="accordion-label">{{'Housing/Frame Components' | translate}}</span>
+                      </div>
+                      <div *ngIf="expandInnerAccordion == 'GearboxHousingComponents'" class="accordion-ListView">
+                        <div class="strippedClass section">
+                          <div class="inline-block">
+                            <span class="accordion-label"> {{'Gearbox Housing' | translate}} </span>
+                          </div>
+                          <div class="accordion-content">
+                            <ion-row class="row">
+                              <div class="width-thirty">
+                                <div class="spacingMargin" id="AsFoundActuation_GearboxHousing">
+                                  <ion-label class="label ionLabel"> {{'As Found' | translate}} </ion-label>
+                                  <ion-input [(ngModel)]="asFoundObj.G_HOUSINGFRAME_G_HOUSING_AF"
+                                    name="asFoundObj.G_HOUSINGFRAME_G_HOUSING_AF"
+                                    class="project-box searchNSelect select-style" [readonly]="true" tappable
+                                    (click)="searchModal('jobids','G_HOUSINGFRAME_G_HOUSING_AF')">
+                                  </ion-input>
+                                  <ion-input *ngIf="asFoundObj.G_HOUSINGFRAME_G_HOUSING_AF == 'Other'"
+                                    [(ngModel)]="asFoundObj.G_HOUSINGFRAME_G_HOUSING_AFOT"
+                                    name="asFoundObj.G_HOUSINGFRAME_G_HOUSING_AFOT"
+                                    [ngClass]="!asFoundObj.G_HOUSINGFRAME_G_HOUSING_AFOT ? 'validation-error' : ''"
+                                    class="project-box otherBox">
+                                  </ion-input>
+                                </div>
+                              </div>
+                            </ion-row>
+                          </div>
+                        </div>
+                        <div class="strippedClass section">
+                          <div class="inline-block">
+                            <span class="accordion-label"> {{'End Caps' | translate}} </span>
+                          </div>
+                          <div class="accordion-content">
+                            <ion-row class="row">
+                              <div class="width-thirty">
+                                <div class="spacingMargin" id="AsFoundActuation_EndCaps">
+                                  <ion-label class="label ionLabel"> {{'As Found' | translate}} </ion-label>
+                                  <ion-input [(ngModel)]="asFoundObj.G_HOUSINGFRAME_ENDCAPS_AF"
+                                    name="asFoundObj.G_HOUSINGFRAME_ENDCAPS_AF"
+                                    class="project-box searchNSelect select-style" [readonly]="true" tappable
+                                    (click)="searchModal('jobids','G_HOUSINGFRAME_ENDCAPS_AF')">
+                                  </ion-input>
+                                  <ion-input *ngIf="asFoundObj.G_HOUSINGFRAME_ENDCAPS_AF == 'Other'"
+                                    [(ngModel)]="asFoundObj.G_HOUSINGFRAME_ENDCAPS_AFOT"
+                                    name="asFoundObj.G_HOUSINGFRAME_ENDCAPS_AFOT"
+                                    [ngClass]="!asFoundObj.G_HOUSINGFRAME_ENDCAPS_AFOT ? 'validation-error' : ''"
+                                    class="project-box otherBox">
+                                  </ion-input>
+                                </div>
+                              </div>
+                            </ion-row>
+                          </div>
+                        </div>
+                        <div class="strippedClass section">
+                          <div class="inline-block">
+                            <span class="accordion-label"> {{'Spur Gears' | translate}} </span>
+                          </div>
+                          <div class="accordion-content">
+                            <ion-row class="row">
+                              <div class="width-thirty">
+                                <div class="spacingMargin" id="AsFoundActuation_SpurGears">
+                                  <ion-label class="label ionLabel"> {{'As Found' | translate}} </ion-label>
+                                  <ion-input [(ngModel)]="asFoundObj.G_HOUSINGFRAME_SPURGEARS_AF"
+                                    name="asFoundObj.G_HOUSINGFRAME_SPURGEARS_AF"
+                                    class="project-box searchNSelect select-style" [readonly]="true" tappable
+                                    (click)="searchModal('jobids','G_HOUSINGFRAME_SPURGEARS_AF')">
+                                  </ion-input>
+                                  <ion-input *ngIf="asFoundObj.G_HOUSINGFRAME_SPURGEARS_AF == 'Other'"
+                                    [(ngModel)]="asFoundObj.G_HOUSINGFRAME_SPURGEARS_AFOT"
+                                    name="asFoundObj.G_HOUSINGFRAME_SPURGEARS_AFOT"
+                                    [ngClass]="!asFoundObj.G_HOUSINGFRAME_SPURGEARS_AFOT ? 'validation-error' : ''"
+                                    class="project-box otherBox">
+                                  </ion-input>
+                                </div>
+                              </div>
+                            </ion-row>
+                          </div>
+                        </div>
+                        <div class="strippedClass section">
+                          <div class="inline-block">
+                            <span class="accordion-label"> {{'Worm Gears' | translate}} </span>
+                          </div>
+                          <div class="accordion-content">
+                            <ion-row class="row">
+                              <div class="width-thirty">
+                                <div class="spacingMargin" id="AsFoundActuation_WormGears">
+                                  <ion-label class="label ionLabel"> {{'As Found' | translate}} </ion-label>
+                                  <ion-input [(ngModel)]="asFoundObj.G_HOUSINGFRAME_WORMGEARS_AF"
+                                    name="asFoundObj.G_HOUSINGFRAME_WORMGEARS_AF"
+                                    class="project-box searchNSelect select-style" [readonly]="true" tappable
+                                    (click)="searchModal('jobids','G_HOUSINGFRAME_WORMGEARS_AF')">
+                                  </ion-input>
+                                  <ion-input *ngIf="asFoundObj.G_HOUSINGFRAME_WORMGEARS_AF == 'Other'"
+                                    [(ngModel)]="asFoundObj.G_HOUSINGFRAME_WORMGEARS_AFOT"
+                                    name="asFoundObj.G_HOUSINGFRAME_WORMGEARS_AFOT"
+                                    [ngClass]="!asFoundObj.G_HOUSINGFRAME_WORMGEARS_AFOT ? 'validation-error' : ''"
+                                    class="project-box otherBox">
+                                  </ion-input>
+                                </div>
+                              </div>
+                            </ion-row>
+                          </div>
+                        </div>
+                        <div class="strippedClass section">
+                          <div class="inline-block">
+                            <span class="accordion-label"> {{'Worm Shafts' | translate}} </span>
+                          </div>
+                          <div class="accordion-content">
+                            <ion-row class="row">
+                              <div class="width-thirty">
+                                <div class="spacingMargin" id="AsFoundActuation_WormShafts">
+                                  <ion-label class="label ionLabel"> {{'As Found' | translate}} </ion-label>
+                                  <ion-input [(ngModel)]="asFoundObj.G_HOUSINGFRAME_WORMSHAFTS_AF"
+                                    name="asFoundObj.G_HOUSINGFRAME_WORMSHAFTS_AF"
+                                    class="project-box searchNSelect select-style" [readonly]="true" tappable
+                                    (click)="searchModal('jobids','G_HOUSINGFRAME_WORMSHAFTS_AF')">
+                                  </ion-input>
+                                  <ion-input *ngIf="asFoundObj.G_HOUSINGFRAME_WORMSHAFTS_AF == 'Other'"
+                                    [(ngModel)]="asFoundObj.G_HOUSINGFRAME_WORMSHAFTS_AFOT"
+                                    name="asFoundObj.G_HOUSINGFRAME_WORMSHAFTS_AFOT"
+                                    [ngClass]="!asFoundObj.G_HOUSINGFRAME_WORMSHAFTS_AFOT ? 'validation-error' : ''"
+                                    class="project-box otherBox">
+                                  </ion-input>
+                                </div>
+                              </div>
+                            </ion-row>
+                          </div>
+                        </div>
+                        <div class="strippedClass section">
+                          <div class="inline-block">
+                            <span class="accordion-label"> {{'Input Shaft/Pinion' | translate}} </span>
+                          </div>
+                          <div class="accordion-content">
+                            <ion-row class="row">
+                              <div class="width-thirty">
+                                <div class="spacingMargin" id="AsFoundActuation_InputShaftPinion">
+                                  <ion-label class="label ionLabel"> {{'As Found' | translate}} </ion-label>
+                                  <ion-input [(ngModel)]="asFoundObj.G_HOUSINGFRAME_INPUTSHAFTPINION_AF"
+                                    name="asFoundObj.G_HOUSINGFRAME_INPUTSHAFTPINION_AF"
+                                    class="project-box searchNSelect select-style" [readonly]="true" tappable
+                                    (click)="searchModal('jobids','G_HOUSINGFRAME_INPUTSHAFTPINION_AF')">
+                                  </ion-input>
+                                  <ion-input *ngIf="asFoundObj.G_HOUSINGFRAME_INPUTSHAFTPINION_AF == 'Other'"
+                                    [(ngModel)]="asFoundObj.G_HOUSINGFRAME_INPUTSHAFTPINION_AFOT"
+                                    name="asFoundObj.G_HOUSINGFRAME_INPUTSHAFTPINION_AFOT"
+                                    [ngClass]="!asFoundObj.G_HOUSINGFRAME_INPUTSHAFTPINION_AFOT ? 'validation-error' : ''"
+                                    class="project-box otherBox">
+                                  </ion-input>
+                                </div>
+                              </div>
+                            </ion-row>
+                          </div>
+                        </div>
+                        <div class="strippedClass section">
+                          <div class="inline-block">
+                            <span class="accordion-label"> {{'Bevel Gear' | translate}} </span>
+                          </div>
+                          <div class="accordion-content">
+                            <ion-row class="row">
+                              <div class="width-thirty">
+                                <div class="spacingMargin" id="AsFoundActuation_BevelGear">
+                                  <ion-label class="label ionLabel"> {{'As Found' | translate}} </ion-label>
+                                  <ion-input [(ngModel)]="asFoundObj.G_HOUSINGFRAME_BEVELGEAR_AF"
+                                    name="asFoundObj.G_HOUSINGFRAME_BEVELGEAR_AF"
+                                    class="project-box searchNSelect select-style" [readonly]="true" tappable
+                                    (click)="searchModal('jobids','G_HOUSINGFRAME_BEVELGEAR_AF')">
+                                  </ion-input>
+                                  <ion-input *ngIf="asFoundObj.G_HOUSINGFRAME_BEVELGEAR_AF == 'Other'"
+                                    [(ngModel)]="asFoundObj.G_HOUSINGFRAME_BEVELGEAR_AFOT"
+                                    name="asFoundObj.G_HOUSINGFRAME_BEVELGEAR_AFOT"
+                                    [ngClass]="!asFoundObj.G_HOUSINGFRAME_BEVELGEAR_AFOT ? 'validation-error' : ''"
+                                    class="project-box otherBox">
+                                  </ion-input>
+                                </div>
+                              </div>
+                            </ion-row>
+                          </div>
+                        </div>
+                        <div class="strippedClass section">
+                          <div class="inline-block">
+                            <span class="accordion-label"> {{'Bearings' | translate}}
+                            </span>
+                          </div>
+                          <div class="accordion-content">
+                            <ion-row class="row">
+                              <div class="width-thirty">
+                                <div class="spacingMargin" id="AsFoundActuation_Bearings">
+                                  <ion-label class="label ionLabel"> {{'As Found' | translate}} </ion-label>
+                                  <ion-input [(ngModel)]="asFoundObj.G_HOUSINGFRAME_BEARINGS_AF"
+                                    name="asFoundObj.G_HOUSINGFRAME_BEARINGS_AF"
+                                    class="project-box searchNSelect select-style" [readonly]="true" tappable
+                                    (click)="searchModal('jobids','G_HOUSINGFRAME_BEARINGS_AF')">
+                                  </ion-input>
+                                  <ion-input *ngIf="asFoundObj.G_HOUSINGFRAME_BEARINGS_AF == 'Other'"
+                                    [(ngModel)]="asFoundObj.G_HOUSINGFRAME_BEARINGS_AFOT"
+                                    name="asFoundObj.G_HOUSINGFRAME_BEARINGS_AFOT"
+                                    [ngClass]="!asFoundObj.G_HOUSINGFRAME_BEARINGS_AFOT ? 'validation-error' : ''"
+                                    class="project-box otherBox">
+                                  </ion-input>
+                                </div>
+                              </div>
+                            </ion-row>
+                          </div>
+                        </div>
+                        <div class="strippedClass section">
+                          <div class="inline-block">
+                            <span class="accordion-label"> {{'Race' | translate}} </span>
+                          </div>
+                          <div class="accordion-content">
+                            <ion-row class="row">
+                              <div class="width-thirty">
+                                <div class="spacingMargin" id="AsFoundActuation_AFce">
+                                  <ion-label class="label ionLabel"> {{'As Found' | translate}} </ion-label>
+                                  <ion-input [(ngModel)]="asFoundObj.G_HOUSINGFRAME_RACE_AF"
+                                    name="asFoundObj.G_HOUSINGFRAME_RACE_AF"
+                                    class="project-box searchNSelect select-style" [readonly]="true" tappable
+                                    (click)="searchModal('jobids','G_HOUSINGFRAME_RACE_AF')">
+                                  </ion-input>
+                                  <ion-input *ngIf="asFoundObj.G_HOUSINGFRAME_RACE_AF == 'Other'"
+                                    [(ngModel)]="asFoundObj.G_HOUSINGFRAME_RACE_AFOT"
+                                    name="asFoundObj.G_HOUSINGFRAME_RACE_AFOT"
+                                    [ngClass]="!asFoundObj.G_HOUSINGFRAME_RACE_AFOT ? 'validation-error' : ''"
+                                    class="project-box otherBox">
+                                  </ion-input>
+                                </div>
+                              </div>
+                            </ion-row>
+                          </div>
+                        </div>
+                        <div class="strippedClass section">
+                          <div class="inline-block">
+                            <span class="accordion-label"> {{'Lock Rings/Retainers' | translate}} </span>
+                          </div>
+                          <div class="accordion-content">
+                            <ion-row class="row">
+                              <div class="width-thirty">
+                                <div class="spacingMargin" id="AsFoundActuation_LockRingsRetainers">
+                                  <ion-label class="label ionLabel"> {{'As Found' | translate}} </ion-label>
+                                  <ion-input [(ngModel)]="asFoundObj.G_HOUSINGFRAME_LOCKRINGSRETAINERS_AF"
+                                    name="asFoundObj.G_HOUSINGFRAME_LOCKRINGSRETAINERS_AF"
+                                    class="project-box searchNSelect select-style" [readonly]="true" tappable
+                                    (click)="searchModal('jobids','G_HOUSINGFRAME_LOCKRINGSRETAINERS_AF')">
+                                  </ion-input>
+                                  <ion-input *ngIf="asFoundObj.G_HOUSINGFRAME_LOCKRINGSRETAINERS_AF == 'Other'"
+                                    [(ngModel)]="asFoundObj.G_HOUSINGFRAME_LOCKRINGSRETAINERS_AFOT"
+                                    name="asFoundObj.G_HOUSINGFRAME_LOCKRINGSRETAINERS_AFOT"
+                                    [ngClass]="!asFoundObj.G_HOUSINGFRAME_LOCKRINGSRETAINERS_AFOT ? 'validation-error' : ''"
+                                    class="project-box otherBox">
+                                  </ion-input>
+                                </div>
+                              </div>
+                            </ion-row>
+                          </div>
+                        </div>
+                        <div class="strippedClass section">
+                          <div class="inline-block">
+                            <span class="accordion-label"> {{'Rack' | translate}} </span>
+                          </div>
+                          <div class="accordion-content">
+                            <ion-row class="row">
+                              <div class="width-thirty">
+                                <div class="spacingMargin" id="AsFoundActuation_AFck">
+                                  <ion-label class="label ionLabel"> {{'As Found' | translate}} </ion-label>
+                                  <ion-input [(ngModel)]="asFoundObj.G_HOUSINGFRAME_RACK_AF"
+                                    name="asFoundObj.G_HOUSINGFRAME_RACK_AF"
+                                    class="project-box searchNSelect select-style" [readonly]="true" tappable
+                                    (click)="searchModal('jobids','G_HOUSINGFRAME_RACK_AF')">
+                                  </ion-input>
+                                  <ion-input *ngIf="asFoundObj.G_HOUSINGFRAME_RACK_AF == 'Other'"
+                                    [(ngModel)]="asFoundObj.G_HOUSINGFRAME_RACK_AFOT"
+                                    name="asFoundObj.G_HOUSINGFRAME_RACK_AFOT"
+                                    [ngClass]="!asFoundObj.G_HOUSINGFRAME_RACK_AFOT ? 'validation-error' : ''"
+                                    class="project-box otherBox">
+                                  </ion-input>
+                                </div>
+                              </div>
+                            </ion-row>
+                          </div>
+                        </div>
+                        <div class="strippedClass section">
+                          <div class="inline-block">
+                            <span class="accordion-label"> {{'Pinion' | translate}} </span>
+                          </div>
+                          <div class="accordion-content">
+                            <ion-row class="row">
+                              <div class="width-thirty">
+                                <div class="spacingMargin" id="AsFoundActuation_Pinion">
+                                  <ion-label class="label ionLabel"> {{'As Found' | translate}} </ion-label>
+                                  <ion-input [(ngModel)]="asFoundObj.G_HOUSINGFRAME_PINION_AF"
+                                    name="asFoundObj.G_HOUSINGFRAME_PINION_AF"
+                                    class="project-box searchNSelect select-style" [readonly]="true" tappable
+                                    (click)="searchModal('jobids','G_HOUSINGFRAME_PINION_AF')">
+                                  </ion-input>
+                                  <ion-input *ngIf="asFoundObj.G_HOUSINGFRAME_PINION_AF == 'Other'"
+                                    [(ngModel)]="asFoundObj.G_HOUSINGFRAME_PINION_AFOT"
+                                    name="asFoundObj.G_HOUSINGFRAME_PINION_AFOT"
+                                    [ngClass]="!asFoundObj.G_HOUSINGFRAME_PINION_AFOT ? 'validation-error' : ''"
+                                    class="project-box otherBox">
+                                  </ion-input>
+                                </div>
+                              </div>
+                            </ion-row>
+                          </div>
+                        </div>
+                        <div class="strippedClass section">
+                          <div class="inline-block">
+                            <span class="accordion-label"> {{'Mechanical Stops' | translate}} </span>
+                          </div>
+                          <div class="accordion-content">
+                            <ion-row class="row">
+                              <div class="width-thirty">
+                                <div class="spacingMargin" id="AsFoundActuation_MechanicalStops">
+                                  <ion-label class="label ionLabel"> {{'As Found' | translate}} </ion-label>
+                                  <ion-input [(ngModel)]="asFoundObj.G_HOUSINGFRAME_MECHANICALSTOPS_AF"
+                                    name="asFoundObj.G_HOUSINGFRAME_MECHANICALSTOPS_AF"
+                                    class="project-box searchNSelect select-style" [readonly]="true" tappable
+                                    (click)="searchModal('jobids','G_HOUSINGFRAME_MECHANICALSTOPS_AF')">
+                                  </ion-input>
+                                  <ion-input *ngIf="asFoundObj.G_HOUSINGFRAME_MECHANICALSTOPS_AF == 'Other'"
+                                    [(ngModel)]="asFoundObj.G_HOUSINGFRAME_MECHANICALSTOPS_AFOT"
+                                    name="asFoundObj.G_HOUSINGFRAME_MECHANICALSTOPS_AFOT"
+                                    [ngClass]="!asFoundObj.G_HOUSINGFRAME_MECHANICALSTOPS_AFOT ? 'validation-error' : ''"
+                                    class="project-box otherBox">
+                                  </ion-input>
+                                </div>
+                              </div>
+                            </ion-row>
+                          </div>
+                        </div>
+                        <div class="strippedClass section">
+                          <div class="inline-block">
+                            <span class="accordion-label"> {{'Stem Nut' | translate}} </span>
+                          </div>
+                          <div class="accordion-content">
+                            <ion-row class="row">
+                              <div class="width-thirty">
+                                <div class="spacingMargin" id="AsFoundActuation_StemNut">
+                                  <ion-label class="label ionLabel"> {{'As Found' | translate}} </ion-label>
+                                  <ion-input [(ngModel)]="asFoundObj.G_HOUSINGFRAME_STEMNUT_AF"
+                                    name="asFoundObj.G_HOUSINGFRAME_STEMNUT_AF"
+                                    class="project-box searchNSelect select-style" [readonly]="true" tappable
+                                    (click)="searchModal('jobids','G_HOUSINGFRAME_STEMNUT_AF')">
+                                  </ion-input>
+                                  <ion-input *ngIf="asFoundObj.G_HOUSINGFRAME_STEMNUT_AF == 'Other'"
+                                    [(ngModel)]="asFoundObj.G_HOUSINGFRAME_STEMNUT_AFOT"
+                                    name="asFoundObj.G_HOUSINGFRAME_STEMNUT_AFOT"
+                                    [ngClass]="!asFoundObj.G_HOUSINGFRAME_STEMNUT_AFOT ? 'validation-error' : ''"
+                                    class="project-box otherBox">
+                                  </ion-input>
+                                </div>
+                              </div>
+                            </ion-row>
+                          </div>
+                        </div>
+                        <div class="strippedClass section">
+                          <div class="inline-block">
+                            <span class="accordion-label"> {{'Bushing' | translate}} </span>
+                          </div>
+                          <div class="accordion-content">
+                            <ion-row class="row">
+                              <div class="width-thirty">
+                                <div class="spacingMargin" id="AsFoundActuation_Bushing">
+                                  <ion-label class="label ionLabel"> {{'As Found' | translate}} </ion-label>
+                                  <ion-input [(ngModel)]="asFoundObj.G_HOUSINGFRAME_BUSHING_AF"
+                                    name="asFoundObj.G_HOUSINGFRAME_BUSHING_AF"
+                                    class="project-box searchNSelect select-style" [readonly]="true" tappable
+                                    (click)="searchModal('jobids','G_HOUSINGFRAME_BUSHING_AF')">
+                                  </ion-input>
+                                  <ion-input *ngIf="asFoundObj.G_HOUSINGFRAME_BUSHING_AF == 'Other'"
+                                    [(ngModel)]="asFoundObj.G_HOUSINGFRAME_BUSHING_AFOT"
+                                    name="asFoundObj.G_HOUSINGFRAME_BUSHING_AFOT"
+                                    [ngClass]="!asFoundObj.G_HOUSINGFRAME_BUSHING_AFOT ? 'validation-error' : ''"
+                                    class="project-box otherBox">
+                                  </ion-input>
+                                </div>
+                              </div>
+                            </ion-row>
+                          </div>
+                        </div>
+                        <div class="strippedClass section">
+                          <div class="inline-block">
+                            <span class="accordion-label"> {{'Hardware' | translate}} </span>
+                          </div>
+                          <div class="accordion-content">
+                            <ion-row class="row">
+                              <div class="width-thirty">
+                                <div class="spacingMargin" id="AsFoundActuation_GHardware">
+                                  <ion-label class="label ionLabel"> {{'As Found' | translate}} </ion-label>
+                                  <ion-input [(ngModel)]="asFoundObj.G_HOUSINGFRAME_HARDWARE_AF"
+                                    name="asFoundObj.G_HOUSINGFRAME_HARDWARE_AF"
+                                    class="project-box searchNSelect select-style" [readonly]="true" tappable
+                                    (click)="searchModal('jobids','G_HOUSINGFRAME_HARDWARE_AF')">
+                                  </ion-input>
+                                  <ion-input *ngIf="asFoundObj.G_HOUSINGFRAME_HARDWARE_AF == 'Other'"
+                                    [(ngModel)]="asFoundObj.G_HOUSINGFRAME_HARDWARE_AFOT"
+                                    name="asFoundObj.G_HOUSINGFRAME_HARDWARE_AFOT"
+                                    [ngClass]="!asFoundObj.G_HOUSINGFRAME_HARDWARE_AFOT ? 'validation-error' : ''"
+                                    class="project-box otherBox">
+                                  </ion-input>
+                                </div>
+                              </div>
+                            </ion-row>
+                          </div>
+                        </div>
+                        <div class="strippedClass section">
+                          <div class="inline-block">
+                            <span class="accordion-label"> {{'Seals' | translate}} </span>
+                          </div>
+                          <div class="accordion-content">
+                            <ion-row class="row">
+                              <div class="width-thirty">
+                                <div class="spacingMargin" id="AsFoundActuation_GSeals">
+                                  <ion-label class="label ionLabel"> {{'As Found' | translate}} </ion-label>
+                                  <ion-input [(ngModel)]="asFoundObj.G_HOUSINGFRAME_SEALS_AF"
+                                    name="asFoundObj.G_HOUSINGFRAME_SEALS_AF"
+                                    class="project-box searchNSelect select-style" [readonly]="true" tappable
+                                    (click)="searchModal('jobids','G_HOUSINGFRAME_SEALS_AF')">
+                                  </ion-input>
+                                  <ion-input *ngIf="asFoundObj.G_HOUSINGFRAME_SEALS_AF == 'Other'"
+                                    [(ngModel)]="asFoundObj.G_HOUSINGFRAME_SEALS_AFOT"
+                                    name="asFoundObj.G_HOUSINGFRAME_SEALS_AFOT"
+                                    [ngClass]="!asFoundObj.G_HOUSINGFRAME_SEALS_AFOT ? 'validation-error' : ''"
+                                    class="project-box otherBox">
+                                  </ion-input>
+                                </div>
+                              </div>
+                            </ion-row>
+                          </div>
+                        </div>
+                        <div class="strippedClass section">
+                          <div class="inline-block">
+                            <span class="accordion-label"> {{'Thrust Base' | translate}} </span>
+                          </div>
+                          <div class="accordion-content">
+                            <ion-row class="row">
+                              <div class="width-thirty">
+                                <div class="spacingMargin" id="AsFoundActuation_ThrustBase">
+                                  <ion-label class="label ionLabel"> {{'As Found' | translate}} </ion-label>
+                                  <ion-input [(ngModel)]="asFoundObj.G_HOUSINGFRAME_THRUSTBASE_AF"
+                                    name="asFoundObj.G_HOUSINGFRAME_THRUSTBASE_AF"
+                                    class="project-box searchNSelect select-style" [readonly]="true" tappable
+                                    (click)="searchModal('jobids','G_HOUSINGFRAME_THRUSTBASE_AF')">
+                                  </ion-input>
+                                  <ion-input *ngIf="asFoundObj.G_HOUSINGFRAME_THRUSTBASE_AF == 'Other'"
+                                    [(ngModel)]="asFoundObj.G_HOUSINGFRAME_THRUSTBASE_AFOT"
+                                    name="asFoundObj.G_HOUSINGFRAME_THRUSTBASE_AFOT"
+                                    [ngClass]="!asFoundObj.G_HOUSINGFRAME_THRUSTBASE_AFOT ? 'validation-error' : ''"
+                                    class="project-box otherBox">
+                                  </ion-input>
+                                </div>
+                              </div>
+                            </ion-row>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </ion-row>
+          </div>
+        </div>
+        <div class="header-padding">
+          <div class="section headerBorderBottom pointer">
+            <div
+              [ngClass]="asFoundObj.G_SPURGEAR_NA == 'true' || asFoundObj.G_SPURGEAR_NA == true ? 'disable-content' : ''"
+              (click)="expandOuter('GearboxSpurGear')" class="inline-block">
+              <ion-icon class="arrowIcon" item-left name="arrow-dropright"
+                *ngIf="!expandOuterAccordion.GearboxSpurGear">
+              </ion-icon>
+              <ion-icon class="arrowIcon" role="img" *ngIf="expandOuterAccordion.GearboxSpurGear"
+                aria-label="arrow dropdown" name="arrow-dropdown"></ion-icon>
+              <span class="accordion-label"> {{'Spur Gear' | translate}} </span>
+            </div>
+            <div class="inline-block pull-right">
+              <div class="spacingMargin">
+                <div class="WF-checkbox">
+                  <span class="label">{{'N/A' | translate}}</span>
+                  <ion-checkbox (click)="confirmAlert(asFoundObj.G_SPURGEAR_NA, 'GearboxSpurGear', 'G_SPURGEAR_ALNA')"
+                    [checked]="asFoundObj.G_SPURGEAR_NA == 'true' || asFoundObj.G_SPURGEAR_NA == true"
+                    [(ngModel)]="asFoundObj.G_SPURGEAR_NA" color="dark">
+                  </ion-checkbox>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="expandOuterAccordion.GearboxSpurGear" class="content">
+            <ion-row class="row">
+              <div class="global-padding width-thirtythree">
+                <div class="spacingMargin">
+                  <span class="label ionLabel"> {{'As Found' | translate}} </span>
+                  <ion-input [(ngModel)]="asFoundObj.G_SPURGEAR_AF" name="asFoundObj.G_SPURGEAR_AF"
+                    class="project-box searchNSelect select-style" [readonly]="true" tappable
+                    (click)="searchModalSet('jobids','G_SPURGEAR_AF','GearBoxSpurGear')">
+                  </ion-input>
+                  <ion-input *ngIf="asFoundObj.G_SPURGEAR_AF == 'Other'" [(ngModel)]="asFoundObj.G_SPURGEAR_AFOT"
+                    name="asFoundObj.G_SPURGEAR_AFOT" [ngClass]="!asFoundObj.G_SPURGEAR_AFOT ? 'validation-error' : ''"
+                    class="project-box otherBox">
+                  </ion-input>
+                </div>
+              </div>
+              <div class="global-padding width-sixtyseven">
+                <div class="spacingMargin">
+                  <span class="label ionLabel"> {{'Comment' | translate}} </span>
+                  <ion-textarea (ionChange)="asFoundValChanged($event)" [(ngModel)]="asFoundObj.G_SPURGEAR_AFC"
+                    (focusout)="asFoundObj.G_SPURGEAR_AFC = utilityProvider.sliceValueUptoLimit($event.target.value, $event.target.maxLength)"
+                    class="input  WF-textArea" maxlength="2000" rows="3">
+                  </ion-textarea>
+                </div>
+              </div>
+              <div class="global-padding width-hundered">
+                <div class="spacingMargin">
+                  <div class="accordion-ListView">
+                    <div class="inline-block accordion-ListView">
+                      <div (click)="expandInner('SpurGearComponents')" class="lisviewToggleIcon pointer">
+                        <ion-icon class="arrowIcon" item-left name="arrow-dropright"
+                          *ngIf="expandInnerAccordion != 'SpurGearComponents'">
+                        </ion-icon>
+                        <ion-icon class="arrowIcon" role="img" *ngIf="expandInnerAccordion == 'SpurGearComponents'"
+                          aria-label="arrow dropdown" name="arrow-dropdown"></ion-icon>
+                        <span class="accordion-label">{{'Spur Gear Components' | translate}}</span>
+                      </div>
+                      <div *ngIf="expandInnerAccordion == 'SpurGearComponents'" class="accordion-ListView">
+                        <div class="strippedClass section">
+                          <div class="inline-block">
+                            <span class="accordion-label"> {{'Gearbox Housing' | translate}} </span>
+                          </div>
+                          <div class="accordion-content">
+                            <ion-row class="row">
+                              <div class="width-thirty">
+                                <div class="spacingMargin" id="AsFoundActuation_SGearboxHousing">
+                                  <ion-label class="label ionLabel"> {{'As Found' | translate}} </ion-label>
+                                  <ion-input [(ngModel)]="asFoundObj.G_SPURGEAR_G_HOUSING_AF"
+                                    name="asFoundObj.G_SPURGEAR_G_HOUSING_AF"
+                                    class="project-box searchNSelect select-style" [readonly]="true" tappable
+                                    (click)="searchModal('jobids','G_SPURGEAR_G_HOUSING_AF')">
+                                  </ion-input>
+                                  <ion-input *ngIf="asFoundObj.G_SPURGEAR_G_HOUSING_AF == 'Other'"
+                                    [(ngModel)]="asFoundObj.G_SPURGEAR_G_HOUSING_AFOT"
+                                    name="asFoundObj.G_SPURGEAR_G_HOUSING_AFOT"
+                                    [ngClass]="!asFoundObj.G_SPURGEAR_G_HOUSING_AFOT ? 'validation-error' : ''"
+                                    class="project-box otherBox">
+                                  </ion-input>
+                                </div>
+                              </div>
+                            </ion-row>
+                          </div>
+                        </div>
+                        <div class="strippedClass section">
+                          <div class="inline-block">
+                            <span class="accordion-label"> {{'Spur Gears' | translate}} </span>
+                          </div>
+                          <div class="accordion-content">
+                            <ion-row class="row">
+                              <div class="width-thirty">
+                                <div class="spacingMargin" id="AsFoundActuation_SpurGears">
+                                  <ion-label class="label ionLabel"> {{'As Found' | translate}} </ion-label>
+                                  <ion-input [(ngModel)]="asFoundObj.G_SPURGEAR_PURGEARS_AF"
+                                    name="asFoundObj.G_SPURGEAR_PURGEARS_AF"
+                                    class="project-box searchNSelect select-style" [readonly]="true" tappable
+                                    (click)="searchModal('jobids','G_SPURGEAR_PURGEARS_AF')">
+                                  </ion-input>
+                                  <ion-input *ngIf="asFoundObj.G_SPURGEAR_PURGEARS_AF == 'Other'"
+                                    [(ngModel)]="asFoundObj.G_SPURGEAR_PURGEARS_AFOT"
+                                    name="asFoundObj.G_SPURGEAR_PURGEARS_AFOT"
+                                    [ngClass]="!asFoundObj.G_SPURGEAR_PURGEARS_AFOT ? 'validation-error' : ''"
+                                    class="project-box otherBox">
+                                  </ion-input>
+                                </div>
+                              </div>
+                            </ion-row>
+                          </div>
+                        </div>
+                        <div class="strippedClass section">
+                          <div class="inline-block">
+                            <span class="accordion-label"> {{'Input Shaft/Pinion' | translate}} </span>
+                          </div>
+                          <div class="accordion-content">
+                            <ion-row class="row">
+                              <div class="width-thirty">
+                                <div class="spacingMargin" id="AsFoundActuation_SInputShaftPinion">
+                                  <ion-label class="label ionLabel"> {{'As Found' | translate}} </ion-label>
+                                  <ion-input [(ngModel)]="asFoundObj.G_SPURGEAR_INPUTSHAFTPINION_AF"
+                                    name="asFoundObj.G_SPURGEAR_INPUTSHAFTPINION_AF"
+                                    class="project-box searchNSelect select-style" [readonly]="true" tappable
+                                    (click)="searchModal('jobids','G_SPURGEAR_INPUTSHAFTPINION_AF')">
+                                  </ion-input>
+                                  <ion-input *ngIf="asFoundObj.G_SPURGEAR_INPUTSHAFTPINION_AF == 'Other'"
+                                    [(ngModel)]="asFoundObj.G_SPURGEAR_INPUTSHAFTPINION_AFOT"
+                                    name="asFoundObj.G_SPURGEAR_INPUTSHAFTPINION_AFOT"
+                                    [ngClass]="!asFoundObj.G_SPURGEAR_INPUTSHAFTPINION_AFOT ? 'validation-error' : ''"
+                                    class="project-box otherBox">
+                                  </ion-input>
+                                </div>
+                              </div>
+                            </ion-row>
+                          </div>
+                        </div>
+                        <div class="strippedClass section">
+                          <div class="inline-block">
+                            <span class="accordion-label"> {{'Bearings' | translate}} </span>
+                          </div>
+                          <div class="accordion-content">
+                            <ion-row class="row">
+                              <div class="width-thirty">
+                                <div class="spacingMargin" id="AsFoundActuation_SBearings">
+                                  <ion-label class="label ionLabel"> {{'As Found' | translate}} </ion-label>
+                                  <ion-input [(ngModel)]="asFoundObj.G_SPURGEAR_BEARINGS_AF"
+                                    name="asFoundObj.G_SPURGEAR_BEARINGS_AF"
+                                    class="project-box searchNSelect select-style" [readonly]="true" tappable
+                                    (click)="searchModal('jobids','G_SPURGEAR_BEARINGS_AF')">
+                                  </ion-input>
+                                  <ion-input *ngIf="asFoundObj.G_SPURGEAR_BEARINGS_AF == 'Other'"
+                                    [(ngModel)]="asFoundObj.G_SPURGEAR_BEARINGS_AFOT"
+                                    name="asFoundObj.G_SPURGEAR_BEARINGS_AFOT"
+                                    [ngClass]="!asFoundObj.G_SPURGEAR_BEARINGS_AFOT ? 'validation-error' : ''"
+                                    class="project-box otherBox">
+                                  </ion-input>
+                                </div>
+                              </div>
+                            </ion-row>
+                          </div>
+                        </div>
+                        <div class="strippedClass section">
+                          <div class="inline-block">
+                            <span class="accordion-label"> {{'Race' | translate}} </span>
+                          </div>
+                          <div class="accordion-content">
+                            <ion-row class="row">
+                              <div class="width-thirty">
+                                <div class="spacingMargin" id="AsFoundActuation_SRace">
+                                  <ion-label class="label ionLabel"> {{'As Found' | translate}} </ion-label>
+                                  <ion-input [(ngModel)]="asFoundObj.G_SPURGEAR_RACE_AF"
+                                    name="asFoundObj.G_SPURGEAR_RACE_AF" class="project-box searchNSelect select-style"
+                                    [readonly]="true" tappable (click)="searchModal('jobids','G_SPURGEAR_RACE_AF')">
+                                  </ion-input>
+                                  <ion-input *ngIf="asFoundObj.G_SPURGEAR_RACE_AF == 'Other'"
+                                    [(ngModel)]="asFoundObj.G_SPURGEAR_RACE_AFOT" name="asFoundObj.G_SPURGEAR_RACE_AFOT"
+                                    [ngClass]="!asFoundObj.G_SPURGEAR_RACE_AFOT ? 'validation-error' : ''"
+                                    class="project-box otherBox">
+                                  </ion-input>
+                                </div>
+                              </div>
+                            </ion-row>
+                          </div>
+                        </div>
+                        <div class="strippedClass section">
+                          <div class="inline-block">
+                            <span class="accordion-label">
+                              {{'Lock Rings/Retainers' | translate}} </span>
+                          </div>
+                          <div class="accordion-content">
+                            <ion-row class="row">
+                              <div class="width-thirty">
+                                <div class="spacingMargin" id="AsFoundActuation_SLockRingsRetainers">
+                                  <ion-label class="label ionLabel"> {{'As Found' | translate}} </ion-label>
+                                  <ion-input [(ngModel)]="asFoundObj.G_SPURGEAR_LOCKRINGSRETAINERS_AF"
+                                    name="asFoundObj.G_SPURGEAR_LOCKRINGSRETAINERS_AF"
+                                    class="project-box searchNSelect select-style" [readonly]="true" tappable
+                                    (click)="searchModal('jobids','G_SPURGEAR_LOCKRINGSRETAINERS_AF')">
+                                  </ion-input>
+                                  <ion-input *ngIf="asFoundObj.G_SPURGEAR_LOCKRINGSRETAINERS_AF == 'Other'"
+                                    [(ngModel)]="asFoundObj.G_SPURGEAR_LOCKRINGSRETAINERS_AFOT"
+                                    name="asFoundObj.G_SPURGEAR_LOCKRINGSRETAINERS_AFOT"
+                                    [ngClass]="!asFoundObj.G_SPURGEAR_LOCKRINGSRETAINERS_AFOT ? 'validation-error' : ''"
+                                    class="project-box otherBox">
+                                  </ion-input>
+                                </div>
+                              </div>
+                            </ion-row>
+                          </div>
+                        </div>
+                        <div class="strippedClass section">
+                          <div class="inline-block">
+                            <span class="accordion-label"> {{'Stem Nut' | translate}} </span>
+                          </div>
+                          <div class="accordion-content">
+                            <ion-row class="row">
+                              <div class="width-thirty">
+                                <div class="spacingMargin" id="AsFoundActuation_SStemNut">
+                                  <ion-label class="label ionLabel"> {{'As Found' | translate}} </ion-label>
+                                  <ion-input [(ngModel)]="asFoundObj.G_SPURGEAR_STEMNUT_AF"
+                                    name="asFoundObj.G_SPURGEAR_STEMNUT_AF"
+                                    class="project-box searchNSelect select-style" [readonly]="true" tappable
+                                    (click)="searchModal('jobids','G_SPURGEAR_STEMNUT_AF')">
+                                  </ion-input>
+                                  <ion-input *ngIf="asFoundObj.G_SPURGEAR_STEMNUT_AF == 'Other'"
+                                    [(ngModel)]="asFoundObj.G_SPURGEAR_STEMNUT_AFOT"
+                                    name="asFoundObj.G_SPURGEAR_STEMNUT_AFOT"
+                                    [ngClass]="!asFoundObj.G_SPURGEAR_STEMNUT_AFOT ? 'validation-error' : ''"
+                                    class="project-box otherBox">
+                                  </ion-input>
+                                </div>
+                              </div>
+                            </ion-row>
+                          </div>
+                        </div>
+                        <div class="strippedClass section">
+                          <div class="inline-block">
+                            <span class="accordion-label"> {{'Bushing' | translate}}
+                            </span>
+                          </div>
+                          <div class="accordion-content">
+                            <ion-row class="row">
+                              <div class="width-thirty">
+                                <div class="spacingMargin" id="AsFoundActuation_SBushing">
+                                  <ion-label class="label ionLabel"> {{'As Found' | translate}} </ion-label>
+                                  <ion-input [(ngModel)]="asFoundObj.G_SPURGEAR_BUSHING_AF"
+                                    name="asFoundObj.G_SPURGEAR_BUSHING_AF"
+                                    class="project-box searchNSelect select-style" [readonly]="true" tappable
+                                    (click)="searchModal('jobids','G_SPURGEAR_BUSHING_AF')">
+                                  </ion-input>
+                                  <ion-input *ngIf="asFoundObj.G_SPURGEAR_BUSHING_AF == 'Other'"
+                                    [(ngModel)]="asFoundObj.G_SPURGEAR_BUSHING_AFOT"
+                                    name="asFoundObj.G_SPURGEAR_BUSHING_AFOT"
+                                    [ngClass]="!asFoundObj.G_SPURGEAR_BUSHING_AFOT ? 'validation-error' : ''"
+                                    class="project-box otherBox">
+                                  </ion-input>
+                                </div>
+                              </div>
+                            </ion-row>
+                          </div>
+                        </div>
+                        <div class="strippedClass section">
+                          <div class="inline-block">
+                            <span class="accordion-label"> {{'Hardware' | translate}}
+                            </span>
+                          </div>
+                          <div class="accordion-content">
+                            <ion-row class="row">
+                              <div class="width-thirty">
+                                <div class="spacingMargin" id="AsFoundActuation_SHardware">
+                                  <ion-label class="label ionLabel"> {{'As Found' | translate}} </ion-label>
+                                  <ion-input [(ngModel)]="asFoundObj.G_SPURGEAR_HARDWARE_AF"
+                                    name="asFoundObj.G_SPURGEAR_HARDWARE_AF"
+                                    class="project-box searchNSelect select-style" [readonly]="true" tappable
+                                    (click)="searchModal('jobids','G_SPURGEAR_HARDWARE_AF')">
+                                  </ion-input>
+                                  <ion-input *ngIf="asFoundObj.G_SPURGEAR_HARDWARE_AF == 'Other'"
+                                    [(ngModel)]="asFoundObj.G_SPURGEAR_HARDWARE_AFOT"
+                                    name="asFoundObj.G_SPURGEAR_HARDWARE_AFOT"
+                                    [ngClass]="!asFoundObj.G_SPURGEAR_HARDWARE_AFOT ? 'validation-error' : ''"
+                                    class="project-box otherBox">
+                                  </ion-input>
+                                </div>
+                              </div>
+                            </ion-row>
+                          </div>
+                        </div>
+                        <div class="strippedClass section">
+                          <div class="inline-block">
+                            <span class="accordion-label"> {{'Seals' | translate}}
+                            </span>
+                          </div>
+                          <div class="accordion-content">
+                            <ion-row class="row">
+                              <div class="width-thirty">
+                                <div class="spacingMargin" id="AsFoundActuation_SSeals">
+                                  <ion-label class="label ionLabel"> {{'As Found' | translate}} </ion-label>
+                                  <ion-input [(ngModel)]="asFoundObj.G_SPURGEAR_SEALS_AF"
+                                    name="asFoundObj.G_SPURGEAR_SEALS_AF" class="project-box searchNSelect select-style"
+                                    [readonly]="true" tappable (click)="searchModal('jobids','G_SPURGEAR_SEALS_AF')">
+                                  </ion-input>
+                                  <ion-input *ngIf="asFoundObj.G_SPURGEAR_SEALS_AF == 'Other'"
+                                    [(ngModel)]="asFoundObj.G_SPURGEAR_SEALS_AFOT"
+                                    name="asFoundObj.G_SPURGEAR_SEALS_AFOT"
+                                    [ngClass]="!asFoundObj.G_SPURGEAR_SEALS_AFOT ? 'validation-error' : ''"
+                                    class="project-box otherBox">
+                                  </ion-input>
+                                </div>
+                              </div>
+                            </ion-row>
+                          </div>
+                        </div>
+                        <div class="strippedClass section">
+                          <div class="inline-block">
+                            <span class="accordion-label"> {{'Thrust Base' | translate}}
+                            </span>
+                          </div>
+                          <div class="accordion-content">
+                            <ion-row class="row">
+                              <div class="width-thirty">
+                                <div class="spacingMargin" id="AsFoundActuation_SThrustBase">
+                                  <ion-label class="label ionLabel"> {{'As Found' | translate}} </ion-label>
+                                  <ion-input [(ngModel)]="asFoundObj.G_SPURGEAR_THRUSTBASE_AF"
+                                    name="asFoundObj.G_SPURGEAR_THRUSTBASE_AF"
+                                    class="project-box searchNSelect select-style" [readonly]="true" tappable
+                                    (click)="searchModal('jobids','G_SPURGEAR_THRUSTBASE_AF')">
+                                  </ion-input>
+                                  <ion-input *ngIf="asFoundObj.G_SPURGEAR_THRUSTBASE_AF == 'Other'"
+                                    [(ngModel)]="asFoundObj.G_SPURGEAR_THRUSTBASE_AFOT"
+                                    name="asFoundObj.G_SPURGEAR_THRUSTBASE_AFOT"
+                                    [ngClass]="!asFoundObj.G_SPURGEAR_THRUSTBASE_AFOT ? 'validation-error' : ''"
+                                    class="project-box otherBox">
+                                  </ion-input>
+                                </div>
+                              </div>
+                            </ion-row>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </ion-row>
+          </div>
+        </div>
+        <div class="header-padding">
+          <div class="section headerBorderBottom pointer">
+            <div
+              [ngClass]="asFoundObj.G_ACCESSORIES_NA == 'true' || asFoundObj.G_ACCESSORIES_NA == true ? 'disable-content' : ''"
+              (click)="expandOuter('GearBoxAccessories')" class="inline-block">
+              <ion-icon class="arrowIcon" item-left name="arrow-dropright"
+                *ngIf="!expandOuterAccordion.GearBoxAccessories"></ion-icon>
+              <ion-icon class="arrowIcon" role="img" *ngIf="expandOuterAccordion.GearBoxAccessories"
+                aria-label="arrow dropdown" name="arrow-dropdown"></ion-icon>
+              <span class="accordion-label"> {{'Accessories' | translate}} </span>
+            </div>
+            <div class="inline-block pull-right">
+              <div class="spacingMargin">
+                <div class="WF-checkbox">
+                  <span class="label">{{'N/A' | translate}}</span>
+                  <ion-checkbox
+                    (click)="confirmAlert(asFoundObj.G_ACCESSORIES_NA, 'GearBoxAccessories', 'G_ACCESSORIES_ALNA')"
+                    [checked]="asFoundObj.G_ACCESSORIES_NA == 'true' || asFoundObj.G_ACCESSORIES_NA == true"
+                    [(ngModel)]="asFoundObj.G_ACCESSORIES_NA" color="dark">
+                  </ion-checkbox>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="expandOuterAccordion.GearBoxAccessories" class="content">
+            <ion-row class="row">
+              <div class="global-padding width-thirtythree">
+                <div class="spacingMargin">
+                  <ion-label class="label ionLabel"> {{'As Found' | translate}} </ion-label>
+                  <ion-input [(ngModel)]="asFoundObj.G_ACCESSORIES_AF" name="asFoundObj.G_ACCESSORIES_AF"
+                    class="project-box searchNSelect select-style" [readonly]="true" tappable
+                    (click)="searchModalSet('jobids','G_ACCESSORIES_AF','GearBoxAccessories')">
+                  </ion-input>
+                  <ion-input *ngIf="asFoundObj.G_ACCESSORIES_AF == 'Other'" [(ngModel)]="asFoundObj.G_ACCESSORIES_AFOT"
+                    name="asFoundObj.G_ACCESSORIES_AFOT"
+                    [ngClass]="!asFoundObj.G_ACCESSORIES_AFOT ? 'validation-error' : ''" class="project-box otherBox">
+                  </ion-input>
+                </div>
+              </div>
+              <div class="global-padding width-sixtyseven">
+                <div class="spacingMargin">
+                  <ion-label class="label ionLabel"> {{'Comment' | translate}} </ion-label>
+                  <ion-textarea (ionChange)="asFoundValChanged($event)" [(ngModel)]="asFoundObj.G_ACCESSORIES_AFC"
+                    (focusout)="asFoundObj.G_ACCESSORIES_AFC = utilityProvider.sliceValueUptoLimit($event.target.value, $event.target.maxLength)"
+                    class="input  WF-textArea" maxlength="2000" rows="3">
+                  </ion-textarea>
+                </div>
+              </div>
+              <div class="global-padding width-hundered">
+                <div class="spacingMargin">
+                  <div class="accordion-ListView">
+                    <div class="inline-block accordion-ListView">
+                      <div (click)="expandInner('GearboxAccessoriesComponents')" class="lisviewToggleIcon pointer">
+                        <ion-icon class="arrowIcon" item-left name="arrow-dropright"
+                          *ngIf="expandInnerAccordion != 'GearboxAccessoriesComponents'">
+                        </ion-icon>
+                        <ion-icon class="arrowIcon" role="img"
+                          *ngIf="expandInnerAccordion == 'GearboxAccessoriesComponents'" aria-label="arrow dropdown"
+                          name="arrow-dropdown"></ion-icon>
+                        <span class="accordion-label">{{'Accessories Components' | translate}}</span>
+                      </div>
+                      <div *ngIf="expandInnerAccordion == 'GearboxAccessoriesComponents'" class="accordion-ListView">
+                        <div class="strippedClass section">
+                          <div class="inline-block">
+                            <span class="accordion-label"> {{'Hand-Wheel' | translate}} </span>
+                          </div>
+                          <div class="accordion-content">
+                            <ion-row class="row">
+                              <div class="width-thirty">
+                                <div class="spacingMargin" id="AsFoundActuation_AHandWheel">
+                                  <ion-label class="label ionLabel"> {{'As Found' | translate}} </ion-label>
+                                  <ion-input [(ngModel)]="asFoundObj.G_ACCESSORIES_HANDWHEEL_AF"
+                                    name="asFoundObj.G_ACCESSORIES_HANDWHEEL_AF"
+                                    class="project-box searchNSelect select-style" [readonly]="true" tappable
+                                    (click)="searchModal('jobids','G_ACCESSORIES_HANDWHEEL_AF')">
+                                  </ion-input>
+                                  <ion-input *ngIf="asFoundObj.G_ACCESSORIES_HANDWHEEL_AF == 'Other'"
+                                    [(ngModel)]="asFoundObj.G_ACCESSORIES_HANDWHEEL_AFOT"
+                                    name="asFoundObj.G_ACCESSORIES_HANDWHEEL_AFOT"
+                                    [ngClass]="!asFoundObj.G_ACCESSORIES_HANDWHEEL_AFOT ? 'validation-error' : ''"
+                                    class="project-box otherBox">
+                                  </ion-input>
+                                </div>
+                              </div>
+                            </ion-row>
+                          </div>
+                        </div>
+                        <div class="strippedClass section">
+                          <div class="inline-block">
+                            <span class="accordion-label"> {{'Hex Nut' | translate}} </span>
+                          </div>
+                          <div class="accordion-content">
+                            <ion-row class="row">
+                              <div class="width-thirty">
+                                <div class="spacingMargin" id="AsFoundActuation_AHexNut">
+                                  <ion-label class="label ionLabel"> {{'As Found' | translate}} </ion-label>
+                                  <ion-input [(ngModel)]="asFoundObj.G_ACCESSORIES_HEXNUT_AF"
+                                    name="asFoundObj.G_ACCESSORIES_HEXNUT_AF"
+                                    class="project-box searchNSelect select-style" [readonly]="true" tappable
+                                    (click)="searchModal('jobids','G_ACCESSORIES_HEXNUT_AF')">
+                                  </ion-input>
+                                  <ion-input *ngIf="asFoundObj.G_ACCESSORIES_HEXNUT_AF == 'Other'"
+                                    [(ngModel)]="asFoundObj.G_ACCESSORIES_HEXNUT_AFOT"
+                                    name="asFoundObj.G_ACCESSORIES_HEXNUT_AFOT"
+                                    [ngClass]="!asFoundObj.G_ACCESSORIES_HEXNUT_AFOT ? 'validation-error' : ''"
+                                    class="project-box otherBox">
+                                  </ion-input>
+                                </div>
+                              </div>
+                            </ion-row>
+                          </div>
+                        </div>
+                        <div class="strippedClass section">
+                          <div class="inline-block">
+                            <span class="accordion-label"> {{'Torque Tender' | translate}} </span>
+                          </div>
+                          <div class="accordion-content">
+                            <ion-row class="row">
+                              <div class="width-thirty">
+                                <div class="spacingMargin" id="AsFoundActuation_ATorqueTender">
+                                  <ion-label class="label ionLabel"> {{'As Found' | translate}} </ion-label>
+                                  <ion-input [(ngModel)]="asFoundObj.G_ACCESSORIES_TORQUETENDER_AF"
+                                    name="asFoundObj.G_ACCESSORIES_TORQUETENDER_AF"
+                                    class="project-box searchNSelect select-style" [readonly]="true" tappable
+                                    (click)="searchModal('jobids','G_ACCESSORIES_TORQUETENDER_AF')">
+                                  </ion-input>
+                                  <ion-input *ngIf="asFoundObj.G_ACCESSORIES_TORQUETENDER_AF == 'Other'"
+                                    [(ngModel)]="asFoundObj.G_ACCESSORIES_TORQUETENDER_AFOT"
+                                    name="asFoundObj.G_ACCESSORIES_TORQUETENDER_AFOT"
+                                    [ngClass]="!asFoundObj.G_ACCESSORIES_TORQUETENDER_AFOT ? 'validation-error' : ''"
+                                    class="project-box otherBox">
+                                  </ion-input>
+                                </div>
+                              </div>
+                            </ion-row>
+                          </div>
+                        </div>
+                        <div class="strippedClass section">
+                          <div class="inline-block">
+                            <span class="accordion-label"> {{'Limit Switch' | translate}} </span>
+                          </div>
+                          <div class="accordion-content">
+                            <ion-row class="row">
+                              <div class="width-thirty">
+                                <div class="spacingMargin" id="AsFoundActuation_ALimitSwitch">
+                                  <ion-label class="label ionLabel"> {{'As Found' | translate}} </ion-label>
+                                  <ion-input [(ngModel)]="asFoundObj.G_ACCESSORIES_LIMITSWITCH_AF"
+                                    name="asFoundObj.G_ACCESSORIES_LIMITSWITCH_AF"
+                                    class="project-box searchNSelect select-style" [readonly]="true" tappable
+                                    (click)="searchModal('jobids','G_ACCESSORIES_LIMITSWITCH_AF')">
+                                  </ion-input>
+                                  <ion-input *ngIf="asFoundObj.G_ACCESSORIES_LIMITSWITCH_AF == 'Other'"
+                                    [(ngModel)]="asFoundObj.G_ACCESSORIES_LIMITSWITCH_AFOT"
+                                    name="asFoundObj.G_ACCESSORIES_LIMITSWITCH_AFOT"
+                                    [ngClass]="!asFoundObj.G_ACCESSORIES_LIMITSWITCH_AFOT ? 'validation-error' : ''"
+                                    class="project-box otherBox">
+                                  </ion-input>
+                                </div>
+                              </div>
+                            </ion-row>
+                          </div>
+                        </div>
+                        <div class="strippedClass section">
+                          <div class="inline-block">
+                            <span class="accordion-label"> {{'Other' | translate}} </span>
+                          </div>
+                          <div class="accordion-content">
+                            <ion-row class="row">
+                              <div class="width-thirty">
+                                <div class="spacingMargin" id="AsFoundActuation_AccessoiriesOther">
+                                  <ion-label class="label ionLabel"> {{'As Found' | translate}} </ion-label>
+                                  <ion-input [(ngModel)]="asFoundObj.G_ACCESSORIES_OTHER_AF"
+                                    name="asFoundObj.G_ACCESSORIES_OTHER_AF"
+                                    class="project-box searchNSelect select-style" [readonly]="true" tappable
+                                    (click)="searchModal('jobids','G_ACCESSORIES_OTHER_AF')">
+                                  </ion-input>
+                                  <ion-input *ngIf="asFoundObj.G_ACCESSORIES_OTHER_AF == 'Other'"
+                                    [(ngModel)]="asFoundObj.G_ACCESSORIES_OTHER_AFOT"
+                                    name="asFoundObj.G_ACCESSORIES_OTHER_AFOT"
+                                    [ngClass]="!asFoundObj.G_ACCESSORIES_OTHER_AFOT ? 'validation-error' : ''"
+                                    class="project-box otherBox">
+                                  </ion-input>
+                                </div>
+                              </div>
+                            </ion-row>
+                          </div>
+                        </div>
+                        <div class="strippedClass section">
+                          <div class="inline-block">
+                            <span class="accordion-label"> {{'Stem Protector' | translate}} </span>
+                          </div>
+                          <div class="accordion-content">
+                            <ion-row class="row">
+                              <div class="width-thirty">
+                                <div class="spacingMargin" id="AsFoundActuation_AStemProtector">
+                                  <ion-label class="label ionLabel"> {{'As Found' | translate}} </ion-label>
+                                  <ion-input [(ngModel)]="asFoundObj.G_ACCESSORIES_STEMPROTECTOR_AF"
+                                    name="asFoundObj.G_ACCESSORIES_STEMPROTECTOR_AF"
+                                    class="project-box searchNSelect select-style" [readonly]="true" tappable
+                                    (click)="searchModal('jobids','G_ACCESSORIES_STEMPROTECTOR_AF')">
+                                  </ion-input>
+                                  <ion-input *ngIf="asFoundObj.G_ACCESSORIES_STEMPROTECTOR_AF == 'Other'"
+                                    [(ngModel)]="asFoundObj.G_ACCESSORIES_STEMPROTECTOR_AFOT"
+                                    name="asFoundObj.G_ACCESSORIES_STEMPROTECTOR_AFOT"
+                                    [ngClass]="!asFoundObj.G_ACCESSORIES_STEMPROTECTOR_AFOT ? 'validation-error' : ''"
+                                    class="project-box otherBox">
+                                  </ion-input>
+                                </div>
+                              </div>
+                            </ion-row>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </ion-row>
+          </div>
+        </div>
+        <div class="header-padding">
+          <div class="section headerBorderBottom pointer">
+            <div
+              [ngClass]="asFoundObj.G_MOUNTINGHARDWAREADAPTION_NA == 'true' || asFoundObj.G_MOUNTINGHARDWAREADAPTION_NA == true ? 'disable-content' : ''"
+              (click)="expandOuter('GearboxMounting')" class="inline-block">
+              <ion-icon class="arrowIcon" item-left name="arrow-dropright"
+                *ngIf="!expandOuterAccordion.GearboxMounting"></ion-icon>
+              <ion-icon class="arrowIcon" role="img" *ngIf="expandOuterAccordion.GearboxMounting"
+                aria-label="arrow dropdown" name="arrow-dropdown"></ion-icon>
+              <span class="accordion-label"> {{'Mounting Hardware/Adaption' | translate}} </span>
+            </div>
+            <div class="inline-block pull-right">
+              <div class="spacingMargin">
+                <div class="WF-checkbox">
+                  <span class="label">{{'N/A' | translate}}</span>
+                  <ion-checkbox
+                    (click)="confirmAlert(asFoundObj.G_MOUNTINGHARDWAREADAPTION_NA, 'GearboxMounting', 'G_MOUNTINGHARDWAREADAPTION_ALNA')"
+                    [checked]="asFoundObj.G_MOUNTINGHARDWAREADAPTION_NA == 'true' || asFoundObj.G_MOUNTINGHARDWAREADAPTION_NA == true"
+                    [(ngModel)]="asFoundObj.G_MOUNTINGHARDWAREADAPTION_NA" color="dark">
+                  </ion-checkbox>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="expandOuterAccordion.GearboxMounting" class="content">
+            <ion-row class="row">
+              <div class="global-padding width-thirtythree">
+                <div class="spacingMargin">
+                  <span class="label ionLabel"> {{'As Found' | translate}} </span>
+                  <ion-input [(ngModel)]="asFoundObj.G_MOUNTINGHARDWAREADAPTION_AF"
+                    name="asFoundObj.G_MOUNTINGHARDWAREADAPTION_AF" class="project-box searchNSelect select-style"
+                    [readonly]="true" tappable
+                    (click)="searchModalSet('jobids','G_MOUNTINGHARDWAREADAPTION_AF','GearboxMounting')">
+                  </ion-input>
+                  <ion-input *ngIf="asFoundObj.G_MOUNTINGHARDWAREADAPTION_AF == 'Other'"
+                    [(ngModel)]="asFoundObj.G_MOUNTINGHARDWAREADAPTION_AFOT"
+                    name="asFoundObj.G_MOUNTINGHARDWAREADAPTION_AFOT"
+                    [ngClass]="!asFoundObj.G_MOUNTINGHARDWAREADAPTION_AFOT ? 'validation-error' : ''"
+                    class="project-box otherBox">
+                  </ion-input>
+                </div>
+              </div>
+              <div class="global-padding width-sixtyseven">
+                <div class="spacingMargin">
+                  <span class="label ionLabel"> {{'Comment' | translate}} </span>
+                  <ion-textarea (ionChange)="asFoundValChanged($event)"
+                    [(ngModel)]="asFoundObj.G_MOUNTINGHARDWAREADAPTION_AFC" class="input  WF-textArea" maxlength="2000"
+                    (focusout)="asFoundObj.G_MOUNTINGHARDWAREADAPTION_AFC = utilityProvider.sliceValueUptoLimit($event.target.value, $event.target.maxLength)"
+                    rows="3">
+                  </ion-textarea>
+                </div>
+              </div>
+              <div class="global-padding width-hundered">
+                <div class="spacingMargin">
+                  <div class="accordion-ListView">
+                    <div class="inline-block accordion-ListView">
+                      <div (click)="expandInner('GearBoxMountingAdaption')" class="lisviewToggleIcon pointer">
+                        <ion-icon class="arrowIcon" item-left name="arrow-dropright"
+                          *ngIf="expandInnerAccordion != 'GearBoxMountingAdaption'">
+                        </ion-icon>
+                        <ion-icon class="arrowIcon" role="img" *ngIf="expandInnerAccordion == 'GearBoxMountingAdaption'"
+                          aria-label="arrow dropdown" name="arrow-dropdown"></ion-icon>
+                        <span class="accordion-label">{{'Mounting Hardware/Adaption Components' | translate}}</span>
+                      </div>
+                      <div *ngIf="expandInnerAccordion == 'GearBoxMountingAdaption'" class="accordion-ListView">
+                        <div class="strippedClass section">
+                          <div class="inline-block">
+                            <span class="accordion-label"> {{'Thrust Base Assembly' | translate}}
+                            </span>
+                          </div>
+                          <div class="accordion-content">
+                            <ion-row class="row">
+                              <div class="width-thirty">
+                                <div class="spacingMargin" id="AsFoundActuation_MThrustBaseAssembly">
+                                  <ion-label class="label ionLabel"> {{'As Found' | translate}} </ion-label>
+                                  <ion-input [(ngModel)]="asFoundObj.G_MOUNTINGHARDWAREADAPTION_THRUSTBASEASSEMBLY_AF"
+                                    name="asFoundObj.G_MOUNTINGHARDWAREADAPTION_THRUSTBASEASSEMBLY_AF"
+                                    class="project-box searchNSelect select-style" [readonly]="true" tappable
+                                    (click)="searchModal('jobids','G_MOUNTINGHARDWAREADAPTION_THRUSTBASEASSEMBLY_AF')">
+                                  </ion-input>
+                                  <ion-input
+                                    *ngIf="asFoundObj.G_MOUNTINGHARDWAREADAPTION_THRUSTBASEASSEMBLY_AF == 'Other'"
+                                    [(ngModel)]="asFoundObj.G_MOUNTINGHARDWAREADAPTION_THRUSTBASEASSEMBLY_AFOT"
+                                    name="asFoundObj.G_MOUNTINGHARDWAREADAPTION_THRUSTBASEASSEMBLY_AFOT"
+                                    [ngClass]="!asFoundObj.G_MOUNTINGHARDWAREADAPTION_THRUSTBASEASSEMBLY_AFOT ? 'validation-error' : ''"
+                                    class="project-box otherBox">
+                                  </ion-input>
+                                </div>
+                              </div>
+                            </ion-row>
+                          </div>
+                        </div>
+                        <div class="strippedClass section">
+                          <div class="inline-block">
+                            <span class="accordion-label"> {{'Stem Nut' | translate}} </span>
+                          </div>
+                          <div class="accordion-content">
+                            <ion-row class="row">
+                              <div class="width-thirty">
+                                <div class="spacingMargin" id="AsFoundActuation_MStemNut">
+                                  <ion-label class="label ionLabel"> {{'As Found' | translate}} </ion-label>
+                                  <ion-input [(ngModel)]="asFoundObj.G_MOUNTINGHARDWAREADAPTION_STEMNUT_AF"
+                                    name="asFoundObj.G_MOUNTINGHARDWAREADAPTION_STEMNUT_AF"
+                                    class="project-box searchNSelect select-style" [readonly]="true" tappable
+                                    (click)="searchModal('jobids','G_MOUNTINGHARDWAREADAPTION_STEMNUT_AF')">
+                                  </ion-input>
+                                  <ion-input *ngIf="asFoundObj.G_MOUNTINGHARDWAREADAPTION_STEMNUT_AF == 'Other'"
+                                    [(ngModel)]="asFoundObj.G_MOUNTINGHARDWAREADAPTION_STEMNUT_AFOT"
+                                    name="asFoundObj.G_MOUNTINGHARDWAREADAPTION_STEMNUT_AFOT"
+                                    [ngClass]="!asFoundObj.G_MOUNTINGHARDWAREADAPTION_STEMNUT_AFOT ? 'validation-error' : ''"
+                                    class="project-box otherBox">
+                                  </ion-input>
+                                </div>
+                              </div>
+                            </ion-row>
+                          </div>
+                        </div>
+                        <div class="strippedClass section">
+                          <div class="inline-block">
+                            <span class="accordion-label"> {{'Bushing' | translate}} </span>
+                          </div>
+                          <div class="accordion-content">
+                            <ion-row class="row">
+                              <div class="width-thirty">
+                                <div class="spacingMargin" id="AsFoundActuation_MBushing">
+                                  <ion-label class="label ionLabel"> {{'As Found' | translate}} </ion-label>
+                                  <ion-input [(ngModel)]="asFoundObj.G_MOUNTINGHARDWAREADAPTION_BUSHING_AF"
+                                    name="asFoundObj.G_MOUNTINGHARDWAREADAPTION_BUSHING_AF"
+                                    class="project-box searchNSelect select-style" [readonly]="true" tappable
+                                    (click)="searchModal('jobids','G_MOUNTINGHARDWAREADAPTION_BUSHING_AF')">
+                                  </ion-input>
+                                  <ion-input *ngIf="asFoundObj.G_MOUNTINGHARDWAREADAPTION_BUSHING_AF == 'Other'"
+                                    [(ngModel)]="asFoundObj.G_MOUNTINGHARDWAREADAPTION_BUSHING_AFOT"
+                                    name="asFoundObj.G_MOUNTINGHARDWAREADAPTION_BUSHING_AFOT"
+                                    [ngClass]="!asFoundObj.G_MOUNTINGHARDWAREADAPTION_BUSHING_AFOT ? 'validation-error' : ''"
+                                    class="project-box otherBox">
+                                  </ion-input>
+                                </div>
+                              </div>
+                            </ion-row>
+                          </div>
+                        </div>
+                        <div class="strippedClass section">
+                          <div class="inline-block">
+                            <span class="accordion-label"> {{'Mounting Bracket' | translate}} </span>
+                          </div>
+                          <div class="accordion-content">
+                            <ion-row class="row">
+                              <div class="width-thirty">
+                                <div class="spacingMargin" id="AsFoundActuation_MMountingBracket">
+                                  <ion-label class="label ionLabel"> {{'As Found' | translate}} </ion-label>
+                                  <ion-input [(ngModel)]="asFoundObj.G_MOUNTINGHARDWAREADAPTION_MOUNTINGBRACKET_AF"
+                                    name="asFoundObj.G_MOUNTINGHARDWAREADAPTION_MOUNTINGBRACKET_AF"
+                                    class="project-box searchNSelect select-style" [readonly]="true" tappable
+                                    (click)="searchModal('jobids','G_MOUNTINGHARDWAREADAPTION_MOUNTINGBRACKET_AF')">
+                                  </ion-input>
+                                  <ion-input *ngIf="asFoundObj.G_MOUNTINGHARDWAREADAPTION_MOUNTINGBRACKET_AF == 'Other'"
+                                    [(ngModel)]="asFoundObj.G_MOUNTINGHARDWAREADAPTION_MOUNTINGBRACKET_AFOT"
+                                    name="asFoundObj.G_MOUNTINGHARDWAREADAPTION_MOUNTINGBRACKET_AFOT"
+                                    [ngClass]="!asFoundObj.G_MOUNTINGHARDWAREADAPTION_MOUNTINGBRACKET_AFOT ? 'validation-error' : ''"
+                                    class="project-box otherBox">
+                                  </ion-input>
+                                </div>
+                              </div>
+                            </ion-row>
+                          </div>
+                        </div>
+                        <div class="strippedClass section">
+                          <div class="inline-block">
+                            <span class="accordion-label"> {{'Stem Adaptor' | translate}} </span>
+                          </div>
+                          <div class="accordion-content">
+                            <ion-row class="row">
+                              <div class="width-thirty">
+                                <div class="spacingMargin" id="AsFoundActuation_MStemAdaptor">
+                                  <ion-label class="label ionLabel"> {{'As Found' | translate}} </ion-label>
+                                  <ion-input [(ngModel)]="asFoundObj.G_MOUNTINGHARDWAREADAPTION_STEMADAPTOR_AF"
+                                    name="asFoundObj.G_MOUNTINGHARDWAREADAPTION_STEMADAPTOR_AF"
+                                    class="project-box searchNSelect select-style" [readonly]="true" tappable
+                                    (click)="searchModal('jobids','G_MOUNTINGHARDWAREADAPTION_STEMADAPTOR_AF')">
+                                  </ion-input>
+                                  <ion-input *ngIf="asFoundObj.G_MOUNTINGHARDWAREADAPTION_STEMADAPTOR_AF == 'Other'"
+                                    [(ngModel)]="asFoundObj.G_MOUNTINGHARDWAREADAPTION_STEMADAPTOR_AFOT"
+                                    name="asFoundObj.G_MOUNTINGHARDWAREADAPTION_STEMADAPTOR_AFOT"
+                                    [ngClass]="!asFoundObj.G_MOUNTINGHARDWAREADAPTION_STEMADAPTOR_AFOT ? 'validation-error' : ''"
+                                    class="project-box otherBox">
+                                  </ion-input>
+                                </div>
+                              </div>
+                            </ion-row>
+                          </div>
+                        </div>
+                        <div class="strippedClass section">
+                          <div class="inline-block">
+                            <span class="accordion-label"> {{'Anti-Rotation Device/Assembly' | translate}} </span>
+                          </div>
+                          <div class="accordion-content">
+                            <ion-row class="row">
+                              <div class="width-thirty">
+                                <div class="spacingMargin" id="AsFoundActuation_MAntiRotationDeviceAssembly">
+                                  <ion-label class="label ionLabel"> {{'As Found' | translate}} </ion-label>
+                                  <ion-input
+                                    [(ngModel)]="asFoundObj.G_MOUNTINGHARDWAREADAPTION_ANTIROTATIONDEVICEASSEMBLY_AF"
+                                    name="asFoundObj.G_MOUNTINGHARDWAREADAPTION_ANTIROTATIONDEVICEASSEMBLY_AF"
+                                    class="project-box searchNSelect select-style" [readonly]="true" tappable
+                                    (click)="searchModal('jobids','G_MOUNTINGHARDWAREADAPTION_ANTIROTATIONDEVICEASSEMBLY_AF')">
+                                  </ion-input>
+                                  <ion-input
+                                    *ngIf="asFoundObj.G_MOUNTINGHARDWAREADAPTION_ANTIROTATIONDEVICEASSEMBLY_AF == 'Other'"
+                                    [(ngModel)]="asFoundObj.G_MOUNTINGHARDWAREADAPTION_ANTIROTATIONDEVICEASSEMBLY_AFOT"
+                                    name="asFoundObj.G_MOUNTINGHARDWAREADAPTION_ANTIROTATIONDEVICEASSEMBLY_AFOT"
+                                    [ngClass]="!asFoundObj.G_MOUNTINGHARDWAREADAPTION_ANTIROTATIONDEVICEASSEMBLY_AFOT ? 'validation-error' : ''"
+                                    class="project-box otherBox">
+                                  </ion-input>
+                                </div>
+                              </div>
+                            </ion-row>
+                          </div>
+                        </div>
+                        <div class="strippedClass section">
+                          <div class="inline-block">
+                            <span class="accordion-label"> {{'Hardware' | translate}} </span>
+                          </div>
+                          <div class="accordion-content">
+                            <ion-row class="row">
+                              <div class="width-thirty">
+                                <div class="spacingMargin" id="AsFoundActuation_MHardware">
+                                  <ion-label class="label ionLabel"> {{'As Found' | translate}} </ion-label>
+                                  <ion-input [(ngModel)]="asFoundObj.G_MOUNTINGHARDWAREADAPTION_HARDWARE_AF"
+                                    name="asFoundObj.G_MOUNTINGHARDWAREADAPTION_HARDWARE_AF"
+                                    class="project-box searchNSelect select-style" [readonly]="true" tappable
+                                    (click)="searchModal('jobids','G_MOUNTINGHARDWAREADAPTION_HARDWARE_AF')">
+                                  </ion-input>
+                                  <ion-input *ngIf="asFoundObj.G_MOUNTINGHARDWAREADAPTION_HARDWARE_AF == 'Other'"
+                                    [(ngModel)]="asFoundObj.G_MOUNTINGHARDWAREADAPTION_HARDWARE_AFOT"
+                                    name="asFoundObj.G_MOUNTINGHARDWAREADAPTION_HARDWARE_AFOT"
+                                    [ngClass]="!asFoundObj.G_MOUNTINGHARDWAREADAPTION_HARDWARE_AFOT ? 'validation-error' : ''"
+                                    class="project-box otherBox">
+                                  </ion-input>
+                                </div>
+                              </div>
+                            </ion-row>
+                          </div>
+                        </div>
+                        <div class="strippedClass section">
+                          <div class="inline-block">
+                            <span class="accordion-label"> {{'Other' | translate}} </span>
+                          </div>
+                          <div class="accordion-content">
+                            <ion-row class="row">
+                              <div class="width-thirty">
+                                <div class="spacingMargin" id="AsFoundActuation_MountingOther">
+                                  <ion-label class="label ionLabel"> {{'As Found' | translate}} </ion-label>
+                                  <ion-input [(ngModel)]="asFoundObj.G_MOUNTINGHARDWAREADAPTION_OTHER_AF"
+                                    name="asFoundObj.G_MOUNTINGHARDWAREADAPTION_OTHER_AF"
+                                    class="project-box searchNSelect select-style" [readonly]="true" tappable
+                                    (click)="searchModal('jobids','G_MOUNTINGHARDWAREADAPTION_OTHER_AF')">
+                                  </ion-input>
+                                  <ion-input *ngIf="asFoundObj.G_MOUNTINGHARDWAREADAPTION_OTHER_AF == 'Other'"
+                                    [(ngModel)]="asFoundObj.G_MOUNTINGHARDWAREADAPTION_OTHER_AFOT"
+                                    name="asFoundObj.G_MOUNTINGHARDWAREADAPTION_OTHER_AFOT"
+                                    [ngClass]="!asFoundObj.G_MOUNTINGHARDWAREADAPTION_OTHER_AFOT ? 'validation-error' : ''"
+                                    class="project-box otherBox">
+                                  </ion-input>
+                                </div>
+                              </div>
+                            </ion-row>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </ion-row>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sana -->
+      <ion-row>
+        <ion-col text-left>
+          <button (click)="redirect('back')" ion-button class="footer-Button">{{'Back' | translate}}</button>
+        </ion-col>
+        <ion-col text-right>
+          <button (click)="redirect('')" ion-button class="footer-Button">{{ bottomNavBtn | translate}}</button>
+        </ion-col>
+      </ion-row>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

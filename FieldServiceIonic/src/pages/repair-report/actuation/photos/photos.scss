@@ -1,0 +1,96 @@
+page-photos {
+  .attachment-icon {
+    height: 130px;
+    width: 130px;
+    border: 8px solid #fff;
+  }
+  .txt-right {
+    text-align: right;
+  }
+  .mrgn-top{
+    margin-top: -5px;
+  }
+  .attachment-image {
+    object-fit: cover;
+    height: 130px;
+    width: 130px;
+    border: 8px solid #fff;
+  }
+  .attachment-icon-pdf {
+    height: 130px;
+    width: 130px;
+    border: 8px solid #fff;
+    padding: 2px 10px;
+  }
+  .attachment-label {
+    margin-top: 12px;
+    font-size: 13px;
+    color: #cc6565;
+    text-transform: capitalize;
+    text-align: center;
+    width: 150px;
+  }
+  .delete-attachment-button-block {
+    width: 130px;
+    text-align: center;
+    font-weight: 500;
+    color: #cc6565 !important;
+  }
+  .attachment-name .text-input {
+    width: 130px;
+    height: 30px;
+    border-radius: 4px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    text-align: center;
+    border: 1px solid rgb(142, 177, 95);
+    padding: 0 5px 0 5px !important;
+    background-color: rgba(247, 247, 246, 1);
+    margin: 0px;
+    color: black !important;
+  }
+  .delete-img {
+    margin-right: 20px;
+  }
+  .custom-file-upload {
+    display: inline-block;
+    padding: 0px 10px;
+    cursor: pointer;
+    vertical-align: middle;
+  }
+  input[type="file"] {
+    display: none;
+  }
+ 
+  .addBtn {
+    height: 25px;
+    width: 25px;
+  }
+  .attachment-description .text-input {
+    width: 130px;
+    border-radius: 4px;
+    white-space: normal;
+    text-overflow: ellipsis;
+    text-align: center;
+    border: 1px solid #8eb15f;
+    padding: 0 5px 0 5px !important;
+    background-color: #f7f7f6;
+    margin: 0px;
+    color: black;
+  }
+}
+
+.ios page-photos{
+  .attachment-description .text-input{
+    width: 120px;
+  }
+
+  .delete-attachment-button-block {
+    width: 120px;
+  }
+
+  .attachment-label{
+    width: 100%;
+  }
+}

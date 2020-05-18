@@ -1,0 +1,74 @@
+page-select-device {
+  .marginTop {
+    margin-top: 10px;
+  }
+
+  .fieldLabel {
+    width: 15%;
+    min-width: 120px;
+    padding-right: 20px;
+    white-space: normal;
+  }
+
+  .customerDetailsBgColor {
+    background-color: #f7f7f6 !important;
+  }
+
+  .WF-ionlabel {
+    font-family: "Helvetica Neue";
+    font-size: 14px;
+    font-weight: 300;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    color: #000000;
+  }
+
+  .btn-save {
+    background-color: rgba(142, 177, 95, 1) !important;
+    color: rgba(255, 255, 255, 1) !important;
+    text-transform: capitalize;
+    height: 31px;
+    min-width: 80px;
+    border-radius: 3px;
+    border: none;
+    width: 100% !important;
+    font-size: 14px;
+    font-family: "Helvetica Neue";
+    box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
+  }
+
+  .field-value {
+    font-size: 12px;
+    font-weight: normal;
+    font-style: normal;
+    font-family: "Helvetica Neue";
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    color: #4a4a4a;
+  }
+
+  .btn-header-label {
+    min-height: 15px;
+  }
+
+  .spacingMargin {
+    margin-top: 15px;
+  }
+
+  input[type='checkbox'] {
+    display: none;
+  }
+
+  .searchNSelect::after {
+    top: 5px !important;
+  }
+}
+
+.ios page-select-device {
+  .searchNSelect::after {
+    top: 7px !important;
+  }
+}

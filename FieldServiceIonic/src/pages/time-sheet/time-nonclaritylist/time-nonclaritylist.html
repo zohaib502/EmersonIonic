@@ -1,0 +1,612 @@
+<ion-header>
+  <page-custom-header [header]="header_data"></page-custom-header>
+</ion-header>
+<ion-content padding>
+  <ion-card>
+    <ion-card-content>
+      <div>
+        <day-week-view></day-week-view>
+      </div>
+
+      <!-- Non_Clarity/Non_OSC Block -->
+      <div *ngIf="valueProvider.getResourceId() == '0' && valueProvider.getUser().ClarityID == ''"
+        class="non-clarity-nonosc">
+
+        <!-- Advance Search Block -->
+        <div *ngIf="advSearchBtnClicked" class="advSearch-div-timesheet">
+          <ion-row class="adv-first-row">
+            <div class="dateTo">
+              <ion-col no-padding>
+                <ion-label class="label">{{'Date From' | translate}}</ion-label>
+                <input type="text" tappable class="date-box-toFrom inline-block" bsDatepicker [disabled]="!isEnabled"
+                  [(bsValue)]="date_from" #dps="bsDatepicker" [minDate]="minDate" [bsConfig]="datepickerConfig"
+                  value="{{date_from | date:dateFormatUserPref}}" (onShown)="onShowPicker($event)"
+                  (onHidden)="getDurationOnDate()">
+                <span><img (click)="dps.show()" tappable [attr.aria-expanded]="dps.isOpen"
+                    src="assets/imgs/icons/ic_calendar-for-field.png" class="calIcon pointer" /></span>
+              </ion-col>
+            </div>
+            <div class="dateFrom">
+              <ion-col no-padding>
+                <ion-label class="label">{{'Date To' | translate}}</ion-label>
+                <input type="text" tappable class="date-box-toFrom inline-block" [disabled]="!isEnabled"
+                  [(bsValue)]="date_to" #dp="bsDatepicker" bsDatepicker [minDate]="date_from"
+                  [bsConfig]="datepickerConfig" value="{{date_to | date:dateFormatUserPref}}"
+                  (onShown)="onShowPicker($event)" (onHidden)="getDurationOnDate()">
+                <span>
+                  <img (click)="dp.show()" tappable [attr.aria-expanded]="dp.isOpen"
+                    src="assets/imgs/icons/ic_calendar-for-field.png" class="calIcon pointer" />
+                </span>
+              </ion-col>
+            </div>
+            <div class="jobId">
+              <ion-col no-padding>
+                <ion-label class="label">{{'Job ID' | translate}}</ion-label>
+                <ion-input placeholder="" class="project-box select-style" [(ngModel)]="advSearchObj.Job_Number"
+                  name="jobNumber"></ion-input>
+              </ion-col>
+            </div>
+            <div class="activity-name">
+              <ion-col no-padding>
+                <ion-label class="label">{{'Activity Name' | translate}}</ion-label>
+                <ion-input [readonly]="true" tappable [(ngModel)]="advSearchObj.Work_Type" name="item"
+                  class="project-box searchNSelect select-style" (click)="searchModal('Work_Type', 'OP_Code')">
+                </ion-input>
+              </ion-col>
+            </div>
+          </ion-row>
+          <ion-row class="adv-second-row">
+            <div class="st-ot">
+              <ion-col no-padding>
+                <ion-label class="label">{{'ST/OT/DT/HT' | translate}}</ion-label>
+                <ion-input [readonly]="true" tappable [(ngModel)]="advSearchObj.Item" name="item"
+                  class="project-box searchNSelect select-style" (click)="searchModal('Item', 'Shift_Code')">
+                </ion-input>
+              </ion-col>
+            </div>
+            <div class="tag-no">
+              <ion-col no-padding>
+                <ion-label class="label">{{'Tag Number' | translate}}</ion-label>
+                <ion-input placeholder="" class="project-box select-style" [(ngModel)]="advSearchObj.TagNumber">
+                </ion-input>
+              </ion-col>
+            </div>
+            <div class="serial-no">
+              <ion-col no-padding>
+                <ion-label class="label">{{'Serial Number' | translate}}</ion-label>
+                <ion-input placeholder="" class="project-box select-style" [(ngModel)]="advSearchObj.SerialNumber">
+                </ion-input>
+              </ion-col>
+            </div>
+            <div class="aply-clear">
+              <button ion-button class="apply-btn" (click)="advanceSearchApply('false')">{{'Apply' | translate }}
+              </button>
+              <button ion-button class="clear-btn" (click)="clearAllFields()">{{'Clear' | translate }}
+              </button>
+            </div>
+          </ion-row>
+        </div>
+
+        <div>
+          <!-- Toggle Button -->
+          <ion-row *ngIf="projectList.length>0">
+            <ion-col col-10>
+              <ion-item class="WF-toggle toggle-all-accordion">
+                <ion-label *ngIf="toggleAllaccordion == false">{{'Expand all' | translate}}</ion-label>
+                <ion-label *ngIf="toggleAllaccordion == true">{{'Collapse all' | translate}}</ion-label>
+                <ion-toggle [(ngModel)]="toggleAllaccordion" (ngModelChange)="collapsAllAccordion($event)"></ion-toggle>
+              </ion-item>
+            </ion-col>
+            <!-- <ion-col float-right col-1>
+              <div>
+                <div class="tooltip-col label tooltip">
+                  <img class="info-icn" src="assets/imgs/icons/info_Circle.png">
+                  <span class="tooltiptext">{{'The cells underlined in orange have been Saved.' | translate}}</span>
+                </div>
+                <ion-label class="saved-lbl inline-block mrgn-lt label label-md">{{'Saved'| translate}}
+                </ion-label>
+              </div>
+            </ion-col> -->
+            <ion-col float-right col-2>
+              <div>
+                <div class="tooltip-col label tooltip">
+                  <img class="info-icn" src="assets/imgs/icons/info_Circle.png">
+                  <span class="tooltiptext">{{'The cells underlined in blue have been Submitted.' | translate}}</span>
+                </div>
+                <ion-label class="submitted-lbl inline-block mrgn-lt label label-md">{{'Submitted'| translate}}
+                </ion-label>
+              </div>
+            </ion-col>
+          </ion-row>
+
+          <!-- NonOSC NonClarity Table -->
+          <ion-row class="projectList-head">
+            <div class="label full-width global-padding">
+              <div class="check inline-block"></div>
+              <div *ngIf="weekBtnClicked && !advSearchBtnClicked" class="weekDate inline-block">{{'Date' | translate }}
+              </div>
+              <div *ngIf="dayBtnClicked || advSearchBtnClicked" class="d-date inline-block">{{'Date' | translate }}
+              </div>
+              <div *ngIf="dayBtnClicked || advSearchBtnClicked" class="d-startTime inline-block">
+                {{'Start Time' | translate }}</div>
+              <div *ngIf="dayBtnClicked || advSearchBtnClicked" class="d-endTime inline-block">
+                {{'End Time' | translate }}</div>
+              <div [ngClass]="(dayBtnClicked || advSearchBtnClicked)?'d-jobno inline-block':'w-jobno inline-block'">
+                {{'Job ID' | translate }}</div>
+              <div class="activity inline-block">{{'Activity Name' | translate }}</div>
+              <div [ngClass]="(dayBtnClicked || advSearchBtnClicked)?'d-otc  inline-block':'w-otc  inline-block'">
+                {{'ST/OT/DT/HT' | translate }}</div>
+              <div
+                *ngIf="valueProvider.getUserPreferences()[0].ShowChargeMethod == 'true' || valueProvider.getUserPreferences()[0].ShowChargeMethod == true"
+                class="ct inline-block">{{'Charge Method' | translate }}</div>
+              <div class="hou inline-block">{{'Hours' | translate }}</div>
+              <div *ngIf="dayBtnClicked || advSearchBtnClicked" class="submit inline-block">{{'Submitted'|translate}}
+              </div>
+            </div>
+          </ion-row>
+
+          <ion-list *ngIf="projectList.length>0">
+            <ion-row class="stroke full-width"></ion-row>
+            <ion-row class="projectList" *ngFor="let project of projectList | search:{Job_Number:taskInput}">
+              <div class="projectDetail full-width global-padding value">
+                <div (click)="expandItem(project)" class="check pointer inline-block" *ngIf="project.expanded == false">
+                  <i class="fa fa-caret-right left-caret"></i></div>
+                <div (click)="expandItem(project)" class="check pointer inline-block" *ngIf="project.expanded == true">
+                  <i class="fa fa-caret-down down-caret"></i></div>
+                <div *ngIf="weekBtnClicked && !advSearchBtnClicked" (click)="expandItem(project)"
+                  class="weekDate inline-block">{{formatDate(weekStart)}} - {{formatDate(weekEnd)}}</div>
+                <div *ngIf="advSearchBtnClicked" (click)="expandItem(project)" class="d-date inline-block">
+                  {{formatDate(project.AdvDate)}}</div>
+                <div *ngIf="dayBtnClicked && !advSearchBtnClicked" (click)="expandItem(project)"
+                  class="d-date inline-block">{{formatDate(selectedDay)}}</div>
+                <div *ngIf="dayBtnClicked || advSearchBtnClicked" (click)="expandItem(project)"
+                  class="d-startTime inline-block">{{project.Start_Time}}</div>
+                <div *ngIf="dayBtnClicked || advSearchBtnClicked" (click)="expandItem(project)"
+                  class="d-endTime inline-block">{{project.End_Time}}</div>
+                <div (click)="expandItem(project)"
+                  [ngClass]="(dayBtnClicked || advSearchBtnClicked)?'d-jobno inline-block':'w-jobno inline-block'">
+                  {{project.Job_Number}}</div>
+                <div (click)="expandItem(project)" class="activity inline-block">{{project.Work_Type}}</div>
+                <div (click)="expandItem(project)"
+                  [ngClass]="(dayBtnClicked || advSearchBtnClicked)?'d-otc  inline-block':'w-otc  inline-block'">
+                  {{project.Item}}</div>
+                <div
+                  *ngIf="valueProvider.getUserPreferences()[0].ShowChargeMethod == 'true' || valueProvider.getUserPreferences()[0].ShowChargeMethod == true"
+                  (click)="expandItem(project)" class="ct inline-block">{{project.Charge_Method}}</div>
+                <div (click)="expandItem(project)" class="hou-val inline-block">{{project.totalDuration}}</div>
+                <div *ngIf="dayBtnClicked || advSearchBtnClicked" class="submit-val inline-block">
+                  <ion-icon *ngIf="project.isSubmitted == 'true'" name="checkmark" class="submitted-checkmark">
+                  </ion-icon>
+                </div>
+                <div
+                  [ngClass]="dayBtnClicked || advSearchBtnClicked?'dpop-ui pointer inline-block':'pop-ui pointer inline-block'"
+                  (click)="openEditDeletePopOver($event, project)">
+                  <ion-icon name="more" class="icon icon-md ion-md-more"></ion-icon>
+                </div>
+              </div>
+
+              <div class="accordion global-padding" *ngIf="project.expanded == true">
+                <ion-row class="full-width">
+                  <div class="scode" >
+                    <span *ngIf="project.Job_Type == 'field' || project.Job_Type == null" class="headi">{{'Tag Number' | translate }}</span>
+                    <span *ngIf="project.Job_Type == 'field' || project.Job_Type == null" class="data">{{project.TagNumber}}</span>
+                  </div>
+                  <div class="ctype">
+                    <span *ngIf="project.Job_Type == 'field' || project.Job_Type == null" class="headi">{{'Serial Number' | translate }}</span>
+                    <span *ngIf="project.Job_Type == 'field' || project.Job_Type == null" class="data">{{project.SerialNumber}}</span>
+                  </div>
+                  <!-- <div [ngClass]="project.Job_Type == 'field' || project.Job_Type == null?'desc':'desc1'" *ngIf="weekBtnClicked && !advSearchBtnClicked"></div> -->
+                  <div class="{{project.cssClass}}" *ngIf="dayBtnClicked || advSearchBtnClicked">
+                    <span class="headi">{{'Notes' | translate }}</span>
+                    <span class="data">{{project.Comments}}</span>
+                  </div>
+                  <div class="hou" *ngIf="dayBtnClicked || advSearchBtnClicked">
+                    <span
+                      [ngClass]="project.isSubmitted == 'true'?'submitted-duration-box inline-block':'duration-box inline-block'"
+                      (click)="openTimeDurationPopOver(project,$event)">{{project.Duration}}</span>
+                  </div>
+                  <div class="comment" *ngIf="weekBtnClicked">
+                    <button class="comment-btn" no-padding (click)="openCommentBox(project)"><img
+                        class="comment-btn pointer" src="assets/imgs/icons/ic_comment.png"></button>
+                  </div>
+                  <div class="del-col">
+                    <button [disabled]="project.totalDuration == '00:00' || project.totalDuration == ''"
+                      class="delete-btn" no-padding (click)="deleteFromAcordion(project)"><img
+                        class="delete-btn pointer" src="assets/imgs/icons/ic_delete.png"></button>
+                  </div>
+                </ion-row>
+                <ion-row >
+                  <div  [ngClass]="(!(valueProvider.getUserPreferences()[0].ShowChargeMethod == 'true' || valueProvider.getUserPreferences()[0].ShowChargeMethod == true) && (dayBtnClicked || advSearchBtnClicked))?'daySchedulehide':'daySchedule'" >
+                    <expandable [data]="project" [listPage]="listPage" (OutData)="recievedData($event)"
+                      style="width:100%;" *ngIf="weekBtnClicked && !advSearchBtnClicked && projectList.length > 0">
+                    </expandable>
+                  </div>
+                  <!-- <div [ngClass]="(dayBtnClicked || advSearchBtnClicked)?'':'tool-tip-main'">
+                    <div class="tooltip-col label tooltip"
+                      [ngClass]="(dayBtnClicked || advSearchBtnClicked)?'dsubmitted-status':'submitted-status'">
+                      <img class="info-icn" src="assets/imgs/icons/info_Circle.png">
+                      <span
+                        class="tooltiptext">{{'The cells underlined in blue have been Submitted.' | translate}}</span>
+                    </div>
+                    <ion-label class="submitted-lbl label" >{{'Submitted'| translate}}
+                    </ion-label>
+                  </div> -->
+                </ion-row>
+              </div>
+              <ion-row class="stroke full-width"></ion-row>
+            </ion-row>
+          </ion-list>
+
+          <div style="text-align: center" *ngIf="noRecordFound">{{'No Record Found' | translate}}</div>
+        </div>
+
+        <!-- Total Hours Row -->
+        <ion-row *ngIf="projectList.length > 0" class="bottom-row global-padding label">
+          <div *ngIf="dayBtnClicked || advSearchBtnClicked"
+            [ngClass]="valueProvider.getUserPreferences()[0].ShowChargeMethod == 'true' || valueProvider.getUserPreferences()[0].ShowChargeMethod == true ? 'dayBlankDiv showCM inline-block': 'dayBlankDiv inline-block'">
+          </div>
+          <div *ngIf="weekBtnClicked && !advSearchBtnClicked"
+            [ngClass]="valueProvider.getUserPreferences()[0].ShowChargeMethod == 'true' || valueProvider.getUserPreferences()[0].ShowChargeMethod == true ? 'weekBlankDiv showCM inline-block': 'weekBlankDiv inline-block'">
+          </div>
+          <div
+            *ngIf="valueProvider.getUserPreferences()[0].ShowChargeMethod == 'true' || valueProvider.getUserPreferences()[0].ShowChargeMethod == true"
+            class="ct inline-block"></div>
+          <div class="inline-block totalHours hou-val">
+            <span class="pull-left">{{'Total' | translate }}</span>
+            <span class="pull-right totalHours">{{valueProvider.getTotalHours()}}</span>
+          </div>
+        </ion-row>
+
+        <!-- Links to Import previous data -->
+        <ion-row class="global-padding" *ngIf="projectList.length == 0 && !advSearchBtnClicked">
+          <div class="pointer implist" (click)="importList()" *ngIf="weekBtnClicked">
+            <ion-icon name="document"></ion-icon>&nbsp;&nbsp;{{'Import entries from last week timesheet' | translate}}
+          </div>
+          <div class="pointer implist" (click)="importList()" *ngIf="dayBtnClicked">
+            <ion-icon name="document"></ion-icon>&nbsp;&nbsp;{{'Import entries from last day timesheet' | translate}}
+          </div>
+        </ion-row>
+
+        <!-- Export and Submit Button Column -->
+        <ion-row *ngIf="projectList.length>0" class="bottom-row">
+          <div class="bottom-div export_submit_btn">
+            <button ion-button class="btm-btn" (click)="newActivity()">{{'Export' | translate }}<img
+                src="assets/imgs/icons/ic_pf.png" class="pdf-icn">
+            </button>
+            <button ion-button [disabled]="submitDisabled" (click)="alertSubmit()"
+              class="btm-btn">{{'Submit' | translate }}
+            </button>
+          </div>
+        </ion-row>
+      </div>
+
+
+      <!--NON-Clarity OSC-->
+      <div *ngIf="valueProvider.getResourceId() != '0' && valueProvider.getUser().ClarityID == ''"
+        class="non-clarity-osc">
+
+        <!-- Advance Search Block -->
+        <div *ngIf="advSearchBtnClicked" class="advSearch-div-timesheet">
+          <ion-row class="adv-first-row">
+            <div class="dateTo">
+              <ion-col no-padding>
+                <ion-label class="label">{{'Date From' | translate}}</ion-label>
+                <input type="text" tappable class="date-box-toFrom inline-block" bsDatepicker [disabled]="!isEnabled"
+                  [(bsValue)]="date_from" #dps="bsDatepicker" [minDate]="minDate" [bsConfig]="datepickerConfig"
+                  value="{{date_from | date:dateFormatUserPref}}" (onShown)="onShowPicker($event)"
+                  (onHidden)="getDurationOnDate()">
+                <span><img (click)="dps.show()" tappable [attr.aria-expanded]="dps.isOpen"
+                    src="assets/imgs/icons/ic_calendar-for-field.png" class="calIcon pointer" /></span>
+              </ion-col>
+            </div>
+            <div class="dateFrom">
+              <ion-col no-padding>
+                <ion-label class="label">{{'Date To' | translate}}</ion-label>
+                <input type="text" tappable class="date-box-toFrom inline-block" [disabled]="!isEnabled"
+                  [(bsValue)]="date_to" #dp="bsDatepicker" bsDatepicker [minDate]="date_from"
+                  [bsConfig]="datepickerConfig" value="{{date_to | date:dateFormatUserPref}}"
+                  (onShown)="onShowPicker($event)" (onHidden)="getDurationOnDate()">
+                <span>
+                  <img (click)="dp.show()" tappable [attr.aria-expanded]="dp.isOpen"
+                    src="assets/imgs/icons/ic_calendar-for-field.png" class="calIcon pointer" />
+                </span>
+              </ion-col>
+            </div>
+            <div class="jobId">
+              <ion-col no-padding>
+                <ion-label class="label">{{'Job ID' | translate}}</ion-label>
+                <ion-input placeholder="" class="project-box select-style" [(ngModel)]="advSearchObj.Job_Number"
+                  name="jobNumber"></ion-input>
+              </ion-col>
+            </div>
+            <div class="activity-name">
+              <ion-col no-padding>
+                <ion-label class="label">{{'Absences / Internal' | translate }} {{'Type' | translate}}</ion-label>
+                <ion-input [readonly]="true" tappable [ngModel]="advSearchObj.AbsenceType | translate"
+                  name="AbsenceType" class="project-box searchNSelect select-style"
+                  (click)="searchModal('AbsenceType','Value')">
+                </ion-input>
+              </ion-col>
+            </div>
+
+          </ion-row>
+          <ion-row class="adv-second-row">
+            <div class="st-ot">
+              <ion-col no-padding>
+                <ion-label class="label">{{'Work Type' | translate}}</ion-label>
+                <ion-input [readonly]="true" tappable [ngModel]="advSearchObj.Work_Type | translate" name="item"
+                  class="project-box searchNSelect select-style" (click)="searchModal('Work_Type', 'Value')">
+                </ion-input>
+              </ion-col>
+            </div>
+            <div class="st-ot">
+              <ion-col no-padding>
+                <ion-label class="label">{{'Item' | translate}}</ion-label>
+                <ion-input [readonly]="true" tappable [ngModel]="advSearchObj.Item | translate" name="item"
+                  class="project-box searchNSelect select-style" (click)="searchModal('Item', 'Value')">
+                </ion-input>
+              </ion-col>
+            </div>
+            <div class="tag-number">
+              <ion-col no-padding>
+                <ion-label class="label">{{'Tag Number' | translate}}</ion-label>
+                <ion-input placeholder="" class="project-box select-style" [(ngModel)]="advSearchObj.TagNumber">
+                </ion-input>
+              </ion-col>
+            </div>
+            <div class="serial-no">
+              <ion-col no-padding>
+                <ion-label class="label">{{'Serial Number' | translate}}</ion-label>
+                <ion-input placeholder="" class="project-box select-style" [(ngModel)]="advSearchObj.SerialNumber">
+                </ion-input>
+              </ion-col>
+            </div>
+          </ion-row>
+          <ion-row class="adv-second-row">
+            <div class="st-ot">
+              <ion-col no-padding>
+                <ion-label class="label">{{'Charge Method' | translate}}</ion-label>
+                <ion-input [readonly]="true" tappable [ngModel]="advSearchObj.Charge_Method | translate" name="item"
+                  class="project-box searchNSelect select-style" (click)="searchModal('Charge_Method', 'Value')">
+                </ion-input>
+              </ion-col>
+            </div>
+            <div class="aply-clear">
+              <button ion-button class="apply-btn" (click)="advanceSearchApply('false')">{{'Apply' | translate }}
+              </button>
+              <button ion-button class="clear-btn" (click)="clearAllFields()">{{'Clear' | translate }}
+              </button>
+            </div>
+          </ion-row>
+        </div>
+
+        <div [ngClass]="advSearchBtnClicked ? 'advSearchBlock': ''">
+          <!-- Toggle Button -->
+          <ion-row *ngIf="projectList.length>0">
+            <ion-col col-10>
+              <ion-item class="WF-toggle toggle-all-accordion">
+                <ion-label *ngIf="toggleAllaccordion == false">{{'Expand all' | translate}}</ion-label>
+                <ion-label *ngIf="toggleAllaccordion == true">{{'Collapse all' | translate}}</ion-label>
+                <ion-toggle [(ngModel)]="toggleAllaccordion" (ngModelChange)="collapsAllAccordion($event)"></ion-toggle>
+              </ion-item>
+            </ion-col>
+            <!-- <ion-col float-right col-1>
+              <div>
+                <div class="tooltip-col label tooltip">
+                  <img class="info-icn" src="assets/imgs/icons/info_Circle.png">
+                  <span class="tooltiptext">{{'The cells underlined in orange have been Saved.' | translate}}</span>
+                </div>
+                <ion-label class="saved-lbl inline-block mrgn-lt label label-md">{{'Saved'| translate}}
+                </ion-label>
+              </div>
+            </ion-col> -->
+            <ion-col float-right col-2>
+              <div>
+                <div class="tooltip-col label tooltip">
+                  <img class="info-icn" src="assets/imgs/icons/info_Circle.png">
+                  <span class="tooltiptext">{{'The cells underlined in blue have been Submitted.' | translate}}</span>
+                </div>
+                <ion-label class="submitted-lbl inline-block mrgn-lt label label-md">{{'Submitted'| translate}}
+                </ion-label>
+              </div>
+            </ion-col>
+          </ion-row>
+
+          <!-- OSC NonClarity Table -->
+          <ion-row class="projectList-head">
+            <div class="projectList-labels full-width global-padding">
+              <div class="label t-check pointer inline-block"></div>
+              <div *ngIf="weekBtnClicked && !advSearchBtnClicked" class="label t-weekDate inline-block">
+                {{'Date' | translate }}</div>
+              <div *ngIf="dayBtnClicked || advSearchBtnClicked" class="label t-date inline-block">
+                {{'Date' | translate }}</div>
+              <div *ngIf="dayBtnClicked || advSearchBtnClicked" class="label t-startTime inline-block">
+                {{'Start Time' | translate }}</div>
+              <div *ngIf="dayBtnClicked || advSearchBtnClicked" class="label t-endTime inline-block">
+                {{'End Time' | translate }}</div>
+              <div
+                [ngClass]="(dayBtnClicked || advSearchBtnClicked)?'label d-jobno inline-block':'label t-jobno inline-block'">
+                {{'Job ID' | translate }}</div>
+              <div class="label t-activity inline-block">{{'Work Type' | translate }}</div>
+              <div class="label t-activity inline-block">{{'Absences / Internal' | translate }} {{'Type' | translate}}
+              </div>
+              <div
+                [ngClass]="(dayBtnClicked || advSearchBtnClicked)?'label d-otc  inline-block':'label t-otc  inline-block'">
+                {{'Item' | translate }}</div>
+              <div class="label t-ct inline-block">
+                <span>{{'Charge Method' | translate }}</span>
+              </div>
+              <div class="label t-hou inline-block">{{'Hours' | translate }}</div>
+              <div *ngIf="dayBtnClicked || advSearchBtnClicked" class="label t-submit inline-block">
+                {{'Submitted'|translate}}</div>
+            </div>
+          </ion-row>
+
+          <ion-list *ngIf="projectList.length>0">
+            <ion-row class="stroke full-width"></ion-row>
+            <ion-row class="projectList" *ngFor="let project of projectList | search:{Job_Number:taskInput}">
+              <div class="projectDetail full-width global-padding">
+                <div (click)="expandItem(project)" class="value t-check-osc pointer inline-block"
+                  *ngIf="project.expanded == false"><i class="fa fa-caret-right left-caret-osc"></i></div>
+                <div (click)="expandItem(project)" class="value t-check-osc pointer inline-block"
+                  *ngIf="project.expanded == true"><i class="fa fa-caret-down down-caret-osc"></i></div>
+                <div *ngIf="weekBtnClicked && !advSearchBtnClicked" (click)="expandItem(project)"
+                  class="value t-weekDate-osc inline-block">
+                  {{formatDate(weekStart)}}
+                  - {{formatDate(weekEnd)}}</div>
+                <div *ngIf="advSearchBtnClicked" (click)="expandItem(project)" class="value t-date-osc inline-block">
+                  {{formatDate(project.AdvDate)}}</div>
+                <div *ngIf="dayBtnClicked && !advSearchBtnClicked" (click)="expandItem(project)"
+                  class="value t-date-osc inline-block">{{formatDate(selectedDay)}}</div>
+                <div *ngIf="dayBtnClicked || advSearchBtnClicked" (click)="expandItem(project)"
+                  class="value t-startTime-osc inline-block">
+                  {{project.Start_Time}}</div>
+                <div *ngIf="dayBtnClicked || advSearchBtnClicked" (click)="expandItem(project)"
+                  class="value t-endTime-osc inline-block">
+                  {{project.End_Time}}</div>
+                <div (click)="expandItem(project)" *ngIf="project.Job_Number !='Not Applicable'"
+                  [ngClass]="(dayBtnClicked || advSearchBtnClicked)?'value d-jobno-osc inline-block':'value t-jobno-osc inline-block'">
+                  {{project.Job_Number}}
+                </div>
+                <div (click)="expandItem(project)" *ngIf="project.Job_Number =='Not Applicable'"
+                  [ngClass]="(dayBtnClicked || advSearchBtnClicked)?'value d-jobno-osc inline-block':'value t-jobno-osc inline-block'">
+                  {{project.Job_Number | translate}}
+                </div>
+                <div (click)="expandItem(project)" class="value t-activity inline-block">
+                  <span *ngIf="project.Job_Type !='vacation'">
+                    {{project.Work_Type | translate}}
+                  </span></div>
+                <div (click)="expandItem(project)" class="value t-activity inline-block">
+                  <span *ngIf="project.Job_Type == 'vacation'">
+                    {{project.Work_Type | translate}}
+                  </span>
+                </div>
+                <div *ngIf="weekBtnClicked && !advSearchBtnClicked" (click)="expandItem(project)"
+                  [ngClass]="(dayBtnClicked || advSearchBtnClicked)?'value d-otc  inline-block':'value t-otc  inline-block'">
+                  {{project.Item | translate}}
+                </div>
+                <div *ngIf="dayBtnClicked || advSearchBtnClicked" (click)="expandItem(project)"
+                  [ngClass]="(dayBtnClicked || advSearchBtnClicked)?'value d-otc  inline-block':'value t-otc  inline-block'">
+                  {{project.Item | translate}}
+                </div>
+                <div (click)="expandItem(project)" class="value t-ct inline-block">
+                  <span>{{project.Charge_Method | translate}}</span>
+                </div>
+                <div (click)="expandItem(project)" class="value  t-hou-val inline-block">{{project.totalDuration}}</div>
+                <div *ngIf="dayBtnClicked || advSearchBtnClicked" class="value t-submit-val inline-block">
+                  <ion-icon *ngIf="project.isSubmitted == 'true'" name="checkmark" class="submitted-checkmark">
+                  </ion-icon>
+                </div>
+                <div class="value t-icn-osc inline-block">
+                  <span *ngIf="!weekBtnClicked"><img
+                      [ngClass]="((project.StatusID == enums.Jobstatus.Debrief_In_Progress) && (project.IsAdditional == 'false' || project.IsAdditional == false)) || (project.StatusID == enums.Jobstatus.Completed_Awaiting_Review)? 'inline-block  edit-img  disableImg' :'inline-block  edit-img pointer '"
+                      src="assets/imgs/icons/edit-icon.png" (click)="editDeleteTime(project)"
+                      class="icn pointer"></span>
+                  <span *ngIf="weekBtnClicked"><img
+                      [ngClass]="((project.StatusID == enums.Jobstatus.Debrief_In_Progress) && (project.isAdditional == 'false' || project.isAdditional == false)) || (project.StatusID == enums.Jobstatus.Completed_Awaiting_Review)? 'inline-block  edit-img  disableImg' :'inline-block  edit-img pointer '"
+                      src="assets/imgs/icons/edit-icon.png" (click)="editDeleteTime(project)"
+                      class="icn pointer"></span>
+                  <span><img
+                      [ngClass]="project.DisableDelete ? 'icn delete-img inline-block pull-right disableImg' :'icn delete-img inline-block  pointer pull-right'"
+                      src="assets/imgs/icons/delete-icon.png" (click)="deleteFromAcordion(project,project.StatusID)"
+                      class="icn pointer"></span>
+                  <!-- <span><img src="assets/imgs/icons/edit-icon.png"  class="icn disableImg"></span>
+                    <span><img src="assets/imgs/icons/delete -icon.png"  class="icn disableImg"></span> -->
+                </div>
+              </div>
+              <div class="accordion global-padding" *ngIf="project.expanded == true">
+                <ion-row class="full-width">
+                  <div class="scode" *ngIf="project.Job_Type == 'field' || project.Job_Type == null">
+                    <span class="headi">{{'Tag Number' | translate }}</span>
+                    <span class="data">{{project.TagNumber}}</span>
+                  </div>
+                  <div class="ctype" *ngIf="project.Job_Type == 'field' || project.Job_Type == null">
+                    <span class="headi">{{'Serial Number' | translate }}</span>
+                    <span class="data">{{project.SerialNumber}}</span>
+                  </div>
+                  <div [ngClass]="project.Job_Type == 'field' || project.Job_Type == null?'desc':'desc1'"
+                    *ngIf="weekBtnClicked && !advSearchBtnClicked">
+                  </div>
+                  <div [ngClass]="project.Job_Type == 'field' || project.Job_Type == null?'desc':'desc1'"
+                    *ngIf="dayBtnClicked || advSearchBtnClicked">
+                    <span class="headi">{{'Notes' | translate }}</span>
+                    <span class="data">{{project.Comments}}</span>
+                  </div>
+                  <div class="t-hou" *ngIf="dayBtnClicked || advSearchBtnClicked">
+                    <div [ngClass]="project.isSubmitted == 'true'?'submitted-duration-box':'duration-box'"
+                      (click)="openTimeDurationPopOver(project,$event)">{{project.Duration}}</div>
+                  </div>
+                  <!-- <div *ngIf="dayBtnClicked && !advSearchBtnClicked">
+                    <div class="tooltip-col label tooltip"
+                      [ngClass]="(dayBtnClicked || advSearchBtnClicked)?'dsubmitted-status':'submitted-status'">
+                      <img class="info-icn" src="assets/imgs/icons/info_Circle.png">
+                      <span
+                        class="tooltiptext tooltiptextDay">{{'The cells underlined in blue have been Submitted.' | translate}}</span>
+                    </div>
+                    <ion-label class="submitted-lbl inline-block mrgn-lt label label-md">{{'Submitted'| translate}}
+                    </ion-label>
+                  </div> -->
+                </ion-row>
+                <ion-row>
+                  <div class="daySchedule" *ngIf="weekBtnClicked && !advSearchBtnClicked && projectList.length > 0">
+                    <expandable [data]="project" [listPage]="listPage" [noclistPage]="noclistPage"
+                      (OutData)="recievedData($event)" style="width:100%;">
+                    </expandable>
+                  </div>
+                  <div class="daySchedule" *ngIf="(dayBtnClicked || advSearchBtnClicked) && projectList.length > 0">
+                  </div>
+                  <!-- <div *ngIf="weekBtnClicked" [ngClass]="(weekBtnClicked && !advSearchBtnClicked)?'tool-tip-main':''">
+                    <div class="tooltip-col label tooltip"
+                      [ngClass]="(dayBtnClicked || advSearchBtnClicked)?'dsubmitted-status':'submitted-status'">
+                      <img class="info-icn" src="assets/imgs/icons/info_Circle.png">
+                      <span
+                        class="tooltiptext">{{'The cells underlined in blue have been Submitted.' | translate}}</span>
+                    </div>
+                    <ion-label class="submitted-lbl inline-block mrgn-lt label label-md">{{'Submitted'| translate}}
+                    </ion-label>
+                  </div> -->
+                </ion-row>
+              </div>
+              <ion-row class="stroke full-width"></ion-row>
+            </ion-row>
+          </ion-list>
+          <div style="text-align: center" *ngIf="noRecordFound">{{'No Record Found' | translate}}</div>
+        </div>
+
+        <!-- Total Hours Row -->
+        <ion-row *ngIf="projectList.length > 0" class="bottom-row global-padding label">
+          <div *ngIf="dayBtnClicked || advSearchBtnClicked" class="dayBlankDiv inline-block"></div>
+          <div *ngIf="weekBtnClicked && !advSearchBtnClicked" class="weekBlankDiv inline-block"></div>
+          <div class="inline-block totalHours hou-val">
+            <span class="pull-left">{{'Total' | translate }}</span>
+            <span class="pull-right totalHours">{{valueProvider.getTotalHours()}}</span>
+          </div>
+        </ion-row>
+
+        <!-- Links to Import previous data -->
+        <ion-row class="global-padding" *ngIf="projectList==0 && !advSearchBtnClicked">
+          <div class="pointer implist" (click)="importList()" *ngIf="weekBtnClicked">
+            <ion-icon name="document"></ion-icon>&nbsp;&nbsp;{{'Import entries from last week timesheet' | translate}}
+          </div>
+          <div class="pointer implist" (click)="importList()" *ngIf="dayBtnClicked">
+            <ion-icon name="document"></ion-icon>&nbsp;&nbsp;{{'Import entries from last day timesheet' | translate}}
+          </div>
+        </ion-row>
+
+        <!-- Export and Submit Button Column -->
+        <ion-row *ngIf="projectList.length>0" class="bottom-row">
+          <div class="bottom-div">
+            <button ion-button class="btm-btn" (click)="newActivity()">{{'Export' | translate }} <ion-icon
+                class="pdf-icn" ios="ios-paper-outline" md="ios-paper-outline"></ion-icon>
+              <!-- <img src="assets/imgs/icons/ic_pf.png"
+                class="pdf-icn"> -->
+            </button>
+            <button ion-button [disabled]="submitDisabled || taskInput" (click)="alertSubmit()"
+              class="btm-btn">{{'Submit To Utilization Report' | translate }}
+            </button>
+          </div>
+        </ion-row>
+      </div>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

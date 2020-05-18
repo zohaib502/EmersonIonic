@@ -1,0 +1,7 @@
+<!-- Generated template for the CkeditorComponent component -->
+<ckeditor #editor [(ngModel)]="content"
+    [config]="config"
+    (change)="onChange($event)"
+    (ready)="onReady($event)"
+    debounce="500">
+  </ckeditor>

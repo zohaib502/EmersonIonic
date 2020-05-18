@@ -1,0 +1,137 @@
+<ion-header>
+  <page-custom-header [header]="header_data"></page-custom-header>
+</ion-header>
+
+<ion-content padding>
+  <ion-row class="full-width">
+    <ion-col col-4>
+      <ion-card class="inline-block feedback-box">
+        <ion-card-header class="combined-shape">
+          <ion-row class="full-height full-width">
+            <div class="adminCardIconBox">
+              <span>
+                <img class="inline-block speechBubbleIcon" src="assets/imgs/icons/ic_speech-bubbles-active.png">
+              </span>
+            </div>
+            <div class="admin-card-button pointer adminCardLabel" text-center (click)="seeAll('feedbackTodayLimit', taskInput)">
+              <span class="admin-card-value">{{'See All'|translate}}</span>
+            </div>
+          </ion-row>
+        </ion-card-header>
+        <ion-card-content>
+          <span class="block description">{{'Feedbacks'|translate}}</span>
+          <span class="block number">{{userFeedbackList.length}}</span>
+        </ion-card-content>
+      </ion-card>
+    </ion-col>
+    <ion-col col-4>
+      <ion-card class="inline-block rating-box">
+        <ion-card-header class="combined-shape">
+          <ion-row class="full-height">
+            <div class="adminCardIconBox">
+              <span>
+                <img class="inline-block starRatingIcon" src="assets/imgs/icons/ic_star-kpi-card.png">
+              </span>
+            </div>
+            <div class="admin-card-button pointer adminCardLabel" text-center (click)="openAvgRatingModal()">
+              <span class="admin-card-value">{{'View Details'|translate}}</span>
+            </div>
+          </ion-row>
+        </ion-card-header>
+        <ion-card-content>
+          <span class="block description">{{'Average Rating'|translate}}</span>
+          <span class="block number">{{averageRating ? averageRating: '0'}}</span>
+        </ion-card-content>
+      </ion-card>
+    </ion-col>
+    <ion-col col-4>
+      <ion-card class="inline-block comment-box">
+        <ion-card-header class="combined-shape">
+          <ion-row class="full-height">
+            <div class="adminCardIconBox">
+              <span>
+                <img class="inline-block speechBubbleIcon" src="assets/imgs/icons/ic_speech-bubbles-active@2x.png">
+              </span>
+            </div>
+            <div class="admin-card-button pointer adminCardLabel" text-center (click)="getlatestFeedback()">
+              <span class="admin-card-value">{{'Read Latest'|translate}}</span>
+            </div>
+          </ion-row>
+        </ion-card-header>
+        <ion-card-content>
+          <span class="block description">{{'Comments Provided'|translate}}</span>
+          <span class="block number">{{commentLength}}</span>
+        </ion-card-content>
+      </ion-card>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-card>
+      <ion-card-header>
+        <ion-row class="debriefPage-padding" *ngIf="userFeedbackList !=undefined && userFeedbackList.length > 0">
+          <ion-col col-7 no-padding>
+            <h1>{{headLine | translate}}</h1>
+          </ion-col>
+          <ion-col col-7 no-padding *ngIf="userFeedbackList == undefined && userFeedbackList.length == 0">
+            <h1>{{'No Comments' | translate}}</h1>
+          </ion-col>
+          <ion-col col-5 text-right no-padding>
+          </ion-col>
+        </ion-row>
+        <ion-row class="debriefPage-padding" *ngIf="userFeedbackList.length == 0">
+          <ion-col col-7 no-padding>
+            <h1>{{'No Comments' | translate}}</h1>
+          </ion-col>
+          <ion-col col-5 text-right no-padding>
+          </ion-col>
+        </ion-row>
+      </ion-card-header>
+      <ion-card-content [ngClass]="userFeedbackList.length > 0 ? 'no-data-container': 'data-container'">
+        <div *ngIf="userFeedbackList !=undefined && userFeedbackList.length > 0">
+          <ion-row class="stroke"></ion-row>
+          <ion-row class="global-padding bottom-border table-header">
+            <ion-col col-2 class="label pointer" (click)="sortDate()">
+
+              <span class="startDate-head" translate="Date"></span>
+              <span>
+                <i class="fa" [ngClass]="{ 'fa-sort-asc':sort_date==true,'fa-sort-desc': sort_date==false }"></i>
+              </span>
+            </ion-col>
+            <ion-col col-3 class="label pointer" (click)="feedbackOrderBy='USER_EMAIL'; feedbackReverseSort = !feedbackReverseSort">
+              <span translate="Engineer's Email/Name"></span>
+              <span>
+                <i class="fa" [ngClass]="{ 'fa-sort-asc': (feedbackOrderBy == 'USER_EMAIL' && !feedbackReverseSort),'fa-sort-desc': (feedbackOrderBy == 'USER_EMAIL' && feedbackReverseSort) }"></i>
+              </span>
+            </ion-col>
+            <ion-col col-1 class="label pointer" (click)="feedbackOrderBy='RATING'; feedbackReverseSort = !feedbackReverseSort">
+              <span translate="Rating"></span>
+              <span>
+                <i class="fa" [ngClass]="{ 'fa-sort-asc': (feedbackOrderBy == 'RATING' && !feedbackReverseSort),'fa-sort-desc': (feedbackOrderBy == 'RATING' && feedbackReverseSort) }"></i>
+              </span>
+            </ion-col>
+            <ion-col col-6 class="label">
+              <span translate="Comment"></span>
+            </ion-col>
+          </ion-row>
+          <ion-list>
+            <ion-row class="strippedClass global-padding full-width pointer" *ngFor="let feedback of userFeedbackList | sort: {property: feedbackOrderBy, order: feedbackReverseSort ? 1 : -1 } | slice:0: feedbackTodayLimit; let i = index" (click)="openDetailModal(feedback)">
+              <!-- 26-7-18, Suraj Gorai, Use custom Moment for show date,  Start -->
+              <ion-col class="value" col-2>{{Moment(feedback.FEEDBACK_DATE).format('DD-MMM-YYYY')}}</ion-col>
+              <!-- 26-7-18, Suraj Gorai,  End -->
+              <ion-col class="value" col-3>{{feedback.USER_EMAIL | translate}}</ion-col>
+              <ion-col class="value" col-1>{{feedback.RATING}}</ion-col>
+              <ion-col class="value" col-6>
+                <div *ngIf="feedback.COMMENTS" class="feedbackComments inline-block">{{feedback.COMMENTS  | slice:0:50 }}</div>
+                <span class="pull-left feedbackComments" *ngIf="!feedback.COMMENTS">{{'No Comments' | translate}}</span>
+                <span class="pull-right"><i class="fa fa-angle-right right-arrow"></i></span>
+              </ion-col>
+            </ion-row>
+            <ion-row *ngIf="(userFeedbackList | search: taskInput).length > 5 && feedbackTodayLimit == 5" class="ion-card-footer seeMore-button-block" text-center no-padding>
+              <div (click)="setFullLimit('feedbackTodayLimit', taskInput)" class="full-width global-padding"><i class="fa fa-caret-down"></i> <span class="seeMore-button" translate="more"></span></div>
+            </ion-row>
+          </ion-list>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </ion-row>
+</ion-content>

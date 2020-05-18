@@ -1,0 +1,97 @@
+<ion-header>
+  <ion-navbar>
+    <h3 *ngIf="languageSelector" class="global-padding">
+      {{'Select the language to generate the Field Service Report' | translate}}</h3>
+    <h3 *ngIf="SdrlanguageSelector" class="global-padding">
+      {{'Select the language to generate the Service Detail Report' | translate}}</h3>
+    <h2 *ngIf="ifReadMore && notes">{{noteType | translate}}</h2>
+    <!-- 12-19-2018 -- Mansi Arora -- Change header if mail modal is opened -->
+    <h2 *ngIf="isMail">{{ 'Send Mail' | translate }}</h2>
+    <ion-buttons end *ngIf="!languageSelector">
+      <button ion-button (click)="closeModal()"><i class="fa fa-times fa-2x closebtn"></i></button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+<ion-content>
+  <div *ngIf="!isMail">
+    <div class="global-padding full-width" text-center *ngIf="languageSelector">
+      <!--10-18-18 Radheshyam kumar addedd tappable attribute on evey ion-select to resolve the double click issue -->
+      <ion-select interface="popover" tappable placeholder="{{'Select FSR' | translate}}" [(ngModel)]="selectedLanguage"
+        class="languageSelect">
+        <ion-option *ngFor="let item of filteredLangArr" [value]="item.File_Code">{{item.File_Name | translate}}
+        </ion-option>
+      </ion-select>
+    </div>
+    <div class="global-padding full-width" text-center *ngIf="SdrlanguageSelector">
+      <!--10-18-18 Radheshyam kumar addedd tappable attribute on evey ion-select to resolve the double click issue -->
+      <ion-select interface="popover" tappable placeholder="{{'Select SDR' | translate}}" [(ngModel)]="selectedLanguage"
+        class="languageSelect">
+        <ion-option *ngFor="let item of filteredLangArr" [value]="item.File_Code">{{item.File_Name | translate}}
+        </ion-option>
+      </ion-select>
+    </div>
+    <div class="global-padding value" *ngIf="!languageSelector && !SdrlanguageSelector">
+      <span *ngIf="!systemID">{{(item_Number || serial_Number ? item_Number + " " + serial_Number + " : " : '') + notes}}</span>
+      <span *ngIf="systemID">{{(systemID ? systemID + " : " : '') + notes}}</span>      
+    </div>
+  </div>
+  <!-- 12-19-2018 -- Mansi Arora -- Body for Mail Modal -->
+  <div class="global-padding full-width full-height" *ngIf="isMail">
+    <div class="full-width headerBox">
+      <ion-row>
+        <div class="sendBlock" (click)="sendMail()">
+          <button ion-button class="sendButton" block icon-only>
+            <ion-icon class="block" ios="ios-mail" md="md-mail"></ion-icon>
+          </button>
+          <span class="label block">{{ 'Send' | translate }}</span>
+        </div>
+        <div class="detailsBlock">
+          <ion-row>
+            <div class="detailBlockLabel">
+              <span class="label">{{'To' | translate}}</span>
+            </div>
+            <div class="detailBlockValue value">
+              <ion-input type="text" required [(ngModel)]="mailObj.to" name="to" (keyup)="_keyUp()"></ion-input>
+              <div class="recipient-validation-text" *ngIf="!isCorrectRecipient">
+                {{'Please Enter valid Recipient to send mail' | translate}}</div>
+            </div>
+          </ion-row>
+          <ion-row>
+            <div class="detailBlockLabel">
+              <span class="label">{{'CC' | translate}}</span>
+            </div>
+            <div class="detailBlockValue value">
+              <ion-input type="text" required [(ngModel)]="mailObj.cc" name="cc"></ion-input>
+            </div>
+          </ion-row>
+          <ion-row>
+            <div class="detailBlockLabel subjectLabel">
+              <span class="label">{{'Subject' | translate}}</span>
+            </div>
+            <div class="detailBlockValue value">
+              <ion-input type="text" readonly required [(ngModel)]="mailObj.subject" name="subject"></ion-input>
+            </div>
+          </ion-row>
+        </div>
+      </ion-row>
+    </div>
+    <div class="full-width attachmentBox">
+      <div class="attachment-block">
+        <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+        <span class='value'>{{mailObj.attachment[0].file_name}}</span>
+      </div>
+    </div>
+    <div class="full-width contentBox">
+      <div class="full-height">
+        <ion-textarea readonly [(ngModel)]="mailObj.body" name="body" class="mailBody full-height value"></ion-textarea>
+      </div>
+    </div>
+  </div>
+</ion-content>
+<ion-footer *ngIf="languageSelector || SdrlanguageSelector">
+  <div class="global-padding full-width" text-center>
+    <button ion-button class="footer-buttons" type="button" [disabled]="!selectedLanguage"
+      (click)="saveLanguage()">{{'Ok' | translate}}</button>
+    <button ion-button class="footer-buttons" (click)="closeModal()">{{'Cancel' | translate}}</button>
+  </div>
+</ion-footer>

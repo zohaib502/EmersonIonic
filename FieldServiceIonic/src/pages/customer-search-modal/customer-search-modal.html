@@ -1,0 +1,126 @@
+<!--
+  Generated template for the CustomerSearchModalPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <ion-title class="padding-style" translate>{{'Search' | translate}}</ion-title>
+    <ion-buttons end>
+      <button ion-button class="closebtn" (click)="closeModal()">
+        <i class="fa fa-times fa-2x"></i>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+<ion-content padding>
+  <ion-row class="global-padding">
+    <div class="acno">
+      <span class="label inline-block">{{'Account no.' | translate }}</span>
+      <ion-input class="project-box select-style" (keyup)="doneTyping()" [(ngModel)]="searchFields.accountno">
+      </ion-input>
+    </div>
+    <div class="cust">
+      <span class="label inline-block">{{'Customer' | translate }}</span>
+      <ion-input class="project-box select-style" (keyup)="doneTyping()" [(ngModel)]="searchFields.customer">
+      </ion-input>
+    </div>
+    <div class="ad1">
+      <span class="label inline-block">{{'Address 1' | translate}}</span>
+      <ion-input class="project-box select-style" (keyup)="doneTyping()" [(ngModel)]="searchFields.address1">
+      </ion-input>
+    </div>
+    <div class="ad2">
+      <span class="label inline-block">{{'Address 2' | translate}}</span>
+      <ion-input class="project-box select-style" (keyup)="doneTyping()" [(ngModel)]="searchFields.address2">
+      </ion-input>
+    </div>
+    <div class="pc">
+      <span class="label inline-block">{{'Postal code' | translate}}</span>
+      <ion-input class="project-box select-style" (keyup)="doneTyping()" [(ngModel)]="searchFields.postalcode">
+      </ion-input>
+    </div>
+  </ion-row>
+  <ion-row class="global-padding">
+    <div class="cty">
+      <span class="label inline-block">{{'City' | translate }}</span>
+      <ion-input class="project-box select-style" (keyup)="doneTyping()" [(ngModel)]="searchFields.city">
+      </ion-input>
+    </div>
+    <div class="coun">
+      <span class="label inline-block">{{'Country' | translate }}</span>
+      <ion-input tappable *ngIf="!isDropdownVisible" [readonly]="true" [disabled]="!(countries && countries.length > 0)"
+        [(ngModel)]="searchFields.country" class="project-box WF-input searchNSelect select-style"
+        (focus)="toggleSearchDropdown()">
+      </ion-input>
+      <div *ngIf="isDropdownVisible" class="internalSearchNSelect">
+        <ion-input autofocus (focusout)="hideSearchSelectDropDown(false)" [(ngModel)]="Value"
+          placeholder="{{'Search' | translate}}" class="project-box full-width WF-input"></ion-input>
+        <ion-content no-padding debounce="500">
+          <div (scroll)="scrollHandler($event)" class="main-div">
+            <ion-list class="autoSearchFields">
+              <ion-item *ngIf="(countries | sortbyname | search : { Country_Name : Value }).length == 0">
+                <ion-label translate>{{'No result found!' | translate}}</ion-label>
+              </ion-item>
+              <ion-item tappable (ionSelect)="setSelectedValue(null)"
+                *ngIf="(countries | sortbyname | search : { Country_Name : Value }).length != 0">
+                <ion-label class="smart-search-radio" translate>{{'No Value' | translate}}</ion-label>
+                <ion-radio (ionSelect)="setSelectedValue(null)"></ion-radio>
+              </ion-item>
+              <div *ngIf="countries.length > 0">
+                <ion-item tappable (ionSelect)="setSelectedValue(option)"
+                  *ngFor="let option of countries | sortbyname | search : { Country_Name : Value } ">
+                  <ion-label class="smart-search-radio" translate>{{option.Country_Name | translate}}</ion-label>
+                  <ion-radio [value]="option.Country_Name" [checked]="searchFields.country == option.Country_Name"
+                    (ionSelect)="setSelectedValue(option)"></ion-radio>
+                </ion-item>
+              </div>
+            </ion-list>
+          </div>
+        </ion-content>
+      </div>
+
+    </div>
+  </ion-row>
+  <div class="full-width" *ngIf="lovData.length>0">
+    <ion-row class="full-width global-padding">
+      <div class="inline-block label t-accno">Account no.</div>
+      <div class="inline-block label t-cust">Customer</div>
+      <div class="inline-block label t-add1">Address 1</div>
+      <div class="inline-block label t-add2">Address 2</div>
+      <div class="inline-block label t-post">Postal Code</div>
+      <div class="inline-block label t-cty">City</div>
+      <div class="inline-block label t-country">Country</div>
+      <div class="inline-block t-select"></div>
+    </ion-row>
+    <ion-list class="customerList">
+      <ion-row *ngFor="let data of lovData | paginate: { itemsPerPage: 20, currentPage: pageNumber }"
+        class="global-padding strippedClass">
+        <div class="inline-block value t-accno">{{data.Account_Number}}</div>
+        <div class="inline-block value t-cust">{{data.Name}}</div>
+        <div class="inline-block value t-add1">{{data.AddressLine1}}</div>
+        <div class="inline-block value t-add2">{{data.AddressLine2}}</div>
+        <div class="inline-block value t-post">{{data.Zipcode}}</div>
+        <div class="inline-block value t-cty">{{data.City}}</div>
+        <div class="inline-block value t-country">{{data.Country}}</div>
+        <div class="inline-block t-select">
+          <button ion-button class="save-btn"
+            (click)="selectedCustomer(data)">{{'Select' | translate }}</button>
+        </div>
+      </ion-row>
+    </ion-list>
+    <ion-row>
+      <ion-col col-6></ion-col>
+      <ion-col col-6 no-padding class="pagination" text-right>
+        <div *ngIf="lovData.length > 0">
+          <pagination-controls (pageChange)="pageNumber = $event" maxSize="20" directionLinks="true" autoHide="true"
+            previousLabel="{{'Previous' | translate}}" nextLabel="{{'Next' | translate}}"
+            screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+            screenReaderCurrentLabel="You're on page">
+          </pagination-controls>
+        </div>
+      </ion-col>
+    </ion-row>
+  </div>
+</ion-content>

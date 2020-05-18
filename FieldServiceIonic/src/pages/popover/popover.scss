@@ -1,0 +1,65 @@
+page-popover {
+}
+
+.UserOptionPopOver {
+  .popover-content {
+    min-height: 100px;
+    min-width: 300px!important;
+    background-color: transparent;
+    border-radius: 10px;
+    box-shadow: 10px 10px 12px 0px rgba(0, 0, 0, 0.3);
+  }
+
+  ion-card {
+    margin: 0px !important;
+    padding: 0px !important;
+    width: 100%;
+  }
+
+  ion-card-content {
+    margin: 0px !important;
+  }
+
+  .popover-viewport .scroll-content {
+    background-color: rgba(251, 251, 251,1) !important;
+    color: rgba(74,74,74,1);
+    font-family: "Helvetica Neue";
+    font-size: 18px;
+    font-weight: 300;
+    line-height: 28px;
+    text-align: left;
+    overflow-y: auto;
+  }
+
+  .popover-viewport .toolbar-title {
+    color: rgba(74,74,74,1);
+    font-family: "Helvetica Neue";
+    font-size: 22px;
+    font-weight: 300;
+    line-height: 27px;
+    text-align: left;
+  }
+
+  .userBtn {
+    min-height: 50px;
+    padding: 10px;
+    vertical-align: middle;
+  }
+
+  .userPref-img, .logout-img {
+    margin: 0 10px;
+  }
+
+  .userModalHead {
+    text-align: center;
+    margin: 6px 0;
+  }
+
+  .tooltip {
+    font-size: 3em;
+    height: 27px;
+    float: right;
+    margin-right: 6px;
+    color: #fff;
+  }
+}

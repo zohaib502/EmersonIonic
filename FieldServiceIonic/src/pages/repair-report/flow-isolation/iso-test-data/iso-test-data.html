@@ -1,0 +1,522 @@
+<ion-content padding class="sdr-pages">
+    <ion-card>
+        <ion-card-header>
+            <ion-row class="global-padding row">
+                    <ion-col col-3>
+                      <div class="header-left">{{'Post Valve Repair Test Data'|translate}}</div>
+                    </ion-col>
+                    <ion-col col-9 *ngIf="selectedProcess==Enums.Selected_Process.FCR_AND_SDR" class="txt-rgt">
+                      <span class="ft-size verticalMiddle">Continue</span> <button (click)="goToFcr()" ion-button
+                        class="frs-Btn verticalMiddle ">{{'Field Completion Report'|translate}}</button>
+                    </ion-col>
+                  </ion-row>
+        </ion-card-header>
+        <page-sdr-header></page-sdr-header>
+        <ion-card-content>
+            <ion-row class="global-padding">
+                <div class="testtech inline-block">
+                    <span class="label">{{'Test Technician' | translate}}</span>
+                    <ion-input maxlength="250" class="project-box select-style" [(ngModel)]="testDataObj.TESTTECHNICIAN"
+                        id="isotestdata_1"></ion-input>
+                </div>
+                <div class="testwitns inline-block">
+                    <span class="label">{{'Test Witness' | translate}}</span>
+                    <ion-input maxlength="250" class="project-box select-style" [(ngModel)]="testDataObj.TESTWITNESS"
+                        id="isotestdata_2"></ion-input>
+                </div>
+                <div class="date inline-block">
+                    <span class="label block">{{'Date' | translate}}</span>
+                    <span class="inline-block date-inputBox">
+                    <input type="text" class="date-box inline-block" [disabled]="!isEnabled" bsDatepicker  #datepicker="bsDatepicker"
+                        [(bsValue)]="testDataObj.TESTDATE" [bsConfig]="{dateInputFormat: 'DD-MMM-YYYY'}"
+                        value="{{testDataObj.TESTDATE | date:'dd-MMM-yyyy'}}" (onShown)="onShowPicker($event)"
+                        id="isotestdata_3">
+                    </span>
+                    <span class="inline-block"><img (click)="datepicker.show()" [attr.aria-expanded]="datepicker.isOpen"
+                            src="assets/imgs/icons/ic_calendar-for-field.png" class="calIcon pointer" /></span>
+                </div>
+            </ion-row>
+            <ion-row class="marginTop30 global-padding">
+                <span class="label sub-header">Diagnostic Completed</span>
+            </ion-row>
+            <ion-row class="marginTop30 global-padding">
+                <div class="afchkbox inline-block">
+                    <span class="label">Af</span>
+                    <ion-checkbox color="dark"
+                    [checked]="testDataObj.CHECKBOX_AF == 'true' || testDataObj.CHECKBOX_AF == true"
+                    [(ngModel)]="testDataObj.CHECKBOX_AF" id="isotestdata_4">
+                </ion-checkbox>
+                    </div>
+                    <div class="alchkbox inline-block">
+                            <span class="label">Al</span>
+                            <ion-checkbox color="dark"
+                            [checked]="testDataObj.CHECKBOX_AL == 'true' || testDataObj.CHECKBOX_AL == true"
+                            [(ngModel)]="testDataObj.CHECKBOX_AL" id="isotestdata_5">
+                        </ion-checkbox>
+                        </div>
+                        <div class="sfcrchkbox inline-block" *ngIf="depotRepairTrue=='false'||depotRepairTrue==false">
+                                <span class="label">Stroked From Control Room</span>
+                                <ion-checkbox color="dark"
+                                [checked]="testDataObj.STROKEDFROMCONTROLROOM == 'true' || testDataObj.STROKEDFROMCONTROLROOM == true"
+                                [(ngModel)]="testDataObj.STROKEDFROMCONTROLROOM" id="isotestdata_6">
+                            </ion-checkbox>
+                            </div>
+            </ion-row>
+            <div class="full-width global-padding" *ngIf="deviceID == Enums.FlowIsolationProductId.ControlValve || deviceID == Enums.FlowIsolationProductId.Isolation">
+            <ion-row class="marginTop30">
+                    <div class="half-screen marginTop15"></div>
+                    <div class="half-screen marginTop15">
+                            <span class="label inline-block">{{'Packing Torque' | translate}}</span>
+                            <ion-checkbox color="dark"
+                            [checked]="testDataObj.CHECKBOX_PACKINGTORQUE == 'true' || testDataObj.CHECKBOX_PACKINGTORQUE == true"
+                            [(ngModel)]="testDataObj.CHECKBOX_PACKINGTORQUE" id="isotestdata_7">
+                        </ion-checkbox>
+                            </div>
+            </ion-row>
+            <ion-row>
+                <div class="half-screen marginTop15">
+                    <span class="label inline-block">{{'Body Bonnet Torque' | translate}}</span>
+                    <span [ngClass]="testDataObj.BODYBONNETTORQUE_UOM && testDataObj.BODYBONNETTORQUE_UOM !=''? 'validator' :''" class="inline-block"></span> 
+                    <ion-input maxlength="250" [ngClass]="errorObj.BODYBONNETTORQUE && errorObj.BODYBONNETTORQUE !='' ? 'input-validation' :''"  class="project-box " [(ngModel)]="testDataObj.BODYBONNETTORQUE" id="isotestdata_8">
+                    </ion-input>
+                </div>
+                <div class="half-screen marginTop15">
+                    <span class="label inline-block">{{'Packing Torque' | translate}}</span>
+                    <span [ngClass]="testDataObj.PACKINGTORQUE_UOM && testDataObj.PACKINGTORQUE_UOM !=''? 'validator' :''" class="inline-block"></span> 
+                    <ion-input maxlength="250" [ngClass]="errorObj.PACKINGTORQUE && errorObj.PACKINGTORQUE !='' ? 'input-validation' :''" class="project-box " [(ngModel)]="testDataObj.PACKINGTORQUE" id="isotestdata_9">
+                    </ion-input>
+                </div>
+            </ion-row>
+            <ion-row>
+                <div class="half-screen marginTop15">
+                    <span class="label inline-block">{{'Body Bonnet Torque UOM' | translate}}</span>
+                    <span [ngClass]="testDataObj.BODYBONNETTORQUE && testDataObj.BODYBONNETTORQUE !=''? 'validator' :''" class="inline-block"></span> 
+                    <ion-input [ngClass]="errorObj.BODYBONNETTORQUE_UOM && errorObj.BODYBONNETTORQUE_UOM !='' ? 'input-validation' :''" class="project-box searchNSelect select-style" tappable
+                        (click)="searchModal('TestDataBodyBonnetTorqueUnitOfMeasurementFlowIsolation','BODYBONNETTORQUE_UOM')"
+                        [readonly]="true" [(ngModel)]="testDataObj.BODYBONNETTORQUE_UOM" id="isotestdata_10">
+                    </ion-input>
+                    <ion-input maxlength="250" *ngIf="testDataObj.BODYBONNETTORQUE_UOM == 'Other'" class="project-box "
+                        [ngClass]="!testDataObj.BODYBONNETTORQUE_UOM_OT ? 'input-validation': '' "
+                        [(ngModel)]="testDataObj.BODYBONNETTORQUE_UOM_OT" id="isotestdata_11">
+                    </ion-input>
+                </div>
+                <div class="half-screen marginTop15">
+                    <span class="label inline-block">{{'Packing Torque UOM' | translate}}</span>
+                    <span [ngClass]="testDataObj.PACKINGTORQUE && testDataObj.PACKINGTORQUE !=''? 'validator' :''" class="inline-block"></span>
+                    <ion-input [ngClass]="errorObj.PACKINGTORQUE_UOM && errorObj.PACKINGTORQUE_UOM !='' ? 'input-validation' :''"  class="project-box searchNSelect select-style" tappable
+                        (click)="searchModal('TestDataBodyBonnetTorqueUnitOfMeasurementFlowIsolation','PACKINGTORQUE_UOM')"
+                        [readonly]="true" [(ngModel)]="testDataObj.PACKINGTORQUE_UOM" id="isotestdata_12">
+                    </ion-input>
+                    <ion-input maxlength="250" *ngIf="testDataObj.PACKINGTORQUE_UOM == 'Other'" class="project-box "
+                        [ngClass]="!testDataObj.PACKINGTORQUE_UOM_OT ? 'input-validation': '' "
+                        [(ngModel)]="testDataObj.PACKINGTORQUE_UOM_OT" id="isotestdata_13">
+                    </ion-input>
+                </div>
+            </ion-row>
+            <ion-row class="row-separator">
+                <div class="half-screen marginTop15">
+                    <span class="label inline-block">{{'Disassembly Technician Name' | translate}}</span>
+                    <ion-input maxlength="250" class="project-box " [(ngModel)]="testDataObj.DISASSEMBLYTECHNICIANNAME"
+                        id="isotestdata_14">
+                    </ion-input>
+                </div>
+                <div class="half-screen marginTop15">
+                    <span class="label inline-block">{{'Final Assembly Technician Name' | translate}}</span>
+                    <ion-input maxlength="250" class="project-box " [(ngModel)]="testDataObj.FINALASSEMBLYTECHNICIANNAME"
+                        id="isotestdata_15">
+                    </ion-input>
+                </div>
+            </ion-row>
+            <ion-row>
+                <div class="half-screen marginTop15">
+                    <span class="label inline-block">{{'Parts Write Up Technician Name' | translate}}</span>
+                    <ion-input maxlength="250" class="project-box " [(ngModel)]="testDataObj.PARTSWRITEUPTECHNICANNAME"
+                        id="isotestdata_16">
+                    </ion-input>
+                </div>
+                <div class="half-screen marginTop15">
+                    <span class="label inline-block">{{'Final Inspection Technician Name' | translate}}</span>
+                    <ion-input maxlength="250" class="project-box " [(ngModel)]="testDataObj.FINALINSPECTIONTECHNICIANNAME"
+                        id="isotestdata_17">
+                    </ion-input>
+                </div>
+            </ion-row>
+            <ion-row class="marginTop30">
+                <ion-item class="WF-toggle toggle-all-accordion">
+                    <ion-label *ngIf="toggleAllaccordion == false" text-right>{{'Expand all' | translate}}</ion-label>
+                    <ion-label *ngIf="toggleAllaccordion == true" text-right>{{'Collapse all' | translate}}</ion-label>
+                    <ion-toggle [(ngModel)]="toggleAllaccordion" (ionChange)="toggleAccordion($event)" id="isotestdata_18"></ion-toggle >
+                </ion-item>
+            </ion-row>
+            <ion-row class="customRows">
+                <div class="full-width">
+                    <div class="inline-block" [ngClass]="testDataObj.CV_PKG_GSTPRESSURE_NA == 'true' || testDataObj.CV_PKG_GSTPRESSURE_NA == true ? 'disable-content' : ''" (click)="expandOuter('PKGGSTPressure')" id="isotestdata_19">
+                        <ion-icon class="arrowIcon" item-left name="arrow-dropright"
+                            *ngIf="!expandOuterAccordion.PKGGSTPressure">
+                        </ion-icon>
+                        <ion-icon class="arrowIcon" role="img" *ngIf="expandOuterAccordion.PKGGSTPressure"
+                            aria-label="arrow dropdown" name="arrow-dropdown">
+                        </ion-icon>
+                    
+                    <span class="label pointer acc-label">{{'PKG/GSTPressure' | translate}}</span>
+                    </div>
+                    <div class="inline-block pull-right marginRight25">
+                        <span class="label">{{'N/A' | translate}}</span>
+                        <ion-checkbox color="dark"
+                        (click)="confirmAlert(testDataObj.CV_PKG_GSTPRESSURE_NA, 'PKGGSTPressure', 'CV_PKG_GSTPRESSURE_NA')"
+                            [checked]="testDataObj.CV_PKG_GSTPRESSURE_NA == 'true' || testDataObj.CV_PKG_GSTPRESSURE_NA == true"
+                            [(ngModel)]="testDataObj.CV_PKG_GSTPRESSURE_NA" id="isotestdata_20">
+                        </ion-checkbox>
+                    </div>
+                    <div class="block full-width" *ngIf="expandOuterAccordion.PKGGSTPressure">
+                        <ion-row>
+                            <div class="half-screen marginTop15">
+                                <span class="label inline-block">{{'PKG GST Pressure' | translate}}</span>
+                                <span [ngClass]="testDataObj.CV_PKG_GSTPRESSURE_PKGGSTPRESSURE_UOM && testDataObj.CV_PKG_GSTPRESSURE_PKGGSTPRESSURE_UOM !=''? 'validator' :''" class="inline-block"></span>
+                                <ion-input maxlength="250" [ngClass]="errorObj.CV_PKG_GSTPRESSURE_PKGGSTPRESSURE && errorObj.CV_PKG_GSTPRESSURE_PKGGSTPRESSURE !='' ? 'input-validation' :''" class="project-box "
+                                    [(ngModel)]="testDataObj.CV_PKG_GSTPRESSURE_PKGGSTPRESSURE" id="isotestdata_21">
+                                </ion-input>
+                            </div>
+                            <div class="half-screen marginTop15">
+                                <span class="label inline-block">{{'Pass/Fail' | translate}}</span>
+                                <ion-input class="project-box searchNSelect select-style" tappable
+                                    (click)="searchModal('PassFail','CV_PKG_GSTPRESSURE_PASS_FAIL')" [readonly]="true"
+                                    [(ngModel)]="testDataObj.CV_PKG_GSTPRESSURE_PASS_FAIL" id="isotestdata_22">
+                                </ion-input>
+                                <ion-input maxlength="250" *ngIf="testDataObj.CV_PKG_GSTPRESSURE_PASS_FAIL == 'Other'"
+                                    class="project-box "
+                                    [ngClass]="!testDataObj.CV_PKG_GSTPRESSURE_PASS_FAIL_OT ? 'input-validation': '' "
+                                    [(ngModel)]="testDataObj.CV_PKG_GSTPRESSURE_PASS_FAIL_OT" id="isotestdata_23">
+                                </ion-input>
+                            </div>
+                        </ion-row>
+                        <ion-row>
+                            <div class="half-screen marginTop15">
+                                <span class="label inline-block">{{'PKG GST Pressure UOM' | translate}}</span>
+                                <span [ngClass]="testDataObj.CV_PKG_GSTPRESSURE_PKGGSTPRESSURE && testDataObj.CV_PKG_GSTPRESSURE_PKGGSTPRESSURE !=''? 'validator' :''" class="inline-block"></span>
+                                <ion-input [ngClass]="errorObj.CV_PKG_GSTPRESSURE_PKGGSTPRESSURE_UOM && errorObj.CV_PKG_GSTPRESSURE_PKGGSTPRESSURE_UOM !='' ? 'input-validation' :''" class="project-box searchNSelect select-style" tappable
+                                    (click)="searchModal('UnitOfMeasurement','CV_PKG_GSTPRESSURE_PKGGSTPRESSURE_UOM')"
+                                    [readonly]="true" [(ngModel)]="testDataObj.CV_PKG_GSTPRESSURE_PKGGSTPRESSURE_UOM"
+                                    id="isotestdata_24">
+                                </ion-input>
+                                <ion-input maxlength="250" *ngIf="testDataObj.CV_PKG_GSTPRESSURE_PKGGSTPRESSURE_UOM == 'Other'"
+                                    class="project-box "
+                                    [ngClass]="!testDataObj.CV_PKG_GSTPRESSURE_PKGGSTPRESSURE_UOM_OT ? 'input-validation': '' "
+                                    [(ngModel)]="testDataObj.CV_PKG_GSTPRESSURE_PKGGSTPRESSURE_UOM_OT"
+                                    id="isotestdata_25">
+                                </ion-input>
+                            </div>
+                        </ion-row>
+                    </div>
+                </div>
+            </ion-row>
+            <ion-row class="customRows">
+                <div class="full-width">
+                    <div class="inline-block" [ngClass]="testDataObj.SEATLEAKCLASS_NA == 'true' || testDataObj.SEATLEAKCLASS_NA == true ? 'disable-content' : ''" (click)="expandOuter('SeatLeakClass')" id="isotestdata_26">
+                        <ion-icon class="arrowIcon" item-left name="arrow-dropright"
+                            *ngIf="!expandOuterAccordion.SeatLeakClass">
+                        </ion-icon>
+                        <ion-icon class="arrowIcon" role="img" *ngIf="expandOuterAccordion.SeatLeakClass"
+                            aria-label="arrow dropdown" name="arrow-dropdown">
+                        </ion-icon>
+                    <span class="label pointer acc-label">{{'Seat Leak Class' | translate}}</span>
+                    </div>
+                    <div class="inline-block pull-right marginRight25">
+                        <span class="label">{{'N/A' | translate}}</span>
+                        <ion-checkbox color="dark"
+                        (click)="confirmAlert(testDataObj.SEATLEAKCLASS_NA, 'SeatLeakClass', 'SEATLEAKCLASS_NA')"
+                            [checked]="testDataObj.SEATLEAKCLASS_NA == 'true' || testDataObj.SEATLEAKCLASS_NA == true"
+                            [(ngModel)]="testDataObj.SEATLEAKCLASS_NA" id="isotestdata_27">
+                        </ion-checkbox>
+                    </div>
+                    <div class="block full-width" *ngIf="expandOuterAccordion.SeatLeakClass">
+                        <ion-row>
+                            <div class="half-screen marginTop15">
+                                <span class="label inline-block">{{'Seat Leak Class' | translate}}</span>
+                                <ion-input class="project-box searchNSelect select-style" tappable
+                                    (click)="searchModal('SeatLeakFlowIsolation','SEATLEAKCLASS')" [readonly]="true"
+                                    [(ngModel)]="testDataObj.SEATLEAKCLASS" id="isotestdata_28">
+                                </ion-input>
+                                <ion-input maxlength="250" *ngIf="testDataObj.SEATLEAKCLASS == 'Other'" class="project-box "
+                                    [ngClass]="!testDataObj.SEATLEAKCLASS_OT ? 'input-validation': '' "
+                                    [(ngModel)]="testDataObj.SEATLEAKCLASS_OT" id="isotestdata_29">
+                                </ion-input>
+                            </div>
+                            <div class="half-screen marginTop15">
+                                <span class="label inline-block">{{'Test Pressure' | translate}}</span>
+                                <span [ngClass]="testDataObj.TESTPRESSURE_UOM && testDataObj.TESTPRESSURE_UOM !=''? 'validator' :''" class="inline-block"></span>
+                                <ion-input maxlength="250" [ngClass]="errorObj.TESTPRESSURE && errorObj.TESTPRESSURE !='' ? 'input-validation' :''" class="project-box " [(ngModel)]="testDataObj.TESTPRESSURE"
+                                    id="isotestdata_30">
+                                </ion-input>
+                            </div>
+                        </ion-row>
+                        <ion-row>
+                            <div class="half-screen marginTop15">
+                            </div>
+                            <div class="half-screen marginTop15">
+                                <span class="label inline-block">{{'Test Pressure UOM' | translate}}</span>
+                                <span [ngClass]="testDataObj.TESTPRESSURE && testDataObj.TESTPRESSURE !=''? 'validator' :''" class="inline-block"></span>
+                                <ion-input [ngClass]="errorObj.TESTPRESSURE_UOM && errorObj.TESTPRESSURE_UOM !='' ? 'input-validation' :''" class="project-box searchNSelect select-style" tappable
+                                    (click)="searchModal('TestDataPressureUnitOfMeasureFlowIsolation','TESTPRESSURE_UOM')"
+                                    [readonly]="true" [(ngModel)]="testDataObj.TESTPRESSURE_UOM" id="isotestdata_31">
+                                </ion-input>
+                                <ion-input maxlength="250" *ngIf="testDataObj.TESTPRESSURE_UOM == 'Other'" class="project-box "
+                                    [ngClass]="!testDataObj.TESTPRESSURE_UOM_OT ? 'input-validation': '' "
+                                    [(ngModel)]="testDataObj.TESTPRESSURE_UOM_OT" id="isotestdata_32">
+                                </ion-input>
+                            </div>
+                        </ion-row>
+                    </div>
+                </div>
+            </ion-row>
+             <ion-row class="customRows">
+                <div class="full-width">
+                    <div class="inline-block" [ngClass]="testDataObj.LEAKAGE_NA == 'true' || testDataObj.LEAKAGE_NA == true ? 'disable-content' : ''" (click)="expandOuter('Leakage')" id="isotestdata_33">
+                        <ion-icon class="arrowIcon" item-left name="arrow-dropright"
+                            *ngIf="!expandOuterAccordion.Leakage">
+                        </ion-icon>
+                        <ion-icon class="arrowIcon" role="img" *ngIf="expandOuterAccordion.Leakage"
+                            aria-label="arrow dropdown" name="arrow-dropdown">
+                        </ion-icon>
+                    <span class="label pointer acc-label">{{'Leakage' | translate}}</span>
+                    </div>
+                    <div class="inline-block pull-right marginRight25">
+                        <span class="label">{{'N/A' | translate}}</span>
+                        <ion-checkbox color="dark"
+                        (click)="confirmAlert(testDataObj.LEAKAGE_NA, 'Leakage', 'LEAKAGE_NA')"
+                            [checked]="testDataObj.LEAKAGE_NA == 'true' || testDataObj.LEAKAGE_NA == true"
+                            [(ngModel)]="testDataObj.LEAKAGE_NA" id="isotestdata_34">
+                        </ion-checkbox >
+                    </div>
+                    <div class="block full-width" *ngIf="expandOuterAccordion.Leakage">
+                        <ion-row>
+                            <div class="half-screen marginTop15">
+                                <span class="label inline-block">{{'Allowable Leakage' | translate}}</span>
+                                <span [ngClass]="testDataObj.LEAKAGE_ALLOWABLELEAKAGE_UOM && testDataObj.LEAKAGE_ALLOWABLELEAKAGE_UOM !=''? 'validator' :''" class="inline-block"></span>
+                                <ion-input maxlength="250" [ngClass]="errorObj.LEAKAGE_ALLOWABLELEAKAGE && errorObj.LEAKAGE_ALLOWABLELEAKAGE !='' ? 'input-validation' :''"  class="project-box " [(ngModel)]="testDataObj.LEAKAGE_ALLOWABLELEAKAGE"
+                                    id="isotestdata_35">
+                                </ion-input>
+                            </div>
+                            <div class="half-screen marginTop15">
+                                <span [ngClass]="errorObj.LEAKAGE_ACTUALLEAKAGE && errorObj.LEAKAGE_ACTUALLEAKAGE !='' ? 'input-validation' :''"  class="label inline-block">{{'Actual Leakage' | translate}}</span>
+                                <span [ngClass]="testDataObj.LEAKAGE_ACTUALLEAKAGE_UOM && testDataObj.LEAKAGE_ACTUALLEAKAGE_UOM !=''? 'validator' :''" class="inline-block"></span>
+                                <ion-input maxlength="250" class="project-box " [(ngModel)]="testDataObj.LEAKAGE_ACTUALLEAKAGE"
+                                    id="isotestdata_35"></ion-input>
+                            </div>
+                        </ion-row>
+                        <ion-row>
+                            <div class="half-screen marginTop15">
+                                <span class="label inline-block">{{'Allowable Leakage UOM' | translate}}</span>
+                                <span [ngClass]="testDataObj.LEAKAGE_ALLOWABLELEAKAGE && testDataObj.LEAKAGE_ALLOWABLELEAKAGE !=''? 'validator' :''" class="inline-block"></span>
+                                <ion-input [ngClass]="errorObj.LEAKAGE_ALLOWABLELEAKAGE_UOM && errorObj.LEAKAGE_ALLOWABLELEAKAGE_UOM !='' ? 'input-validation' :''" class="project-box searchNSelect select-style" tappable
+                                    (click)="searchModal('TestDataAllowableActualUnitOfMeasurementFlowIsolation','LEAKAGE_ALLOWABLELEAKAGE_UOM')"
+                                    [readonly]="true" [(ngModel)]="testDataObj.LEAKAGE_ALLOWABLELEAKAGE_UOM"
+                                    id="isotestdata_36">
+                                </ion-input>
+                                <ion-input maxlength="250" *ngIf="testDataObj.LEAKAGE_ALLOWABLELEAKAGE_UOM == 'Other'"
+                                    class="project-box "
+                                    [ngClass]="!testDataObj.LEAKAGE_ALLOWABLELEAKAGE_UOM_OT ? 'input-validation': '' "
+                                    [(ngModel)]="testDataObj.LEAKAGE_ALLOWABLELEAKAGE_UOM_OT" id="isotestdata_37">
+                                </ion-input>
+                            </div>
+                            <div class="half-screen marginTop15">
+                                <span class="label inline-block">{{'Actual Leakage UOM' | translate}}</span>
+                                <span [ngClass]="testDataObj.LEAKAGE_ACTUALLEAKAGE && testDataObj.TESTPRESSURE !=''? 'validator' :''" class="inline-block"></span>
+                                <ion-input [ngClass]="errorObj.LEAKAGE_ALLOWABLELEAKAGE_UOM && errorObj.LEAKAGE_ALLOWABLELEAKAGE_UOM !='' ? 'input-validation' :''"  class="project-box searchNSelect select-style" tappable
+                                    (click)="searchModal('TestDataAllowableActualUnitOfMeasurementFlowIsolation','LEAKAGE_ACTUALLEAKAGE_UOM')"
+                                    [readonly]="true" [(ngModel)]="testDataObj.LEAKAGE_ACTUALLEAKAGE_UOM"
+                                    id="isotestdata_38">
+                                </ion-input>
+                                <ion-input maxlength="250" *ngIf="testDataObj.LEAKAGE_ACTUALLEAKAGE_UOM == 'Other'" class="project-box"
+                                    [ngClass]="!testDataObj.LEAKAGE_ACTUALLEAKAGE_UOM_OT ? 'input-validation': '' "
+                                    [(ngModel)]="testDataObj.LEAKAGE_ACTUALLEAKAGE_UOM_OT" id="isotestdata_39">
+                                </ion-input>
+                            </div>
+                        </ion-row>
+                    </div>
+                </div>
+            </ion-row>
+           <ion-row class="customRows">
+                <div class="full-width">
+                    <div class="inline-block" [ngClass]="testDataObj.HYDROTESTPRESSURE_NA == 'true' || testDataObj.HYDROTESTPRESSURE_NA == true ? 'disable-content' : ''" (click)="expandOuter('HydroTestPressure')" id="isotestdata_40">
+                        <ion-icon class="arrowIcon" item-left name="arrow-dropright"
+                            *ngIf="!expandOuterAccordion.HydroTestPressure">
+                        </ion-icon>
+                        <ion-icon class="arrowIcon" role="img" *ngIf="expandOuterAccordion.HydroTestPressure"
+                            aria-label="arrow dropdown" name="arrow-dropdown">
+                        </ion-icon>
+                    <span class="label pointer acc-label">{{'Hydro Test Pressure' | translate}}</span>
+                    </div>
+                    <span class="inline-block pull-right marginRight25">
+                        <span class="label">{{'N/A' | translate}}</span>
+                        <ion-checkbox color="dark"
+                        (click)="confirmAlert(testDataObj.HYDROTESTPRESSURE_NA, 'HydroTestPressure', 'HYDROTESTPRESSURE_NA')"
+                            [checked]="testDataObj.HYDROTESTPRESSURE_NA == 'true' || testDataObj.HYDROTESTPRESSURE_NA == true"
+                            [(ngModel)]="testDataObj.HYDROTESTPRESSURE_NA" id="isotestdata_41">
+                        </ion-checkbox >
+                    </span>
+                    <div class="block full-width" *ngIf="expandOuterAccordion.HydroTestPressure">
+                        <ion-row>
+                            <div class="half-screen marginTop15">
+                                <span class="label inline-block">{{'Hydro Test Pressure' | translate}}</span>
+                                <span [ngClass]="testDataObj.HYDROTESTPRESSURE_UOM && testDataObj.HYDROTESTPRESSURE_UOM !=''? 'validator' :''" class="inline-block"></span>
+                                <ion-input maxlength="250" [ngClass]="errorObj.HYDROTESTPRESSURE && errorObj.HYDROTESTPRESSURE !='' ? 'input-validation' :''"   class="project-box " [(ngModel)]="testDataObj.HYDROTESTPRESSURE"
+                                    id="isotestdata_42">
+                                </ion-input>
+                            </div>
+                            <div class="half-screen marginTop15">
+                                <span class="label inline-block">{{'Duration' | translate}}</span>
+                                <ion-input class="project-box searchNSelect select-style" tappable
+                                    (click)="searchModal('HydroTestDurationFlowIsolation','DURATION')" [readonly]="true"
+                                    [(ngModel)]="testDataObj.DURATION" id="isotestdata_43">
+                                </ion-input>
+                                <ion-input maxlength="250" *ngIf="testDataObj.DURATION == 'Other'" class="project-box "
+                                    [ngClass]="!testDataObj.DURATION_OT ? 'input-validation': '' "
+                                    [(ngModel)]="testDataObj.DURATION_OT" id="isotestdata_44">
+                                </ion-input>
+                            </div>
+                        </ion-row>
+                        <ion-row>
+                            <div class="half-screen marginTop15">
+                                <span class="label inline-block">{{'Hydro Test Pressure UOM' | translate}}</span>
+                                <span [ngClass]="testDataObj.HYDROTESTPRESSURE && testDataObj.HYDROTESTPRESSURE !=''? 'validator' :''" class="inline-block"></span>
+                                <ion-input [ngClass]="errorObj.HYDROTESTPRESSURE_UOM && errorObj.HYDROTESTPRESSURE_UOM !='' ? 'input-validation' :''"   class="project-box " class="project-box searchNSelect select-style" tappable
+                                    (click)="searchModal('HydroTestPressureUnitOfMeasureFlowIsolation','HYDROTESTPRESSURE_UOM')"
+                                    [readonly]="true" [(ngModel)]="testDataObj.HYDROTESTPRESSURE_UOM"
+                                    id="isotestdata_45">
+                                </ion-input>
+                                <ion-input maxlength="250" *ngIf="testDataObj.HYDROTESTPRESSURE_UOM == 'Other'" class="project-box "
+                                    [ngClass]="!testDataObj.HYDROTESTPRESSURE_UOM_OT ? 'input-validation': '' "
+                                    [(ngModel)]="testDataObj.HYDROTESTPRESSURE_UOM_OT" id="isotestdata_46">
+                                </ion-input>
+                            </div>
+                        </ion-row>
+                    </div>
+                </div>
+            </ion-row>
+            </div>
+            <div class="full-width global-padding" *ngIf="deviceID == Enums.FlowIsolationProductId.Regulator">
+                    <ion-row class="row-separator">
+                            <div class="half-screen marginTop15">
+                                <span class="label inline-block">{{'Set Point' | translate}}</span>
+                                <ion-input maxlength="250" class="project-box " [(ngModel)]="testDataObj.REG_SETPOINT" id="isotestdata_47">
+                                </ion-input>
+                            </div>
+                            <div class="half-screen marginTop15">
+                                <span class="label inline-block">{{'Test Pressure' | translate}}</span>
+                                <ion-input maxlength="250" class="project-box " [(ngModel)]="testDataObj.REG_TESTPRESSURE" id="isotestdata_48">
+                                </ion-input>
+                            </div>
+                        </ion-row>
+                        <ion-row>
+                                <div class="half-screen marginTop15">
+                                    <span class="label inline-block">{{'Disassembly Tech' | translate}}</span>
+                                    <ion-input maxlength="250" class="project-box " [(ngModel)]="testDataObj.REG_DISASSEMBLYTECH" id="isotestdata_49">
+                                    </ion-input>
+                                </div>
+                                <div class="half-screen marginTop15">
+                                    <span class="label inline-block">{{'Final Assembly' | translate}}</span>
+                                    <ion-input maxlength="250" class="project-box " [(ngModel)]="testDataObj.REG_FINALASSEMBLY" id="isotestdata_50">
+                                    </ion-input>
+                                </div>
+                            </ion-row>
+                            <ion-row>
+                                    <div class="half-screen marginTop15">
+                                        <span class="label inline-block">{{'Parts Writeup' | translate}}</span>
+                                        <ion-input maxlength="250" class="project-box " [(ngModel)]="testDataObj.REG_PARTSWRITEUP" id="isotestdata_51">
+                                        </ion-input>
+                                    </div>
+                                    <div class="half-screen marginTop15">
+                                        <span class="label inline-block">{{'Final Inspection' | translate}}</span>
+                                        <ion-input maxlength="250" class="project-box " [(ngModel)]="testDataObj.REG_FINALINSPECTION" id="isotestdata_52">
+                                        </ion-input>
+                                    </div>
+                                </ion-row>
+            </div>
+            <div class="full-width global-padding" *ngIf="deviceID == Enums.FlowIsolationProductId.LevelTroll">
+                    <ion-row class="row-separator marginTop30">
+                            <div class="half-screen marginTop15">
+                                <span class="label inline-block">{{'Disassembly Technician Name' | translate}}</span>
+                                <ion-input maxlength="250" class="project-box " [(ngModel)]="testDataObj.DISASSEMBLYTECHNICIANNAME"
+                                    id="isotestdata_53">
+                                </ion-input>
+                            </div>
+                            <div class="half-screen marginTop15">
+                                <span class="label inline-block">{{'Final Assembly Technician Name' | translate}}</span>
+                                <ion-input maxlength="250" class="project-box " [(ngModel)]="testDataObj.FINALASSEMBLYTECHNICIANNAME"
+                                    id="isotestdata_54">
+                                </ion-input>
+                            </div>
+                        </ion-row>
+                        <ion-row>
+                            <div class="half-screen marginTop15">
+                                <span class="label inline-block">{{'Parts Write Up Technician Name' | translate}}</span>
+                                <ion-input maxlength="250" class="project-box " [(ngModel)]="testDataObj.PARTSWRITEUPTECHNICANNAME"
+                                    id="isotestdata_55">
+                                </ion-input>
+                            </div>
+                            <div class="half-screen marginTop15">
+                                <span class="label inline-block">{{'Final Inspection Technician Name' | translate}}</span>
+                                <ion-input maxlength="250" class="project-box " [(ngModel)]="testDataObj.FINALINSPECTIONTECHNICIANNAME"
+                                    id="isotestdata_56">
+                                </ion-input>
+                            </div>
+                        </ion-row>
+                        <ion-row class="customRows marginTop30">
+                                <div class="full-width">
+                                    <div class="inline-block" [ngClass]="testDataObj.LT_RADATA_NA == 'true' || testDataObj.LT_RADATA_NA == true ? 'disable-content' : ''" (click)="expandOuter('RepairAssemblyData')" id="isotestdata_57">
+                                        <ion-icon class="arrowIcon" item-left name="arrow-dropright"
+                                            *ngIf="!expandOuterAccordion.RepairAssemblyData">
+                                        </ion-icon>
+                                        <ion-icon class="arrowIcon" role="img" *ngIf="expandOuterAccordion.RepairAssemblyData"
+                                            aria-label="arrow dropdown" name="arrow-dropdown">
+                                        </ion-icon>
+                                    
+                                    <span class="label pointer acc-label">{{'Repair Assembly Data' | translate}}</span>
+                                    </div>
+                                    <div class="inline-block pull-right marginRight25">
+                                        <span class="label">{{'N/A' | translate}}</span>
+                                        <ion-checkbox color="dark"
+                                        (click)="confirmAlert(testDataObj.LT_RADATA_NA, 'RepairAssemblyData', 'LT_RADATA_NA')"
+                                            [checked]="testDataObj.LT_RADATA_NA == 'true' || testDataObj.LT_RADATA_NA == true"
+                                            [(ngModel)]="testDataObj.LT_RADATA_NA" id="isotestdata_58">
+                                        </ion-checkbox>
+                                    </div>
+                                    <div class="block full-width" *ngIf="expandOuterAccordion.RepairAssemblyData">
+                                        <ion-row>
+                                            <div class="half-screen marginTop15">
+                                                            <span class="label block">{{'Build Date' | translate}}</span>
+                                                            <span class="inline-block date-inputBox">
+                                                            <input type="text" class="date-box inline-block" [disabled]="!isEnabled" bsDatepicker #dps="bsDatepicker"
+                                                                [(bsValue)]="testDataObj.LT_BUILDDATE"  [bsConfig]="{dateInputFormat: 'DD-MMM-YYYY'}" placement ="top"
+                                                                value="{{testDataObj.LT_BUILDDATE | date:'dd-MMM-yyyy'}}" (onShown)="onShowPicker($event)"
+                                                                id="isotestdata_59">
+                                                            </span>
+                                                            <span class="inline-block"><img (click)="dps.show()" [attr.aria-expanded]="dps.isOpen"
+                                                                    src="assets/imgs/icons/ic_calendar-for-field.png" class="calIcon pointer" /></span>
+                                            </div>
+                                        </ion-row>
+                                      
+                                    </div>
+                                </div>
+                            </ion-row>
+            </div>
+            <ion-row class="footer-row">
+                    <div class="inline-block footerLeft">
+                        <button ion-button class="save-btn footer-Button"
+                            (click)="redirect('back', '')" id="isoReportNotes_60">{{'Back' | translate }}</button>
+                    </div>
+                    <div class="footerRight" *ngIf="deviceID == Enums.FlowIsolationProductId.ControlValve || deviceID == Enums.FlowIsolationProductId.Isolation">
+                        <button ion-button class="save-btn footer-Button"
+                            (click)="redirect('optional', '')" id="isoReportNotes_61">{{'Optional' | translate }}</button>
+                            <button ion-button class="save-btn footer-Button"
+                            (click)="redirect('finalinspection', 'doubleRightbtn')" id="isoReportNotes_62">{{'Final Inspection' | translate }}</button>
+                    </div>
+                    <div class="footerRight" *ngIf="deviceID == Enums.FlowIsolationProductId.LevelTroll || deviceID == Enums.FlowIsolationProductId.Regulator">
+                                <button ion-button class="save-btn footer-Button"
+                                (click)="redirect('finalinspection', '')" id="isoReportNotes_63">{{'Final Inspection' | translate }}</button>
+                        </div>
+                </ion-row>
+        </ion-card-content>
+    </ion-card>
+</ion-content>

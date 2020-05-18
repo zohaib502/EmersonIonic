@@ -1,0 +1,63 @@
+page-invalid-key-modal {
+
+  .export-language-button {
+    height: 30px;
+    min-width: 80px;
+    border-radius: 3px;
+    background-color: rgba(142,177,95,1) !important;
+    color: rgba(255,255,255,1) !important;
+    font-family: "Helvetica Neue";
+    font-size: 14px;
+    line-height: 16px;
+    text-transform: capitalize;
+    margin: 0px 10px;
+    vertical-align: middle;
+  }
+}
+
+.InvalidKeyModalPage {
+  .modal-wrapper {
+    height: 500px;
+    width: 800px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%) !important;
+    position: fixed;
+  }
+
+  .modal-wrapper .scroll-content {
+    background-color: rgba(255, 255, 255,1) !important;
+    color: rgba(74,74,74,1);
+    font-family: "Helvetica Neue";
+    font-size: 18px;
+    font-weight: 300;
+    line-height: 28px;
+    text-align: left;
+    overflow-y: hidden !important;
+  }
+
+  .modal-wrapper .toolbar-title {
+    color: rgba(74,74,74,1);
+    font-family: "Helvetica Neue";
+    font-size: 22px;
+    font-weight: 300;
+    line-height: 27px;
+    text-align: left;
+    padding: 0 12px !important;
+  }
+
+  .toolbar {
+    height: 52px !important;
+    border-bottom: 1px solid rgba(233, 232, 232,1) !important;
+  }
+
+  .padding-style {
+    padding: 0 10px 1px;
+  }
+
+  .title {
+    padding: 0 5px !important;
+  }
+}

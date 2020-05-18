@@ -1,0 +1,103 @@
+page-search-modal {
+    .LookupValues{
+        width: 100%;
+        text-align: center;
+        padding: 10px;
+    }
+    .search-modal,
+      ion-header,
+      .scroll-content {
+        background: #fff !important;
+      }
+    
+      ion-navbar {
+        height: auto !important;
+      }
+      .toolbar {
+        border-bottom: 1px solid rgba(233, 232, 232, 1) !important;
+      }
+      
+      ion-searchbar {
+        padding: 0px !important;
+      }
+       .modal-wrapper .toolbar-title{
+         text-align: center;
+       }
+       .selectOpt{
+        width: 100%;
+        float: right;
+        text-align: right;
+        padding: 10px;
+       }
+       .searchbar-md .searchbar-search-icon{
+         display: none !important;
+       }
+       .searchbar-md .searchbar-input{
+         padding: 5px !important;
+         height: 31px;
+       }
+       .searchbar-md .searchbar-clear-icon{
+         display:none !important;
+       }
+        .toolbar-title{
+          color: #424242 !important;
+        }
+       .select-btn{
+        background-color: rgb(107, 142, 35);
+        text-transform: capitalize;
+        height: 28px !important;
+        border-radius: 3px;
+        border: none;
+        font-size: 14px !important;
+        cursor: pointer;
+        font-family: "Helvetica Neue";
+        padding: 10px;
+       }
+       .scrollContent {
+         overflow-x: hidden;
+         overflow-y: auto;
+         height: 480px; 
+       }
+}
+.cssSearchModalPage{
+  .modal-wrapper {
+    height: 600px;
+    width: 600px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    position: fixed;
+  }
+
+  .modal-wrapper .scroll-content {
+    background-color: rgba(255, 255, 255, 1) !important;
+    color: rgba(74, 74, 74, 1);
+    font-family: "Helvetica Neue";
+    font-size: 14px !important;
+    font-weight: 300;
+    line-height: 28px;
+    text-align: left;
+    overflow-y: hidden !important;
+    padding: 0px !important;
+  }
+
+  .modal-wrapper .toolbar-title {
+    color: rgba(74, 74, 74, 1) !important;
+    font-family: "Helvetica Neue";
+    font-size: 22px;
+    font-weight: 300;
+    line-height: 27px;
+    text-align: left;
+  }
+
+  .toolbar {
+    height: 52px !important;
+  }
+
+  .padding-style {
+    padding: 0 10px 1px;
+  }
+
+}

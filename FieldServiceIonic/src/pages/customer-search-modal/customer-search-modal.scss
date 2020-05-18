@@ -1,0 +1,189 @@
+page-customer-search-modal {
+  .header-left {
+    width: 50%;
+    float: left;
+  }
+
+  .header-right {
+    text-align: right;
+    width: 50%;
+  }
+
+  .select-style {
+    max-width: 100% !important;
+
+  }
+
+  .acno,
+  .cust,
+  .ad1,
+  .ad2,
+  .pc,
+  .cty,
+  .coun {
+    width: 20%;
+  }
+
+  .project-box .text-input {
+    box-sizing: border-box;
+    height: 31px;
+    border: 1px solid rgba(216, 213, 209, 1);
+    border-radius: 3px;
+    background-color: #fff !important;
+    width: 95%;
+    margin-top: 8px;
+    color: rgba(74, 74, 74, 0.7);
+    font-family: "Helvetica Neue";
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 17px;
+  }
+
+  .save-btn {
+    background-color: rgb(107, 142, 35);
+    text-transform: capitalize;
+    height: 31px !important;
+    border-radius: 3px;
+    border: none;
+    font-size: 14px !important;
+    cursor: pointer;
+    font-family: "Helvetica Neue";
+    padding: 10px;
+    margin-right: 5%;
+  }
+
+  .customerList {
+    overflow-y: auto;
+    height: 260px;
+  }
+
+  .t-accno {
+    width: 9%;
+    margin-right: 1%;
+  }
+
+  .t-cust {
+    width: 19%;
+    margin-right: 1%;
+  }
+
+  .t-add1 {
+    width: 14%;
+    margin-right: 1%;
+  }
+
+  .t-add2 {
+    width: 14%;
+    margin-right: 1%;
+  }
+
+  .t-post {
+    width: 9%;
+    margin-right: 1%;
+  }
+
+  .t-cty {
+    width: 9%;
+    margin-right: 1%;
+  }
+
+  .t-country {
+    width: 9%;
+    margin-right: 1%;
+  }
+
+  .t-select {
+    width: 9%;
+    margin-right: 1%;
+  }
+
+  .searchNSelect::after {
+    position: absolute;
+    right: 28px;
+    top: 13px;
+    font-family: "FontAwesome";
+    content: "\f0d7";
+    color: #999;
+    font-size: 14px;
+  }
+
+  .searchNSelect .text-input {
+    cursor: pointer;
+    padding: 0 25px 0 4px !important;
+  }
+
+  .searchNSelect ::-ms-input-placeholder {
+    color: black !important;
+  }
+
+  .internalSearchNSelect .input-box .text-input {
+    height: 31px;
+    border-radius: 3px;
+  }
+
+  .internalSearchNSelect .content .scroll-content {
+    margin-top: 0px !important;
+    height: 260px;
+    padding: 0px !important;
+    background-color: transparent !important;
+    overflow-y: hidden !important;
+
+    .main-div {
+      height: 100%;
+      overflow-y: auto !important;
+    }
+
+    .autoSearchFields {
+      height: 100%;
+
+      .item-inner {
+        border: none !important;
+      }
+    }
+  }
+
+  .autoSearchFields .item-radio-checked {
+    background-color: rgba(0, 117, 189, 1) !important;
+
+    .smart-search-radio {
+      color: white !important;
+      font-weight: 600;
+    }
+
+    .radio .radio-icon {
+      border-color: transparent !important
+    }
+
+    .radio .radio-inner {
+      background-color: transparent !important
+    }
+  }
+
+  .autoSearchFields .radio .radio-icon {
+    border-color: transparent !important;
+
+    .radio .radio-inner {
+      background-color: transparent !important;
+    }
+  }
+
+  .autoSearchFields.list .item-block {
+    min-height: 32px;
+    background-color: rgba(253, 252, 252, 1);
+    border-bottom: 1px solid rgba(220, 217, 214, 1);
+    border-right: 1px solid rgba(220, 217, 214, 1);
+    border-left: 1px solid rgba(220, 217, 214, 1);
+    border-collapse: collapse;
+  }
+
+  textarea::-ms-input-placeholder {
+    color: transparent !important;
+  }
+}
+
+.ios page-customer-search-modal {
+  .searchNSelect::after {
+    right: 20px;
+    top: 10px;
+  }
+}

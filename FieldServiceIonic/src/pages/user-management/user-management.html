@@ -1,0 +1,175 @@
+<ion-header>
+  <page-custom-header [header]="header_data"></page-custom-header>
+</ion-header>
+
+
+<ion-content padding>
+  <!-- <ion-card *ngIf="!isOnline()">
+    <ion-card-header>
+      <ion-row>
+        <ion-col>
+          <h3 class="danger hd">
+            Please Connect to Internet.
+          </h3>
+        </ion-col>
+      </ion-row>
+    </ion-card-header>
+  </ion-card> -->
+  <ion-card>
+    <ion-card-header class="border-bottom">
+      <ion-row radio-group>
+        <ion-col class="border-right" col-3>
+          <ion-item>
+            <ion-label class="font-size">Users</ion-label>
+            <ion-radio checked (ionSelect)="manageUsers($event)" item-left value="users"></ion-radio>
+          </ion-item>
+        </ion-col>
+        <ion-col col-3>
+          <ion-item>
+            <ion-label class="font-size">Roles</ion-label>
+            <ion-radio (ionSelect)="manageUsers($event)" item-left value="roles"></ion-radio>
+          </ion-item>
+        </ion-col>
+
+      </ion-row>
+    </ion-card-header>
+    <ion-card-content>
+      <div *ngIf="!isUsers">
+        <ion-row>
+          <ion-col col-1>
+            <ion-item>
+              <button class="addbtn-box btn" no-padding (click)="userModal()"><img class="add-btn pointer" src="assets/imgs/icons/Add-button.png"></button>
+              <!-- <button ion-button block class="add-button inline-block" (click)="saveDraft()">{{'Add' | translate}}</button> -->
+            </ion-item>
+          </ion-col>
+          <ion-col>
+
+            <ion-searchbar placeholder="{{'Search' | translate}}" [(ngModel)]="taskInput" (ionCancel)="onCancel($event)"></ion-searchbar>
+
+          </ion-col>
+          <ion-col>
+            <ion-item>
+              <ion-label translate="Show Active">
+              </ion-label>
+              <ion-checkbox name="showActive" (ionChange)="showActive($event)"></ion-checkbox>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+        <ion-row class="stroke"></ion-row>
+        <ion-row class="global-padding bottom-border table-header">
+          <!-- 02-06-2019 -- Mansi Arora -- apply sorting on the basis of UserID  -->
+          <ion-col col-2 class="label " (click)="usersOrderBy='UserID'; usersReverseSort = !usersReverseSort">
+            <span class="startDate-head" translate="ID"></span>
+            <span>
+              <i class="fa" [ngClass]="{ 'fa-sort-asc': (usersOrderBy == 'UserID' && !usersReverseSort),'fa-sort-desc': (usersOrderBy == 'UserID' && usersReverseSort) }"></i>
+            </span>
+          </ion-col>
+          <!-- 02-06-2019 -- Mansi Arora -- apply sorting on the basis of Name  -->
+          <ion-col col-4 class="label " (click)="usersOrderBy='Name'; usersReverseSort = !usersReverseSort">
+            <span translate="Name"></span>
+            <span>
+              <i class="fa" [ngClass]="{ 'fa-sort-asc': (usersOrderBy == 'Name' && !usersReverseSort),'fa-sort-desc': (usersOrderBy == 'Name' && usersReverseSort) }"></i>
+            </span>
+          </ion-col>
+          <!-- 02-06-2019 -- Mansi Arora -- apply sorting on the basis of Email  -->
+          <ion-col col-4 class="label " (click)="usersOrderBy='Email'; usersReverseSort = !usersReverseSort">
+            <span translate="Email"></span>
+            <span>
+              <i class="fa" [ngClass]="{ 'fa-sort-asc': (usersOrderBy == 'Email' && !usersReverseSort),'fa-sort-desc': (usersOrderBy == 'Email' && usersReverseSort) }"></i>
+            </span>
+          </ion-col>
+          <ion-col col-1 class="label">
+            <span translate="Edit"></span>
+          </ion-col>
+          <ion-col col-1 class="label">
+            <span translate="Active"></span>
+          </ion-col>
+        </ion-row>
+        <ion-list>
+          <!-- 02-06-2019 -- Mansi Arora -- apply sorting on basis of UserID, Name and Email before pagination pipe  -->
+          <ion-row *ngFor="let user of cloudService.users| search: taskInput | sort: {property: usersOrderBy, order: usersReverseSort ? 1 : -1 }|paginate: { itemsPerPage: 10, currentPage: pageNumber }"
+            class="strippedClass global-padding full-width ">
+            <ion-col col-2 class="value">{{user.UserID}}</ion-col>
+            <ion-col col-4 class="value">{{user.Name}}</ion-col>
+            <ion-col col-4 class="value">{{user.Email}}</ion-col>
+            <ion-col col-1 class="value">
+              <!-- 01-29-2019 -- Mansi Arora -- open modal with country, state, city and zip code details -->
+              <img class="inline-block copy-img pointer pull-left pointer" src="assets/imgs/icons/edit-icon.png"
+                (click)="userModal(user.Name,user.Email,user.UserID,user.RoleMappings,user.ClarityID,user.WorldAreaID,user.country,user.state,user.city,user.zipCode,user.IsActive,user.CreatedBy)">
+            </ion-col>
+            <ion-col col-1>
+              <ion-checkbox class="pointer" disabled [checked]="(user.IsActive == 'Y')"></ion-checkbox>
+              <!-- <img class="inline-block copy-img pointer pull-left pointer" (click)="showAlert(user.UserID)" src="assets/imgs/icons/delete-icon.png"> -->
+            </ion-col>
+          </ion-row>
+        </ion-list>
+        <!-- 02-06-2019 -- Mansi Arora -- show default message when no record matches the search parameters under user List.  -->
+        <ion-row *ngIf="taskInput.length > 0 && (cloudService.users | search: taskInput).length == 0">
+          <ion-col class="global-padding user-not-found" translate="No records matches search criteria/parameters"></ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col col-6></ion-col>
+          <ion-col col-6 no-padding class="pagination" text-right>
+            <pagination-controls (pageChange)="pageNumber = $event" maxSize="10" directionLinks="true" autoHide="true"
+              previousLabel="{{'Previous' | translate}}" nextLabel="{{'Next' | translate}}" screenReaderPaginationLabel="Pagination"
+              screenReaderPageLabel="page" screenReaderCurrentLabel="You're on page">
+            </pagination-controls>
+          </ion-col>
+        </ion-row>
+      </div>
+      <div *ngIf="!isRoles">
+        <ion-row>
+          <ion-col col-1>
+            <ion-item>
+              <button class="addbtn-box btn" no-padding (click)="rolesModal('','','','')"><img class="add-btn pointer"
+                  src="assets/imgs/icons/Add-button.png"></button>
+            </ion-item>
+            <!-- <button ion-button block class="add-button inline-block" (click)="saveDraft()">{{'Add' | translate}}</button> -->
+          </ion-col>
+          <ion-col>
+            <ion-searchbar placeholder="{{'Search' | translate}}" [(ngModel)]="taskInput" (ionCancel)="onCancel($event)"></ion-searchbar>
+          </ion-col>
+        </ion-row>
+        <ion-row class="stroke"></ion-row>
+        <ion-row class="global-padding bottom-border table-header">
+          <ion-col col-2 class="label ">
+            <span class="startDate-head" translate="ID"></span>
+          </ion-col>
+          <ion-col col-4 class="label ">
+            <span translate="Role"></span>
+          </ion-col>
+          <ion-col col-4 class="label ">
+            <span translate="Description"></span>
+          </ion-col>
+          <ion-col col-2 class="label">
+          </ion-col>
+        </ion-row>
+        <ion-list>
+          <!-- 02-05-2019 -- Mansi Arora -- search only on the basis of RoleName, Description and UserRoleID -->
+          <ion-row *ngFor="let role of cloudService.uniqueRoles| search: { RoleName: taskInput, Description: taskInput, UserRoleID: taskInput }|paginate: { itemsPerPage: 10, currentPage: pageNumberRoles } | sort: {property: usersOrderBy}"
+            class="strippedClass global-padding full-width ">
+            <ion-col col-2 class="value">{{role.UserRoleID}}</ion-col>
+            <ion-col col-4 class="value">{{role.RoleName}}</ion-col>
+            <ion-col col-4 class="value">{{role.Description}}</ion-col>
+            <ion-col col-1 class="value">
+              <img class="inline-block copy-img pointer pull-left pointer" src="assets/imgs/icons/edit-icon.png"
+                (click)="rolesModal(role.RoleName,role.Description,role.UserRoleID)">
+            </ion-col>
+            <!-- <ion-col col-1>
+              <img class="inline-block copy-img pointer pull-left pointer" src="assets/imgs/icons/delete-icon.png">
+            </ion-col> -->
+          </ion-row>
+        </ion-list>
+        <ion-row>
+          <ion-col col-6></ion-col>
+          <ion-col col-6 no-padding class="pagination" text-right>
+            <pagination-controls (pageChange)="pageNumberRoles = $event" maxSize="10" directionLinks="true" autoHide="true"
+              previousLabel="{{'Previous' | translate}}" nextLabel="{{'Next' | translate}}" screenReaderPaginationLabel="Pagination"
+              screenReaderPageLabel="page" screenReaderCurrentLabel="You're on page">
+            </pagination-controls>
+          </ion-col>
+        </ion-row>
+      </div>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

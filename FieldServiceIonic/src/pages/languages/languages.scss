@@ -1,0 +1,371 @@
+page-languages {
+
+  .select-style {
+    max-width: 100% !important;
+  }
+
+  .export-language-button, .import-language-button {
+    height: 30px;
+    min-width: 80px;
+    border-radius: 3px;
+    background-color: rgba(142,177,95,1) !important;
+    color: rgba(255,255,255,1);
+    font-family: "Helvetica Neue";
+    font-size: 14px;
+    line-height: 16px;
+    text-transform: capitalize;
+    margin: 0px 10px;
+  }
+
+  .button-block {
+    width: auto;
+  }
+
+  .save-language-button {
+    height: 30px;
+    max-width: 100px;
+    border-radius: 3px;
+    background-color: rgba(142,177,95,1) !important;
+    color: rgba(255,255,255,1);
+    font-family: "Helvetica Neue";
+    font-size: 14px;
+    line-height: 16px;
+    text-transform: capitalize;
+    margin: 0 20px;
+  }
+
+  .draft-language-button {
+    height: 30px;
+    min-width: 100px;
+    max-width: 250px;
+    border-radius: 3px;
+    background-color: rgba(142,177,95,1) !important;
+    color: rgba(255,255,255,1);
+    font-family: "Helvetica Neue";
+    font-size: 14px;
+    line-height: 16px;
+    text-transform: capitalize;
+    margin: 0 20px;
+  }
+
+  .country-box {
+    box-sizing: border-box;
+    height: 32px;
+    width: 184px;
+    border: 1px solid rgba(231,231,231,1);
+    border-radius: 2px;
+    background-color: rgba(255,255,255,1);
+    box-shadow: inset 0 1px 0 0 rgba(0,0,0,0.06), inset 0 -1px 0 0 rgba(0,0,0,0.06);
+  }
+
+  .select-text {
+    color: rgba(74,74,74,1);
+    font-family: "Helvetica Neue";
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 17px;
+    vertical-align: middle;
+  }
+
+  .country-box .select-text:before {
+    float: left;
+    margin-right: 10px;
+    content: url("../assets/imgs/icons/ic_language.png");
+    vertical-align: middle;
+  }
+
+  .select .button-effect {
+    transition: none !important;
+  }
+
+  .select {
+    padding: 6px !important;
+  }
+
+  ion-searchbar .searchbar-input {
+    padding-bottom: 0px !important;
+    height: 30px;
+    border: 1px solid rgba(238,238,238,1);
+    width: 340px;
+    border-radius: 3px;
+    background-color: rgba(247,247,246,1);
+    box-shadow: none !important;
+  }
+
+  ion-searchbar {
+    width: 340px;
+    height: 30px;
+    min-height: unset !important;
+    padding: 0px !important;
+  }
+
+  .select .select-icon {
+    height: auto;
+  }
+
+  .searchbar .searchbar-input {
+    padding: 0 10px 0 30px;
+    vertical-align: middle;
+  }
+
+  .searchbar .searchbar-search-icon {
+    top: 7px;
+    left: 7px;
+  }
+
+  .translation-box .text-input {
+    box-sizing: border-box;
+    height: 30px;
+    border: 1px solid rgba(216,213,209,1);
+    border-radius: 2px;
+    background-color: #fff;
+    width: 100%;
+  }
+
+  .select-bar {
+    box-sizing: border-box;
+    border: 1px solid rgba(216,213,209,1);
+    border-radius: 2px;
+    background-color: rgba(247,247,246,1);
+    width: 184px;
+    height: 32px;
+    margin: 0;
+    max-width: 100% !important;
+    padding: 1px 5px;
+  }
+
+  .btn-align {
+    text-align: center;
+  }
+
+  .startDate-head {
+    height: 16px;
+    width: 60px;
+    color: rgba(155,155,155,1);
+    font-family: "Helvetica Neue";
+    font-size: 14px;
+    line-height: 16px;
+  }
+
+  .translation-column {
+    width: 70%;
+  }
+
+  ion-infinite-scroll-content {
+    min-height: 0px;
+  }
+
+  .languageKey {
+    height: 17px;
+    color: rgba(0,0,0,1);
+    font-family: "Helvetica Neue";
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 17px;
+  }
+
+  .languageValue {
+    color: rgba(155,155,155,1);
+    font-family: "Helvetica Neue";
+    font-size: 14px;
+    line-height: 16px;
+  }
+
+  .languageValueBox.text-input {
+    height: 31px;
+    width: 301px;
+    box-sizing: border-box;
+    height: 3.03%;
+    width: 29.39%;
+    border: 1px solid rgba(205,205,205,1);
+    border-radius: 3px;
+    background-color: rgba(255,255,255,1);
+  }
+
+  .isActiveBox.item-block {
+    min-height: unset;
+  }
+
+  .isActiveBox ion-label {
+    margin: 0px;
+  }
+
+  .isActiveBox .checkbox {
+    margin: 3px 10px !important;
+  }
+
+
+  .isActiveBox ion-label {
+    margin: 8px !important;
+  }
+
+  .label-head {
+    padding-top: 15px;
+  }
+
+  .languagePadding {
+    padding: 6px 12px 0 12px;
+  }
+
+  .pagination {
+    font-size: 14px !important;
+    line-height: 21px !important;
+    margin-top: 4px;
+  }
+
+  .ngx-pagination .current {
+    font-family: "Helvetica Neue";
+    text-align: center;
+    padding: 2px 1px 0 0;
+    background: #8eb15f;
+    color: #fefefe;
+    cursor: default;
+    border-radius: 50%;
+    width: 26px;
+    height: 26px;
+    font-weight: bold;
+  }
+
+  .ngx-pagination {
+    margin: 14px 10px 0 0 !important;
+    padding: 0px;
+  }
+
+  .import_text {
+    vertical-align: middle;
+    color: rgba(255,255,255,1);
+    font-family: "Helvetica Neue";
+    font-size: 14px;
+    line-height: 29px;
+    text-transform: capitalize;
+  }
+
+  .import-button {
+    display: none !important;
+  }
+
+  .import-language-button {
+    box-shadow: 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 3px 1px -2px rgba(0,0,0,0.2), 0px 1px 5px 0px rgba(0,0,0,0.12);
+  }
+
+  .disableSearchBar .searchbar-input {
+    pointer-events: none;
+    opacity: 0.5;
+    background-color: #d8d5d1;
+  }
+
+  .disableInput {
+    pointer-events: none;
+    opacity: 0.5;
+    background-color: #d8d5d1;
+  }
+
+  .langTransHeading {
+    width: 24%;
+    white-space: normal;
+    margin-right: 1%;
+  }
+
+  .selectLangLabel {
+    width: 16.5%;
+  }
+
+  .langBlankCol {
+    width: 25%;
+  }
+
+  .langSubRowBlankCol {
+    width: 33%;
+  }
+
+  .searchKeyLabel {
+    width: 33%;
+  }
+
+  .isActiveBoxEnabled {
+    position: absolute;
+    width: 16%;
+    right: 24px;
+  }
+
+  .saveSubmitBox {
+    width: auto;
+    position: absolute;
+    right: 17%;
+  }
+
+  .importExportBox {
+    width: 25%;
+  }
+
+  .charLength {
+    vertical-align: middle;
+    line-height: 30px;
+    opacity: 0.4;
+    font-weight: 400;
+  }
+
+  .pending-indicator {
+    color: rgba(155,155,155,1) !important;
+  }
+}
+
+.languageAlert {
+  .alert-wrapper {
+    max-width: 300px !important;
+  }
+
+  .alert-wrapper .alert-message {
+    overflow-y: auto;
+  }
+}
+
+.ios page-languages {
+  .selectLangLabel {
+    width: 25%;
+  }
+
+  .langBlankCol {
+    width: 16.5%;
+  }
+
+  .searchKeyLabel {
+    min-width: 180px;
+    max-width: 245px;
+    width: auto;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+
+  .export-language-button, .import-language-button, .draft-language-button, .save-language-button {
+    vertical-align: middle;
+  }
+
+  ion-searchbar .searchbar-input {
+    width: unset;
+  }
+
+  ion-searchbar {
+    width: unset;
+  }
+
+  .langTransHeading {
+    width: 25%;
+  }
+
+  .selectLangLabel {
+    width: 16.5%;
+  }
+
+  .langBlankCol {
+    width: 25%;
+  }
+
+  .langSubRowBlankCol {
+    width: 20%;
+  }
+
+  .importExportBox {
+    width: 25%;
+  }
+}

@@ -1,0 +1,128 @@
+
+.MapModalPage {
+  .mapModel {
+    position: unset !important;
+  }
+
+  .mapModel > div {
+    overflow: hidden !important;
+  }
+
+  .toolbar-background {
+    padding: 0 10px !important;
+    border: none !important;
+    background: none;
+  }
+
+  .toolbar {
+    min-height: unset;
+  }
+
+  ion-navbar {
+    height: 50px !important;
+  }
+
+  ion-header::after {
+    background-image: none !important;
+  }
+
+  .modal-wrapper {
+    height: 690px;
+    width: 900px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%) !important;
+    position: fixed;
+  }
+
+  .modal-wrapper .scroll-content {
+    margin: 50px 10px 10px !important;
+    border: 1px solid black;
+    background-color: rgba(255,255,255,1) !important;
+    color: rgba(74,74,74,1);
+    font-family: "Helvetica Neue";
+    font-size: 18px;
+    font-weight: 300;
+    line-height: 28px;
+    text-align: center;
+    overflow: hidden;
+  }
+
+  .modal-wrapper .toolbar-title {
+    color: rgba(74,74,74,1);
+    font-family: "Helvetica Neue";
+    font-size: 22px;
+    font-weight: 300;
+    line-height: 27px;
+    text-align: left;
+  }
+
+  .baiduModel {
+    width: 100%;
+    height: 620px;
+    overflow: hidden;
+    margin: 1px 0 0 0;
+    font-family: "Helvetica Neue";
+  }
+
+  .closebtn {
+    color: #9b9b9b;
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-stroke: 4px snow;
+  }
+}
+
+.ReadMoreModalPage {
+
+  .modal-wrapper {
+    height: 350px;
+    width: 700px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%) !important;
+    position: fixed;
+  }
+
+  .modal-wrapper .scroll-content {
+    background-color: rgba(255,255,255,1) !important;
+    color: rgba(74,74,74,1);
+    font-family: "Helvetica Neue";
+    font-size: 18px;
+    font-weight: 300;
+    line-height: 28px;
+    text-align: left;
+    overflow-y: hidden;
+  }
+
+  .modal-wrapper .toolbar-title {
+    color: rgba(74,74,74,1);
+    font-family: "Helvetica Neue";
+    font-size: 22px;
+    font-weight: 300;
+    line-height: 27px;
+    text-align: left;
+  }
+
+  ion-navbar {
+    height: 50px !important;
+  }
+
+  .bar-button {
+    font-size: 1em !important;
+  }
+
+  .closebtn {
+    color: #9b9b9b;
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-stroke: 4px snow;
+  }
+
+  .toolbar {
+    height: 52px !important;
+    border-bottom: 1px solid rgba(233, 232, 232,1) !important;
+  }
+}
